@@ -1,4 +1,5 @@
 dist/
+dist-store/
 node_modules/
 output/
 *.2fapasskeys

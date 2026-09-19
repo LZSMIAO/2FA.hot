@@ -19,6 +19,24 @@ pnpm --dir extensions/passkeys build
 
 没有自动安装到浏览器，也没有发布到商店。`dist` 是构建产物，不提交版本控制。
 
+### 商店构建
+
+```sh
+pnpm --dir extensions/passkeys package:store
+```
+
+生成 `output/2fa-hot-passkeys-0.2.0-store.zip` 和对应源码包。商店构建会移除 localhost 匹配规则及本站桥接的本机授权，保留 HTTPS 支持，并附带隐私政策、图标和许可证。ZIP 根目录直接包含 manifest；不要上传源码包代替商店包。
+
+`store/listing.md` 包含中英文描述、权限理由、隐私申报和审核说明；`store/assets` 包含原创图标、宣传图及真实扩展界面的测试账号截图。`store/submission-status.md` 记录提交进度。准备好 ZIP 不代表已提交或通过审核。
+
+## 网站入口与商店安装
+
+网站 `/passkeys`（另有 `/zh-CN/passkeys`、`/zh-TW/passkeys`）提供安装检测、打开扩展管理页、创建与迁移指引。扩展升级后，在浏览器扩展页点击重新加载，再刷新网站。
+
+网页不能静默安装扩展。商店审核通过后，将真实扩展 ID 写入项目 `shared/passkeys.ts` 的 `passkeyStoreIds`，网站会显示对应官方商店的安装按钮。未配置的商店不显示安装链接；两者均未配置时显示开发版安装指引。用户需要在商店点击添加并确认浏览器权限。
+
+仅 `https://2fa.hot` 与本机 `localhost` 页面能通过专用桥接检测版本、打开管理页。后台按浏览器提供的来源、顶层 frame 和当前 documentId 再次核验。该桥接不暴露账号列表、密钥库是否已创建、解锁状态、私钥或主口令；网站检测仅用于界面提示，不作为身份认证依据。其他部署域名无法连接这一桥接。
+
 ## 添加和登录
 
 在目标网站的账号安全设置中点击“创建通行密钥”。扩展显示由浏览器确认的来源域名和账号，输入主口令，再明确确认保存。网站完成注册后才算创建成功。
@@ -64,6 +82,8 @@ pnpm --dir extensions/passkeys build
 cd extensions/passkeys
 PLAYWRIGHT_MODULE=/absolute/path/to/playwright/index.mjs node tests/browser.mjs
 ```
+
+若网站开发环境已运行，可额外指定 `PASSKEY_COMPANION_URL=http://localhost:3001/zh-CN/passkeys`，同时验证网站检测、打开管理页、未安装状态与手机宽度布局；测试脚本不会启动服务器。
 
 ## 参考与许可
 

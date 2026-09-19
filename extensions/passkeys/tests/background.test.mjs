@@ -4,6 +4,7 @@ import { encode, random } from '../src/encoding.js'
 const local = {},
   session = {}
 let listener,
+  opened = 0,
   frame = { documentId: 'document-1', url: 'https://example.com/account' }
 const area = (values) => ({
   setAccessLevel: async () => {},
@@ -18,7 +19,10 @@ globalThis.chrome = {
     id: 'test-extension',
     getURL: (p) => `chrome-extension://test-extension/${p}`,
     onMessage: { addListener: (fn) => (listener = fn) },
-    openOptionsPage: async () => {}
+    openOptionsPage: async () => {
+      opened++
+    },
+    getManifest: () => ({ version: '0.2.0' })
   },
   storage: { local: area(local), session: area(session) },
   windows: {
@@ -82,9 +86,36 @@ test('background rejects content-script management and trusts browser origin/doc
   assert.equal(records.records.length, 0)
   const cancelled = await send({ action: 'cancel', token: begin.token }, website)
   assert.equal(cancelled.ok, true)
+  assert.equal((await send(request(), website)).fallback, true, 'preserve unconsumed results')
   assert.equal(
     (await send({ action: 'poll', token: begin.token }, website)).result.error,
     '请求已取消。'
   )
   assert.equal(JSON.stringify({ local, session }).includes('background-test-password'), false)
+})
+
+test('website bridge only exposes the version and locked manager to the companion origin', async () => {
+  const origin = 'https://2fa.hot'
+  const companion = { ...website, origin, url: `${origin}/passkeys`, documentId: 'site-document' }
+  frame = { url: companion.url, documentId: companion.documentId }
+  const status = await send({ action: 'site-status' }, companion)
+  assert.deepEqual(status, { ok: true, version: '0.2.0' })
+  assert.equal((await send({ action: 'site-open' }, companion)).ok, true)
+  assert.equal(opened, 1)
+  for (const sender of [
+    website,
+    { ...companion, frameId: 1 },
+    { ...companion, documentId: 'old-document' },
+    { ...companion, origin: 'https://2fa.hot.evil.com' },
+    { ...companion, origin: 'https://evil.com', url: 'https://evil.com' }
+  ]) {
+    assert.equal((await send({ action: 'site-open' }, sender)).ok, false)
+    assert.equal((await send({ action: 'site-status' }, sender)).ok, false)
+  }
+  assert.equal(opened, 1)
+  for (const action of ['status', 'list', 'export', 'import', 'approve', 'setup'])
+    assert.equal(
+      (await send({ action, password: 'background-test-password' }, companion)).ok,
+      false
+    )
 })

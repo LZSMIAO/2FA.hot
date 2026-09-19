@@ -9,6 +9,8 @@ import {
   unlocalizedPath
 } from '~~/shared/seo/routes'
 import type { SupportedLocale } from '~~/shared/locales'
+import { passkeyCopy } from '~~/shared/passkeys-copy'
+import { passkeyLocale } from '~~/shared/passkeys'
 
 export function useSiteSeo() {
   const route = useRoute()
@@ -27,7 +29,11 @@ export function useSiteSeo() {
     const guideTitle = chinese ? '2FA 与 TOTP 使用指南' : '2FA & TOTP guides'
     let title = toolHeadings[language] || toolHeadings.en
     let description = toolDescriptions[language] || toolDescriptions.en
-    if (path === '/help') {
+    if (path === '/passkeys') {
+      const copy = passkeyCopy[passkeyLocale(language)]
+      title = `${copy.title} | 2fa.hot`
+      description = copy.description
+    } else if (path === '/help') {
       title = `${tx('使用说明')} · 2FA & TOTP | 2fa.hot`
       description =
         language === 'en'

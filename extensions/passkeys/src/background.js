@@ -1,6 +1,7 @@
 import { createCredential, getCredential, matches, validateRequest } from './webauthn.js'
 import { checkPassword, mergeRecords, publicRecords, seal, unseal } from './vault.js'
 import { exportBitwarden, parseImport } from './migration.js'
+import { isCompanionOrigin } from './site-access.js'
 
 const uiUrl = chrome.runtime.getURL('ui.html')
 // Never expose local/session storage to content scripts.
@@ -37,6 +38,26 @@ async function handle(message, sender) {
   await storageReady
   if (!message || typeof message.action !== 'string') throw new Error('请求不正确。')
   const { action } = message
+  if (action === 'site-status' || action === 'site-open') {
+    if (
+      sender.id !== chrome.runtime.id ||
+      sender.frameId !== 0 ||
+      !sender.tab ||
+      !sender.documentId ||
+      !isCompanionOrigin(sender.origin) ||
+      new URL(sender.url).origin !== sender.origin
+    )
+      throw new Error('只有本站可以连接扩展。')
+    const frame = await chrome.webNavigation.getFrame({ tabId: sender.tab.id, frameId: 0 })
+    if (
+      !frame ||
+      frame.documentId !== sender.documentId ||
+      new URL(frame.url).origin !== sender.origin
+    )
+      throw new Error('来源网站已经改变，请刷新页面。')
+    if (action === 'site-open') await chrome.runtime.openOptionsPage()
+    return { version: chrome.runtime.getManifest().version }
+  }
   if (action === 'begin') {
     if (
       sender.id !== chrome.runtime.id ||
@@ -48,7 +69,8 @@ async function handle(message, sender) {
     )
       return { fallback: true }
     const old = await pending()
-    if (old && !old.result && old.expires > Date.now()) return { fallback: true }
+    // Keep a completed result until its caller consumes it; a second tab must not overwrite it.
+    if (old && old.expires > Date.now()) return { fallback: true }
     try {
       validateRequest(message.kind, message.options, sender.origin)
     } catch {

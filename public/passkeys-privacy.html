@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>2fa.hot Passkeys — 隐私政策 / Privacy policy</title>
+    <meta
+      name="description"
+      content="How the 2fa.hot Passkeys extension processes, encrypts, stores and exports your passkeys."
+    />
+    <style>
+      :root {
+        color-scheme: light dark;
+        font:
+          16px/1.8 system-ui,
+          sans-serif;
+        background: #f4f6f9;
+        color: #202420;
+      }
+      body {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 36px 24px 64px;
+        overflow-wrap: anywhere;
+      }
+      h1 {
+        font-size: 1.8rem;
+        line-height: 1.35;
+      }
+      h2 {
+        margin-top: 2rem;
+        font-size: 1.2rem;
+      }
+      a {
+        color: #286522;
+      }
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+      }
+      section + section {
+        margin-top: 4rem;
+        border-top: 1px solid #737b74;
+        padding-top: 2rem;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          background: #1e1e1f;
+          color: #f0f2ef;
+        }
+        a {
+          color: #93d881;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav aria-label="Language"><a href="#zh">简体中文</a><a href="#en" lang="en">English</a></nav>
+    <section id="zh">
+      <h1>2fa.hot Passkeys 隐私政策</h1>
+      <p>
+        更新日期：2026 年 9 月 20 日。适用于 2fa.hot Passkeys 浏览器扩展 0.2.0。本扩展由 LONGMIAO LTD
+        （英国公司编号 16596876）提供。本政策仅涵盖通行密钥扩展及其网站连接功能；本站 TOTP 工具另有隐私说明。
+      </p>
+      <h2>处理哪些信息，为什么需要</h2>
+      <p>
+        为创建、保存和使用通行密钥，扩展处理网站提供的账号名（可能是姓名或邮箱）、显示名称、用户标识、凭据标识、网站域名、注册与登录挑战，以及生成的公私钥。保存的凭据还包含创建时间、最近使用时间、签名计数器和备份属性。
+      </p>
+      <p>
+        你输入的主口令用于本机密钥库加解密，备份口令用于导入和导出。导入时，扩展在本机读取你主动选择的文件；Bitwarden
+        JSON 中可能同时含有密码、TOTP 等数据，扩展只导入受支持的通行密钥，不保存或使用其他条目。
+      </p>
+      <p>
+        扩展从浏览器核对发起验证的页面地址、来源、标签页和文档标识，防止其他网站冒用凭据。它只在处理验证或本站连接请求时查询当前文档，不监听所有导航来构建浏览历史，不抓取普通网页内容，也不采集广告或行为分析数据。
+      </p>
+      <h2>保存位置、加密与保留时间</h2>
+      <p>
+        私钥及持久保存的账号信息使用 AES-256-GCM
+        加密后存入当前浏览器配置的扩展本地存储。加密密钥通过 PBKDF2-SHA256
+        从主口令派生，使用随机盐；主口令不会持久保存。扩展不使用浏览器同步存储，没有云端账户、云同步或口令找回功能。
+      </p>
+      <p>
+        在解锁的扩展窗口中，主口令和展示所需的数据暂存于内存；锁定、关闭或连续 5
+        分钟无操作后清除应用持有的引用。JavaScript
+        无法保证物理擦除内存。后台仅在执行操作时解密，不保持长期解锁状态。
+      </p>
+      <p>
+        待确认请求的域名、账号标识、挑战和标签页信息会临时保存在浏览器会话存储中，供扩展确认窗口使用；结果被取回后删除，过期请求由定时清理，通常不超过约
+        4 分钟。会话存储不包含私钥或主口令。
+      </p>
+      <h2>向谁提供数据</h2>
+      <p>
+        当你确认注册或登录时，扩展向发起请求的网站返回 WebAuthn
+        注册或认证结果（例如公钥、凭据标识、用户标识和签名）。网站接着通过其自身网络连接处理结果；私钥及主口令不会交给网站或
+        2fa.hot 服务端。
+      </p>
+      <p>
+        扩展没有向开发者上传密钥库的接口，不包含遥测、广告、数据售卖或远程执行代码。数据仅用于用户请求的通行密钥功能，不用于广告画像、征信或借贷决定，也不转移给数据经纪商。
+      </p>
+      <p>
+        只有本站 https://2fa.hot
+        能通过商店版的连接功能检测扩展版本、打开扩展管理页。此连接不会返回账号列表、密钥库内容、是否已创建密钥库或解锁状态。开发版还允许
+        localhost 用于测试。安装检测只是界面提示，不是身份认证。
+      </p>
+      <h2>备份、迁移与删除</h2>
+      <p>
+        导出由你主动发起，文件保存在你指定的下载位置。加密备份受独立备份口令保护。Bitwarden
+        格式导出包含明文私钥，仅在你明确确认后生成；能读取该文件的人可能使用其中的通行密钥。你决定是否把文件交给其他设备或管理器，接收方的数据处理规则另行适用。
+      </p>
+      <p>
+        你可以在扩展中查看和删除本地凭据。数据保留到你删除、清除扩展数据或卸载为止。删除本地凭据不会撤销原网站的凭据，也不会删除已导出的文件或操作系统备份；这些副本需要你另行处理。主口令无法找回，请在卸载前保存可用备份。
+      </p>
+      <h2>浏览器权限</h2>
+      <ul>
+        <li>storage：保存加密密钥库、暂停设置和临时请求状态。</li>
+        <li>alarms：清理过期验证请求。</li>
+        <li>webNavigation：批准前核对请求仍来自同一个顶层文档。</li>
+        <li>
+          HTTPS 网站访问：在支持通行密钥的网站中连接 WebAuthn
+          请求，提供保存和登录功能。处理前需要你在扩展窗口中解锁并确认。扩展不要求读取剪贴板、摄像头或浏览器账户密码的权限。
+        </li>
+      </ul>
+      <h2>网站访问与联系</h2>
+      <p>
+        主动打开产品网站、商店、源码或帮助链接会产生普通网络访问，目的站点及其托管服务可以获得 IP
+        地址、请求地址等连接信息，这些访问适用相应站点政策。扩展不会把密钥库附加到这些链接。
+      </p>
+      <p>
+        如需隐私或产品支持，请联系
+        <a href="mailto:admin@2fa.hot">admin@2fa.hot</a
+        >。你主动发来的邮件内容仅用于回复和处理该请求，请勿发送真实私钥、主口令、完整备份或恢复码。邮件通信由你使用的邮件服务和收件邮箱服务处理。
+      </p>
+      <p>
+        后续功能若改变数据处理方式，将同步更新政策及扩展内说明。当前版本没有获得独立安全审计或 FIDO
+        认证，不作此类保证。
+      </p>
+    </section>
+    <section id="en" lang="en">
+      <h1>2fa.hot Passkeys privacy policy</h1>
+      <p>
+        Updated September 20, 2026. Applies to version 0.2.0 of the 2fa.hot Passkeys browser
+        extension. Provided by LONGMIAO LTD (UK company number 16596876). This policy covers the extension and its
+        companion website connection; the website's TOTP tool has a separate privacy notice.
+      </p>
+      <h2>Information and purpose</h2>
+      <p>
+        To create, store and use passkeys, the extension processes usernames (which may be names or
+        email addresses), display names, user handles, credential identifiers, relying-party
+        domains, registration and authentication challenges, and generated public and private keys.
+        Stored credentials also include creation and last-use timestamps, signature counters and
+        backup attributes.
+      </p>
+      <p>
+        Your master password encrypts and decrypts the local vault; a backup password protects
+        imports and exports. Importing reads a file that you explicitly select on your device.
+        Bitwarden JSON may also contain passwords and TOTP secrets; only supported passkeys are
+        imported. Other entries are not stored or used.
+      </p>
+      <p>
+        The extension checks the requesting page's address, origin, tab and document identity using
+        the browser to prevent credentials being used for another site. It queries the current
+        document when handling an authentication or companion request; it does not monitor all
+        navigation to build browsing histories, scrape ordinary page content or collect advertising
+        analytics.
+      </p>
+      <h2>Storage, protection and retention</h2>
+      <p>
+        Private keys and persistent account metadata are encrypted with AES-256-GCM and stored in
+        the extension's local storage in the current browser profile. PBKDF2-SHA256 derives
+        encryption keys from the master password using a random salt. The master password is not
+        persistently stored. There is no browser sync storage, cloud account, cloud sync or password
+        recovery.
+      </p>
+      <p>
+        An unlocked extension window temporarily holds its password and display data in memory.
+        Locking, closing or five minutes of inactivity clears application references. JavaScript
+        cannot guarantee physical memory erasure. The background decrypts only while performing
+        operations and does not maintain an unlocked vault.
+      </p>
+      <p>
+        Pending requests temporarily retain their domains, account identifiers, challenges and tab
+        details in browser session storage for the confirmation window. Results are removed when
+        retrieved; periodic cleanup removes expired requests, normally within about four minutes.
+        Session storage does not contain private keys or master passwords.
+      </p>
+      <h2>Disclosure and sharing</h2>
+      <p>
+        When you approve registration or sign-in, WebAuthn results such as the public key,
+        credential identifier, user handle and signature are returned to the requesting website.
+        That website then processes the result over its own connection. Private keys and master
+        passwords are not returned to the website or the 2fa.hot server.
+      </p>
+      <p>
+        The extension has no developer vault-upload endpoint, telemetry, advertising, data sale or
+        remotely executed code. Data is used only to provide the requested passkey features, never
+        for advertising profiles, creditworthiness or lending decisions, or transfer to data
+        brokers.
+      </p>
+      <p>
+        Only https://2fa.hot can check the store extension's version or open its manager through the
+        companion connection. It cannot retrieve accounts, vault contents, vault existence or unlock
+        status. Developer builds additionally allow localhost for testing. Installation detection is
+        a UI hint, not authentication.
+      </p>
+      <h2>Exports and deletion</h2>
+      <p>
+        Exports are user initiated and saved to your chosen download location. Encrypted backups use
+        a separate password. Bitwarden-format exports contain plaintext private keys and require
+        explicit confirmation; anyone with access to the file may be able to use those passkeys. You
+        control whether you give exports to another device or provider, whose policies then apply.
+      </p>
+      <p>
+        You can view and delete local credentials in the extension. Data remains until you delete
+        it, clear extension data or uninstall. Local deletion does not revoke the original website's
+        credential or delete exported files or operating-system backups; manage those copies
+        separately. Master passwords cannot be recovered. Keep a usable backup before uninstalling.
+      </p>
+      <h2>Permissions</h2>
+      <ul>
+        <li>storage: encrypted vault, pause preference and temporary request state.</li>
+        <li>alarms: expiry cleanup for authentication requests.</li>
+        <li>
+          webNavigation: verify that an approved request still belongs to the same top-level
+          document.
+        </li>
+        <li>
+          HTTPS site access: connect WebAuthn requests on passkey-enabled websites to the extension.
+          You unlock and confirm in its window before credentials are created or used. Clipboard,
+          camera and browser password-store permissions are not requested.
+        </li>
+      </ul>
+      <h2>Website visits and contact</h2>
+      <p>
+        Opening product, store, source or support links makes ordinary network requests. Destination
+        sites and their hosting services may receive IP addresses and request URLs under their own
+        policies. The extension does not append vault contents to these links.
+      </p>
+      <p>
+        For privacy or support requests, contact <a href="mailto:admin@2fa.hot">admin@2fa.hot</a>.
+        Email you voluntarily send is used to respond and handle that request through the relevant
+        email providers. Never send private keys, passwords, complete backups or recovery codes.
+      </p>
+      <p>
+        Changes to data handling will be reflected in this policy and the extension's disclosures.
+        This version has not received independent security auditing or FIDO certification and makes
+        no such claim.
+      </p>
+    </section>
+  </body>
+</html>

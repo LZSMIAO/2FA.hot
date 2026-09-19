@@ -2,6 +2,7 @@
 const localePath = useLocalePath()
 import { isPrivatePage, unlocalizedPath } from '~~/shared/seo/routes'
 import ButtonSoundToggle from './ButtonSoundToggle.vue'
+import { passkeyLocale, passkeyNames } from '~~/shared/passkeys'
 
 const { tx, locale } = useMessages()
 const liteHref = computed(
@@ -54,6 +55,11 @@ const themes = computed(() => [
 ])
 const menu = computed(() => [
   { label: 'Lite', to: liteHref.value, external: true },
+  {
+    label: passkeyNames[passkeyLocale(locale.value)],
+    to: localePath('/passkeys', passkeyLocale(locale.value)),
+    icon: 'i-lucide-key-round'
+  },
   { label: tx('本地历史'), to: localePath('/history'), icon: 'i-lucide-history' },
   { label: tx('使用说明'), to: localePath('/help'), icon: 'i-lucide-book-open' },
   { label: tx('功能许愿'), to: localePath('/waitlist'), icon: 'i-lucide-plus' },
@@ -77,6 +83,9 @@ const menu = computed(() => [
           }}</NuxtLink
           ><NuxtLink :to="localePath('/help')" active-class="active">{{ tx('使用说明') }}</NuxtLink>
           <a :href="liteHref">Lite</a>
+          <NuxtLink :to="localePath('/passkeys', passkeyLocale(locale))" active-class="active">{{
+            passkeyNames[passkeyLocale(locale)]
+          }}</NuxtLink>
         </nav>
         <div class="header-actions">
           <LanguagePicker />

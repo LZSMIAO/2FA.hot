@@ -7,8 +7,9 @@ import { verifyRegistrationResponse, verifyAuthenticationResponse } from '@simpl
 import { encode, random } from '../src/encoding.js'
 const { chromium } = await import(process.env.PLAYWRIGHT_MODULE || 'playwright')
 const base = process.env.PASSKEY_TEST_ORIGIN || 'http://localhost:3001'
+const rpId = new URL(base).hostname
 const dir = await mkdtemp(resolve(tmpdir(), '2fa-passkeys-test-'))
-const extension = resolve('dist')
+const extension = resolve(process.env.PASSKEY_BUILD_DIR || 'dist')
 const context = await chromium.launchPersistentContext(dir, {
   channel: 'chromium',
   headless: true,
@@ -21,6 +22,7 @@ try {
   const worker = context.serviceWorkers()[0] || (await context.waitForEvent('serviceworker'))
   const id = new URL(worker.url()).hostname
   const ui = await context.newPage()
+  await ui.setViewportSize({ width: 1280, height: 800 })
   await ui.goto(`chrome-extension://${id}/ui.html`)
   console.log('UI:', (await ui.locator('main').innerText()).slice(0, 180))
   await ui.locator('#password').fill(password)
@@ -29,6 +31,16 @@ try {
   await ui.locator('#manager').waitFor({ state: 'visible' })
   await mkdir('output', { recursive: true })
   await ui.screenshot({ path: 'output/passkeys-empty.png', fullPage: true })
+  if (process.env.PASSKEY_COMPANION_URL) {
+    const companion = await context.newPage()
+    await companion.goto(process.env.PASSKEY_COMPANION_URL)
+    await companion.getByText('扩展已连接', { exact: true }).waitFor()
+    await companion.locator('[data-passkey-open]').click()
+    await companion.getByText('扩展管理页已打开，请在该标签页继续。').waitFor()
+    await companion.screenshot({ path: 'output/passkeys-website-connected.png', fullPage: true })
+    await companion.close()
+    console.log('Website detects the extension and opens its manager without accessing the vault')
+  }
   const site = await context.newPage()
   await site.route(`${base}/__passkey-test*`, (route) =>
     route.fulfill({
@@ -37,9 +49,36 @@ try {
     })
   )
   await site.goto(`${base}/__passkey-test`)
+  const connection = await site.evaluate(
+    () =>
+      new Promise((resolve) => {
+        const namespace = '2fa.hot/passkeys/site/v1',
+          id = crypto.randomUUID()
+        const timer = setTimeout(() => resolve(null), 3000)
+        function receive(event) {
+          if (
+            event.data?.namespace !== namespace ||
+            event.data.id !== id ||
+            event.data.direction !== 'response'
+          )
+            return
+          clearTimeout(timer)
+          window.removeEventListener('message', receive)
+          resolve(event.data)
+        }
+        window.addEventListener('message', receive)
+        window.postMessage(
+          { namespace, id, action: 'status', direction: 'request' },
+          location.origin
+        )
+      })
+  )
+  assert.equal(connection.ok, true)
+  assert.equal(connection.version, '0.2.0')
+  assert.equal(Object.keys(connection).sort().join(','), 'direction,id,namespace,ok,version')
   const settings = {
     challenge: encode(random(32)),
-    rp: { id: 'localhost', name: 'Local test' },
+    rp: { id: rpId, name: 'Passkey demo' },
     user: { id: encode(random(16)), name: 'browser-test@example.com', displayName: 'Browser test' },
     pubKeyCredParams: [{ type: 'public-key', alg: -7 }],
     authenticatorSelection: { residentKey: 'required', userVerification: 'required' },
@@ -80,6 +119,11 @@ try {
   await popup.locator('#unlock').click()
   await popup.locator('#approval').waitFor({ state: 'visible' })
   await popup.screenshot({ path: 'output/passkeys-register.png', fullPage: true })
+  if (process.env.PASSKEY_STORE_SCREENSHOTS) {
+    await mkdir('store/assets', { recursive: true })
+    await popup.setViewportSize({ width: 1280, height: 800 })
+    await popup.screenshot({ path: 'store/assets/screenshot-02-create.png' })
+  }
   await popup.locator('#approve').click()
   await site.waitForFunction(() => window.result || window.failure)
   assert.equal(await site.evaluate(() => window.failure), null)
@@ -91,32 +135,38 @@ try {
     response: created.json,
     expectedChallenge: settings.challenge,
     expectedOrigin: base,
-    expectedRPID: 'localhost',
+    expectedRPID: rpId,
     requireUserVerification: true
   })
   assert.equal(registration.verified, true)
   console.log('Real browser registration verified')
   const challenge = encode(random(32))
-  await site.evaluate((challenge) => {
-    document.querySelector('#start').onclick = () => {
-      window.result = null
-      window.failure = null
-      navigator.credentials
-        .get({
-          publicKey: {
-            challenge: Uint8Array.from(atob(challenge.replace(/-/g, '+').replace(/_/g, '/')), (c) =>
-              c.charCodeAt(0)
-            ),
-            rpId: 'localhost',
-            userVerification: 'required'
-          }
-        })
-        .then(
-          (c) => (window.result = c.toJSON()),
-          (e) => (window.failure = e.message)
-        )
-    }
-  }, challenge)
+  const prepareLogin = (challenge) =>
+    site.evaluate(
+      ({ challenge, rpId }) => {
+        document.querySelector('#start').onclick = () => {
+          window.result = null
+          window.failure = null
+          navigator.credentials
+            .get({
+              publicKey: {
+                challenge: Uint8Array.from(
+                  atob(challenge.replace(/-/g, '+').replace(/_/g, '/')),
+                  (c) => c.charCodeAt(0)
+                ),
+                rpId,
+                userVerification: 'required'
+              }
+            })
+            .then(
+              (c) => (window.result = c.toJSON()),
+              (e) => (window.failure = e.message)
+            )
+        }
+      },
+      { challenge, rpId }
+    )
+  await prepareLogin(challenge)
   const loginPromise = context.waitForEvent('page')
   await site.locator('#start').click()
   const login = await loginPromise
@@ -132,7 +182,7 @@ try {
     response: assertion,
     expectedChallenge: challenge,
     expectedOrigin: base,
-    expectedRPID: 'localhost',
+    expectedRPID: rpId,
     credential: registration.registrationInfo.credential,
     requireUserVerification: true
   })
@@ -143,6 +193,8 @@ try {
   await ui.locator('#unlock').click()
   await ui.locator('.record').waitFor()
   await ui.screenshot({ path: 'output/passkeys-manager.png', fullPage: true })
+  if (process.env.PASSKEY_STORE_SCREENSHOTS)
+    await ui.screenshot({ path: 'store/assets/screenshot-01-vault.png' })
   await ui.emulateMedia({ colorScheme: 'dark' })
   await ui.setViewportSize({ width: 440, height: 800 })
   await ui.screenshot({ path: 'output/passkeys-manager-dark.png', fullPage: true })
@@ -170,6 +222,36 @@ try {
   await ui.locator('#import-preview').waitFor({ state: 'visible' })
   await ui.locator('#import-confirm').click()
   await ui.locator('.record').waitFor()
+  const restoredChallenge = encode(random(32))
+  await prepareLogin(restoredChallenge)
+  const restoredPopupPromise = context.waitForEvent('page')
+  await site.locator('#start').click()
+  const restoredPopup = await restoredPopupPromise
+  await restoredPopup.waitForLoadState()
+  await restoredPopup.locator('#password').fill(password)
+  await restoredPopup.locator('#unlock').click()
+  await restoredPopup.locator('#choices input').waitFor()
+  await restoredPopup.locator('#approve').click()
+  await site.waitForFunction(() => window.result || window.failure)
+  assert.equal(await site.evaluate(() => window.failure), null)
+  const restoredLogin = await verifyAuthenticationResponse({
+    response: await site.evaluate(() => window.result),
+    expectedChallenge: restoredChallenge,
+    expectedOrigin: base,
+    expectedRPID: rpId,
+    credential: registration.registrationInfo.credential,
+    requireUserVerification: true
+  })
+  assert.equal(restoredLogin.verified, true)
+  if (process.env.PASSKEY_STORE_SCREENSHOTS) {
+    await ui.emulateMedia({ colorScheme: 'light' })
+    await ui.setViewportSize({ width: 1280, height: 800 })
+    await ui.locator('#export-section summary').click()
+    await ui.locator('#import-preview').waitFor({ state: 'hidden' })
+    await ui.locator('#import-section').scrollIntoViewIfNeeded()
+    await ui.screenshot({ path: 'store/assets/screenshot-03-restore.png' })
+  }
+  console.log('Restored passkey signs a fresh challenge against the original registered public key')
   const state = await worker.evaluate(async () => {
     const local = await chrome.storage.local.get(null),
       session = await chrome.storage.session.get(null)
@@ -182,4 +264,29 @@ try {
 } finally {
   await context.close()
   await rm(dir, { recursive: true, force: true })
+}
+
+if (process.env.PASSKEY_COMPANION_URL) {
+  const browser = await chromium.launch({ channel: 'chromium', headless: true })
+  try {
+    const page = await browser.newPage()
+    await page.goto(process.env.PASSKEY_COMPANION_URL)
+    await page.getByText('尚未检测到扩展', { exact: true }).waitFor()
+    assert.equal(await page.locator('[data-passkey-open]').count(), 0)
+    await page.getByText('暂未上架扩展商店。现在可以按下方步骤试用开发版。').waitFor()
+    await page.screenshot({ path: 'output/passkeys-website-install.png', fullPage: true })
+    await page.setViewportSize({ width: 375, height: 812 })
+    await page.emulateMedia({ colorScheme: 'dark' })
+    await page.locator('.developer-guide summary').click()
+    assert.equal(
+      await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
+      false
+    )
+    await page.screenshot({ path: 'output/passkeys-website-mobile.png', fullPage: true })
+    console.log(
+      'Website missing-extension state, unpublished store guidance and mobile layout verified'
+    )
+  } finally {
+    await browser.close()
+  }
 }
