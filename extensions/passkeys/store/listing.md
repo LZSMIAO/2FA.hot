@@ -62,7 +62,7 @@ Permissions justification:
 • storage: Persist the encrypted vault and preferences in chrome.storage.local; temporarily retain pending request metadata in chrome.storage.session so the user can approve a request in an extension window. Storage access is restricted to trusted extension contexts.
 • alarms: Remove expired pending authentication requests from session storage after the service worker has suspended.
 • webNavigation: Call getFrame when processing and approving a request to verify the current top-level URL and document identity, preventing approval for a navigated or replaced document. No navigation-history listener or browsing telemetry.
-• https://*/* content scripts: Users can create and use passkeys at arbitrary HTTPS relying parties. The scripts bridge supported navigator.credentials requests to the isolated extension, while unsupported cases retain native WebAuthn. A fixed site allowlist would prevent this core purpose. No ordinary page content is scraped.
+• https://_/_ content scripts: Users can create and use passkeys at arbitrary HTTPS relying parties. The scripts bridge supported navigator.credentials requests to the isolated extension, while unsupported cases retain native WebAuthn. A fixed site allowlist would prevent this core purpose. No ordinary page content is scraped.
 
 ## Reviewer notes
 
