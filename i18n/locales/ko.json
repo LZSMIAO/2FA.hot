@@ -561,5 +561,8 @@
   "m45728bf48477": "Google: Authenticator 코드 이전",
   "m8677d87b4c32": "2fa.hot 프로젝트 정보와 지원 기능",
   "mb8784c8dd563": "다시 시도",
-  "accountLinkingOpen": "계정 연결로 이동"
+  "accountLinkingOpen": "계정 연결로 이동",
+  "accountLinkingLinkedHint": "초록색: 모든 키가 계정에 연결되어 있습니다. 클릭하여 연결을 확인하거나 수정하세요.",
+  "accountLinkingUncertainHint": "노란색: 확인이 필요한 계정이나 연결되지 않은 키가 있습니다. 클릭하여 연결을 확인하거나 완료하세요.",
+  "accountLinkingUnlinkedHint": "회색: 연결된 계정이 없습니다. 클릭하여 키와 계정을 직접 연결하세요."
 }

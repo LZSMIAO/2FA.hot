@@ -507,7 +507,8 @@
   box-shadow: var(--ore-bevel);
 }
 .direct-input.direct-input,
-.tutorial-window.tutorial-window {
+.tutorial-window.tutorial-window,
+.batch-guide.batch-guide {
   border: 2px solid var(--ore-outline);
   box-shadow: var(--ore-window-shadow);
 }

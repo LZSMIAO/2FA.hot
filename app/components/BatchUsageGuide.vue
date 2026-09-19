@@ -147,7 +147,7 @@ onBeforeUnmount(() => {
 </script>
 <template>
   <aside class="batch-guide" role="dialog" :aria-label="tx('批量取码')">
-    <header>
+    <header class="tutorial-title">
       <strong class="batch-guide-heading"
         >{{ tx('批量取码')
         }}<GuideVoiceButton :enabled="narration.enabled.value" @toggle="toggleNarration" /></strong
@@ -236,8 +236,9 @@ onBeforeUnmount(() => {
 <style scoped>
 .batch-guide {
   background: var(--panel);
-  border: 2px solid var(--ore-outline);
-  box-shadow: var(--ore-window-shadow);
+  border: 1px solid var(--ui-border);
+  border-radius: var(--ui-radius);
+  overflow: hidden;
 }
 .batch-guide-heading {
   display: flex;
@@ -248,8 +249,10 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5rem 1rem;
-  background: var(--ore-control);
+  min-height: 3.5rem;
+  padding: 0.5rem 0.75rem 0.5rem 1.25rem;
+  border-bottom: 1px solid var(--ui-border);
+  font-size: var(--text-label);
 }
 .batch-guide-body {
   padding: 1.25rem;

@@ -18,9 +18,22 @@ const visibleCount = computed(() =>
     )
   )
 )
-function toggleBatch(id: string) {
-  if (expanded.value.has(id)) expanded.value.delete(id)
-  else expanded.value.add(id)
+async function toggleBatch(id: string, event: MouseEvent) {
+  if (expanded.value.has(id)) {
+    expanded.value.delete(id)
+    return
+  }
+  expanded.value.add(id)
+  const parent = (event.currentTarget as HTMLElement).closest('.session-row')
+  await nextTick()
+  const child = parent?.nextElementSibling as HTMLElement | null
+  const scroller = parent?.closest('.session-rows')
+  if (
+    child &&
+    scroller &&
+    child.getBoundingClientRect().bottom > scroller.getBoundingClientRect().bottom
+  )
+    child.scrollIntoView({ block: 'nearest', behavior: 'instant' })
 }
 function selectEntry(config: OtpConfig) {
   emit('select')
@@ -101,7 +114,7 @@ function time(value: number) {
           >
             <div class="session-rows">
               <template v-for="row in vault.recent.value" :key="row.id">
-                <div class="session-row">
+                <div class="session-row" :class="{ 'session-batch': row.batch }">
                   <time>{{ time(row.usedAt) }}</time>
                   <form
                     v-if="editing === row.id"
@@ -141,7 +154,7 @@ function time(value: number) {
                     <button
                       class="session-label"
                       :aria-expanded="row.batch ? expanded.has(row.id) : undefined"
-                      @click="row.batch ? toggleBatch(row.id) : select(row)"
+                      @click="row.batch ? toggleBatch(row.id, $event) : select(row)"
                     >
                       <UIcon
                         v-if="row.batch"
@@ -202,9 +215,6 @@ function time(value: number) {
   </section>
 </template>
 <style scoped>
-.session-child {
-  padding-inline-start: 1.5rem;
-}
 .session-label > .iconify {
   vertical-align: -0.125em;
   margin-inline-end: 0.375rem;
@@ -312,6 +322,20 @@ function time(value: number) {
   text-align: start;
   font-size: var(--text-body);
   cursor: pointer;
+}
+.session-row.session-child {
+  margin-inline-start: 1.5rem;
+  width: calc(100% - 1.5rem);
+  padding-inline-start: 0.75rem;
+  border-inline-start: 2px solid var(--ui-border);
+  font-size: var(--text-label);
+}
+.session-batch > code {
+  padding-inline-start: 1.5rem;
+  font-family: inherit;
+}
+.session-batch .session-label[aria-expanded='true'] {
+  color: var(--accent-ink);
 }
 .session-row:focus-visible {
   outline: 2px solid var(--accent-ink);

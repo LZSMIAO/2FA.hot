@@ -675,6 +675,13 @@ const date = (v: number) =>
   </UModal>
 </template>
 <style scoped>
+.history-group {
+  margin-inline: calc(-1 * var(--history-inset));
+}
+.history-batch-heading,
+.history-row {
+  padding-inline: var(--history-inset);
+}
 .history-batch-heading {
   display: grid;
   grid-template-columns: 20px minmax(0, 1fr);
@@ -698,7 +705,7 @@ const date = (v: number) =>
   background: var(--wash);
 }
 .history-group.is-expanded > .history-row {
-  margin-inline-start: calc(20px + var(--control-gap));
+  padding-inline-start: calc(var(--history-inset) + 20px + var(--control-gap));
 }
 .history-batch-toggle[aria-expanded='true'] > .iconify {
   color: var(--accent-ink);
@@ -709,9 +716,10 @@ const date = (v: number) =>
 }
 
 .history-surface {
+  --history-inset: 32px;
   border-radius: var(--ui-radius);
   background: var(--panel);
-  padding: 28px 32px;
+  padding: 28px var(--history-inset);
 }
 .vault-gate {
   max-width: 380px;
@@ -791,7 +799,7 @@ const date = (v: number) =>
   grid-template-columns: 20px 44px minmax(0, 1fr) auto 44px;
   align-items: center;
   gap: var(--control-gap);
-  padding: 0.5rem 0;
+  padding-block: 0.5rem;
   border-bottom: 1px solid var(--ui-border);
 }
 .history-select-all {
@@ -1004,10 +1012,11 @@ input[type='checkbox'] {
     display: none;
   }
   .history-group.is-expanded > .history-row {
-    margin-inline-start: 12px;
+    padding-inline-start: calc(var(--history-inset) + 12px);
   }
   .history-surface {
-    padding: 24px 20px;
+    --history-inset: 20px;
+    padding: 24px var(--history-inset);
   }
   .history-row {
     display: grid;

@@ -561,5 +561,8 @@
   "m8677d87b4c32": "Informações do projeto 2fa.hot e recursos compatíveis",
   "m6eadeddb7e70": "Guias",
   "mb8784c8dd563": "Tentar novamente",
-  "accountLinkingOpen": "Ir para vinculação de contas"
+  "accountLinkingOpen": "Ir para vinculação de contas",
+  "accountLinkingLinkedHint": "Verde: Todas as chaves estão vinculadas a contas. Clique para ver ou editar os vínculos.",
+  "accountLinkingUncertainHint": "Amarelo: Há contas a confirmar ou chaves ainda sem vínculo. Clique para confirmar ou completar os vínculos.",
+  "accountLinkingUnlinkedHint": "Cinza: Nenhuma conta vinculada. Clique para vincular as chaves às contas manualmente."
 }

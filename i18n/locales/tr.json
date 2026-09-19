@@ -561,5 +561,8 @@
   "m45728bf48477": "Google: Authenticator kodlarınızı aktarın",
   "m8677d87b4c32": "2fa.hot proje bilgisi ve desteklenen özellikler",
   "mb8784c8dd563": "Yeniden dene",
-  "accountLinkingOpen": "Hesap bağlamaya git"
+  "accountLinkingOpen": "Hesap bağlamaya git",
+  "accountLinkingLinkedHint": "Yeşil: Tüm anahtarlar hesaplara bağlı. Bağlantıları görmek veya değiştirmek için tıklayın.",
+  "accountLinkingUncertainHint": "Sarı: Onay bekleyen hesaplar veya bağlanmamış anahtarlar var. Bağlantıları onaylamak veya tamamlamak için tıklayın.",
+  "accountLinkingUnlinkedHint": "Gri: Bağlı hesap yok. Anahtarları hesaplara elle bağlamak için tıklayın."
 }

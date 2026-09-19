@@ -561,5 +561,8 @@
   "m45728bf48477": "Google: Chuyển mã Authenticator của bạn",
   "m8677d87b4c32": "Thông tin dự án và tính năng hỗ trợ của 2fa.hot",
   "mb8784c8dd563": "Thử lại",
-  "accountLinkingOpen": "Đi đến liên kết tài khoản"
+  "accountLinkingOpen": "Đi đến liên kết tài khoản",
+  "accountLinkingLinkedHint": "Xanh lá: Tất cả khóa đã được liên kết với tài khoản. Nhấp để xem hoặc sửa liên kết.",
+  "accountLinkingUncertainHint": "Vàng: Có tài khoản cần xác nhận hoặc khóa chưa được liên kết. Nhấp để xác nhận hoặc hoàn tất liên kết.",
+  "accountLinkingUnlinkedHint": "Xám: Chưa có tài khoản được liên kết. Nhấp để liên kết khóa với tài khoản theo cách thủ công."
 }

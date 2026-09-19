@@ -561,5 +561,8 @@
   "m8677d87b4c32": "Informations sur le projet 2fa.hot et fonctions prises en charge",
   "m6eadeddb7e70": "Guides",
   "mb8784c8dd563": "Réessayer",
-  "accountLinkingOpen": "Associer des comptes"
+  "accountLinkingOpen": "Associer des comptes",
+  "accountLinkingLinkedHint": "Vert : toutes les clés sont liées à des comptes. Cliquez pour consulter ou modifier les liens.",
+  "accountLinkingUncertainHint": "Jaune : des comptes restent à confirmer ou des clés ne sont pas liées. Cliquez pour confirmer ou compléter les liens.",
+  "accountLinkingUnlinkedHint": "Gris : aucun compte lié. Cliquez pour associer manuellement les clés aux comptes."
 }

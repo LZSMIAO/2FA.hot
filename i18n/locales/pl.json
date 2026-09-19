@@ -561,5 +561,8 @@
   "m45728bf48477": "Google: Przenoszenie kodów Authenticator",
   "m8677d87b4c32": "Informacje o projekcie 2fa.hot i obsługiwanych funkcjach",
   "mb8784c8dd563": "Spróbuj ponownie",
-  "accountLinkingOpen": "Przejdź do łączenia kont"
+  "accountLinkingOpen": "Przejdź do łączenia kont",
+  "accountLinkingLinkedHint": "Zielony: Wszystkie klucze są powiązane z kontami. Kliknij, aby zobaczyć lub zmienić powiązania.",
+  "accountLinkingUncertainHint": "Żółty: Konta wymagają potwierdzenia lub część kluczy nie jest powiązana. Kliknij, aby potwierdzić lub uzupełnić powiązania.",
+  "accountLinkingUnlinkedHint": "Szary: Brak powiązanych kont. Kliknij, aby ręcznie powiązać klucze z kontami."
 }

@@ -14,10 +14,21 @@ const props = defineProps<{
   initial?: string
   importVersion?: number
   replace?: boolean
+  standalone?: boolean
   guideStep?: number
   demo?: { input: number; results: number; copied: string }
 }>()
-const emit = defineEmits<{ single: [value: string] }>()
+const emit = defineEmits<{ single: [value: string]; collapse: [] }>()
+const localePath = useLocalePath()
+async function expandBatch() {
+  if (guiding.value || !valid.value.length) return
+  if (props.standalone) {
+    emit('collapse')
+    return
+  }
+  const payload = pastedBatchText(valid.value.map((row) => row.config!))
+  await navigateTo(localePath('/2fa/batch') + '#' + encodeURIComponent(payload))
+}
 const batchSessionId = shallowRef(crypto.randomUUID())
 const raw = shallowRef(''),
   entries = shallowRef<BatchEntry[]>([]),
@@ -43,7 +54,11 @@ const matching = shallowRef(false)
 let pastedSecrets = new Set<string>()
 const batchRoot = useTemplateRef<HTMLElement>('batchRoot')
 usePagePaste({
-  enabled: () => !guiding.value && !matching.value && !!batchRoot.value?.getClientRects().length,
+  enabled: () =>
+    !props.standalone &&
+    !guiding.value &&
+    !matching.value &&
+    !!batchRoot.value?.getClientRects().length,
   input: () =>
     batchRoot.value?.querySelector<HTMLTextAreaElement>('#batch-demo-input') || undefined,
   text: receivePaste,
@@ -60,6 +75,7 @@ const qrImport = useTemplateRef<{ dropTarget: HTMLElement | null }>('qrImport')
 const { loading: imageDropLoading, cancel: cancelImageDrop } = useImageDrop({
   target: () => qrImport.value?.dropTarget,
   enabled: () =>
+    !props.standalone &&
     !guiding.value &&
     !matching.value &&
     !!batchRoot.value?.getClientRects().length &&
@@ -166,6 +182,13 @@ const associationState = computed(() => {
     return 'uncertain'
   return 'unlinked'
 })
+const associationHint = computed(() => {
+  if (associationState.value === 'linked')
+    return tx('绿色：全部密钥已关联账号。点击前往关联账号，可查看或修改。')
+  if (associationState.value === 'uncertain')
+    return tx('黄色：检测到待确认的账号，或仍有密钥未关联。点击前往关联账号，确认或补全对应关系。')
+  return tx('灰色：尚未关联账号。点击前往关联账号，手动设置对应关系。')
+})
 const successfulKeys = computed(() =>
   guiding.value
     ? []
@@ -195,7 +218,7 @@ const {
   cancelSelection
 } = useHistorySelection(selectionIds, selectedIds)
 const autoHistoryError = useAutoHistory(
-  () => (guiding.value ? [] : valid.value.map((entry) => entry.config!)),
+  () => (guiding.value || props.standalone ? [] : valid.value.map((entry) => entry.config!)),
   () => true,
   () => batchSessionId.value
 )
@@ -247,6 +270,7 @@ async function update() {
   codes.value = result
   if (
     !guiding.value &&
+    !props.standalone &&
     (pasteSucceeded || successfulKeys.value.some((key) => !previousKeys.includes(key)))
   )
     window.dispatchEvent(new CustomEvent('2fa-ui-sound', { detail: 'success' }))
@@ -405,6 +429,17 @@ onBeforeUnmount(() => {
     <div class="batch-input">
       <div class="section-heading">
         <h2 class="workspace-title">{{ tx('批量获取验证码') }}</h2>
+        <AppHint :text="tx(standalone ? '返回工具首页' : '查看独立取码页')">
+          <UButton
+            color="neutral"
+            variant="ghost"
+            class="batch-expand"
+            :disabled="guiding || !valid.length"
+            :icon="standalone ? 'i-lucide-minimize-2' : 'i-lucide-maximize-2'"
+            :aria-label="tx(standalone ? '返回工具首页' : '查看独立取码页')"
+            @click="expandBatch"
+          />
+        </AppHint>
       </div>
       <SmartPasteReview
         v-if="matching"
@@ -423,7 +458,7 @@ onBeforeUnmount(() => {
         @clear="clear"
       />
       <UTextarea
-        v-else
+        v-else-if="!standalone"
         @paste="pasteBatch"
         :model-value="displayRaw"
         @update:model-value="
@@ -445,25 +480,25 @@ onBeforeUnmount(() => {
         :spellcheck="false"
         autocomplete="off"
       />
-      <div v-if="!matching && !guiding && valid.length" class="batch-paste-notice">
+      <div v-if="!standalone && !matching && !guiding && valid.length" class="batch-paste-notice">
         <PasteNotice
           v-if="raw && raw === matchSnapshot && matchSource !== raw"
           message="已从粘贴内容中提取密钥，已忽略周围文字。"
           :source="matchSource"
         />
-        <AppHint :text="tx('前往关联账号')">
+        <AppHint :text="associationHint">
           <button
             type="button"
             class="batch-match-icon"
             :class="`is-${associationState}`"
-            :aria-label="tx('前往关联账号')"
+            :aria-label="associationHint"
             @click="matching = true"
           >
             <UIcon name="i-lucide-link" />
           </button>
         </AppHint>
       </div>
-      <div v-if="!matching" class="batch-input-footer">
+      <div v-if="!standalone && !matching" class="batch-input-footer">
         <p
           id="batch-input-hint"
           class="batch-input-hint"
@@ -508,7 +543,7 @@ onBeforeUnmount(() => {
           :class="{ 'demo-highlight': guideStep === 3 }"
         >
           <div class="batch-toolbar">
-            <div class="batch-selection-actions">
+            <div v-if="!standalone" class="batch-selection-actions">
               <UButton
                 color="neutral"
                 variant="outline"
@@ -531,6 +566,7 @@ onBeforeUnmount(() => {
                 {{ tx('删除所选：{count}', { count: selected.length }) }}
               </UButton>
             </div>
+            <span v-else>{{ tx('有效：{count}', { count: valid.length }) }}</span>
             <UButton
               id="batch-demo-copy"
               class="primary-button"
@@ -560,17 +596,21 @@ onBeforeUnmount(() => {
             :class="{ 'demo-row': guiding }"
           >
             <SelectionCheck
-              v-if="entry.config"
+              v-if="entry.config && !standalone"
               :checked="selected.includes(entry.line)"
               :label="tx('选择第 {count} 条', { count: entry.line })"
               @pointerdown="startSelection($event, String(entry.line))"
               @click="clickSelection($event, String(entry.line))"
-            /><span v-else class="batch-error-marker" aria-hidden="true"
+            /><span v-else-if="!entry.config" class="batch-error-marker" aria-hidden="true"
               ><UIcon name="i-lucide-circle-alert"
             /></span>
             <div class="batch-name" :class="{ 'has-label': entry.config?.label }">
               <span v-if="entry.config?.label" class="batch-account">{{ entry.config.label }}</span>
-              <code v-if="entry.config" class="mono">{{ entry.config.secret }}</code>
+              <code v-if="entry.config" class="mono">{{
+                standalone
+                  ? entry.config.secret.slice(0, 4) + '••••' + entry.config.secret.slice(-4)
+                  : entry.config.secret
+              }}</code>
               <span v-else>{{ tx('第 {count} 条', { count: entry.line }) }}</span>
               <small>{{
                 tx(entry.error || (entry.duplicate ? '重复记录' : entry.config?.algorithm))
@@ -596,7 +636,7 @@ onBeforeUnmount(() => {
                 :aria-label="tx('复制第 {count} 条验证码', { count: entry.line })"
                 @click="copyRows(entry.line)"
             /></template>
-            <AppHint :text="tx('删除记录')">
+            <AppHint v-if="!standalone" :text="tx('删除记录')">
               <UButton
                 color="neutral"
                 variant="ghost"
@@ -639,6 +679,15 @@ onBeforeUnmount(() => {
   />
 </template>
 <style scoped>
+.batch-input .section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.batch-expand {
+  color: var(--ui-text-muted);
+  flex-shrink: 0;
+}
 .demo-row {
   animation: batch-row-enter 180ms ease-out both;
 }

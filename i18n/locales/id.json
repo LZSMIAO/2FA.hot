@@ -561,5 +561,8 @@
   "m0006d696d8e1": "BARU",
   "m6eadeddb7e70": "Panduan",
   "mb8784c8dd563": "Coba lagi",
-  "accountLinkingOpen": "Buka penautan akun"
+  "accountLinkingOpen": "Buka penautan akun",
+  "accountLinkingLinkedHint": "Hijau: Semua kunci sudah ditautkan ke akun. Klik untuk melihat atau mengubah tautan.",
+  "accountLinkingUncertainHint": "Kuning: Ada akun yang perlu dikonfirmasi atau kunci yang belum ditautkan. Klik untuk mengonfirmasi atau melengkapi tautan.",
+  "accountLinkingUnlinkedHint": "Abu-abu: Belum ada akun tertaut. Klik untuk menautkan kunci ke akun secara manual."
 }

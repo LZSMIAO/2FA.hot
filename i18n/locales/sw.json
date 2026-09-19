@@ -561,5 +561,8 @@
   "m8677d87b4c32": "Maelezo ya mradi na vipengele vinavyokubaliwa vya 2fa.hot",
   "m6eadeddb7e70": "Miongozo",
   "mb8784c8dd563": "Jaribu tena",
-  "accountLinkingOpen": "Nenda kuunganisha akaunti"
+  "accountLinkingOpen": "Nenda kuunganisha akaunti",
+  "accountLinkingLinkedHint": "Kijani: Funguo zote zimeunganishwa na akaunti. Bofya kuona au kubadilisha miunganisho.",
+  "accountLinkingUncertainHint": "Njano: Kuna akaunti zinazohitaji uthibitisho au funguo ambazo hazijaunganishwa. Bofya kuthibitisha au kukamilisha miunganisho.",
+  "accountLinkingUnlinkedHint": "Kijivu: Hakuna akaunti zilizounganishwa. Bofya kuunganisha funguo na akaunti mwenyewe."
 }
