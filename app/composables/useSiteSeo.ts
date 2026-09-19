@@ -25,7 +25,7 @@ export function useSiteSeo() {
       (item) => path === `/guides/${item.slug}`
     )
     const guideTitle = chinese ? '2FA 与 TOTP 使用指南' : '2FA & TOTP guides'
-    let title = `2fa.hot — ${toolHeadings[language] || toolHeadings.en}`
+    let title = toolHeadings[language] || toolHeadings.en
     let description = toolDescriptions[language] || toolDescriptions.en
     if (path === '/help') {
       title = `${tx('使用说明')} · 2FA & TOTP | 2fa.hot`

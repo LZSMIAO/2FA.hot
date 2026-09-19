@@ -1,5 +1,6 @@
 import { supportedLocales } from './shared/locales'
 import { siteUrl } from './shared/seo/routes'
+import { toolDescriptions, toolHeadings } from './shared/seo/copy'
 
 export default defineNuxtConfig({
   compatibilityDate: '2026-09-07',
@@ -34,8 +35,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
-      title:
-        '2FA.HOT | Online two-factor code generation | Secure OTP codes | Elegant authenticator inspired by Minecraft design',
+      title: toolHeadings.en,
       meta: [
         {
           name: 'viewport',
@@ -43,8 +43,7 @@ export default defineNuxtConfig({
         },
         {
           name: 'description',
-          content:
-            '2FA.HOT is an elegant Minecraft-inspired online 2FA/TOTP authenticator and OTP code generator. Paste a Base32 secret or otpauth:// URI to generate codes locally in your browser. Import QR codes, migrate Google Authenticator accounts, process batches, use optional encrypted local history and share fragment links that keep secrets out of page requests.'
+          content: toolDescriptions.en
         }
       ],
       link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }]
