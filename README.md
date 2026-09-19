@@ -32,12 +32,12 @@
 
 有想要的功能？看看[功能許願清單](https://2fa.hot/zh-TW/waitlist)，或在 GitHub 提出你的想法。
 
-- [Lite 輕量版](https://2fa.hot/lite?lang=zh-TW)：無動畫、音效或主站框架，提供單條取碼、複製與片段直鏈；支援繁中、簡中和英文，以 IE11 為相容目標。
 - 單條／批次取碼：支援 Base32 密鑰、otpauth:// 設定連結。
 - 掃碼匯入：圖片、拖放、相機；支援 Google Authenticator 匯出 QR 碼、多帳號和分張匯出，收齊後選擇需要的帳號。
 - 連結直達：支援片段直鏈，直接顯示目前驗證碼，可一鍵複製或批量生成連結。
 - 本機紀錄：預設不儲存，可主動開啟；支援可選加密、備份與還原。
 - 30 種語言：適配手機、深淺主題；不會用就點教學，跟著鑽石劍走一遍。
+- [Lite 輕量版](https://2fa.hot/lite?lang=zh-TW)：兼容IE11。
 
 支援 TOTP（SHA-1／SHA-256／SHA-512、6／8 位）與 Steam Guard（5 位、30 秒）。Steam 可輸入 shared_secret 或貼上 maFile JSON 內容。HOTP 不參與取碼；遷移檔案中的 HOTP／MD5 帳號可解析匯出。
 
