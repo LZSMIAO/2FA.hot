@@ -30,6 +30,8 @@ export const oreTheme = {
       item: 'rounded-none before:rounded-none'
     }
   },
-  checkbox: { slots: { base: 'rounded-none', indicator: 'rounded-none' } },
+  checkbox: {
+    slots: { root: 'ore-check-row', base: 'ore-checkbox rounded-none', indicator: 'rounded-none' }
+  },
   kbd: { base: 'rounded-none' }
 }

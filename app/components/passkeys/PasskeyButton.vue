@@ -1,16 +1,14 @@
 <script setup lang="ts">
 import PasskeyInstall from './PasskeyInstall.vue'
 import PasskeyGuide from './PasskeyGuide.vue'
-import { passkeyCopy } from '~~/shared/passkeys-copy'
-import { passkeyLocale, passkeyNames } from '~~/shared/passkeys'
+import { translatedPasskeyCopy } from '~~/shared/passkeys-copy'
 
 defineProps<{ disabled?: boolean }>()
-const { locale } = useMessages()
+const { tx } = useMessages()
 const route = useRoute()
 const router = useRouter()
 const open = shallowRef(false)
-const language = computed(() => passkeyLocale(locale.value))
-const copy = computed(() => passkeyCopy[language.value])
+const copy = computed(() => translatedPasskeyCopy(tx))
 
 onMounted(() => {
   watch(
@@ -31,7 +29,7 @@ watch(open, (value) => {
 <template>
   <UModal
     v-model:open="open"
-    :title="passkeyNames[language]"
+    :title="tx('通行密钥')"
     :description="copy.description"
     :ui="{ content: 'sm:max-w-2xl' }"
   >
@@ -41,7 +39,7 @@ watch(open, (value) => {
       variant="outline"
       icon="i-lucide-key-round"
       :disabled="disabled"
-      >{{ passkeyNames[language] }}</UButton
+      >{{ tx('通行密钥') }}</UButton
     >
     <template #body>
       <div class="passkey-dialog">

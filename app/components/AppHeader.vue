@@ -4,11 +4,7 @@ import { isPrivatePage, unlocalizedPath } from '~~/shared/seo/routes'
 import ButtonSoundToggle from './ButtonSoundToggle.vue'
 
 const { tx, locale } = useMessages()
-const liteHref = computed(
-  () =>
-    '/lite?lang=' +
-    (locale.value === 'zh-TW' ? 'zh-TW' : locale.value.startsWith('zh') ? 'zh-CN' : 'en')
-)
+const liteHref = computed(() => '/lite?lang=' + locale.value)
 const route = useRoute()
 const colorMode = useColorMode()
 // Keep navigation controls in the standard Nuxt UI style, including teleported menus.
@@ -76,19 +72,22 @@ const menu = computed(() => [
             tx('本地历史')
           }}</NuxtLink
           ><NuxtLink :to="localePath('/help')" active-class="active">{{ tx('使用说明') }}</NuxtLink>
-          <a :href="liteHref">Lite</a>
+          <AppHint :text="tx('打开 Lite 轻量版')"><a :href="liteHref">Lite</a></AppHint>
         </nav>
         <div class="header-actions">
           <LanguagePicker />
           <ButtonSoundToggle />
-          <UDropdownMenu :items="themes" :modal="false"
-            ><UButton
-              color="neutral"
-              variant="ghost"
-              icon="i-lucide-sun-moon"
-              :aria-label="tx('切换主题')"
-              class="icon-button" /></UDropdownMenu
-          ><UDropdownMenu v-if="!compact" :items="menu"
+          <AppHint :text="tx('切换主题')">
+            <UDropdownMenu :items="themes" :modal="false"
+              ><UButton
+                color="neutral"
+                variant="ghost"
+                icon="i-lucide-sun-moon"
+                :aria-label="tx('切换主题')"
+                class="icon-button"
+            /></UDropdownMenu>
+          </AppHint>
+          <UDropdownMenu v-if="!compact" :items="menu"
             ><UButton
               class="mobile-menu icon-button"
               color="neutral"

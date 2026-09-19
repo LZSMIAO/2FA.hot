@@ -28,6 +28,7 @@ export default defineNuxtConfig({
   ui: { fonts: false },
   icon: {
     provider: 'server',
+    customCollections: [{ prefix: 'mc', dir: './app/assets/icons/mc' }],
     clientBundle: { scan: true },
     serverBundle: { collections: ['lucide'] }
   },

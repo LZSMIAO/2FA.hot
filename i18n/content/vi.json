@@ -1,0 +1,307 @@
+{
+  "about": {
+    "introduction": [
+      "Công cụ 2FA trực tuyến đa chức năng với thiết kế lấy cảm hứng Minecraft. Dán khóa 2FA để lấy mã xác minh hiện tại. Hỗ trợ liên kết trực tiếp và tạo mã cục bộ.",
+      "Tự nhận biết và chuyển sang dữ liệu hàng loạt, nhận diện nhiều định dạng khóa—dù là định dạng khốn kiếp rối tung chép từ Excel, hay khách hàng không biết mình làm gì nên chép cả mật khẩu cùng khóa, nó vẫn nhận diện đầu vào và đưa nhắc nhở phù hợp.",
+      "Hướng dẫn từng bước dễ tiếp cận, có thuyết minh giọng nói tùy chọn, dạy bạn dùng khóa để đăng nhập tài khoản!",
+      "Đang tích hợp thêm nhiều tính năng…"
+    ],
+    "sections": [
+      {
+        "title": "Cụ thể làm được gì",
+        "blocks": [
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Có ý tưởng tính năng? Xem [danh sách mong muốn](https://2fa.hot/waitlist) và chia sẻ ý tưởng trên GitHub."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": true,
+            "lines": [
+              "[Lite](https://2fa.hot/lite?lang=en): mã cho một khóa, sao chép và liên kết fragment, không có hoạt ảnh, âm thanh hay framework ứng dụng chính. 30 ngôn ngữ; hướng đến tương thích IE11."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": true,
+            "lines": [
+              "Mã đơn và hàng loạt: hỗ trợ khóa Base32 và liên kết cấu hình otpauth://.",
+              "Nhập QR: ảnh, kéo thả hoặc camera; hỗ trợ xuất Google Authenticator, nhiều tài khoản, nhiều phần. Gom đủ phần rồi chọn tài khoản cần dùng.",
+              "Liên kết trực tiếp: hỗ trợ fragment hiển thị mã hiện tại, sao chép một lần nhấn và tạo liên kết hàng loạt.",
+              "Lịch sử cục bộ: mặc định tắt, tự chọn lưu trữ, mã hóa tùy chọn, sao lưu và khôi phục.",
+              "30 ngôn ngữ: bố cục di động và giao diện sáng/tối. Cần giúp? Đi theo thanh kiếm kim cương trong hướng dẫn."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Hỗ trợ TOTP (SHA-1/SHA-256/SHA-512, 6/8 chữ số) và Steam Guard (5 ký tự, 30 giây). Với Steam, nhập shared_secret hoặc dán nội dung maFile JSON. Không tạo mã HOTP; tài khoản HOTP/MD5 trong tệp chuyển có thể phân tích và xuất."
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Cách sử dụng",
+        "blocks": [
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": true,
+            "lines": [
+              "Sao chép khóa 2FA rồi dán vào 2fa.hot, hoặc nhập QR.",
+              "Sao chép và dùng mã hiện tại trước khi đếm ngược kết thúc."
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Lưu trữ và truy cập khóa",
+        "blocks": [
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": true,
+            "lines": [
+              "Tạo mã tại trang chủ và nhận diện QR hoàn toàn diễn ra trong trình duyệt.",
+              "Khi bật lịch sử cục bộ, bản ghi nằm trong trình duyệt. Bạn có thể đặt mật khẩu mã hóa hoặc để trống và xem trực tiếp.",
+              "Dùng `/2fa#SECRET`: fragment sau `#` không gửi cùng yêu cầu trang và được công cụ đọc cục bộ. `/2fa/SECRET` gửi khóa trong đường dẫn tới dịch vụ lưu trữ. Cảnh báo trên trang không chặn được yêu cầu ban đầu; HTTPS không giấu đường dẫn khỏi bên nhận. Liên kết đường dẫn hiện MC Tip với thao tác chuyển sang fragment và lời giải thích. Nếu đã dùng liên kết đường dẫn, cân nhắc tạo khóa thay thế tại dịch vụ gốc và xác nhận khóa cũ hết hiệu lực. Chuyển sang `#` không hoàn tác yêu cầu trước đó. Liên kết đầy đủ có thể còn trong lịch sử trình duyệt; đừng chia sẻ công khai."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Cuối cùng, đừng chia sẻ công khai hoặc với người không tin tưởng. Cụm mật khẩu lịch sử cục bộ đã quên không thể khôi phục."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": ["[Quyền riêng tư](https://2fa.hot/privacy)"]
+          }
+        ]
+      },
+      {
+        "title": "Chuyện tên miền",
+        "blocks": [
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Ban đầu tôi muốn 2fa.mc, nhưng bỏ cuộc vì không đăng ký được **2FA®** để nộp cho cơ quan đăng ký tên miền Monaco.\n...Nếu tôi viết mấy dòng này với mặt tỉnh bơ thì sao?\nRồi .HOT xuất hiện. Được rồi, tôi thừa nhận: quyến rũ đấy. Quay lại thôi."
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Sao tôi làm cái này? Phát minh lại bánh xe à?",
+        "blocks": [
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Bạn bè làm thương mại điện tử xuyên biên giới cần đăng nhập tài khoản để làm việc như quản lý tài khoản truyền thông, đồng thời phải tính đến bảo mật. Giúp thêm những người có nhu cầu tương tự và người mới bắt đầu lên mạng là điểm khởi đầu.\nCó nhiều công cụ trực tuyến tương tự, kể cả tạo mã bằng liên kết trực tiếp. Nhưng nếu chưa biết, mở URL chứa khóa như `/2fa/SECRET` hay `?secret=SECRET` sẽ gửi khóa qua yêu cầu HTTP. Dịch vụ trang web từ xa hoặc CDN nhận dữ liệu đó và có thể ghi, giữ bằng nhật ký truy cập, giám sát hay nhật ký ứng dụng. Nghĩa là khóa trong các yêu cầu đó có thể được lưu dạng rõ; nếu còn dán tài khoản + mật khẩu + 2FA và trang tải lên rồi giữ luôn... BOOM! Tất nhiên có thực sự lưu hay không phụ thuộc triển khai, cài đặt và chính sách riêng tư :))"
+            ]
+          },
+          {
+            "spoiler": {
+              "label": "Chuyện kể",
+              "text": "...Khoảng 2021, Cách mạng Công nghiệp lần thứ tư, nhân loại bước vào thời AI. Từ đó tôi cứ thấy người ta lạm dụng—đến lập trình viên chuyên nghiệp cũng làm trò cứt này—chỉ 5 phút để tạo cái giao diện gradient chết tiệt, lệch lạc, 100 kiểu thiết kế UI và 1.000 phần tử.\nNhư vài người đến tin nhắn của tôi cũng chẳng dám trả lời, dùng AI chắp vá hệ thống rác rồi kiếm bộn tiền bán cho người dùng thị trường xám.\n…Tất cả khiến tôi buồn nôn. Tôi bò khỏi giường rồi nôn hết lần này đến lần khác. Tiếc là chẳng được đỡ vững.\n\nMọi thứ tôi muốn làm, người giàu đã làm hết. Gần như toàn bộ 2fa.hot được làm bằng Vibe Coding—tất nhiên tôi sửa tới khi tạm hài lòng mới ra mắt. Như vài dự án cùng đồng nghiệp, muốn ra sớm nhưng không ngừng sửa đến khi đạt chuẩn, rồi thành ra chưa bao giờ lên sóng. Có dự án có thể một ngày quen thuộc với người đọc, dù các bạn không biết chúng tôi làm. Cảm giác trở lại sáu năm trước, mở Premiere Pro, lao vào sáng tạo không biết chán. Nhưng giờ tôi không làm video được nữa. Đáng suy nghĩ thật.\nMọi điều tôi muốn nói đều có người nói rồi. Tôi không chống AI. Sáu năm trước tôi học nhân văn; có khi còn đéo biết đưa một trang web lên mạng thế nào. Mong vài người dùng AI cho tử tế. Nó giúp làm việc nhưng không bao giờ thành bạn. Không bao giờ. Đừng để nó thay suy nghĩ hay cuộc đời; đừng dùng để tạo thiết kế chính mình còn lười thử, đầy lỗi và logic phá trải nghiệm… Mở localhost rồi trau chuốt thêm 100 lần. Không thì nó chẳng phải của bạn. Đừng tung ra làm mọi người phát tởm. Bán à? Bạn không xứng. Chỉ tiếp tục loay hoay trong ngành xám thôi.\nCông bằng tôi muốn toàn là hư cấu do kẻ bất công bịa ra. Tôi biết mình không đổi được cuộc sống hối hả hiện tại hay ngăn những thứ ấy. Bọn họ."
+            },
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": []
+          }
+        ]
+      }
+    ]
+  },
+  "guides": [
+    {
+      "slug": "what-is-2fa",
+      "title": "2FA là gì? Cách mã xác thực TOTP hoạt động",
+      "description": "Hiểu xác thực hai yếu tố, phân biệt khóa bí mật với mã và dùng trình tạo TOTP bằng khóa thiết lập hiện có.",
+      "sources": [
+        {
+          "title": "RFC 6238: thuật toán TOTP",
+          "url": "https://www.rfc-editor.org/rfc/rfc6238"
+        },
+        {
+          "title": "Google: Nhận mã xác minh bằng Google Authenticator",
+          "url": "https://support.google.com/accounts/answer/1066447?hl=en"
+        }
+      ],
+      "sections": [
+        {
+          "id": "meaning",
+          "title": "Ý nghĩa của xác thực hai yếu tố",
+          "paragraphs": [
+            "Xác thực hai yếu tố (2FA) kết hợp hai loại bằng chứng khác nhau khi đăng nhập. Mật khẩu là thứ bạn biết. Ứng dụng xác thực giữ khóa thiết lập có thể cung cấp yếu tố sở hữu. Dịch vụ kiểm tra cả hai trước khi cho truy cập tài khoản.",
+            "2FA là một nhóm phương thức, không phải một định dạng mã duy nhất. Tin nhắn, mã ứng dụng xác thực và khóa bảo mật phần cứng đều có thể dùng khi đăng nhập nhưng hoạt động khác nhau. Công cụ này tạo mật khẩu dùng một lần dựa trên thời gian (TOTP) từ khóa bạn đã có. Nó không nhận SMS hay phê duyệt thông báo đẩy."
+          ]
+        },
+        {
+          "id": "secret-and-code",
+          "title": "Khóa thiết lập khác với mã xác minh",
+          "paragraphs": [
+            "Khi cung cấp thiết lập ứng dụng xác thực, dịch vụ thường hiện QR và đôi khi cả khóa dạng chữ. Khóa đó là bí mật dùng lâu dài. Biểu diễn Base32 thường dùng A–Z và số 2–7. URI otpauth đóng gói khóa cùng các thiết lập như nhãn tài khoản và độ dài mã.",
+            "Mã ngắn nhập khi đăng nhập là kết quả tính từ khóa và thời gian hiện tại. Dán mã sáu chữ số vào ô khóa không tái tạo tài khoản. Nếu mất khóa thiết lập và quyền truy cập ứng dụng xác thực, hãy dùng quy trình khôi phục của dịch vụ gốc hoặc mã khôi phục đã lưu."
+          ]
+        },
+        {
+          "id": "using-totp",
+          "title": "Tạo mã TOTP từ khóa hiện có",
+          "paragraphs": [
+            "Trong cùng khoảng thời gian, khóa và cài đặt TOTP trùng nhau tạo mã giống nhau. 2fa.hot mặc định SHA-1, sáu chữ số và chu kỳ 30 giây. Một số dịch vụ dùng thiết lập khác; hãy giữ tham số trong cấu hình được nhập."
+          ],
+          "steps": [
+            "Mở trình tạo, dán khóa thiết lập hoặc URI otpauth hiện có, hoặc nhập ảnh QR của nó.",
+            "Đối chiếu thuật toán, số chữ số và chu kỳ với dịch vụ gốc nếu khác mặc định.",
+            "Sao chép mã hiện tại vào dịch vụ yêu cầu xác minh. Nếu đếm ngược sắp hết, chờ mã tiếp theo."
+          ]
+        },
+        {
+          "id": "limits",
+          "title": "Chọn nơi giữ yếu tố thứ hai",
+          "paragraphs": [
+            "Dùng thiết bị đáng tin và kiểm tra trang web trước khi nhập khóa thiết lập thật. Tạo mã ở trang chủ và giải mã QR diễn ra trong trình duyệt. Lịch sử tùy chọn nằm trong trình duyệt đó và có thể bảo vệ bằng mật khẩu. Liên kết trực tiếp /2fa/SECRET thì khác: đường dẫn tới được dịch vụ lưu trữ và có thể còn trong lịch sử trình duyệt.",
+            "Trình tạo trực tuyến không làm thiết bị hay tài khoản miễn nhiễm với lừa đảo. Người lấy được khóa cũng tạo được mã. Nếu khóa bị lộ, thay thiết lập xác thực ở dịch vụ gốc. Giữ các phương án khôi phục và cân nhắc ứng dụng xác thực riêng hoặc khóa bảo mật chống lừa đảo nếu được hỗ trợ."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "totp-code-not-working",
+      "title": "Mã 2FA không hoạt động? Khắc phục mã TOTP không hợp lệ",
+      "description": "Kiểm tra giờ thiết bị, mã hết hạn, khóa thiết lập và tham số TOTP khi dịch vụ từ chối mã xác thực.",
+      "sources": [
+        {
+          "title": "RFC 6238: xác minh và đồng bộ đồng hồ",
+          "url": "https://www.rfc-editor.org/rfc/rfc6238"
+        },
+        {
+          "title": "Google Authenticator: khắc phục sự cố và giờ thiết bị",
+          "url": "https://support.google.com/accounts/answer/1066447?hl=en"
+        }
+      ],
+      "sections": [
+        {
+          "id": "clock",
+          "title": "Bắt đầu từ đồng hồ thiết bị",
+          "paragraphs": [
+            "Nếu trình tạo hiện mã nhưng dịch vụ từ chối, trước tiên kiểm tra giờ trên thiết bị chạy trình tạo. TOTP dùng giờ hiện tại nên đồng hồ nhanh hoặc chậm có thể tạo mã khác với máy chủ mong đợi.",
+            "Bật ngày giờ tự động trong hệ điều hành, để đồng bộ rồi chờ mã mới. Chỉ đổi múi giờ hiển thị không sửa được khi đồng hồ thực bị sai. Google Authenticator hiện đại cũng dùng giờ hệ điều hành; cài đặt chỉnh giờ cũ trong ứng dụng không còn từ phiên bản 7.0."
+          ]
+        },
+        {
+          "id": "expiry",
+          "title": "Dùng mã mới cho đúng tài khoản",
+          "paragraphs": [
+            "Mã sao chép sát cuối đếm ngược có thể hết hạn trước khi gửi. Chờ khoảng tiếp theo, sao chép một lần rồi gửi ngay. Đừng liên tục thử giá trị cũ trong bộ nhớ tạm. Dịch vụ gốc quyết định độ lệch giờ được chấp nhận và có thể giới hạn số lần thử.",
+            "Kiểm tra tài khoản đang đăng nhập. Hai tài khoản cùng dịch vụ thường có khóa khác nhau. Nhãn tài khoản chỉ để nhắc; đổi nhãn không đổi tài khoản sở hữu khóa."
+          ]
+        },
+        {
+          "id": "settings",
+          "title": "So sánh khóa và cấu hình",
+          "paragraphs": [
+            "2fa.hot hỗ trợ TOTP dùng SHA-1, SHA-256 hoặc SHA-512, sáu hoặc tám chữ số và chu kỳ đã cấu hình. Mặc định là SHA-1, sáu chữ số, 30 giây. URI otpauth được nhập có thể có giá trị khác. Giữ các giá trị đó thay vì ép mọi tài khoản về mặc định.",
+            "Thiếu một ký tự trong khóa, đăng ký xác thực vừa đặt lại hoặc loại mã khác có thể gây thất bại lặp lại. Với Steam, chọn Steam Guard và dùng shared_secret của tài khoản. Không tạo mã dựa trên bộ đếm HOTP tại đây. Kết quả trông hợp lệ không chứng minh dịch vụ gốc sẽ chấp nhận."
+          ],
+          "steps": [
+            "Đối chiếu khóa đã lưu với thông tin đăng ký ban đầu trên thiết bị đáng tin.",
+            "Kiểm tra xem thiết lập hai yếu tố có được đặt lại sau khi lưu khóa đó không.",
+            "Xác nhận tài khoản dùng TOTP và thuật toán, số chữ số, chu kỳ khớp nhau.",
+            "Sau khi sửa nguyên nhân, thử một lần bằng mã mới; tuân thủ giới hạn thử lại của dịch vụ."
+          ]
+        },
+        {
+          "id": "recovery",
+          "title": "Khi nào nên khôi phục tài khoản",
+          "paragraphs": [
+            "Nếu không còn khóa hiện tại hoặc ứng dụng xác thực đã đăng ký, tạo thêm mã từ khóa cũ không khôi phục truy cập. Thử mã khôi phục đã lưu hoặc cách đăng nhập khác đã đăng ký, hoặc liên hệ dịch vụ gốc qua trang khôi phục chính thức.",
+            "2fa.hot không quản lý tài khoản của bạn ở dịch vụ đó, không bỏ được yêu cầu yếu tố thứ hai và không khôi phục khóa thiết lập mất từ mã tạm thời. Khi nhờ trợ giúp, mô tả lỗi và cài đặt nhưng không đăng khóa, ảnh QR, liên kết trực tiếp hay mã khôi phục."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "google-authenticator-import",
+      "title": "Nhập QR xuất của Google Authenticator vào 2fa.hot",
+      "description": "Nhập QR xuất Google Authenticator, xử lý nhiều phần QR, xem lại tài khoản và hiểu dữ liệu được lưu trong trình duyệt.",
+      "sources": [
+        {
+          "title": "Google: Chuyển mã Authenticator của bạn",
+          "url": "https://support.google.com/accounts/answer/1066447?hl=en"
+        },
+        {
+          "title": "Thông tin dự án và tính năng hỗ trợ của 2fa.hot",
+          "url": "https://github.com/LZSMIAO/2fa-hot"
+        }
+      ],
+      "sections": [
+        {
+          "id": "before",
+          "title": "Cần gì trước khi nhập",
+          "paragraphs": [
+            "Bạn cần truy cập được các mục Google Authenticator muốn xuất. Ảnh chụp mã sáu chữ số đang thay đổi không phải QR xuất. Ảnh xuất chứa khóa thiết lập tài khoản, nên dùng thiết bị đáng tin và không đặt ảnh trong thư mục chia sẻ hay yêu cầu hỗ trợ công khai.",
+            "Nhập chỉ đọc cấu hình bạn cung cấp. Nó không đăng nhập Google, kết nối tài khoản Google hay khôi phục các mục không còn xuất được. Bạn không cần tài khoản 2fa.hot."
+          ]
+        },
+        {
+          "id": "transfer",
+          "title": "Xuất, nhập và xem lại tài khoản",
+          "paragraphs": [
+            "Google Authenticator có thể chuyển mục đã chọn bằng QR xuất. Vị trí menu có thể khác giữa các phiên bản. Trong 2fa.hot, chọn nhập Google Authenticator cho dữ liệu chuyển này; QR đăng ký dịch vụ bình thường có thể dùng quy trình nhập QR chuẩn."
+          ],
+          "steps": [
+            "Trong Google Authenticator, mở Chuyển tài khoản, rồi Xuất tài khoản, hoàn tất xác minh thiết bị nếu được yêu cầu.",
+            "Chọn tài khoản cần xuất và hiển thị QR. Nếu có nhiều phần, chuẩn bị đầy đủ.",
+            "Trong trình tạo, mở Nhập QR, rồi Google Authenticator. Quét bản xuất hoặc chọn ảnh đã lưu.",
+            "Nhập tất cả phần từ cùng lần xuất. Xem lại tài khoản đã giải mã và chọn các mục cần dùng trước khi áp dụng.",
+            "Đối chiếu một mục TOTP đã chọn với ứng dụng xác thực gốc trong cùng khoảng thời gian."
+          ]
+        },
+        {
+          "id": "multiple-parts",
+          "title": "Nhiều QR và mục không được hỗ trợ",
+          "paragraphs": [
+            "Bản xuất lớn có thể trải trên nhiều QR. Nhập đầy đủ bộ từ một lần xuất, đừng trộn ảnh của các lần khác nhau. Trình nhập theo dõi từng phần và phát hiện quét lặp. Nếu thiếu phần, trở lại bản xuất gốc và chụp rõ phần đó.",
+            "Dữ liệu chuyển Google Authenticator có thể chứa định dạng không được hỗ trợ để tạo mã ở đây. 2fa.hot tạo TOTP với SHA-1, SHA-256 hoặc SHA-512 và sáu hoặc tám chữ số. Nó giải mã và xuất được mục HOTP hoặc MD5 nhưng không tạo mã của chúng. Hãy xem kết quả thay vì mặc định mọi mục nhập đều dùng được."
+          ]
+        },
+        {
+          "id": "storage",
+          "title": "Điều gì xảy ra sau khi nhập",
+          "paragraphs": [
+            "Giải mã QR diễn ra trong trình duyệt. Nhập không tự bật lịch sử cục bộ. Nếu muốn dùng lại các mục sau này, hãy chủ động bật lịch sử và chọn có bảo vệ bằng mật khẩu hay không. Lưu trữ trình duyệt chỉ thuộc trình duyệt này, không tự đồng bộ thiết bị.",
+            "Giữ ứng dụng xác thực gốc đến khi xác minh các mục và phương án khôi phục. Xóa dữ liệu trình duyệt có thể mất bản ghi cục bộ. Lịch sử có mật khẩu cần chính mật khẩu đó; trang web không khôi phục được mật khẩu đã mất. Liên kết truy cập trực tiếp để lộ khóa trong URL nên không dùng làm tham chiếu tài khoản công khai."
+          ]
+        }
+      ]
+    }
+  ]
+}

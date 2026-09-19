@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { useReducedMotion } from 'motion-v'
 
-const props = defineProps<{ defaultHint: string }>()
+const props = defineProps<{ defaultHint: string; override?: string }>()
 const { tx, locale } = useMessages()
 const tips = computed(() => [
   props.defaultHint,
-  `Google Authenticator · ${tx('导入')}`,
+  tx('导入二维码，支持 Google Authenticator 导入'),
   tx('验证码有误？检查时间和参数'),
   tx('按回车可快速复制验证码')
 ])
@@ -35,9 +35,10 @@ onBeforeUnmount(() => {
 })
 
 watch(
-  [tips, mounted, visible, inView, reducedMotion],
+  [tips, mounted, visible, inView, reducedMotion, () => props.override],
   (_, __, onCleanup) => {
-    text.value = tips.value[0]!
+    text.value = props.override || tips.value[0]!
+    if (props.override) return
     if (!mounted.value || !visible.value || !inView.value || reducedMotion.value) return
 
     // Segment complete graphemes so translated combining marks are never split.
@@ -77,7 +78,7 @@ watch(
       >{{ text
       }}<span
         class="hint-caret"
-        :class="{ 'is-active': mounted && visible && inView && !reducedMotion }"
+        :class="{ 'is-active': mounted && visible && inView && !reducedMotion && !props.override }"
     /></span>
   </span>
 </template>

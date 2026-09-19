@@ -1,4 +1,8 @@
-export default `<!doctype html>
+import { supportedLocales, type SupportedLocale } from '../../shared/locales'
+import { escapeLiteText } from '../../shared/lite-language'
+import { liteContent } from '../utils/lite-content'
+
+const template = `<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -8,13 +12,13 @@ export default `<!doctype html>
     <meta name="robots" content="noindex, nofollow, noarchive" />
     <title>2fa.hot Lite</title>
     <link rel="icon" href="data:," />
-    <script src="/lite-assets/theme.js?v=1"></script><link rel="stylesheet" href="/lite-assets/style.css?v=6" />
+    <script src="/lite-assets/theme.js?v=1"></script><link rel="stylesheet" href="/lite-assets/style.css?v=7" />
   </head>
   <body>
     <div class="page">
       <div class="header">
         <div class="header-title"><a class="brand" href="/lite">2fa.hot<span class="brand-beta">BETA</span></a><span class="mode">Lite</span></div>
-        <nav class="header-actions" aria-label="Navigation">
+        <nav class="header-actions" data-navigation aria-label="Navigation">
           <a id="full" class="full" href="/">Full version</a>
           <select id="language" class="language-select" aria-label="Language">
           <option value="zh-TW">繁體中文</option><option value="zh-CN">简体中文</option><option value="en">English</option>
@@ -82,16 +86,62 @@ export default `<!doctype html>
       </div>
 
 
-      <p class="page-links"><a id="help" href="/lite/help?lang=en">Usage guide</a></p>
       <div class="footer">
-        <a href="https://github.com/LZSMIAO/2fa-hot" target="_blank" rel="noopener noreferrer">Source · AGPL-3.0</a><span>2fa.hot Lite</span>
+        <span class="footer-links">
+          <a id="help" href="/lite/help?lang=en">Usage guide</a>
+          <a href="https://github.com/LZSMIAO/2fa-hot" target="_blank" rel="noopener noreferrer" data-text="source">Source · AGPL-3.0</a>
+        </span><span>2fa.hot Lite</span>
         <strong class="compatibility" data-text="compatibility">Supports Internet Explorer!</strong>
       </div>
     </div>
     <script src="/lite-assets/sha.js"></script>
     <script src="/lite-assets/otp.js"></script>
     <script src="/lite-assets/paste.js"></script>
-    <script src="/lite-assets/ui.js?v=4"></script>
+    <script src="/lite-assets/ui.js?v=5"></script>
   </body>
 </html>
 `
+
+export function litePage(language: SupportedLocale) {
+  const { ui } = liteContent(language)
+  const current = supportedLocales.find((item) => item.code === language)!
+  return template
+    .replace(
+      '<title>2fa.hot Lite</title>',
+      `<title>${escapeLiteText(ui.title!)} · 2fa.hot Lite</title>`
+    )
+    .replace('<html lang="en">', `<html lang="${language}" dir="${current.dir}">`)
+    .replace('class="brand" href="/lite"', `class="brand" href="/lite?lang=${language}"`)
+    .replace(
+      /<([a-z]+)([^>]*\bdata-text="([^"]+)"[^>]*)>[^<]*<\/\1\s*>/g,
+      (_, tag, attrs, key) => `<${tag}${attrs}>${escapeLiteText(ui[key] || '')}</${tag}>`
+    )
+    .replace(
+      /<noscript[\s\S]*?<\/noscript>/,
+      `<noscript><p class="error">${escapeLiteText(ui.javascript!)}</p></noscript>`
+    )
+    .replace(
+      /<select id="language"[\s\S]*?<\/select>/,
+      `<select id="language" class="language-select" aria-label="${escapeLiteText(ui.language!)}">${supportedLocales.map((item) => `<option value="${item.code}"${item.code === language ? ' selected' : ''}>${item.name}</option>`).join('')}</select>`
+    )
+    .replace('aria-label="Navigation"', `aria-label="${escapeLiteText(ui.navigation!)}"`)
+    .replace('aria-label="Secret"', `aria-label="${escapeLiteText(ui.secretLabel!)}"`)
+    .replaceAll('aria-label="Current code"', `aria-label="${escapeLiteText(ui.current!)}"`)
+    .replace('aria-label="Open code page"', `aria-label="${escapeLiteText(ui.openCode!)}"`)
+    .replace(
+      'placeholder="Base32 secrets or TOTP links"',
+      `placeholder="${escapeLiteText(ui.hint!)}"`
+    )
+    .replace(
+      'id="full" class="full" href="/">Full version',
+      `id="full" class="full" href="${language === 'en' ? '/' : '/' + language}">${escapeLiteText(ui.full!)}`
+    )
+    .replace(
+      'id="help" href="/lite/help?lang=en">Usage guide',
+      `id="help" href="/lite/help?lang=${language}">${escapeLiteText(ui.help!)}`
+    )
+    .replace(
+      '<script src="/lite-assets/sha.js">',
+      `<script id="lite-messages" type="application/json">${JSON.stringify(ui).replaceAll('<', '\\u003c')}</script><script src="/lite-assets/sha.js">`
+    )
+}

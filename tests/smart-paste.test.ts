@@ -5,10 +5,27 @@ import {
   parseSmartBatch,
   extractedSurroundingText,
   pastedBatchText,
-  pastedInputText
+  pastedInputText,
+  removeBatchLines,
+  insertBatchText
 } from '../app/utils/smart-paste.ts'
 import { parseBatch, toOtpUri, parseOtp, DEMO_SECRET } from '../app/utils/otp.ts'
 const key = 'JBSWY3DPEHPK3PXP'
+test('batch paste separates entries and replaces only the selected range', () => {
+  const second = 'GEZDGNBVGY3TQOJQ'
+  assert.equal(insertBatchText(key, second, key.length, key.length).text, key + '\n' + second)
+  assert.equal(
+    insertBatchText(key + '\n', second, key.length + 1, key.length + 1).text,
+    key + '\n' + second
+  )
+  assert.equal(insertBatchText(key, second, 0, key.length).text, second)
+  const current = key + '\nOLD\n' + key
+  assert.equal(
+    insertBatchText(current, second, key.length + 1, key.length + 4).text,
+    key + '\n' + second + '\n' + key
+  )
+  assert.equal(insertBatchText(key, second, 0, 0).text, second + '\n' + key)
+})
 test('plain, grouped and named keys preserve their actual secret', () => {
   for (const source of [
     key,
@@ -132,7 +149,7 @@ test('site links, verifier links and prose retain all OTP settings', () => {
     assert.equal(analyzePaste(link).candidates.length, 0)
 })
 
-test('email account paired with grouped key is retained as the record label', () => {
+test('email beside a grouped key remains an unconfirmed candidate', () => {
   for (const source of [
     'demo@outlook.com JBSW Y3DP EHPK 3PXP',
     '"demo@outlook.comJBSW Y3DP EHPK 3PXP"',
@@ -140,9 +157,10 @@ test('email account paired with grouped key is retained as the record label', ()
     'demo@custom.technologyJBSW Y3DP EHPK 3PXP'
   ]) {
     const result = analyzePaste(source)
-    assert.equal(result.kind, 'single')
+    assert.equal(result.kind, 'review')
     assert.equal(result.candidates[0]?.config.secret, key)
-    assert.match(result.candidates[0]!.config.label, /^demo@/)
+    assert.equal(result.candidates[0]!.config.label, '')
+    assert.ok(result.accounts?.some((account) => account.startsWith('demo@')))
   }
   assert.equal(analyzePaste('demo@outlook.com JBSW Y3DP password EHPK 3PXP').candidates.length, 0)
 })
@@ -154,8 +172,8 @@ test('extraction notice excludes casing, spacing and valid URLs', () => {
 
 test('escaped account separator and quoted adjacent grouped key normalize without changing the account', () => {
   const result = analyzePaste('"test\\@example.technologyJBSW Y3DP EHPK 3PXP"')
-  assert.equal(result.kind, 'single')
-  assert.equal(result.candidates[0]?.config.label, 'test@example.technology')
+  assert.equal(result.kind, 'review')
+  assert.equal(result.candidates[0]?.config.label, '')
   assert.equal(result.candidates[0]?.config.secret, key)
 })
 
@@ -165,8 +183,8 @@ test('Excel quoted TSV cells preserve account names and grouped secrets', () => 
     '"demo@example.comJBSW Y3DP EHPK 3PXP"'
   ]) {
     const r = analyzePaste(source)
-    assert.equal(r.kind, 'single')
-    assert.equal(r.candidates[0]?.config.label, 'demo@example.com')
+    assert.equal(r.kind, 'review')
+    assert.equal(r.candidates[0]?.config.label, '')
     assert.equal(r.candidates[0]?.config.secret, key)
   }
 })
@@ -174,8 +192,8 @@ test('Excel quoted TSV cells preserve account names and grouped secrets', () => 
 test('single and batch accept account line breaks and invisible clipboard direction marks', () => {
   const source = 'demo\\@example.com\\\n    jbsw y3dp ehpk 3pxp \u202a\u202c'
   const one = analyzePaste(source)
-  assert.equal(one.kind, 'single')
-  assert.equal(one.candidates[0]?.config.label, 'demo@example.com')
+  assert.equal(one.kind, 'review')
+  assert.equal(one.candidates[0]?.config.label, '')
   assert.equal(one.candidates[0]?.config.secret, key)
   const batch = parseSmartBatch(source + '\n' + DEMO_SECRET + '\nnot-a-key!')
   assert.equal(batch.length, 4)
@@ -204,7 +222,7 @@ test('quoted Excel multiline secrets never merge, in single or batch recognition
       `demo@example.com\t"${grouped(key)}${newline}${grouped(DEMO_SECRET)}"`
     ]) {
       const result = analyzePaste(source)
-      assert.equal(result.kind, source.startsWith('"demo@') ? 'review' : 'multiple')
+      assert.equal(result.kind, source.includes('@') ? 'review' : 'multiple')
       assert.deepEqual(
         result.candidates.map((row) => row.config.secret),
         [key, DEMO_SECRET]
@@ -228,16 +246,14 @@ test('ambiguous account blocks never assign a key by proximity', () => {
     [key, DEMO_SECRET]
   )
   assert.ok(
-    result.candidates.every(
-      (c) => c.config.label === '' && c.suggestedAccount === 'demo@example.com'
-    )
+    result.candidates.every((c) => c.config.label === '' && c.suggestedAccount === undefined)
   )
   const explicit = analyzePaste('demo@example.com\t' + key + '\n' + DEMO_SECRET)
-  assert.equal(explicit.candidates[0]?.config.label, 'demo@example.com')
+  assert.equal(explicit.candidates[0]?.config.label, '')
   assert.ok(explicit.candidates.every((c) => !c.suggestedAccount))
 })
 
-test('Excel cells keep one-to-one accounts while multi-key cells stay unassigned', () => {
+test('Excel cell proximity does not prove email ownership', () => {
   const grouped = (value: string) => value.match(/.{1,4}/g)!.join(' ')
   const records = [
     `"one@example.com\n${grouped(key)}"`,
@@ -246,16 +262,19 @@ test('Excel cells keep one-to-one accounts while multi-key cells stay unassigned
   for (const separator of ['\n', '\r\n']) {
     const source = records.join(separator)
     const result = analyzePaste(source)
-    assert.equal(result.kind, 'multiple')
+    assert.equal(result.kind, 'review')
     assert.deepEqual(
       result.candidates.map((c) => c.config.label),
-      ['one@example.com', 'two@example.com']
+      ['', '']
     )
     assert.deepEqual(
       result.candidates.map((c) => c.config.secret),
       [key, DEMO_SECRET]
     )
-    assert.ok(result.candidates.every((c) => !c.suggestedAccount))
+    assert.deepEqual(
+      result.candidates.map((c) => c.suggestedAccount),
+      ['one@example.com', 'two@example.com']
+    )
   }
   const ambiguous = analyzePaste(`"one@example.com\n${grouped(key)}\n${grouped(DEMO_SECRET)}"`)
   assert.equal(ambiguous.kind, 'review')
@@ -265,30 +284,32 @@ test('Excel cells keep one-to-one accounts while multi-key cells stay unassigned
   )
   assert.deepEqual(
     markdown.candidates.map((c) => c.config.label),
-    ['one@example.com', 'two@example.com']
+    ['', '']
   )
 })
 
-test('alternating plaintext accounts and keys pair within each account block', () => {
+test('alternating plaintext emails and keys require ownership confirmation', () => {
   const source = `one@example.com\n${key}\ntwo@example.com\n${DEMO_SECRET}\nthree@example.com\n${key}`
   const result = analyzePaste(source)
-  assert.equal(result.kind, 'multiple')
+  assert.equal(result.kind, 'review')
   assert.deepEqual(
     result.candidates.map((c) => c.config.label),
-    ['one@example.com', 'two@example.com', 'three@example.com']
+    ['', '', '']
   )
   assert.deepEqual(
-    parseSmartBatch(source).map((c) => c.config?.label),
-    ['one@example.com', 'two@example.com', 'three@example.com']
+    parseSmartBatch(source)
+      .filter((c) => c.config)
+      .map((c) => c.config?.label),
+    ['', '', '']
   )
   const mixed = analyzePaste(`one@example.com\n${key}\n${DEMO_SECRET}\ntwo@example.com\n${key}`)
   assert.deepEqual(
     mixed.candidates.map((c) => c.config.label),
-    ['', '', 'two@example.com']
+    ['', '', '']
   )
   assert.deepEqual(
     mixed.candidates.map((c) => c.suggestedAccount),
-    ['one@example.com', 'one@example.com', undefined]
+    [undefined, undefined, 'two@example.com']
   )
 })
 
@@ -306,7 +327,7 @@ test('spreadsheet key cells do not merge and account suggestions stop at explici
   const source = `one@example.com\n${key}\n${DEMO_SECRET}\ntwo@example.com\t${key}\n${DEMO_SECRET}`
   assert.deepEqual(
     analyzePaste(source).candidates.map((c) => c.suggestedAccount),
-    ['one@example.com', 'one@example.com', undefined, undefined]
+    [undefined, undefined, undefined, undefined]
   )
 })
 
@@ -321,4 +342,90 @@ test('mixed complete and grouped keys remain separate candidates', () => {
     )
     assert.ok(result.candidates.every((c) => !c.config.label))
   }
+})
+
+test('removing batch rows preserves remaining values and invalid lines using normalized row IDs', () => {
+  const raw = key + '\n\nnot-a-key!\n' + DEMO_SECRET + '\n' + key
+  assert.equal(removeBatchLines(raw, [1, 4]), '\nnot-a-key!\n' + key)
+  assert.deepEqual(
+    parseSmartBatch(removeBatchLines(raw, [1, 4])).map((row) => row.line),
+    [2, 3]
+  )
+  assert.equal(removeBatchLines(key + '\n' + DEMO_SECRET, [1, 2]), '')
+  assert.equal(removeBatchLines(key, []), key)
+})
+
+test('email rows and stacked emails preserve keys without inferring ownership', () => {
+  const paired = analyzePaste(`test@example.com\t${key}\t${DEMO_SECRET}`)
+  assert.deepEqual(
+    paired.candidates.map((c) => c.config.label),
+    ['', '']
+  )
+  assert.equal(paired.kind, 'review')
+  const ambiguous = analyzePaste(`one@example.com\ntwo@example.com\n${key}`)
+  assert.equal(ambiguous.kind, 'review')
+  assert.equal(ambiguous.candidates[0]?.config.label, '')
+  assert.deepEqual(ambiguous.accounts, ['one@example.com', 'two@example.com'])
+  const repeated = analyzePaste(`test@example.com\t${key}\ntest@example.com\t${DEMO_SECRET}`)
+  assert.deepEqual(
+    repeated.candidates.map((c) => c.config.label),
+    ['', '']
+  )
+})
+
+test('whole Excel rows keep primary and recovery emails without inventing associations', () => {
+  const grouped = (value: string) => value.match(/.{1,4}/g)!.join(' ')
+  const source = `primary@example.com\t"password8!\nsecond9!"\t"recovery@example.com\nauxiliary@example.com\n${grouped(key)}\n${grouped(DEMO_SECRET)}"\t"555-1234\nCity"`
+  const result = analyzePaste(source)
+  assert.equal(result.kind, 'review')
+  assert.deepEqual(
+    result.candidates.map((c) => c.config.secret),
+    [key, DEMO_SECRET]
+  )
+  assert.deepEqual(result.accounts, [
+    'primary@example.com',
+    'recovery@example.com',
+    'auxiliary@example.com'
+  ])
+  assert.ok(result.candidates.every((c) => !c.config.label && !c.suggestedAccount))
+})
+
+test('confirmed email assignments survive batch serialization as explicit OTP metadata', () => {
+  const config = { ...parseOtp(key), label: 'confirmed@example.com' }
+  const text = pastedBatchText([config])
+  assert.ok(text.startsWith('otpauth://'))
+  assert.equal(analyzePaste(text).candidates[0]?.config.label, config.label)
+  assert.equal(parseSmartBatch(text)[0]?.config?.label, config.label)
+})
+
+test('unquoted spreadsheet columns isolate passwords from grouped keys', () => {
+  const result = analyzePaste(
+    'primary@example.com\tpassword9!\trecovery@example.com\tJBSW Y3DP EHPK 3PXP\t555-1234'
+  )
+  assert.deepEqual(
+    result.candidates.map((c) => c.config.secret),
+    [key]
+  )
+  assert.deepEqual(result.accounts, ['primary@example.com', 'recovery@example.com'])
+  assert.equal(result.candidates[0]?.config.label, '')
+})
+
+test('explicit OTP account metadata wins over unrelated recovery addresses', () => {
+  const config = parseOtp(key, { label: 'primary@example.com' })
+  const result = analyzePaste('recovery@example.com\n' + toOtpUri(config))
+  assert.equal(result.kind, 'single')
+  assert.deepEqual(result.candidates[0]?.config, config)
+})
+
+test('confirmed batch transfer does not ask to associate intentionally unnamed keys again', () => {
+  const text = pastedBatchText([
+    parseOtp(key, { label: 'confirmed@example.com' }),
+    parseOtp(DEMO_SECRET)
+  ])
+  const result = analyzePaste(text)
+  assert.equal(result.kind, 'multiple')
+  assert.deepEqual(
+    result.candidates.map((c) => c.config.label),
+    ['confirmed@example.com', '']
+  )
 })

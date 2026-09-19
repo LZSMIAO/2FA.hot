@@ -1,11 +1,15 @@
 import type { RouterConfig } from '@nuxt/schema'
 import { START_LOCATION } from 'vue-router'
 import { unlocalizedPath } from '~~/shared/seo/routes'
+import { focusAnchor } from '~/utils/focus-anchor'
 
 export default {
   scrollBehavior(to, from, savedPosition) {
     const nuxtApp = useNuxtApp()
     const router = useRouter()
+    // Explicit card transitions reset scrolling inside their snapshot callback.
+    // Do not schedule a competing scroll on the following animation frame.
+    if (useState<boolean>('otp-size-transition-active').value) return false
     const samePath = to.path.replace(/\/$/, '') === from.path.replace(/\/$/, '')
 
     const position = () => {
@@ -22,6 +26,21 @@ export default {
         }
         const element = document.getElementById(id)
         if (!element) return false
+        focusAnchor(element)
+        if (element.matches('h1, h2, h3, h4, h5, h6')) {
+          const viewportHeight = window.visualViewport?.height ?? window.innerHeight
+          const viewportOffset = window.visualViewport?.offsetTop ?? 0
+          return {
+            el: element,
+            behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+              ? ('instant' as const)
+              : ('smooth' as const),
+            top: Math.max(
+              0,
+              viewportOffset + (viewportHeight - element.getBoundingClientRect().height) / 2
+            )
+          }
+        }
         const margin = Number.parseFloat(getComputedStyle(element).scrollMarginTop) || 0
         const padding =
           Number.parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0

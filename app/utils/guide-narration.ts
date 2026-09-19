@@ -1,11 +1,13 @@
+import { supportedLocales } from '../../shared/locales.ts'
+
 export function narrationLanguage(locale: string): string | undefined {
   if (locale === 'en') return 'en-US'
-  if (locale === 'zh-CN' || locale === 'zh-TW') return locale
-  return undefined
+  return supportedLocales.some((item) => item.code === locale) ? locale : undefined
 }
 
 export function narrationText(text: string, language = 'en-US'): string {
   const chinese = language.startsWith('zh')
+  if (!chinese && !language.startsWith('en')) return text
   return text
     .replace(/2fa\.hot/gi, chinese ? '本站' : 'this website')
     .replace(/Google Authenticator/gi, chinese ? '谷歌验证器' : 'Google Authenticator')
@@ -16,7 +18,7 @@ export function narrationText(text: string, language = 'en-US'): string {
 }
 
 export function narrationSegments(text: string, language: string) {
-  return (narrationText(text, language).match(/[^。！？.!?]+[。！？.!?]?/g) || [])
+  return (narrationText(text, language).match(/[^。！？.!?؟۔।]+[。！？.!?؟۔।]?/g) || [])
     .flatMap((sentence) => sentence.match(/.{1,140}/gu) || [])
     .map((text) => ({ text: text.trim(), language }))
     .filter((segment) => segment.text)
@@ -31,7 +33,9 @@ export function selectNarrationVoice<T extends Voice>(
   return voices
     .filter((voice) => {
       const lang = voice.lang.toLowerCase().replaceAll('_', '-')
-      return lang === target || (target.startsWith('en-') && lang.startsWith('en-'))
+      return (
+        lang === target || (!target.startsWith('zh') && lang.split('-')[0] === target.split('-')[0])
+      )
     })
     .map((voice) => ({
       voice,

@@ -12,6 +12,7 @@ defineProps<{
 }>()
 
 const model = defineModel<string | number>()
+const { tx } = useMessages()
 const menuOpen = shallowRef(false)
 
 function select(value: string | number) {
@@ -25,7 +26,7 @@ function select(value: string | number) {
   <UTooltip
     :text="hint || caption"
     :disabled="!caption || menuOpen"
-    :delay-duration="150"
+    :delay-duration="0"
     :content="{ side: 'top', align: 'center', sideOffset: 2 }"
     arrow
     :ui="{
@@ -66,12 +67,14 @@ function select(value: string | number) {
         itemLabel: 'mc-select-item-label',
         trailingIcon: 'mc-select-trailing'
       }"
-      selected-icon="i-lucide-check"
+      selected-icon="i-mc-check"
       trailing-icon="i-lucide-chevron-down"
     >
       <template #item-label="{ item }">
         {{ item.label }}
-        <span v-if="id === 'otp-kind' && item.value === 'steam'" class="mc-new-badge">NEW</span>
+        <span v-if="id === 'otp-kind' && item.value === 'steam'" class="mc-new-badge">{{
+          tx('新增')
+        }}</span>
       </template>
     </USelectMenu>
   </UTooltip>

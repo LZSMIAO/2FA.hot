@@ -28,7 +28,7 @@ async function copyCode() {
       <span class="mono" :style="{ width: `${config.digits + (config.digits === 5 ? 0 : 1)}ch` }">{{
         code ? groupCode(code) : '— — —'
       }}</span>
-      <UIcon :name="copied ? 'i-lucide-check' : 'i-lucide-copy'" />
+      <UIcon :name="copied ? 'i-mc-check' : 'i-lucide-copy'" />
     </button>
     <small class="history-countdown" :class="{ expiring: code && remaining <= 5 }"
       >{{ code ? String(remaining).padStart(2, '0') : '—' }}s</small

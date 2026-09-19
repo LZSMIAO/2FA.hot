@@ -34,9 +34,11 @@ export function parseAboutReadme(source: string) {
                 divider: /^-{3,}$/.test(block),
                 ordered,
                 list,
-                lines: list
-                  ? block.split('\n').map((line) => line.replace(/^(?:- |\d+\. )/, ''))
-                  : [block]
+                lines: spoiler
+                  ? []
+                  : list
+                    ? block.split('\n').map((line) => line.replace(/^(?:- |\d+\. )/, ''))
+                    : [block]
               }
             })
         }

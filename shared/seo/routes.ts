@@ -6,7 +6,7 @@ export const guideSlugs = [
   'totp-code-not-working',
   'google-authenticator-import'
 ] as const
-export const editorialLocales = ['en', 'zh-CN'] as const
+export const editorialLocales = supportedLocales.map((locale) => locale.code)
 export const publicPages = [
   '/',
   '/help',
@@ -32,10 +32,7 @@ export function localizedPath(path: string, locale: string) {
 export function pageLocales(path: string): readonly string[] {
   const base = unlocalizedPath(path)
   if (!publicPages.includes(base)) return []
-  if (base === '/about') return ['en', 'zh-CN', 'zh-TW']
-  return base.startsWith('/guides')
-    ? editorialLocales
-    : supportedLocales.map((locale) => locale.code)
+  return supportedLocales.map((locale) => locale.code)
 }
 
 export function isPrivatePage(path: string) {

@@ -298,8 +298,26 @@ button.primary:disabled {
   margin-left: 12px;
   font-weight: 700;
 }
-.footer a {
+.footer-links {
   float: right;
+}
+.footer-links a {
+  display: inline-block;
+}
+.footer-links a + a {
+  margin-left: 16px;
+}
+.footer:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+@media (max-width: 600px) {
+  .footer-links {
+    float: none;
+    display: block;
+    margin-bottom: 12px;
+  }
 }
 @media (max-width: 420px) {
   .page {
@@ -583,4 +601,87 @@ html[data-theme='dark'] select:focus,
 html[data-theme='dark'] button:focus,
 html[data-theme='dark'] a:focus {
   outline-color: #6cc349;
+}
+
+/* Physical RTL overrides also work in Lite's legacy browsers. */
+.brand,
+#secret,
+#masked-secret,
+#code,
+#copy-value,
+#period,
+#algorithm {
+  direction: ltr;
+}
+.actions button {
+  height: auto;
+  min-height: 36px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+.header-actions {
+  max-width: 100%;
+}
+.header-actions .full {
+  white-space: normal;
+}
+.language-select {
+  flex-shrink: 0;
+}
+.languages a {
+  margin: 0 4px;
+}
+[dir='rtl'] .mode {
+  margin-left: 0;
+  margin-right: 12px;
+}
+[dir='rtl'] .header-title {
+  margin-right: 0;
+  margin-left: 20px;
+}
+[dir='rtl'] .header-actions {
+  margin-left: 0;
+  margin-right: auto;
+}
+[dir='rtl'] .header-actions .full {
+  margin-right: 0;
+  margin-left: 24px;
+}
+[dir='rtl'] .header-actions .full:before {
+  content: '\2192';
+  margin-right: 0;
+  margin-left: 6px;
+}
+[dir='rtl'] .countdown,
+[dir='rtl'] .standalone,
+[dir='rtl'] .secret-heading .reveal {
+  text-align: left;
+}
+[dir='rtl'] .secret-heading .reveal {
+  padding: 0 8px 0 0;
+}
+[dir='rtl'] .secret-heading .reveal input,
+[dir='rtl'] .footer .compatibility {
+  margin-left: 0;
+  margin-right: 8px;
+}
+[dir='rtl'] .footer-links {
+  float: left;
+}
+[dir='rtl'] .footer-links a + a {
+  margin-left: 0;
+  margin-right: 16px;
+}
+@media (max-width: 600px) {
+  [dir='rtl'] .footer-links {
+    float: none;
+  }
+}
+@media (max-width: 560px) {
+  [dir='rtl'] .header-title {
+    margin-left: 0;
+  }
+  [dir='rtl'] .header-actions .full {
+    margin-left: 12px;
+  }
 }

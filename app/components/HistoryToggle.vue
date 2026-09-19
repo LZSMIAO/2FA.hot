@@ -57,21 +57,23 @@ watch(open, (visible) => {
 <template>
   <div class="history-toggle">
     <div class="history-toggle-control">
-      <button
-        type="button"
-        role="switch"
-        class="history-switch"
-        :aria-checked="vault.enabled.value"
-        :aria-label="tx(vault.enabled.value ? '关闭自动保存' : '开启自动保存')"
-        :title="tx(vault.enabled.value ? '关闭自动保存' : '开启自动保存')"
-        :disabled="!vault.ready.value || vault.busy.value"
-        @click="change(!vault.enabled.value)"
+      <AppHint :text="tx(vault.enabled.value ? '关闭自动保存' : '开启自动保存')"
+        ><button
+          type="button"
+          role="switch"
+          class="history-switch"
+          :aria-checked="vault.enabled.value"
+          :aria-label="tx(vault.enabled.value ? '关闭自动保存' : '开启自动保存')"
+          :disabled="!vault.ready.value || vault.busy.value"
+          @click="change(!vault.enabled.value)"
+        >
+          <span class="history-switch-thumb" /></button
+      ></AppHint>
+      <AppHint :text="tx('查看历史')"
+        ><NuxtLink class="history-view-link" :to="localePath('/history')">
+          {{ tx('历史记录') }}
+        </NuxtLink></AppHint
       >
-        <span class="history-switch-thumb" />
-      </button>
-      <NuxtLink class="history-view-link" :to="localePath('/history')" :title="tx('查看历史')">
-        {{ tx('历史记录') }}
-      </NuxtLink>
     </div>
     <span v-if="error && !open" role="alert">{{ tx(error) }}</span>
     <UModal

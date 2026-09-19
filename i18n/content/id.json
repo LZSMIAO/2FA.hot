@@ -1,0 +1,307 @@
+{
+  "about": {
+    "introduction": [
+      "Alat 2FA daring multifungsi dengan desain terinspirasi Minecraft. Tempel rahasia 2FA untuk memperoleh kode verifikasi saat ini. Mendukung tautan langsung, dengan pembuatan kode secara lokal.",
+      "Mendeteksi dan beralih otomatis ke data massal, serta mengenali berbagai format rahasia—baik format kacau sialan hasil salin dari Excel, maupun pelanggan Anda yang tidak paham lalu menyalin kata sandi bersama rahasia, masukan tetap dikenali dan petunjuk yang sesuai diberikan.",
+      "Panduan bertahap yang mudah diikuti, dengan narasi suara opsional, mengajarkan cara memakai rahasia untuk masuk ke akun!",
+      "Lebih banyak fitur sedang diintegrasikan…"
+    ],
+    "sections": [
+      {
+        "title": "Sebenarnya bisa apa saja",
+        "blocks": [
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Punya ide fitur? Lihat [daftar harapan fitur](https://2fa.hot/waitlist) dan bagikan ide Anda di GitHub."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": true,
+            "lines": [
+              "[Lite](https://2fa.hot/lite?lang=en): kode satu rahasia, penyalinan, dan tautan fragmen tanpa animasi, suara, atau kerangka aplikasi utama. 30 bahasa; menargetkan kompatibilitas IE11."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": true,
+            "lines": [
+              "Kode tunggal dan massal: mendukung rahasia Base32 dan tautan konfigurasi otpauth://.",
+              "Impor QR: gambar, seret-lepas, atau kamera; mendukung ekspor Google Authenticator, banyak akun, dan ekspor beberapa bagian. Kumpulkan semua bagian lalu pilih akun yang dibutuhkan.",
+              "Tautan langsung: mendukung tautan fragmen yang menampilkan kode saat ini, penyalinan sekali klik, dan pembuatan tautan massal.",
+              "Riwayat lokal: nonaktif secara bawaan, penyimpanan atas pilihan pengguna, enkripsi opsional, pencadangan, dan pemulihan.",
+              "30 bahasa: tata letak seluler dan tema terang/gelap. Perlu bantuan? Ikuti pedang berlian dalam tutorial."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Mendukung TOTP (SHA-1/SHA-256/SHA-512, 6/8 digit) dan Steam Guard (5 karakter, 30 detik). Untuk Steam, masukkan shared_secret atau tempel isi JSON maFile. Pembuatan kode HOTP tidak didukung; akun HOTP/MD5 dalam berkas migrasi dapat diurai dan diekspor."
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Cara menggunakan",
+        "blocks": [
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": true,
+            "lines": [
+              "Salin rahasia 2FA dan tempel ke 2fa.hot, atau impor kode QR.",
+              "Salin dan gunakan kode saat ini sebelum hitung mundur berakhir."
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Penyimpanan dan akses rahasia",
+        "blocks": [
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": true,
+            "lines": [
+              "Pembuatan kode di beranda dan pengenalan QR sepenuhnya berlangsung dalam peramban Anda.",
+              "Saat riwayat lokal diaktifkan, catatan disimpan di peramban. Anda dapat menetapkan kata sandi untuk enkripsi, atau membiarkannya tanpa kata sandi dan melihat catatan langsung.",
+              "Gunakan `/2fa#SECRET`: fragmen setelah `#` tidak dikirim bersama permintaan halaman dan dibaca lokal oleh alat ini. `/2fa/SECRET` mengirim rahasia melalui jalur ke layanan hosting. Peringatan halaman tidak dapat mencegat permintaan awal; HTTPS tidak menyembunyikan jalur dari penerimanya. Tautan jalur menampilkan MC Tip dengan tindakan tautan fragmen dan penjelasannya. Jika pernah memakai tautan jalur, pertimbangkan membuat rahasia pengganti di layanan asal dan memastikan yang lama sudah tidak berlaku. Beralih ke `#` tidak membatalkan permintaan sebelumnya. Tautan lengkap dapat tetap tersimpan dalam riwayat peramban; jangan pernah membagikannya secara publik."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Terakhir, jangan bagikan secara publik atau kepada orang yang tidak dipercaya. Frasa sandi riwayat lokal yang terlupa tidak dapat dipulihkan."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": ["[Privasi](https://2fa.hot/privacy)"]
+          }
+        ]
+      },
+      {
+        "title": "Drama domain",
+        "blocks": [
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Awalnya saya menginginkan 2fa.mc, tetapi menyerah karena tidak bisa mendaftarkan **2FA®** untuk diajukan ke registri domain Monako.\n...Bagaimana kalau saya menulis ini dengan wajah datar?\nLalu muncullah .HOT. Baiklah, baiklah, saya akui: itu seksi. Kita kembali."
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Mengapa saya membuat ini? Menciptakan ulang roda?",
+        "blocks": [
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Teman-teman di perdagangan elektronik lintas negara perlu masuk ke akun untuk pekerjaan seperti mengelola akun media, sambil mempertimbangkan keamanan. Membantu lebih banyak teman dengan kebutuhan serupa, serta orang yang baru mengenal internet, adalah titik awalnya.\nAda banyak alat daring serupa, termasuk yang menghasilkan kode melalui tautan langsung. Tetapi jika belum tahu, membuka URL berisi rahasia, seperti `/2fa/SECRET` atau `?secret=SECRET`, mengirim rahasia dalam permintaan HTTP. Layanan situs jarak jauh atau CDN menerima data itu dan dapat mencatat serta menyimpannya melalui log akses, pemantauan, atau log aplikasi. Artinya, rahasia dalam permintaan tersebut mungkin disimpan sebagai teks biasa; jika Anda juga menempel akun + kata sandi + 2FA, dan situs mengunggah serta menyimpannya juga... BOOM! Tentu saja, apakah benar disimpan bergantung pada implementasi, pengaturan, dan kebijakan privasinya :))"
+            ]
+          },
+          {
+            "spoiler": {
+              "label": "Cerita",
+              "text": "...Sekitar 2021, Revolusi Industri Keempat, umat manusia memasuki era AI. Sejak itu, saya terus melihat orang menyalahgunakannya—bahkan programmer profesional melakukan omong kosong ini—hanya perlu 5 menit untuk menghasilkan antarmuka gradien sialan yang berantakan, dengan 100 gaya desain UI dan 1.000 elemen.\nSeperti orang-orang tertentu yang bahkan tak berani membalas pesan saya, memakai AI untuk merakit sistem sampah asal jadi lalu meraup uang dengan menjualnya kepada pengguna pasar abu-abu.\n…Semua ini membuat saya mual. Saya merangkak keluar dari ranjang dan muntah berulang kali. Sayangnya, tak ada yang menangkap saya dengan mantap.\n\nSemua yang ingin saya lakukan sudah dilakukan orang kaya. Hampir seluruh 2fa.hot dibuat melalui Vibe Coding—tentu saya merevisinya sampai cukup puas sebelum meluncurkannya. Seperti beberapa proyek bersama rekan kerja, kami ingin segera meluncurkannya, tetapi terus merevisi sampai sesuai standar, hingga tak kunjung tayang. Beberapa proyek mungkin suatu hari akrab bagi kalian yang membaca ini, walau kalian tidak tahu kami pembuatnya. Rasanya kembali enam tahun lalu, membuka Premiere Pro, tenggelam dalam kreasi tanpa pernah bosan. Namun sekarang saya tak lagi bisa membuat video. Membuat saya berpikir.\nSemua yang ingin saya katakan sudah pernah dikatakan. Saya tidak menentang AI. Enam tahun lalu saya belajar humaniora; mungkin bahkan tak tahu bagaimana caranya, sialan, membuat situs bisa diakses daring. Saya berharap orang-orang tertentu menggunakan AI dengan baik. AI bisa membantu melakukan sesuatu, tetapi tidak akan pernah menjadi Anda. Tidak pernah. Jangan biarkan AI menggantikan pikiran atau hidup Anda; jangan gunakan untuk menghasilkan desain yang bahkan Anda sendiri malas mencobanya, penuh bug dan logika yang merusak pengalaman… Buka di localhost dan poles lagi 100 kali. Kalau tidak, itu bukan karya Anda. Jangan rilis untuk membuat semua orang muak. Dijual? Anda tidak pantas. Anda hanya akan terus berkutat di industri abu-abu.\nKeadilan yang saya inginkan hanyalah fiksi ciptaan mereka yang tidak adil. Saya tahu saya tidak bisa mengubah kehidupan serbacepat sekarang, atau menghentikan hal-hal itu. Mereka."
+            },
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": []
+          }
+        ]
+      }
+    ]
+  },
+  "guides": [
+    {
+      "slug": "what-is-2fa",
+      "title": "Apa itu 2FA? Cara kerja kode autentikator TOTP",
+      "description": "Pahami autentikasi dua faktor, perbedaan rahasia dan kode, serta cara menggunakan pembuat TOTP dengan kunci penyiapan yang sudah Anda miliki.",
+      "sources": [
+        {
+          "title": "RFC 6238: algoritme TOTP",
+          "url": "https://www.rfc-editor.org/rfc/rfc6238"
+        },
+        {
+          "title": "Google: Mendapatkan kode verifikasi dengan Google Authenticator",
+          "url": "https://support.google.com/accounts/answer/1066447?hl=en"
+        }
+      ],
+      "sections": [
+        {
+          "id": "meaning",
+          "title": "Arti autentikasi dua faktor",
+          "paragraphs": [
+            "Autentikasi dua faktor (2FA) menggabungkan dua jenis bukti berbeda saat Anda masuk. Kata sandi adalah sesuatu yang Anda ketahui. Autentikator yang menyimpan rahasia penyiapan dapat menjadi faktor kepemilikan. Layanan memeriksa keduanya sebelum mengizinkan akses akun.",
+            "2FA adalah kategori, bukan satu format kode. SMS, kode autentikator, dan kunci keamanan perangkat keras dapat hadir dalam proses masuk, tetapi cara kerjanya berbeda. Alat ini membuat kata sandi sekali pakai berbasis waktu (TOTP) dari rahasia yang sudah Anda miliki. Alat ini tidak dapat menerima SMS atau menyetujui notifikasi push."
+          ]
+        },
+        {
+          "id": "secret-and-code",
+          "title": "Rahasia penyiapan berbeda dengan kode verifikasi",
+          "paragraphs": [
+            "Saat menawarkan penyiapan autentikator, layanan biasanya menampilkan kode QR dan terkadang kunci penyiapan teks. Kunci itulah rahasia jangka panjang. Representasi Base32 umumnya memakai huruf A–Z dan angka 2–7. URI otpauth memuat rahasia beserta pengaturan seperti label akun dan panjang kode.",
+            "Kode pendek yang diketik saat masuk adalah hasil perhitungan rahasia tersebut dan waktu saat ini. Menyalin kode enam digit ke kolom rahasia tidak membuat ulang akun. Jika rahasia penyiapan dan akses autentikator hilang, gunakan proses pemulihan layanan asal atau kode pemulihan yang telah disimpan."
+          ]
+        },
+        {
+          "id": "using-totp",
+          "title": "Buat kode TOTP dari rahasia yang sudah ada",
+          "paragraphs": [
+            "Dalam interval waktu yang sama, rahasia dan pengaturan TOTP yang sama menghasilkan kode yang sama. Bawaan 2fa.hot adalah SHA-1, enam digit, dan periode 30 detik. Sebagian layanan memakai pengaturan berbeda; pertahankan parameter konfigurasi yang diimpor."
+          ],
+          "steps": [
+            "Buka pembuat kode dan tempel kunci penyiapan atau URI otpauth yang ada, atau impor gambar QR-nya.",
+            "Periksa algoritme, jumlah digit, dan periode terhadap layanan asal jika berbeda dari bawaan.",
+            "Salin kode saat ini ke layanan yang meminta verifikasi. Jika hitung mundur hampir berakhir, tunggu kode berikutnya."
+          ]
+        },
+        {
+          "id": "limits",
+          "title": "Pilih tempat menyimpan faktor kedua Anda",
+          "paragraphs": [
+            "Gunakan perangkat tepercaya dan periksa situs sebelum memasukkan rahasia penyiapan asli. Pembuatan kode di beranda dan penguraian QR berlangsung dalam peramban. Riwayat opsional tetap di peramban itu dan dapat dilindungi kata sandi. Tautan langsung /2fa/SECRET berbeda: jalurnya mencapai layanan hosting dan dapat tersimpan dalam riwayat peramban.",
+            "Pembuat kode daring tidak membuat perangkat atau akun kebal terhadap phishing. Siapa pun yang memperoleh rahasia Anda juga dapat membuat kode. Jika rahasia bocor, ganti penyiapan autentikator di layanan asal. Pertahankan opsi pemulihan, dan pertimbangkan autentikator terpisah atau kunci keamanan tahan phishing jika didukung."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "totp-code-not-working",
+      "title": "Kode 2FA tidak berfungsi? Atasi kode TOTP tidak valid",
+      "description": "Periksa waktu perangkat, kode kedaluwarsa, rahasia penyiapan, dan parameter TOTP saat layanan menolak kode autentikator Anda.",
+      "sources": [
+        {
+          "title": "RFC 6238: validasi dan sinkronisasi jam",
+          "url": "https://www.rfc-editor.org/rfc/rfc6238"
+        },
+        {
+          "title": "Google Authenticator: pemecahan masalah dan waktu perangkat",
+          "url": "https://support.google.com/accounts/answer/1066447?hl=en"
+        }
+      ],
+      "sections": [
+        {
+          "id": "clock",
+          "title": "Mulai dari jam perangkat",
+          "paragraphs": [
+            "Jika pembuat kode menampilkan kode tetapi layanan menolaknya, periksa dahulu waktu perangkat yang menjalankan pembuat kode. TOTP memakai waktu saat ini; jam yang terlalu cepat atau lambat bisa menghasilkan kode berbeda dari yang diharapkan server.",
+            "Aktifkan tanggal dan waktu otomatis di sistem operasi, biarkan tersinkronisasi, lalu tunggu kode baru. Mengganti zona waktu tampilan saja tidak memperbaiki jam dasar yang salah. Google Authenticator modern juga menggunakan waktu sistem operasi; pengaturan koreksi waktu lama dalam aplikasi tidak lagi tersedia mulai versi 7.0."
+          ]
+        },
+        {
+          "id": "expiry",
+          "title": "Gunakan kode baru untuk akun yang benar",
+          "paragraphs": [
+            "Kode yang disalin menjelang akhir hitung mundur bisa kedaluwarsa sebelum dikirim. Tunggu interval berikutnya, salin sekali, lalu segera kirim. Jangan terus mencoba isi papan klip lama. Layanan asal menentukan toleransi selisih waktu dan dapat membatasi percobaan berulang.",
+            "Periksa akun yang akan dimasuki. Dua akun pada layanan yang sama biasanya memiliki rahasia berbeda. Label akun hanyalah pengingat; mengubah label tidak mengubah akun pemilik rahasia."
+          ]
+        },
+        {
+          "id": "settings",
+          "title": "Bandingkan rahasia dan konfigurasi",
+          "paragraphs": [
+            "2fa.hot mendukung TOTP dengan SHA-1, SHA-256, atau SHA-512, enam atau delapan digit, serta periode yang ditentukan. Bawaannya SHA-1, enam digit, dan 30 detik. URI otpauth yang diimpor bisa memuat nilai berbeda. Pertahankan nilai tersebut, jangan memaksa semua akun memakai bawaan.",
+            "Satu karakter rahasia yang hilang, pendaftaran autentikator yang baru direset, atau jenis kode berbeda dapat menyebabkan kegagalan berulang. Untuk akun Steam, pilih Steam Guard dan gunakan shared_secret akun. Kode berbasis penghitung HOTP tidak dibuat di sini. Hasil yang tampak valid bukan bukti layanan asal akan menerimanya."
+          ],
+          "steps": [
+            "Bandingkan kunci penyiapan tersimpan dengan rincian pendaftaran asli pada perangkat tepercaya.",
+            "Periksa apakah penyiapan dua faktor akun direset sejak kunci tersebut disimpan.",
+            "Pastikan akun menggunakan TOTP dan algoritme, jumlah digit, serta periodenya cocok.",
+            "Setelah memperbaiki penyebabnya, coba sekali dengan kode baru; patuhi batas percobaan layanan."
+          ]
+        },
+        {
+          "id": "recovery",
+          "title": "Kapan memakai pemulihan akun",
+          "paragraphs": [
+            "Jika Anda tidak lagi memiliki rahasia aktif atau autentikator terdaftar, membuat lebih banyak kode dari kunci lama tidak akan memulihkan akses. Coba kode pemulihan tersimpan atau metode masuk terdaftar lainnya, atau hubungi layanan asal melalui halaman pemulihan resminya.",
+            "2fa.hot tidak mengelola akun Anda pada layanan itu, tidak dapat menghapus kewajiban faktor kedua, dan tidak dapat memulihkan kunci penyiapan yang hilang dari kode sementara. Saat meminta bantuan, jelaskan kesalahan dan pengaturan tanpa memublikasikan rahasia, gambar QR, tautan langsung, atau kode pemulihan."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "google-authenticator-import",
+      "title": "Impor ekspor QR Google Authenticator ke 2fa.hot",
+      "description": "Impor kode QR ekspor Google Authenticator, tangani beberapa bagian QR, tinjau akun, dan pahami apa yang disimpan dalam peramban Anda.",
+      "sources": [
+        {
+          "title": "Google: Mentransfer kode Authenticator",
+          "url": "https://support.google.com/accounts/answer/1066447?hl=en"
+        },
+        {
+          "title": "Informasi proyek dan fitur yang didukung 2fa.hot",
+          "url": "https://github.com/LZSMIAO/2fa-hot"
+        }
+      ],
+      "sections": [
+        {
+          "id": "before",
+          "title": "Yang diperlukan sebelum mengimpor",
+          "paragraphs": [
+            "Anda memerlukan akses ke entri Google Authenticator yang ingin diekspor. Tangkapan layar kode enam digit yang berubah bukan kode QR ekspor. Gambar ekspor memuat rahasia penyiapan akun; gunakan perangkat tepercaya dan jangan letakkan gambar itu di folder bersama atau permintaan bantuan publik.",
+            "Impor membaca konfigurasi yang Anda berikan. Impor tidak masuk ke Google, menghubungkan akun Google, atau memulihkan entri yang sudah tidak tersedia untuk diekspor. Anda tidak memerlukan akun 2fa.hot."
+          ]
+        },
+        {
+          "id": "transfer",
+          "title": "Ekspor, impor, dan tinjau akun",
+          "paragraphs": [
+            "Google Authenticator dapat mentransfer entri terpilih melalui kode QR ekspor. Letak menu bisa berbeda antar versi aplikasi. Di 2fa.hot, pilih opsi impor Google Authenticator untuk ekspor migrasi ini; QR pendaftaran layanan biasa dapat menggunakan alur impor QR standar."
+          ],
+          "steps": [
+            "Di Google Authenticator, buka Transfer akun lalu Ekspor akun, dan selesaikan verifikasi perangkat aplikasi jika diminta.",
+            "Pilih akun yang akan diekspor dan tampilkan kode QR. Jika terdiri dari beberapa bagian, sediakan semuanya.",
+            "Di pembuat kode, buka Impor QR lalu Google Authenticator. Pindai ekspor atau pilih gambar tersimpannya.",
+            "Impor semua bagian dari ekspor yang sama. Tinjau akun yang diuraikan dan pilih entri yang dibutuhkan sebelum menerapkan impor.",
+            "Bandingkan satu entri TOTP terpilih dengan autentikator asli pada interval waktu yang sama."
+          ]
+        },
+        {
+          "id": "multiple-parts",
+          "title": "Beberapa kode QR dan entri yang tidak didukung",
+          "paragraphs": [
+            "Ekspor besar dapat mencakup beberapa kode QR. Impor seluruh rangkaian dari ekspor itu, jangan mencampur tangkapan layar ekspor berbeda. Pengimpor melacak bagian dan mendeteksi pemindaian berulang. Jika ada bagian yang hilang, kembali ke ekspor asli dan tangkap bagian itu dengan jelas.",
+            "Data migrasi Google Authenticator dapat berisi entri yang formatnya tidak didukung untuk pembuatan kode di sini. 2fa.hot membuat TOTP dengan SHA-1, SHA-256, atau SHA-512 serta enam atau delapan digit. Entri migrasi HOTP atau MD5 dapat diuraikan dan diekspor, tetapi kodenya tidak dibuat. Tinjau hasilnya, jangan menganggap semua entri impor bisa digunakan."
+          ]
+        },
+        {
+          "id": "storage",
+          "title": "Apa yang terjadi setelah impor",
+          "paragraphs": [
+            "Penguraian QR berlangsung dalam peramban. Impor tidak otomatis mengaktifkan riwayat lokal. Jika ingin entri tersedia nanti, aktifkan riwayat secara sengaja dan pilih apakah akan dilindungi kata sandi. Penyimpanan peramban bersifat lokal di peramban ini, bukan sinkronisasi perangkat otomatis.",
+            "Pertahankan autentikator asli sampai Anda memverifikasi entri dan opsi pemulihan. Menghapus data peramban dapat menghapus catatan lokal. Riwayat terlindungi memerlukan kata sandinya; kata sandi hilang tidak dapat dipulihkan oleh situs. Tautan akses langsung memuat rahasia dalam URL, sehingga tidak boleh menjadi rujukan akun publik."
+          ]
+        }
+      ]
+    }
+  ]
+}

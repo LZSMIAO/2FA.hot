@@ -1,0 +1,307 @@
+{
+  "about": {
+    "introduction": [
+      "Zana ya mtandaoni ya 2FA yenye matumizi mengi na muundo uliochochewa na Minecraft. Bandika siri ya 2FA kupata msimbo wa sasa wa uthibitishaji. Inakubali viungo vya moja kwa moja, misimbo ikitengenezwa ndani ya kifaa.",
+      "Hutambua na kubadili kiotomatiki kwenda data nyingi na kutambua miundo mbalimbali ya siri—iwe muundo wa ovyo wa kishenzi ulionakiliwa kutoka Excel, au wateja wako wasiojua wanachofanya na kunakili nenosiri pamoja na siri, hutambua data na kutoa maelekezo yanayofaa.",
+      "Mwongozo rahisi wa hatua kwa hatua wenye sauti ya hiari unakufundisha kutumia siri kuingia kwenye akaunti!",
+      "Vipengele zaidi vinaunganishwa…"
+    ],
+    "sections": [
+      {
+        "title": "Inaweza kufanya nini hasa",
+        "blocks": [
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Una wazo la kipengele? Tazama [orodha ya matamanio ya vipengele](https://2fa.hot/waitlist) na ushiriki mawazo yako GitHub."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": true,
+            "lines": [
+              "[Lite](https://2fa.hot/lite?lang=en): misimbo ya siri moja, kunakili na viungo vya vipande bila uhuishaji, sauti au mfumo wa programu kuu. Lugha 30; inalenga uoanifu na IE11."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": true,
+            "lines": [
+              "Misimbo moja na mingi: inakubali siri za Base32 na viungo vya usanidi otpauth://.",
+              "Ingiza QR: picha, kuvuta na kuachia au kamera; inakubali uhamishaji wa Google Authenticator, akaunti nyingi na sehemu nyingi. Kusanya sehemu zote, kisha chagua akaunti unazohitaji.",
+              "Viungo vya moja kwa moja: viungo vya vipande vinavyoonyesha msimbo wa sasa, kunakili kwa mbofyo mmoja na kutengeneza viungo vingi.",
+              "Historia ya ndani: imezimwa kwa chaguomsingi, uhifadhi wa hiari, usimbaji wa hiari, nakala rudufu na urejeshaji.",
+              "Lugha 30: mipangilio ya simu na mandhari mepesi/meusi. Unahitaji msaada? Fuata upanga wa almasi kwenye mafunzo."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Inakubali TOTP (SHA-1/SHA-256/SHA-512, tarakimu 6/8) na Steam Guard (herufi 5, sekunde 30). Kwa Steam, weka shared_secret au bandika JSON ya maFile. Utengenezaji wa HOTP haukubaliwi; akaunti za HOTP/MD5 katika faili za uhamishaji zinaweza kuchanganuliwa na kuhamishwa."
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Jinsi ya kuitumia",
+        "blocks": [
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": true,
+            "lines": [
+              "Nakili siri ya 2FA na ubandike katika 2fa.hot, au ingiza QR.",
+              "Nakili na utumie msimbo wa sasa kabla muda haujaisha."
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Uhifadhi na ufikiaji wa siri",
+        "blocks": [
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": true,
+            "lines": [
+              "Utengenezaji wa misimbo kwenye ukurasa mkuu na utambuzi wa QR hufanyika kabisa ndani ya kivinjari.",
+              "Ukiwasha historia ya ndani, rekodi huhifadhiwa katika kivinjari chako. Unaweza kuweka nenosiri la usimbaji au kutoliweka na kuona rekodi moja kwa moja.",
+              "Tumia `/2fa#SECRET`: kipande baada ya `#` hakitumwi pamoja na ombi la ukurasa na husomwa ndani ya kifaa na zana hii. `/2fa/SECRET` hutuma siri kwenye njia kwa huduma ya upangishaji. Onyo la ukurasa haliwezi kuzuia ombi la kwanza; HTTPS haifichi njia kwa mpokeaji. Viungo vya njia huonyesha MC Tip yenye kitendo cha kiungo cha kipande na maelezo. Ukiwahi kutumia kiungo cha njia, fikiria kutengeneza siri mbadala katika huduma ya awali na kuthibitisha kuwa ya zamani imebatilika. Kuhamia `#` hakuondoi maombi ya zamani. Viungo kamili vinaweza kubaki katika historia ya kivinjari; usivishiriki hadharani."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Mwisho, usivishiriki hadharani au na mtu usiyemwamini. Kaulisiri ya historia ya ndani iliyosahaulika haiwezi kurejeshwa."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": ["[Faragha](https://2fa.hot/privacy)"]
+          }
+        ]
+      },
+      {
+        "title": "Sarakasi za kikoa",
+        "blocks": [
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Mwanzoni nilitaka 2fa.mc, lakini nikaachana nayo kwa sababu sikuweza kusajili **2FA®** kuiwasilisha kwa msajili wa vikoa wa Monaco.\n...Vipi kama ningekuwa na uso mkavu nikiandika haya?\nKisha .HOT ikaja. Sawa, sawa, nakubali: hiyo inavutia. Tunarudi."
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Kwa nini niliitengeneza? Kuvumbua gurudumu upya?",
+        "blocks": [
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Marafiki wa biashara ya mtandaoni ya kuvuka mipaka wanahitaji kuingia akaunti kwa kazi kama kusimamia akaunti za vyombo vya habari, wakizingatia usalama pia. Kusaidia marafiki zaidi wenye mahitaji haya na wanaoanza kutumia mtandao ndiyo ilikuwa sababu ya kwanza.\nZana nyingi za mtandaoni zinafanana, zikiwemo zinazotengeneza misimbo kupitia viungo vya moja kwa moja. Lakini ikiwa hujui, kufungua URL yenye siri kama `/2fa/SECRET` au `?secret=SECRET` hutuma siri ndani ya ombi la HTTP. Huduma ya tovuti ya mbali au CDN hupokea data hiyo na inaweza kuiandika na kuihifadhi kupitia kumbukumbu za ufikiaji, ufuatiliaji au programu. Yaani siri katika maombi hayo zinaweza kuhifadhiwa bila usimbaji; ukibandika pia akaunti + nenosiri + 2FA, na tovuti ikazipakia na kuzihifadhi pia... BOOM! Bila shaka, kama inazihifadhi kweli hutegemea utekelezaji, mipangilio na sera yake ya faragha :))"
+            ]
+          },
+          {
+            "spoiler": {
+              "label": "Hadithi",
+              "text": "...Karibu mwaka 2021, Mapinduzi ya Nne ya Viwanda, binadamu waliingia enzi ya AI. Tangu hapo, naona watu wakiitumia vibaya kila wakati—hata waandishi wa programu wa kitaalamu wakifanya upuuzi huu—dakika 5 tu kutengeneza kiolesura cha kulaaniwa chenye gradient, kilichopinda, mitindo 100 tofauti ya UI na vipengele 1,000.\nKama watu fulani wasiojasiri hata kujibu ujumbe wangu, wakitumia AI kubandika mfumo wa takataka na kutajirika kwa kuuza kwa watumiaji wa masoko ya kijivu.\n…Haya yote yananitia kichefuchefu. Nilitambaa kutoka kitandani na kutapika tena na tena. Kwa bahati mbaya, sikushikwa kwa uthabiti.\n\nKila kitu ninachotaka kufanya tayari matajiri wamekifanya. Karibu 2fa.hot yote ilitengenezwa kwa Vibe Coding—bila shaka, niliirekebisha hadi niridhike angalau kidogo kabla ya kuitoa. Kama miradi tunayofanya na wenzangu, tunataka kuizindua haraka lakini hatuachi kuiboresha hadi ifikie viwango vyetu, hadi haijawahi kutoka. Baadhi ya miradi inaweza siku moja kufahamika kwa ninyi mnaosoma, ingawa hamtajua sisi tuliitengeneza. Ni kama kurudi miaka sita nyuma, kufungua Premiere Pro, kuzama katika ubunifu bila kuchoka. Lakini sasa siwezi tena kutengeneza video. Inafikirisha.\nKila ninachotaka kusema kimesemwa tayari. Sipingani na AI. Miaka sita iliyopita nilisoma masomo ya kibinadamu; huenda sikujua hata jinsi ya kuweka tovuti mtandaoni, jamani! Natumaini watu fulani watatumia AI vizuri. Inaweza kukusaidia kufanya mambo lakini haiwezi kuwa wewe. Kamwe. Tafadhali usiache ibadilishe mawazo au maisha yako; usiitumie kutoa muundo ambao hata wewe hutaki kuujaribu, umejaa hitilafu na mantiki zinazoharibu matumizi… Ufungue kwenye localhost na uuboreshe mara nyingine 100. La sivyo, si wako. Usiutoe kuchukiza kila mtu. Uuuze? Hustahili. Utaendelea kuhangaika katika sekta za kijivu tu.\nHaki ninayotaka yote ni hadithi iliyobuniwa na wasio na haki. Najua siwezi kubadili maisha ya kasi ya leo au kuzuia mambo hayo. Wao."
+            },
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": []
+          }
+        ]
+      }
+    ]
+  },
+  "guides": [
+    {
+      "slug": "what-is-2fa",
+      "title": "2FA ni nini? Jinsi misimbo ya kithibitishaji cha TOTP inavyofanya kazi",
+      "description": "Elewa uthibitishaji wa hatua mbili, tofauti ya siri na msimbo, na matumizi ya kizalishaji cha TOTP kwa ufunguo wako wa usanidi uliopo.",
+      "sources": [
+        {
+          "title": "RFC 6238: algoriti ya TOTP",
+          "url": "https://www.rfc-editor.org/rfc/rfc6238"
+        },
+        {
+          "title": "Google: Pata misimbo ya uthibitishaji kwa Google Authenticator",
+          "url": "https://support.google.com/accounts/answer/1066447?hl=en"
+        }
+      ],
+      "sections": [
+        {
+          "id": "meaning",
+          "title": "Maana ya uthibitishaji wa hatua mbili",
+          "paragraphs": [
+            "Uthibitishaji wa hatua mbili (2FA) huunganisha aina mbili tofauti za ushahidi unapoingia. Nenosiri ni kitu unachokijua. Kithibitishaji chenye siri ya usanidi kinaweza kutoa ushahidi wa kitu ulichonacho. Huduma hukagua vyote kabla ya kukuruhusu kuingia kwenye akaunti.",
+            "2FA ni aina ya uthibitishaji, si muundo mmoja wa msimbo. SMS, msimbo wa kithibitishaji na ufunguo wa usalama wa kifaa vinaweza kuonekana wakati wa kuingia lakini hufanya kazi tofauti. Zana hii hutengeneza manenosiri ya matumizi mara moja yanayotegemea muda (TOTP) kutoka siri uliyonayo tayari. Haiwezi kupokea SMS au kuidhinisha arifa za kutumwa."
+          ]
+        },
+        {
+          "id": "secret-and-code",
+          "title": "Siri ya usanidi ni tofauti na msimbo wa uthibitishaji",
+          "paragraphs": [
+            "Huduma inapotoa usanidi wa kithibitishaji, kwa kawaida huonyesha QR na wakati mwingine ufunguo wa maandishi. Ufunguo huo ndiyo siri ya muda mrefu. Uwakilishi wa kawaida wa Base32 hutumia herufi A–Z na namba 2–7. URI ya otpauth hufungasha siri na mipangilio kama lebo ya akaunti na urefu wa msimbo.",
+            "Msimbo mfupi unaoandika unapoingia huhesabiwa kutoka siri hiyo na muda wa sasa. Kunakili msimbo wa tarakimu sita kwenye sehemu ya siri hakurejeshi akaunti. Ukipoteza siri ya usanidi na uwezo wa kutumia kithibitishaji, tumia utaratibu wa urejeshaji wa huduma ya awali au misimbo ya urejeshaji uliyohifadhi."
+          ]
+        },
+        {
+          "id": "using-totp",
+          "title": "Tengeneza msimbo wa TOTP kutoka siri iliyopo",
+          "paragraphs": [
+            "Kwa kipindi kilekile, siri na mipangilio ya TOTP inayofanana hutengeneza misimbo inayofanana. Chaguomsingi za 2fa.hot ni SHA-1, tarakimu sita na kipindi cha sekunde 30. Baadhi ya huduma hutumia mipangilio tofauti; hifadhi vigezo vya usanidi ulioingizwa."
+          ],
+          "steps": [
+            "Fungua kizalishaji na ubandike ufunguo wa usanidi au URI ya otpauth uliopo, au uingize picha yake ya QR.",
+            "Linganisha algoriti, tarakimu na kipindi na huduma ya awali ikiwa tofauti na chaguomsingi.",
+            "Nakili msimbo wa sasa kwenye huduma inayoomba uthibitishaji. Ikiwa muda unakaribia kuisha, subiri msimbo unaofuata."
+          ]
+        },
+        {
+          "id": "limits",
+          "title": "Chagua pa kuhifadhi kipengele chako cha pili",
+          "paragraphs": [
+            "Tumia kifaa unachoamini na ukague tovuti kabla ya kuingiza siri halisi ya usanidi. Utengenezaji wa misimbo wa ukurasa wa mwanzo na usomaji wa QR hufanyika katika kivinjari. Historia ya hiari hubaki katika kivinjari hicho na inaweza kulindwa kwa nenosiri. Kiungo cha moja kwa moja /2fa/SECRET ni tofauti: njia yake hufika kwenye huduma ya upangishaji na inaweza kubaki katika historia ya kivinjari.",
+            "Kizalishaji cha mtandaoni hakifanyi kifaa au akaunti kuwa kinga dhidi ya wizi wa taarifa kwa udanganyifu. Anayepata siri yako anaweza pia kutengeneza misimbo. Siri ikivuja, badilisha usanidi wa kithibitishaji katika huduma ya awali. Hifadhi njia za urejeshaji na fikiria kithibitishaji tofauti au ufunguo wa usalama unaostahimili udanganyifu ikiwa unakubaliwa."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "totp-code-not-working",
+      "title": "Msimbo wa 2FA haufanyi kazi? Tatua misimbo batili ya TOTP",
+      "description": "Kagua muda wa kifaa, misimbo iliyoisha muda, siri ya usanidi na vigezo vya TOTP huduma inapokataa msimbo wako.",
+      "sources": [
+        {
+          "title": "RFC 6238: uthibitishaji na usawazishaji wa saa",
+          "url": "https://www.rfc-editor.org/rfc/rfc6238"
+        },
+        {
+          "title": "Google Authenticator: utatuzi wa matatizo na muda wa kifaa",
+          "url": "https://support.google.com/accounts/answer/1066447?hl=en"
+        }
+      ],
+      "sections": [
+        {
+          "id": "clock",
+          "title": "Anza na saa ya kifaa",
+          "paragraphs": [
+            "Kizalishaji kikionyesha msimbo lakini huduma ikaukataa, kwanza kagua muda kwenye kifaa kinachoendesha kizalishaji. TOTP hutumia muda wa sasa, hivyo saa iliyo mbele au nyuma inaweza kutoa msimbo tofauti na unaotarajiwa na seva.",
+            "Washa tarehe na muda otomatiki katika mfumo wa uendeshaji, uache usawazishe, kisha subiri msimbo mpya. Kubadilisha ukanda wa saa unaoonyeshwa pekee hakurekebishi saa yenyewe ikiwa si sahihi. Google Authenticator ya kisasa pia hutumia saa ya mfumo; mpangilio wa zamani wa kurekebisha muda ndani ya programu haupatikani kuanzia toleo la 7.0."
+          ]
+        },
+        {
+          "id": "expiry",
+          "title": "Tumia msimbo mpya kwa akaunti sahihi",
+          "paragraphs": [
+            "Msimbo ulionakiliwa muda wake unapokaribia kuisha unaweza kuisha kabla ya kuutuma. Subiri kipindi kingine, nakili mara moja na utume haraka. Usiendelee kujaribu msimbo wa zamani wa ubao wa kunakili. Huduma ya awali huamua tofauti ya saa inayokubalika na inaweza kuzuia majaribio yanayorudiwa.",
+            "Kagua akaunti unayoingia. Akaunti mbili kwenye huduma ileile kwa kawaida zina siri tofauti. Lebo ni kikumbusho tu; kuibadilisha hakubadilishi akaunti ambayo siri ni yake."
+          ]
+        },
+        {
+          "id": "settings",
+          "title": "Linganisha siri na usanidi",
+          "paragraphs": [
+            "2fa.hot inakubali TOTP ya SHA-1, SHA-256 au SHA-512, tarakimu sita au nane na kipindi kilichowekwa. Chaguomsingi ni SHA-1, tarakimu sita na sekunde 30. URI ya otpauth iliyoingizwa inaweza kuwa na thamani tofauti. Zihifadhi badala ya kulazimisha kila akaunti kutumia chaguomsingi.",
+            "Herufi iliyokosekana kwenye siri, usajili wa kithibitishaji uliowekwa upya, au aina tofauti ya msimbo vinaweza kusababisha kushindwa mara kwa mara. Kwa akaunti za Steam, chagua Steam Guard na utumie shared_secret ya akaunti. Misimbo ya HOTP ya kuhesabu haitengenezwi hapa. Matokeo yanayoonekana halali si ushahidi kwamba huduma ya awali itayakubali."
+          ],
+          "steps": [
+            "Linganisha ufunguo uliohifadhiwa na maelezo ya usajili wa awali kwenye kifaa unachoamini.",
+            "Kagua kama usanidi wa hatua mbili uliwekwa upya tangu ufunguo huo uhifadhiwe.",
+            "Hakikisha akaunti hutumia TOTP na algoriti, tarakimu na kipindi vinalingana.",
+            "Baada ya kurekebisha sababu, jaribu mara moja kwa msimbo mpya; zingatia mipaka ya majaribio ya huduma."
+          ]
+        },
+        {
+          "id": "recovery",
+          "title": "Wakati wa kutumia urejeshaji wa akaunti",
+          "paragraphs": [
+            "Ikiwa huna siri ya sasa au kithibitishaji kilichosajiliwa, kutengeneza misimbo zaidi kwa ufunguo wa zamani hakutarejesha uwezo wa kuingia. Jaribu msimbo wa urejeshaji uliohifadhiwa au njia nyingine ya kuingia iliyosajiliwa, au wasiliana na huduma ya awali kupitia ukurasa wake rasmi wa urejeshaji.",
+            "2fa.hot haidhibiti akaunti yako katika huduma hiyo, haiwezi kuondoa sharti la kipengele cha pili, wala kurejesha ufunguo uliopotea kutoka msimbo wa muda mfupi. Unapoomba msaada, eleza kosa na mipangilio bila kuchapisha siri, picha ya QR, kiungo cha moja kwa moja au misimbo ya urejeshaji."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "google-authenticator-import",
+      "title": "Ingiza QR zilizohamishwa za Google Authenticator katika 2fa.hot",
+      "description": "Ingiza QR za uhamishaji za Google Authenticator, shughulikia sehemu nyingi, kagua akaunti na uelewe kinachohifadhiwa katika kivinjari.",
+      "sources": [
+        {
+          "title": "Google: Hamisha misimbo yako ya Authenticator",
+          "url": "https://support.google.com/accounts/answer/1066447?hl=en"
+        },
+        {
+          "title": "Maelezo ya mradi na vipengele vinavyokubaliwa vya 2fa.hot",
+          "url": "https://github.com/LZSMIAO/2fa-hot"
+        }
+      ],
+      "sections": [
+        {
+          "id": "before",
+          "title": "Unachohitaji kabla ya kuingiza",
+          "paragraphs": [
+            "Unahitaji kufikia rekodi za Google Authenticator unazotaka kuhamisha. Picha ya skrini ya msimbo wa tarakimu sita unaobadilika si QR ya uhamishaji. Picha za uhamishaji zina siri za usanidi wa akaunti, kwa hiyo tumia kifaa unachoamini na usiziweke kwenye folda za pamoja au maombi ya msaada ya umma.",
+            "Uingizaji husoma usanidi unaotoa. Hauingii Google, hauunganishi akaunti yako ya Google wala kurejesha rekodi ambazo haziwezi tena kuhamishwa. Huhitaji akaunti ya 2fa.hot."
+          ]
+        },
+        {
+          "id": "transfer",
+          "title": "Hamisha, ingiza na ukague akaunti",
+          "paragraphs": [
+            "Google Authenticator inaweza kuhamisha rekodi zilizochaguliwa kwa QR za uhamishaji. Mahali pa menyu panaweza kutofautiana kwa matoleo. Katika 2fa.hot, chagua chaguo la kuingiza kutoka Google Authenticator kwa uhamishaji huu; QR ya kawaida ya usajili wa huduma inaweza kutumia uingizaji wa QR wa kawaida."
+          ],
+          "steps": [
+            "Katika Google Authenticator, fungua Hamisha akaunti, kisha Toa akaunti, na ukamilishe uthibitishaji wa kifaa ukiombwa.",
+            "Chagua akaunti za kuhamisha na uonyeshe QR. Ikiwa kuna sehemu nyingi, hakikisha zote zinapatikana.",
+            "Kwenye kizalishaji, fungua Ingiza QR, kisha Google Authenticator. Changanua uhamishaji au chagua picha yake iliyohifadhiwa.",
+            "Ingiza sehemu zote za uhamishaji uleule. Kagua akaunti zilizosomwa na uchague rekodi zinazohitajika kabla ya kutumia uingizaji.",
+            "Linganisha rekodi moja ya TOTP iliyochaguliwa na kithibitishaji cha awali katika kipindi kilekile."
+          ]
+        },
+        {
+          "id": "multiple-parts",
+          "title": "QR nyingi na rekodi zisizokubaliwa",
+          "paragraphs": [
+            "Uhamishaji mkubwa unaweza kuwa na QR kadhaa. Ingiza seti nzima ya uhamishaji huo badala ya kuchanganya picha za uhamishaji tofauti. Kiingizaji hufuatilia sehemu na kugundua uchanganuzi unaorudiwa. Ikiwa sehemu haipo, rudi kwenye uhamishaji wa awali na upige picha wazi ya sehemu hiyo.",
+            "Data ya uhamishaji ya Google Authenticator inaweza kuwa na rekodi zisizokubaliwa hapa kwa kutengeneza misimbo. 2fa.hot hutengeneza TOTP ya SHA-1, SHA-256 au SHA-512 na tarakimu sita au nane. Inaweza kusoma na kuhamisha rekodi za HOTP au MD5 lakini haitengenezi misimbo yao. Kagua matokeo badala ya kudhani kila rekodi iliyoingizwa inatumika."
+          ]
+        },
+        {
+          "id": "storage",
+          "title": "Kinachotokea baada ya kuingiza",
+          "paragraphs": [
+            "QR husomwa ndani ya kivinjari. Uingizaji hauwashi historia ya ndani kiotomatiki. Ukitaka rekodi zipatikane baadaye, washa historia kwa makusudi na uchague kama kuilinda kwa nenosiri. Hifadhi ya kivinjari ni ya kivinjari hiki pekee, si usawazishaji otomatiki wa vifaa.",
+            "Endelea kuwa na kithibitishaji cha awali hadi uthibitishe rekodi na njia zako za urejeshaji. Kufuta data ya kivinjari kunaweza kuondoa rekodi za ndani. Historia iliyolindwa inahitaji nenosiri lake; tovuti haiwezi kurejesha nenosiri lililopotea. Kiungo cha ufikiaji wa moja kwa moja huonyesha siri kwenye URL, kwa hiyo kisiwe rejeleo la akaunti la umma."
+          ]
+        }
+      ]
+    }
+  ]
+}

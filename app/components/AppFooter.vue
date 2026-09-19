@@ -1,32 +1,15 @@
 <script setup lang="ts">
 const localePath = useLocalePath()
-const { tx, locale } = useMessages()
+const { tx } = useMessages()
 </script>
 <template>
   <footer class="site-footer">
     <div class="footer-inner">
-      <a class="footer-brand" href="https://2fa.hot">2fa.hot</a>
+      <NuxtLink class="footer-brand" :to="localePath('/')">2fa.hot</NuxtLink>
       <nav :aria-label="tx('页脚导航')">
         <div class="footer-pages">
-          <a
-            :href="
-              '/lite?lang=' +
-              (locale === 'zh-TW' ? 'zh-TW' : locale.startsWith('zh') ? 'zh-CN' : 'en')
-            "
-            >Lite</a
-          >
-          <NuxtLink :to="localePath('/guides', locale.startsWith('zh') ? 'zh-CN' : 'en')"
-            >2FA / TOTP</NuxtLink
-          >
-          <NuxtLink
-            :to="
-              localePath(
-                '/about',
-                locale === 'zh-TW' ? 'zh-TW' : locale.startsWith('zh') ? 'zh-CN' : 'en'
-              )
-            "
-            >{{ tx('关于') }}</NuxtLink
-          >
+          <NuxtLink :to="localePath('/guides')">{{ tx('指南') }}</NuxtLink>
+          <NuxtLink :to="localePath('/about')">{{ tx('关于') }}</NuxtLink>
           <NuxtLink class="footer-privacy" :to="localePath('/privacy')">{{ tx('隐私') }}</NuxtLink>
           <NuxtLink :to="localePath('/waitlist')">{{ tx('功能建议') }}</NuxtLink>
         </div>

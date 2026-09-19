@@ -1,6 +1,5 @@
 <script setup lang="ts">
 // Keep existing extension/store links working without a separate content page.
-defineI18nRoute({ locales: ['en', 'zh-CN', 'zh-TW'] })
 const localePath = useLocalePath()
 const route = useRoute()
 await navigateTo(

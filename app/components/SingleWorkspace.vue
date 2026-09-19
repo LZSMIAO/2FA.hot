@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { transferText, clipboardText } from '~/utils/transfer-text'
 import { historyTarget } from '~/utils/history-navigation'
 import PasskeyButton from '~/components/passkeys/PasskeyButton.vue'
 const clipboardHint = useClipboardHint()
@@ -80,6 +81,7 @@ const historyPreview = computed(
 )
 const field = useTemplateRef<{ inputRef?: HTMLInputElement }>('secretField')
 const workspaceRoot = useTemplateRef<HTMLElement>('workspaceRoot')
+const reviewHint = shallowRef('')
 const qrImage = shallowRef<File>()
 const qrImages = shallowRef<File[]>([])
 const qrImagePasted = shallowRef(true)
@@ -142,9 +144,7 @@ usePagePaste({
   input: () => field.value?.inputRef,
   text: pasteText,
   image: (file) => {
-    qrImagePasted.value = true
-    qrImage.value = file
-    qrOpen.value = true
+    void recognizeImages([file], true)
   }
 })
 const { dragging: textDragging } = usePageTextDrop({
@@ -166,7 +166,10 @@ watch(qrOpen, (open) => {
     qrInitialIssue.value = ''
   }
 })
-onBeforeUnmount(clearPasteFeedback)
+onBeforeUnmount(() => {
+  pasteRevision++
+  clearPasteFeedback()
+})
 const vault = useVault()
 const historyKeyboardTipShown = useState('history-keyboard-tip-shown', () => false)
 const historyKeyboardHint = shallowRef(false)
@@ -370,15 +373,66 @@ async function paste() {
   await clipboardHint.start()
   if (revision !== pasteRevision || guiding.value) return
   try {
-    const text = await navigator.clipboard.readText()
-    clipboardHint.finish(true)
+    let text = await navigator.clipboard.readText()
     if (revision !== pasteRevision || guiding.value) return
+    if (!text.trim() && navigator.clipboard.read) {
+      const items = await navigator.clipboard.read()
+      text = await clipboardText(items)
+      if (revision !== pasteRevision || guiding.value) return
+      if (!text.trim()) {
+        for (const item of items) {
+          const type = item.types.find((type) => type.startsWith('image/'))
+          if (!type) continue
+          const blob = await item.getType(type)
+          if (revision !== pasteRevision || guiding.value) return
+          await recognizeImages([new File([blob], 'clipboard-image', { type })], true)
+          clipboardHint.finish(true)
+          return
+        }
+      }
+    }
+    clipboardHint.finish(true)
     pasteText(text)
   } catch {
     clipboardHint.finish(false)
     if (revision !== pasteRevision) return
     pasteIssue.value = '无法读取剪贴板，请使用系统粘贴。'
   }
+}
+async function recognizeImages(files: File[], fromPaste = false) {
+  qrOpenedByDrag.value = false
+  const revision = ++pasteRevision
+  pasteIssue.value = ''
+  if (files.length > 20) {
+    pasteIssue.value = '每次最多选择 20 张图片，请分批导入。'
+    return
+  }
+  const { decodeQrFile } = await import('~/utils/qr-image')
+  const { collectQrChoices } = await import('~/utils/qr-choices')
+  const { isMigrationUri } = await import('~/utils/ga-migration')
+  const values: string[] = []
+  const errors: string[] = []
+  for (const file of files) {
+    if (revision !== pasteRevision) return
+    try {
+      const decoded = await decodeQrFile(file)
+      if (!decoded.length) errors.push('未识别到二维码，请换一张清晰图片。')
+      values.push(...decoded)
+    } catch (cause) {
+      errors.push((cause as Error).message)
+    }
+  }
+  if (revision !== pasteRevision) return
+  const result = collectQrChoices(values)
+  const ordinary = result.choices.filter((value) => !isMigrationUri(value))
+  const migration = result.choices.find(isMigrationUri)
+  if (ordinary.length) inspectPaste(ordinary.join('\n'))
+  else if (migration) migrationSource.value = migration
+  pasteIssue.value =
+    errors[0] ||
+    (result.unsupported ? '二维码不是 TOTP 配置。' : '') ||
+    (!result.choices.length ? '没有可导入的 TOTP 配置。' : '')
+  if (fromPaste) confirmPaste()
 }
 function acceptPaste(value: OtpConfig, source = '') {
   historyPreviewIdentity.value = ''
@@ -424,8 +478,10 @@ function inspectPaste(source: string) {
     }
   }
   const analysis = analyzePaste(source)
-  if (analysis.kind === 'single') acceptPaste(analysis.candidates[0]!.config, source)
-  else if (analysis.candidates.length > 1) pendingPaste.value = { source, analysis }
+  if (analysis.candidates.length > 1) transferPaste(source)
+  else if (analysis.candidates.length === 1) acceptPaste(analysis.candidates[0]!.config, source)
+  else if (analysis.kind === 'review' || analysis.candidates.length > 1)
+    pendingPaste.value = { source, analysis }
   else {
     updateRaw(source)
     pendingPaste.value = null
@@ -443,15 +499,16 @@ function finishComposition() {
 }
 function handlePaste(event: ClipboardEvent) {
   if (guiding.value || !event.clipboardData) return
-  if (Array.from(event.clipboardData.items).some((item) => item.type.startsWith('image/'))) return
-  const text = event.clipboardData.getData('text/plain')
+  const text = transferText(event.clipboardData)
   if (!text) return
   event.preventDefault()
   const input = event.target as HTMLInputElement
   const start = input.selectionStart ?? 0,
     end = input.selectionEnd ?? raw.value.length
-  pasteText(pastedInputText(raw.value, text, start, end))
+  inspectPaste(pastedInputText(raw.value, text, start, end))
+  confirmPaste()
 }
+defineExpose({ paste: pasteText })
 function transferPaste(value: string) {
   pendingPaste.value = null
 
@@ -472,8 +529,13 @@ function importValue(value: string) {
 }
 watch(
   vault.pending,
-  (value) => {
-    if (!value) return
+  (handoff) => {
+    if (!handoff) return
+    const value = handoff.config
+    if (handoff.historyPreview && !vault.unlocked.value) {
+      vault.pending.value = undefined
+      return
+    }
     pendingPaste.value = null
 
     raw.value = value.secret
@@ -482,7 +544,7 @@ watch(
     digits.value = value.kind === 'steam' || value.digits === 5 ? 6 : value.digits
     period.value = value.period
     restoredDetails.value = { label: value.label, issuer: value.issuer }
-    historyPreviewIdentity.value = identity(value)
+    historyPreviewIdentity.value = handoff.historyPreview ? identity(value) : ''
     vault.pending.value = undefined
   },
   { immediate: true }
@@ -496,7 +558,11 @@ onBeforeUnmount(() => {
 })
 </script>
 <template>
-  <div ref="workspaceRoot" class="workspace ore-workspace-frame">
+  <div
+    ref="workspaceRoot"
+    class="workspace ore-workspace-frame"
+    :class="{ 'is-reviewing': pendingPaste && !guiding }"
+  >
     <section class="input-panel" aria-labelledby="secret-heading">
       <div class="section-heading">
         <h2 id="secret-heading" class="workspace-title">{{ tx('输入密钥') }}</h2>
@@ -518,7 +584,11 @@ onBeforeUnmount(() => {
           dir="ltr"
           :type="revealed ? 'text' : 'password'"
           size="xl"
-          :placeholder="secretFocused || guiding ? tx('密钥：Base32 / otpauth:// / Steam') : ''"
+          :placeholder="
+            !textDragging && (secretFocused || guiding)
+              ? tx('密钥：Base32 / otpauth:// / Steam')
+              : ''
+          "
           autocomplete="off"
           autocapitalize="off"
           :spellcheck="false"
@@ -537,7 +607,8 @@ onBeforeUnmount(() => {
         >
           <template #default>
             <SecretInputHints
-              v-if="!displayRaw && !secretFocused && !guiding && !pendingPaste"
+              v-if="!displayRaw && (!secretFocused || textDragging) && !guiding && !pendingPaste"
+              :override="textDragging ? tx('将文字拖到此处') : undefined"
               :default-hint="tx('密钥：Base32 / otpauth:// / Steam')"
             />
           </template>
@@ -548,18 +619,21 @@ onBeforeUnmount(() => {
               :inert="!displayRaw"
               :aria-hidden="!displayRaw"
             >
-              <UButton
-                color="neutral"
-                variant="ghost"
-                size="sm"
-                class="secret-action"
-                :icon="revealed ? 'i-lucide-eye-off' : 'i-lucide-eye'"
-                :aria-label="tx(revealed ? '隐藏密钥' : '显示密钥')"
-                @click="revealed = !revealed"
-              />
+              <AppHint :text="tx(revealed ? '隐藏密钥' : '显示密钥')">
+                <UButton
+                  color="neutral"
+                  variant="ghost"
+                  size="sm"
+                  class="secret-action"
+                  :icon="revealed ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+                  :aria-label="tx(revealed ? '隐藏密钥' : '显示密钥')"
+                  :aria-pressed="revealed"
+                  @click="revealed = !revealed"
+                />
+              </AppHint>
               <UTooltip
                 :text="tx('清空')"
-                :delay-duration="250"
+                :delay-duration="0"
                 :content="{ side: 'top', align: 'center', sideOffset: 4 }"
                 :ui="{ content: 'parameter-help-tooltip', arrow: 'parameter-help-arrow' }"
                 disable-hoverable-content
@@ -589,8 +663,9 @@ onBeforeUnmount(() => {
           @select="acceptPaste"
           @batch="transferPaste"
           @cancel="pendingPaste = null"
-          @clear="clearWithSound"
+          @clear="clear"
           @inspect="inspectPaste"
+          @notice="reviewHint = $event"
         />
         <div class="input-tools">
           <UButton
@@ -614,6 +689,9 @@ onBeforeUnmount(() => {
       </div>
       <div class="input-details">
         <div class="input-notices">
+          <p v-if="pendingPaste" class="field-hint" role="status">
+            {{ reviewHint || tx('密钥：Base32 / otpauth:// / Steam') }}
+          </p>
           <Transition name="input-notice">
             <PasteNotice
               v-if="extracted && !pendingPaste"
@@ -727,7 +805,7 @@ onBeforeUnmount(() => {
                         '用于已有 Steam 密钥备份的账号：粘贴 shared_secret 或 maFile 内容，即可在浏览器生成登录验证码。本站不能从官方手机 App 导出密钥，也不能替代扫码登录或交易确认。'
                       )
                     "
-                    :delay-duration="150"
+                    :delay-duration="0"
                     :content="{ side: 'top', align: 'start', sideOffset: 6 }"
                     :ui="{
                       content: 'parameter-help-tooltip h-auto',
@@ -741,7 +819,7 @@ onBeforeUnmount(() => {
                       class="steam-help"
                       :aria-label="`Steam Guard · ${tx('使用说明')}`"
                     >
-                      <span aria-hidden="true">?</span>
+                      <UIcon name="i-lucide-circle-help" aria-hidden="true" />
                     </button>
                   </UTooltip>
                   <span class="steam-profile-title">Steam Guard</span>
@@ -757,6 +835,7 @@ onBeforeUnmount(() => {
       </div>
     </section>
     <div
+      v-if="!pendingPaste || guiding"
       class="result-reveal"
       :class="{ 'is-expanded': resultExpanded }"
       :inert="compactScreen && !resultExpanded"
@@ -789,6 +868,7 @@ onBeforeUnmount(() => {
     @close="qrOpen = false"
     @dismiss="cancelImageDrop"
     @import="importValue"
+    @text="pasteText"
     @batch="
       (value) => {
         qrOpen = false
@@ -874,6 +954,29 @@ onBeforeUnmount(() => {
   .workspace {
     grid-template-rows: auto auto auto 1fr;
     row-gap: 0.75rem;
+  }
+  .workspace.is-reviewing {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+  }
+  .workspace.is-reviewing .input-panel {
+    grid-column: 1;
+    grid-row: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    border-inline-end: 0;
+  }
+  .workspace.is-reviewing .secret-entry {
+    align-self: stretch;
+    width: 100%;
+  }
+  .workspace.is-reviewing .input-details {
+    display: block;
+    margin-top: 0;
+  }
+  .workspace.is-reviewing .input-notices {
+    min-height: 0;
   }
   .input-panel,
   .result-reveal,
@@ -1016,6 +1119,22 @@ onBeforeUnmount(() => {
   }
 }
 @media (max-width: 700px), (max-height: 500px) and (pointer: coarse) {
+  .input-details {
+    position: relative;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--ui-border);
+  }
+  .input-details .input-notices {
+    min-height: 0;
+    margin: 0 0 0.75rem;
+    text-align: start;
+  }
+  .input-details .advanced {
+    position: static;
+    border-top: 0;
+    padding-top: 0;
+  }
   .workspace :deep(.otp-digits) {
     font-size: clamp(2rem, 8vw, 3rem);
   }
@@ -1247,12 +1366,16 @@ onBeforeUnmount(() => {
   width: 1.25rem;
   height: 1.25rem;
   padding: 0;
-  border: 1px solid var(--control-line);
+  border: 0;
   border-radius: 50%;
   background: var(--panel);
   color: var(--ui-text-muted);
   font: 600 0.75rem/1 var(--font-sans);
   cursor: help;
+}
+.steam-help .iconify {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 .steam-help:hover,
 .steam-help:focus-visible {
@@ -1300,5 +1423,32 @@ onBeforeUnmount(() => {
 .secret-field.is-text-dragging {
   outline: 2px solid var(--ui-primary);
   outline-offset: 2px;
+}
+</style>
+
+<style scoped>
+.workspace.is-reviewing .secret-entry,
+.workspace.is-reviewing .input-details {
+  width: 100%;
+}
+.workspace.is-reviewing .advanced-stage .is-hidden {
+  display: none;
+}
+.workspace.is-reviewing .advanced-stage {
+  flex: none;
+}
+</style>
+
+<style scoped>
+.workspace.is-reviewing .input-notices {
+  margin-block: 0.5rem 1.25rem;
+  min-height: 1.5rem;
+}
+.workspace.is-reviewing .advanced-stage :deep(.desert-accent:not(.is-open)) {
+  height: 0;
+}
+.workspace.is-reviewing .advanced-options {
+  align-self: start;
+  padding-top: 0.75rem;
 }
 </style>

@@ -236,34 +236,40 @@ async function expand() {
   if (!props.config || !config.value || props.guideStep !== undefined || sizeTransitionActive.value)
     return
   const revision = navigationRevision
-  window.dispatchEvent(
-    new CustomEvent('2fa-ui-sound', { detail: props.standalone ? 'parameters' : 'expand' })
-  )
-  displayHandoff.value = code.value
-    ? { config: { ...props.config }, code: code.value, at: generatedAt.value }
-    : null
-  if (props.standalone) {
-    vault.pending.value = { ...props.config }
-  } else {
-    expandedConfig.value = { ...props.config }
-    expandedHistoryPreview.value = !!props.historyPreview
-  }
-  const target = localePath(props.standalone ? '/' : toAccessPath(props.config))
-  await preloadRouteComponents(target).catch(() => {})
-  if (revision !== navigationRevision) return
-  const navigate = async () => {
-    if (revision !== navigationRevision) return
-    await navigateTo(target)
-    await nextTick()
-  }
-  // Only the explicit size control animates; ordinary navigation stays immediate.
   sizeTransitionActive.value = true
   try {
+    const sound = props.standalone ? 'parameters' : 'expand'
+    const playSizeSound = () =>
+      window.dispatchEvent(new CustomEvent('2fa-ui-sound', { detail: sound }))
+    displayHandoff.value = code.value
+      ? { config: { ...props.config }, code: code.value, at: generatedAt.value }
+      : null
+    if (props.standalone) {
+      vault.pending.value = { config: { ...props.config }, historyPreview: !!props.historyPreview }
+    } else {
+      expandedConfig.value = { ...props.config }
+      expandedHistoryPreview.value = !!props.historyPreview
+    }
+    const target = localePath(props.standalone ? '/' : toAccessPath(props.config))
+    await preloadRouteComponents(target).catch(() => {})
+    if (revision !== navigationRevision) return
+    const navigate = async () => {
+      if (revision !== navigationRevision) return
+      await navigateTo(target)
+      await nextTick()
+      window.scrollTo({ left: 0, top: 0, behavior: 'instant' })
+      // View transitions may suspend rendering during this callback. Never await
+      // requestAnimationFrame here: the browser captures layout after we return.
+    }
+    // Only the explicit size control animates; ordinary navigation stays immediate.
     if (document.startViewTransition && !reducedMotion.value) {
       const transition = document.startViewTransition(navigate)
+      // The route may load asynchronously: align audio with the first animation frame.
+      await transition.ready.then(playSizeSound).catch(() => {})
       await transition.finished.catch(() => {})
     } else {
       await navigate()
+      playSizeSound()
     }
   } finally {
     sizeTransitionActive.value = false
@@ -281,25 +287,25 @@ async function expand() {
         :remaining="remaining"
         :period="config?.period ?? 30"
       />
-      <UButton
-        color="neutral"
-        variant="ghost"
-        :icon="standalone ? 'i-lucide-minimize-2' : 'i-lucide-maximize-2'"
-        class="expand-button"
-        data-sound-custom
-        :aria-label="tx(standalone ? '缩小验证码' : '放大验证码')"
-        :title="tx(standalone ? '返回工具首页' : '放大到独立取码页')"
-        :disabled="
-          !config ||
-          config.kind === 'steam' ||
-          !!error ||
-          !!calculationError ||
-          guideStep !== undefined
-        "
-        @pointerenter="prepareSizeChange"
-        @focus="prepareSizeChange"
-        @click="expand"
-      />
+      <AppHint :text="tx(standalone ? '返回工具首页' : '查看独立取码页')"
+        ><UButton
+          color="neutral"
+          variant="ghost"
+          :icon="standalone ? 'i-lucide-minimize-2' : 'i-lucide-maximize-2'"
+          class="expand-button"
+          data-sound-custom
+          :aria-label="tx(standalone ? '缩小验证码' : '放大验证码')"
+          :disabled="
+            !config ||
+            config.kind === 'steam' ||
+            !!error ||
+            !!calculationError ||
+            guideStep !== undefined
+          "
+          @pointerenter="prepareSizeChange"
+          @focus="prepareSizeChange"
+          @click="expand"
+      /></AppHint>
     </div>
   </div>
   <div class="result-code" :class="{ 'is-compact': compactLayout }">
@@ -368,7 +374,7 @@ async function expand() {
           ><Transition name="copy-feedback"
             ><UIcon
               :key="copyConfirmed ? 'copied' : 'copy'"
-              :name="copyConfirmed ? 'i-lucide-check' : 'i-lucide-copy'" /></Transition></span
+              :name="copyConfirmed ? 'i-mc-check' : 'i-lucide-copy'" /></Transition></span
         >{{ tx(copyConfirmed ? '已复制' : '复制验证码') }}<UKbd value="↵" class="copy-shortcut-key"
       /></UButton>
     </motion.div>
@@ -407,7 +413,7 @@ async function expand() {
             :disabled="!config || guideStep !== undefined"
             @click="handleLink"
           >
-            <UIcon :name="standalone && linkCopied ? 'i-lucide-check' : 'i-lucide-link'" />{{
+            <UIcon :name="standalone && linkCopied ? 'i-mc-check' : 'i-lucide-link'" />{{
               tx(standalone ? (linkCopied ? '已复制' : '复制链接') : '获取链接')
             }}
           </UButton>

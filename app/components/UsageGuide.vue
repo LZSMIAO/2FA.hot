@@ -268,7 +268,7 @@ onBeforeUnmount(() => {
                 class="simulated-button"
                 :class="{ copied: phase >= 1 }"
               >
-                <UIcon :name="phase >= 1 ? 'i-lucide-check' : 'i-lucide-copy'" />{{
+                <UIcon :name="phase >= 1 ? 'i-mc-check' : 'i-lucide-copy'" />{{
                   tx(phase >= 1 ? '密钥已复制' : '复制密钥')
                 }}
               </div>
@@ -286,7 +286,7 @@ onBeforeUnmount(() => {
             </template>
           </div>
           <div v-else key="success" class="tutorial-success">
-            <span><UIcon name="i-lucide-check" /></span>
+            <span><UIcon name="i-mc-check" /></span>
             <h2>{{ tx('验证成功') }}</h2>
             <p>{{ tx('示例账号已登录') }}</p>
           </div>
@@ -305,23 +305,22 @@ onBeforeUnmount(() => {
       </p>
       <div class="tutorial-controls">
         <div>
-          <UButton
-            v-if="!reducedMotion && !finished"
-            color="neutral"
-            variant="ghost"
-            :icon="paused ? 'i-lucide-play' : 'i-lucide-pause'"
-            :aria-label="tx(paused ? '继续' : '暂停')"
-            :title="tx(paused ? '继续' : '暂停')"
-            @click="togglePlayback"
-          />
-          <UButton
-            color="neutral"
-            variant="ghost"
-            icon="i-lucide-rotate-ccw"
-            :aria-label="tx('重看')"
-            :title="tx('重看')"
-            @click="start"
-          />
+          <AppHint v-if="!reducedMotion && !finished" :text="tx(paused ? '继续' : '暂停')"
+            ><UButton
+              color="neutral"
+              variant="ghost"
+              :icon="paused ? 'i-lucide-play' : 'i-lucide-pause'"
+              :aria-label="tx(paused ? '继续' : '暂停')"
+              @click="togglePlayback"
+          /></AppHint>
+          <AppHint :text="tx('重看')"
+            ><UButton
+              color="neutral"
+              variant="ghost"
+              icon="i-lucide-rotate-ccw"
+              :aria-label="tx('重看')"
+              @click="start"
+          /></AppHint>
         </div>
         <div class="tutorial-actions">
           <UButton v-if="finished" variant="outline" color="neutral" @click="emit('switchMode')">{{

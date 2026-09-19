@@ -17,9 +17,9 @@ const query = shallowRef('')
 const selected = ref<string[]>([])
 const identity = (r: PasskeySummary) => `${r.rpId}:${r.credentialId}`
 const visible = computed(() => {
-  const term = query.value.trim().toLocaleLowerCase()
+  const term = query.value.trim().toLocaleLowerCase(locale.value)
   return (props.records ?? []).filter((r) =>
-    `${r.rpId} ${r.userName} ${r.userDisplayName}`.toLocaleLowerCase().includes(term)
+    `${r.rpId} ${r.userName} ${r.userDisplayName}`.toLocaleLowerCase(locale.value).includes(term)
   )
 })
 const allSelected = computed(
@@ -31,13 +31,13 @@ function selectVisible(value: boolean | 'indeterminate') {
   for (const r of visible.value) value === true ? ids.add(identity(r)) : ids.delete(identity(r))
   selected.value = [...ids]
 }
-function select(r: PasskeySummary, checked: boolean | 'indeterminate') {
-  const id = identity(r)
-  selected.value =
-    checked === true
-      ? [...new Set([...selected.value, id])]
-      : selected.value.filter((v) => v !== id)
-}
+const selectionIds = computed(() => visible.value.map(identity))
+const {
+  surface,
+  start: startSelection,
+  click: clickSelection,
+  cancelSelection
+} = useHistorySelection(selectionIds, selected)
 function lastUsed(value: number | null) {
   return value
     ? `${props.copy.lastUsed} ${new Date(value).toLocaleDateString(locale.value)}`
@@ -53,7 +53,11 @@ watch(
 </script>
 
 <template>
-  <section class="passkey-manager" aria-labelledby="passkey-manager-heading">
+  <section
+    @keydown="!busy && cancelSelection($event)"
+    class="passkey-manager"
+    aria-labelledby="passkey-manager-heading"
+  >
     <template v-if="records === null">
       <h3 id="passkey-manager-heading">{{ copy.locked }}</h3>
       <p>{{ copy.lockedHint }}</p>
@@ -118,13 +122,19 @@ watch(
           :label="copy.selectAll"
           @update:model-value="selectVisible"
         />
-        <ul class="manager-records" aria-labelledby="passkey-manager-heading">
-          <li v-for="record in visible" :key="identity(record)" class="manager-record">
-            <UCheckbox
-              :model-value="selected.includes(identity(record))"
+        <ul ref="surface" class="manager-records" aria-labelledby="passkey-manager-heading">
+          <li
+            v-for="record in visible"
+            :key="identity(record)"
+            class="manager-record"
+            :data-selection-id="identity(record)"
+          >
+            <SelectionCheck
+              :checked="selected.includes(identity(record))"
               :disabled="busy"
-              :aria-label="`${record.rpId} · ${record.userName || record.userDisplayName || copy.unnamed}`"
-              @update:model-value="select(record, $event)"
+              :label="`${record.rpId} · ${record.userName || record.userDisplayName || copy.unnamed}`"
+              @pointerdown="!busy && startSelection($event, identity(record))"
+              @click="!busy && clickSelection($event, identity(record))"
             />
             <div class="record-details">
               <strong dir="auto">{{ record.rpId }}</strong>

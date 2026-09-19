@@ -6,7 +6,14 @@ import { toolHeadings } from '~~/shared/seo/copy'
 const { tx, locale } = useMessages()
 const localePath = useLocalePath()
 const mode = shallowRef('single')
+const singleWorkspace = useTemplateRef<{ paste: (value: string) => void }>('singleWorkspace')
+async function importSingle(value: string) {
+  mode.value = 'single'
+  await nextTick()
+  singleWorkspace.value?.paste(value)
+}
 const batchInput = shallowRef('')
+const batchReplace = shallowRef(false)
 const batchImportVersion = shallowRef(0)
 const guideOpen = shallowRef(false)
 const mobileGuide = shallowRef(false)
@@ -103,7 +110,8 @@ watch(
   },
   { flush: 'sync' }
 )
-function importBatch(value: string) {
+function importBatch(value: string, replace = false) {
+  batchReplace.value = replace
   batchInput.value = value
   batchImportVersion.value++
   mode.value = 'batch'
@@ -186,14 +194,17 @@ watch(
           </template>
           <template #single
             ><SingleWorkspace
+              ref="singleWorkspace"
               :guide-step="mode === 'single' ? guideStep : undefined"
               @batch="importBatch"
               @guide-code="guideCode = $event"
           /></template>
           <template #batch
             ><BatchWorkspace
+              @single="importSingle"
               :initial="batchInput"
               :import-version="batchImportVersion"
+              :replace="batchReplace"
               :demo="batchDemo"
               :guide-step="mode === 'batch' ? guideStep : undefined"
           /></template>
@@ -207,7 +218,7 @@ watch(
                 {{ tx('所有数据由本地浏览器处理') }}
                 <UTooltip
                   :text="tx('隐私说明')"
-                  :delay-duration="150"
+                  :delay-duration="0"
                   :content="{ side: 'top', align: 'center', sideOffset: 2 }"
                   arrow
                   :ui="{ content: 'parameter-help-tooltip', arrow: 'parameter-help-arrow' }"
@@ -216,7 +227,7 @@ watch(
                     :to="localePath('/privacy')"
                     class="local-processing-help"
                     :aria-label="tx('隐私说明')"
-                    ><UIcon name="i-lucide-circle-help"
+                    ><UIcon name="i-lucide-info"
                   /></NuxtLink>
                 </UTooltip>
               </span>
@@ -225,7 +236,7 @@ watch(
           <div class="workspace-summary-links">
             <HistoryToggle />
           </div>
-          <SessionHistory @select="mode = 'single'" />
+          <SessionHistory @select="mode = 'single'" @batch="(value) => importBatch(value, true)" />
         </div>
       </div>
     </div>

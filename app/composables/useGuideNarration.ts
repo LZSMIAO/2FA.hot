@@ -61,7 +61,7 @@ export function useGuideNarration(text: () => string, paused: () => boolean) {
       return
     }
     const voice = selectNarrationVoice(synth.getVoices(), lang)
-    // Do not let the OS silently pronounce Chinese using an unrelated voice.
+    // Do not let the OS pronounce the translated guide using an unrelated language.
     if (!voice) {
       fail()
       return

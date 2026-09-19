@@ -1,12 +1,32 @@
 <script setup lang="ts">
-import type { VaultRecord } from '~/composables/useVault'
+import type { OtpConfig } from '~/utils/otp'
+import { pastedBatchText } from '~/utils/smart-paste'
+import type { SessionRecord } from '~/composables/useVault'
 const { tx, locale } = useMessages()
 const vault = useVault()
-const emit = defineEmits<{ select: [] }>()
+const emit = defineEmits<{ select: []; batch: [text: string] }>()
 const editing = shallowRef<string | null>(null)
 const label = shallowRef('')
 const error = shallowRef('')
-function edit(row: VaultRecord) {
+const expanded = ref(new Set<string>())
+const visibleCount = computed(() =>
+  Math.min(
+    6,
+    vault.recent.value.reduce(
+      (count, row) => count + 1 + (expanded.value.has(row.id) ? row.batch?.length || 0 : 0),
+      0
+    )
+  )
+)
+function toggleBatch(id: string) {
+  if (expanded.value.has(id)) expanded.value.delete(id)
+  else expanded.value.add(id)
+}
+function selectEntry(config: OtpConfig) {
+  emit('select')
+  vault.pending.value = { config: { ...config }, historyPreview: false }
+}
+function edit(row: SessionRecord) {
   editing.value = row.id
   label.value = row.label
   error.value = ''
@@ -28,15 +48,21 @@ async function save() {
 watch(
   () => vault.recent.value.map((row) => row.id),
   (ids) => {
+    expanded.value = new Set([...expanded.value].filter((id) => ids.includes(id)))
     if (editing.value && !ids.includes(editing.value)) {
       editing.value = null
       error.value = ''
     }
   }
 )
-function select(row: VaultRecord) {
+function select(row: SessionRecord) {
+  if (row.batch) {
+    emit('batch', pastedBatchText([...row.batch]))
+    return
+  }
   emit('select')
-  vault.pending.value = { ...row }
+  // Session records exist independently of the persistent vault's lock state.
+  vault.pending.value = { config: { ...row }, historyPreview: false }
 }
 function time(value: number) {
   return new Intl.DateTimeFormat(locale.value, { hour: '2-digit', minute: '2-digit' }).format(value)
@@ -67,66 +93,106 @@ function time(value: number) {
         <div class="session-content-clip">
           <div
             class="session-body"
-            :style="{ '--session-count': Math.min(vault.recent.value.length, 3) }"
+            :style="{
+              '--session-count': expanded.size
+                ? visibleCount
+                : Math.min(vault.recent.value.length, 3)
+            }"
           >
             <div class="session-rows">
-              <div v-for="row in vault.recent.value" :key="row.id" class="session-row">
-                <time>{{ time(row.usedAt) }}</time>
-                <form
-                  v-if="editing === row.id"
-                  class="session-name session-name-editor"
-                  autocomplete="off"
-                  @submit.prevent="save"
-                >
-                  <input
-                    v-model="label"
-                    type="text"
-                    name="session-record-label"
-                    class="session-name-input"
-                    :aria-label="tx('标签')"
+              <template v-for="row in vault.recent.value" :key="row.id">
+                <div class="session-row">
+                  <time>{{ time(row.usedAt) }}</time>
+                  <form
+                    v-if="editing === row.id"
+                    class="session-name session-name-editor"
                     autocomplete="off"
-                    data-1p-ignore
-                    maxlength="120"
-                    @keydown.esc="editing = null"
-                  />
-                  <button
-                    type="submit"
-                    class="session-icon"
-                    :aria-label="tx('保存')"
-                    :disabled="vault.busy.value"
+                    @submit.prevent="save"
                   >
-                    <UIcon name="i-lucide-check" />
-                  </button>
+                    <input
+                      v-model="label"
+                      type="text"
+                      name="session-record-label"
+                      class="session-name-input"
+                      :aria-label="tx('标签')"
+                      autocomplete="off"
+                      data-1p-ignore
+                      maxlength="120"
+                      @keydown.esc="editing = null"
+                    />
+                    <button
+                      type="submit"
+                      class="session-icon"
+                      :aria-label="tx('保存')"
+                      :disabled="vault.busy.value"
+                    >
+                      <UIcon name="i-mc-check" />
+                    </button>
+                    <button
+                      type="button"
+                      class="session-icon"
+                      :aria-label="tx('取消')"
+                      @click="editing = null"
+                    >
+                      <UIcon name="i-lucide-x" />
+                    </button>
+                  </form>
+                  <div v-else class="session-name">
+                    <button
+                      class="session-label"
+                      :aria-expanded="row.batch ? expanded.has(row.id) : undefined"
+                      @click="row.batch ? toggleBatch(row.id) : select(row)"
+                    >
+                      <UIcon
+                        v-if="row.batch"
+                        :name="
+                          expanded.has(row.id) ? 'i-lucide-chevron-down' : 'i-lucide-chevron-right'
+                        "
+                      />
+                      {{ row.label || row.issuer || tx(row.batch ? '批量取码' : '未命名记录') }}
+                    </button>
+                    <button
+                      class="session-icon session-edit"
+                      :aria-label="tx('编辑记录')"
+                      @click="edit(row)"
+                    >
+                      <UIcon name="i-lucide-pencil" />
+                    </button>
+                  </div>
+                  <code v-if="row.batch">{{
+                    tx('有效：{count}', { count: row.batch.length })
+                  }}</code>
+                  <code v-else>{{ row.secret.slice(0, 4) }}••••{{ row.secret.slice(-4) }}</code>
                   <button
-                    type="button"
-                    class="session-icon"
-                    :aria-label="tx('取消')"
-                    @click="editing = null"
+                    class="session-open session-icon"
+                    :aria-label="tx('取码')"
+                    @click="select(row)"
                   >
-                    <UIcon name="i-lucide-x" />
-                  </button>
-                </form>
-                <div v-else class="session-name">
-                  <button class="session-label" @click="select(row)">
-                    {{ row.label || row.issuer || tx('未命名记录') }}
-                  </button>
-                  <button
-                    class="session-icon session-edit"
-                    :aria-label="tx('编辑记录')"
-                    @click="edit(row)"
-                  >
-                    <UIcon name="i-lucide-pencil" />
+                    <UIcon name="i-lucide-arrow-up-right" />
                   </button>
                 </div>
-                <code>{{ row.secret.slice(0, 4) }}••••{{ row.secret.slice(-4) }}</code>
-                <button
-                  class="session-open session-icon"
-                  :aria-label="tx('取码')"
-                  @click="select(row)"
-                >
-                  <UIcon name="i-lucide-arrow-up-right" />
-                </button>
-              </div>
+                <template v-if="row.batch && expanded.has(row.id)">
+                  <div
+                    v-for="(entry, index) in row.batch"
+                    :key="index"
+                    class="session-row session-child"
+                  >
+                    <div class="session-name">
+                      <button class="session-label" @click="selectEntry(entry)">
+                        {{ entry.label || entry.issuer || tx('未命名记录') }}
+                      </button>
+                    </div>
+                    <code>{{ entry.secret.slice(0, 4) }}••••{{ entry.secret.slice(-4) }}</code>
+                    <button
+                      class="session-open session-icon"
+                      :aria-label="tx('取码')"
+                      @click="selectEntry(entry)"
+                    >
+                      <UIcon name="i-lucide-arrow-up-right" />
+                    </button>
+                  </div>
+                </template>
+              </template>
             </div>
           </div>
         </div>
@@ -136,6 +202,14 @@ function time(value: number) {
   </section>
 </template>
 <style scoped>
+.session-child {
+  padding-inline-start: 1.5rem;
+}
+.session-label > .iconify {
+  vertical-align: -0.125em;
+  margin-inline-end: 0.375rem;
+}
+
 .session-history {
   grid-column: 1 / -1;
   --session-row-height: 4rem;
@@ -193,6 +267,7 @@ function time(value: number) {
   grid-template-rows: 1fr;
 }
 .session-content-clip {
+  min-width: 0;
   min-height: 0;
   overflow: hidden;
 }
@@ -219,11 +294,12 @@ function time(value: number) {
 .session-rows {
   height: 100%;
   overflow-y: auto;
+  overflow-x: hidden;
   scrollbar-gutter: stable;
 }
 .session-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto 1.25rem;
+  grid-template-columns: minmax(0, 1fr) auto 1.75rem;
   grid-template-rows: auto auto;
   align-items: center;
   gap: 0.125rem 1rem;
@@ -360,7 +436,7 @@ function time(value: number) {
     padding-inline: 0;
   }
   .session-row {
-    grid-template-columns: minmax(0, 1fr) auto 1rem;
+    grid-template-columns: minmax(0, 1fr) auto 1.75rem;
     gap: 0.25rem 0.5rem;
   }
   .session-row code {

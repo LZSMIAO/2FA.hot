@@ -119,9 +119,13 @@ function hoverGreet() {
   outline-offset: 2px;
 }
 @media (max-width: 700px) {
-  .desert-accent,
+  .desert-accent {
+    height: 0;
+    overflow: hidden;
+  }
   .desert-accent.is-open {
     height: 11rem;
+    overflow: visible;
   }
   .desert-scene {
     top: -1.5rem;

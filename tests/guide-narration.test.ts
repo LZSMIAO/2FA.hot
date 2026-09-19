@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
+import { supportedLocales } from '../shared/locales.ts'
 import {
   narrationLanguage,
   narrationText,
@@ -7,9 +8,9 @@ import {
   selectNarrationVoice
 } from '../app/utils/guide-narration.ts'
 
-test('narration is available for the supported English and Chinese locales', () => {
-  for (const locale of ['en', 'zh-CN', 'zh-TW']) assert.ok(narrationLanguage(locale))
-  assert.equal(narrationLanguage('ja'), undefined)
+test('narration recognizes all site languages and refuses unknown locales', () => {
+  for (const { code } of supportedLocales) assert.ok(narrationLanguage(code))
+  assert.equal(narrationLanguage('unknown'), undefined)
 })
 test('Chinese narration uses intelligible terms and keeps the sentence together', () => {
   for (const lang of ['zh-CN', 'zh-TW']) {
@@ -36,4 +37,16 @@ test('voice choice is language-safe and independent of platform list ordering', 
   )
   assert.equal(selectNarrationVoice(voices, 'zh-TW'), undefined)
   assert.equal(selectNarrationVoice([], 'zh-CN'), undefined)
+  assert.equal(selectNarrationVoice(voices, 'ja'), undefined)
+  const french = [{ name: 'French', lang: 'fr-FR', default: false }]
+  assert.equal(selectNarrationVoice(french, 'fr')?.lang, 'fr-FR')
+  assert.equal(selectNarrationVoice(french, 'de'), undefined)
+})
+
+test('non-English narration keeps translated wording and splits local punctuation', () => {
+  assert.equal(narrationText('Utilisez 2FA sur 2fa.hot.', 'fr'), 'Utilisez 2FA sur 2fa.hot.')
+  assert.deepEqual(
+    narrationSegments('ما هذا؟ هذا رمز.', 'ar').map((part) => part.text),
+    ['ما هذا؟', 'هذا رمز.']
+  )
 })

@@ -298,3 +298,18 @@ export const passkeyCopy: Record<'en' | 'zh-CN' | 'zh-TW', PasskeyCopy> = {
       '網頁無法靜默新增此擴充功能。商店上架後，安裝按鈕會帶你前往官方商店，由你確認安裝。'
   }
 }
+
+/** Use the same reactive catalog as the rest of the website. */
+export function translatedPasskeyCopy(tx: (source: string) => string): PasskeyCopy {
+  function translate(value: unknown): unknown {
+    if (typeof value === 'string') return tx(value)
+    if (Array.isArray(value)) return value.map(translate)
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>).map(([key, entry]) => [
+        key,
+        translate(entry)
+      ])
+    )
+  }
+  return translate(passkeyCopy['zh-CN']) as PasskeyCopy
+}

@@ -1,0 +1,307 @@
+{
+  "about": {
+    "introduction": [
+      "Minecraft'tan ilham alan tasarımıyla çok işlevli çevrimiçi 2FA aracı. Güncel doğrulama kodunu almak için 2FA anahtarını yapıştırın. Doğrudan bağlantıları destekler, kodlar yerel üretilir.",
+      "Toplu veriyi otomatik algılayıp ona geçer, çeşitli anahtar biçimlerini tanır—ister Excel'den kopyalanmış boktan bir biçim, ister ne yaptığını bilmeyip anahtarla birlikte parolayı da kopyalayan müşteriniz olsun, girdiyi tanır ve uygun uyarıları verir.",
+      "İsteğe bağlı sesli anlatımı olan, kolay izlenen adım adım rehber, anahtarla hesaba giriş yapmayı öğretir!",
+      "Daha fazla özellik entegre ediliyor…"
+    ],
+    "sections": [
+      {
+        "title": "Tam olarak neler yapabilir?",
+        "blocks": [
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Aklınızda bir özellik mi var? [Özellik istek listesine](https://2fa.hot/waitlist) bakın, fikirlerinizi GitHub'da paylaşın."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": true,
+            "lines": [
+              "[Lite](https://2fa.hot/lite?lang=en): animasyon, ses veya ana uygulama çatısı olmadan tek anahtarlı kodlar, kopyalama ve parça bağlantıları. 30 dil; IE11 uyumluluğunu hedefler."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": true,
+            "lines": [
+              "Tekli ve toplu kodlar: Base32 anahtarlarını ve otpauth:// yapılandırma bağlantılarını destekler.",
+              "QR içe aktarma: görseller, sürükleyip bırakma veya kamera; Google Authenticator dışa aktarımları, çoklu hesaplar ve çok parçalı aktarımlar desteklenir. Tüm parçaları toplayıp gereken hesapları seçin.",
+              "Doğrudan bağlantılar: güncel kodu gösteren parça bağlantıları, tek tıkla kopyalama ve toplu bağlantı üretimi.",
+              "Yerel geçmiş: varsayılan kapalı; isteğe bağlı depolama ve şifreleme, yedekleme ve geri yükleme.",
+              "30 dil: mobil düzenler ve açık/koyu temalar. Yardım mı lazım? Eğitim boyunca elmas kılıcı izleyin."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "TOTP (SHA-1/SHA-256/SHA-512, 6/8 hane) ve Steam Guard (5 karakter, 30 saniye) desteklenir. Steam için shared_secret girin veya maFile JSON içeriğini yapıştırın. HOTP kod üretimi desteklenmez; taşıma dosyalarındaki HOTP/MD5 hesapları çözümlenip dışa aktarılabilir."
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Nasıl kullanılır?",
+        "blocks": [
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": true,
+            "lines": [
+              "2FA anahtarınızı kopyalayıp 2fa.hot'a yapıştırın veya QR kodu içe aktarın.",
+              "Geri sayım bitmeden güncel kodu kopyalayıp kullanın."
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Anahtar depolama ve erişim",
+        "blocks": [
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": true,
+            "lines": [
+              "Ana sayfada kod üretimi ve QR tanıma tamamen tarayıcınızda gerçekleşir.",
+              "Yerel geçmişi açtığınızda kayıtlar tarayıcıda tutulur. Şifreleme için parola belirleyebilir veya boş bırakıp kayıtları doğrudan görebilirsiniz.",
+              "`/2fa#SECRET` kullanın: `#` sonrasındaki parça sayfa isteğinde gönderilmez, araç tarafından yerel okunur. `/2fa/SECRET` anahtarı yol içinde barındırma hizmetine gönderir. Sayfa uyarısı ilk isteği durduramaz; HTTPS yolu alıcısından gizlemez. Yol bağlantıları, parça bağlantısına geçiş eylemi ve açıklaması olan MC Tip gösterir. Yol bağlantısı kullandıysanız özgün hizmette yeni anahtar üretmeyi ve eskisinin geçersizliğini doğrulamayı düşünün. `#` kullanmak geçmiş istekleri geri alamaz. Tam bağlantılar tarayıcı geçmişinde kalabilir; asla herkese açık paylaşmayın."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Son olarak, bunları herkese açık veya güvenmediğiniz kişilerle paylaşmayın. Unutulan yerel geçmiş parolaları kurtarılamaz."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": ["[Gizlilik](https://2fa.hot/privacy)"]
+          }
+        ]
+      },
+      {
+        "title": "Alan adı dramı",
+        "blocks": [
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Başta 2fa.mc istiyordum ama Monaco alan adı siciline sunmak üzere **2FA®** tescil ettiremediğim için vazgeçtim.\n...Bunları yazarken yüzüm hiç kıpırdamasaydı?\nSonra .HOT çıktı. Tamam tamam, kabul: seksi. Geri dönüyoruz."
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Neden yaptım? Tekerleği yeniden mi icat ediyorum?",
+        "blocks": [
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Sınır ötesi e-ticarette çalışan arkadaşlarım, medya hesaplarını yönetmek gibi işler için hesaplara girerken güvenliği de düşünmek zorunda. Benzer ihtiyacı olan daha çok arkadaşa ve internete yeni başlayanlara yardım etmek başlangıç noktasıydı.\nDoğrudan bağlantıyla kod üretenler dahil birçok benzer çevrimiçi araç var. Ama bilmiyorsanız, `/2fa/SECRET` veya `?secret=SECRET` gibi anahtar içeren URL açıldığında anahtar HTTP isteğinde gönderilir. Uzak site hizmeti veya CDN bu veriyi alır, erişim günlüğü, izleme ya da uygulama günlükleriyle kaydedip saklayabilir. Yani bu isteklerdeki anahtarlar düz metin tutulabilir; hesap + parola + 2FA da yapıştırdıysanız ve site onları da yükleyip sakladıysa... BOOM! Elbette gerçekten saklaması uygulamasına, ayarlarına ve gizlilik politikasına bağlı :))"
+            ]
+          },
+          {
+            "spoiler": {
+              "label": "Hikâye",
+              "text": "...2021 civarı, Dördüncü Sanayi Devrimi, insanlık AI çağına girdi. O zamandan beri kötüye kullananları görüyorum—profesyonel programcılar bile bu boku yapıyor—yalnızca 5 dakikada lanet olası gradyanlı, hizası bozuk, 100 farklı UI tasarım stili ve 1.000 öğesi olan arayüz üretiyorlar.\nMesajlarıma cevap vermeye bile cesaret edemeyen bazıları gibi: AI ile derme çatma çöp sistem yapıp gri piyasa kullanıcılarına satarak servet kazanıyorlar.\n…Bunların hepsi midemi bulandırıyor. Yataktan sürünerek çıkıp tekrar tekrar kustum. Ne yazık ki sağlamca tutulmadım.\n\nYapmak istediğim her şeyi zenginler çoktan yaptı. 2fa.hot'ın neredeyse tamamı Vibe Coding ile yapıldı—tabii yayınlamadan önce az çok tatmin olana kadar düzelttim. İş arkadaşlarımla yaptığımız bazı projelerde olduğu gibi, hemen çıkarmak istiyoruz ama standartlarımızı karşılayana kadar düzeltmeyi bırakamıyoruz; sonunda hiç yayınlanmıyorlar. Bazı projeler bir gün bunu okuyanlara tanıdık gelebilir, bizim yaptığımızı bilmeseniz de. Altı yıl öncesine dönüp Premiere Pro'yu açmak, üretime dalıp hiç yorulmamak gibi. Ama artık video yapamıyorum. Düşündürüyor.\nSöylemek istediğim her şey önceden söylendi. AI karşıtı değilim. Altı yıl önce beşerî bilimler okuyordum; lanet olası bir siteyi internete nasıl koyacağımı bile bilmiyor olabilirdim. Bazılarının AI'ı iyi kullanmasını umuyorum. İş yapmanıza yardım edebilir ama asla siz olamaz. Asla. Düşüncelerinizi veya hayatınızı onunla değiştirmeyin; kendinizin bile kurcalamaya üşendiği, deneyimi bozan hatalar ve mantıkla dolu tasarımlar üretmeyin… localhost'ta açıp 100 kez daha düzeltin. Yoksa sizin değildir. Yayınlayıp herkesi iğrendirmeyin. Satmak mı? Hak etmiyorsunuz. Gri piyasa sektörlerinde debelenip duracaksınız.\nİstediğim adalet, adaletsizlerin uydurduğu kurgudan ibaret. Bugünün hızlı hayatını değiştiremeyeceğimi veya o şeyleri durduramayacağımı biliyorum. Onları."
+            },
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": []
+          }
+        ]
+      }
+    ]
+  },
+  "guides": [
+    {
+      "slug": "what-is-2fa",
+      "title": "2FA nedir? TOTP doğrulayıcı kodları nasıl çalışır?",
+      "description": "İki faktörlü kimlik doğrulamayı, gizli anahtar ile kod arasındaki farkı ve mevcut kurulum anahtarıyla TOTP üreticisini kullanmayı öğrenin.",
+      "sources": [
+        {
+          "title": "RFC 6238: TOTP algoritması",
+          "url": "https://www.rfc-editor.org/rfc/rfc6238"
+        },
+        {
+          "title": "Google: Google Authenticator ile doğrulama kodları alın",
+          "url": "https://support.google.com/accounts/answer/1066447?hl=en"
+        }
+      ],
+      "sections": [
+        {
+          "id": "meaning",
+          "title": "İki faktörlü kimlik doğrulamanın anlamı",
+          "paragraphs": [
+            "İki faktörlü kimlik doğrulama (2FA), giriş sırasında iki farklı kanıt türünü birleştirir. Parola bildiğiniz bir şeydir. Kurulum anahtarını tutan doğrulayıcı, sahip olduğunuz bir şey olarak kanıt sunabilir. Hizmet hesabınıza erişim vermeden önce ikisini de denetler.",
+            "2FA bir kategoridir, tek bir kod biçimi değildir. SMS, doğrulayıcı kodu ve donanım güvenlik anahtarı aynı giriş akışında yer alabilir ama farklı çalışırlar. Bu araç, elinizdeki gizli anahtardan zamana dayalı tek kullanımlık parolalar (TOTP) üretir. SMS alamaz veya anlık bildirim onaylayamaz."
+          ]
+        },
+        {
+          "id": "secret-and-code",
+          "title": "Kurulum anahtarı, doğrulama kodundan farklıdır",
+          "paragraphs": [
+            "Hizmet doğrulayıcı kurulumu sunarken genellikle QR kodu, bazen de metin kurulum anahtarı gösterir. Bu anahtar uzun ömürlü gizli veridir. Tipik Base32 gösterimi A–Z harflerini ve 2–7 rakamlarını kullanır. otpauth URI, anahtarı hesap etiketi ve kod uzunluğu gibi ayarlarla paketler.",
+            "Girişte yazdığınız kısa kod, anahtar ve güncel saatten hesaplanan çıktıdır. Altı haneli kodu anahtar alanına kopyalamak hesabı yeniden oluşturmaz. Kurulum anahtarını ve doğrulayıcı erişimini kaybettiyseniz özgün hizmetin kurtarma sürecini veya kayıtlı kurtarma kodlarını kullanın."
+          ]
+        },
+        {
+          "id": "using-totp",
+          "title": "Mevcut anahtardan TOTP kodu üretin",
+          "paragraphs": [
+            "Aynı zaman aralığında eşleşen anahtarlar ve TOTP ayarları eşleşen kodları üretir. 2fa.hot varsayılanları SHA-1, altı hane ve 30 saniyedir. Bazı hizmetler farklı ayarlar kullanır; içe aktarılan yapılandırmanın parametrelerini koruyun."
+          ],
+          "steps": [
+            "Üreticiyi açıp mevcut kurulum anahtarını veya otpauth URI'yi yapıştırın ya da QR görselini içe aktarın.",
+            "Varsayılandan farklıysa algoritma, hane ve süreyi özgün hizmetle karşılaştırın.",
+            "Güncel kodu doğrulama isteyen hizmete kopyalayın. Geri sayım bitmek üzereyse sonraki kodu bekleyin."
+          ]
+        },
+        {
+          "id": "limits",
+          "title": "İkinci faktörünüzü nerede tutacağınızı seçin",
+          "paragraphs": [
+            "Gerçek kurulum anahtarını girmeden önce güvenilir cihaz kullanın ve siteyi inceleyin. Ana sayfada üretim ve QR çözümleme tarayıcıda gerçekleşir. İsteğe bağlı geçmiş o tarayıcıda kalır, parolayla korunabilir. Doğrudan /2fa/SECRET bağlantısı farklıdır: yolu barındırma hizmetine ulaşır ve tarayıcı geçmişinde kalabilir.",
+            "Çevrimiçi üretici cihazı veya hesabı kimlik avına karşı bağışık yapmaz. Anahtarınızı ele geçiren kişi de kod üretebilir. Anahtar açığa çıktıysa özgün hizmette doğrulayıcı kurulumunu değiştirin. Kurtarma seçeneklerini hazır tutun; destekleniyorsa ayrı doğrulayıcı veya kimlik avına dayanıklı güvenlik anahtarı düşünün."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "totp-code-not-working",
+      "title": "2FA kodu çalışmıyor mu? Geçersiz TOTP kodlarını düzeltin",
+      "description": "Hizmet doğrulayıcı kodunu reddettiğinde cihaz saatini, süresi dolan kodları, kurulum anahtarını ve TOTP parametrelerini denetleyin.",
+      "sources": [
+        {
+          "title": "RFC 6238: doğrulama ve saat eşitleme",
+          "url": "https://www.rfc-editor.org/rfc/rfc6238"
+        },
+        {
+          "title": "Google Authenticator: sorun giderme ve cihaz saati",
+          "url": "https://support.google.com/accounts/answer/1066447?hl=en"
+        }
+      ],
+      "sections": [
+        {
+          "id": "clock",
+          "title": "Cihaz saatinden başlayın",
+          "paragraphs": [
+            "Üretici kod gösteriyor ama hizmet reddediyorsa önce üreticiyi çalıştıran cihazın saatini kontrol edin. TOTP güncel zamanı kullanır; ileri veya geri saat, sunucunun beklediğinden farklı kod üretebilir.",
+            "İşletim sisteminde otomatik tarih ve saati açın, eşitlenmesini bekleyip yeni kodu deneyin. Asıl saat yanlışsa yalnızca görüntülenen saat dilimini değiştirmek çözmez. Modern Google Authenticator da işletim sistemi saatini kullanır; eski uygulama içi saat düzeltme ayarı 7.0 ve sonrasında yoktur."
+          ]
+        },
+        {
+          "id": "expiry",
+          "title": "Doğru hesap için yeni kod kullanın",
+          "paragraphs": [
+            "Geri sayımın sonuna doğru kopyalanan kod, gönderilmeden önce geçersizleşebilir. Sonraki aralığı bekleyin, bir kez kopyalayıp hemen gönderin. Panodaki eski değeri tekrar tekrar denemeyin. Özgün hizmet kabul ettiği saat farkını belirler, yinelenen denemeleri de sınırlayabilir.",
+            "Giriş yaptığınız hesabı kontrol edin. Aynı hizmetteki iki hesabın genellikle ayrı anahtarları olur. Hesap etiketi yalnızca hatırlatıcıdır; etiketi değiştirmek anahtarın ait olduğu hesabı değiştirmez."
+          ]
+        },
+        {
+          "id": "settings",
+          "title": "Anahtarı ve yapılandırmayı karşılaştırın",
+          "paragraphs": [
+            "2fa.hot; SHA-1, SHA-256 veya SHA-512, altı veya sekiz hane ve yapılandırılmış süreyle TOTP destekler. Varsayılanlar SHA-1, altı hane ve 30 saniyedir. İçe aktarılan otpauth URI farklı değerler taşıyabilir. Her hesabı varsayılana zorlamak yerine bu değerleri koruyun.",
+            "Anahtarda eksik karakter, yakın zamanda sıfırlanan doğrulayıcı kaydı veya farklı kod türü sürekli başarısızlığa yol açabilir. Steam hesaplarında Steam Guard seçip hesabın shared_secret değerini kullanın. Sayaç tabanlı HOTP kodları burada üretilmez. Geçerli görünen sonuç, özgün hizmetin kabul edeceğini kanıtlamaz."
+          ],
+          "steps": [
+            "Kayıtlı kurulum anahtarını güvenilir cihazınızdaki özgün kayıt bilgileriyle karşılaştırın.",
+            "Anahtar kaydedildikten sonra hesabın iki faktörlü kurulumunun sıfırlanıp sıfırlanmadığını denetleyin.",
+            "Hesabın TOTP kullandığını ve algoritma, hane, sürenin eşleştiğini doğrulayın.",
+            "Nedeni düzelttikten sonra yeni kodla bir kez deneyin; hizmetin deneme sınırlarına uyun."
+          ]
+        },
+        {
+          "id": "recovery",
+          "title": "Hesap kurtarma ne zaman kullanılmalı?",
+          "paragraphs": [
+            "Güncel anahtar veya kayıtlı doğrulayıcı artık elinizde değilse eski anahtardan daha çok kod üretmek erişimi geri getirmez. Kayıtlı kurtarma kodunu ya da başka kayıtlı giriş yöntemini deneyin veya özgün hizmetin resmî kurtarma sayfasına başvurun.",
+            "2fa.hot o hizmetteki hesabınızı yönetmez, ikinci faktör zorunluluğunu kaldıramaz ve geçici koddan kayıp kurulum anahtarını kurtaramaz. Yardım isterken anahtarı, QR görselini, doğrudan bağlantıyı veya kurtarma kodlarını paylaşmadan hata ve ayarları anlatın."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "google-authenticator-import",
+      "title": "Google Authenticator QR dışa aktarımlarını 2fa.hot'a alın",
+      "description": "Google Authenticator dışa aktarım QR kodlarını alın, çok parçalı QR'ları işleyin, hesapları inceleyin ve tarayıcıda nelerin saklandığını öğrenin.",
+      "sources": [
+        {
+          "title": "Google: Authenticator kodlarınızı aktarın",
+          "url": "https://support.google.com/accounts/answer/1066447?hl=en"
+        },
+        {
+          "title": "2fa.hot proje bilgisi ve desteklenen özellikler",
+          "url": "https://github.com/LZSMIAO/2fa-hot"
+        }
+      ],
+      "sections": [
+        {
+          "id": "before",
+          "title": "İçe aktarmadan önce gerekenler",
+          "paragraphs": [
+            "Dışa aktarmak istediğiniz Google Authenticator kayıtlarına erişiminiz gerekir. Değişen altı haneli kodun ekran görüntüsü, dışa aktarım QR kodu değildir. Dışa aktarım görselleri hesap kurulum anahtarları içerir; güvenilir cihaz kullanın, görselleri ortak klasörlere veya herkese açık destek taleplerine koymayın.",
+            "İçe aktarım verdiğiniz yapılandırmayı okur. Google'a giriş yapmaz, Google hesabınıza bağlanmaz veya artık dışa aktarılamayan kayıtları kurtarmaz. 2fa.hot hesabınız olması gerekmez."
+          ]
+        },
+        {
+          "id": "transfer",
+          "title": "Hesapları dışa aktarın, içe alın ve inceleyin",
+          "paragraphs": [
+            "Google Authenticator seçilen kayıtları dışa aktarım QR kodlarıyla taşıyabilir. Menü yeri sürüme göre değişebilir. Bu taşıma dışa aktarımları için 2fa.hot'ta Google Authenticator içe aktarma seçeneğini kullanın; normal hizmet kayıt QR'ları standart QR içe aktarma akışını kullanabilir."
+          ],
+          "steps": [
+            "Google Authenticator'da Hesapları aktar, ardından Hesapları dışa aktar'ı açın; istenirse cihaz doğrulamasını tamamlayın.",
+            "Aktarılacak hesapları seçip QR kodunu gösterin. Birden fazla parça varsa hepsini hazır tutun.",
+            "Üreticide QR içe aktar, ardından Google Authenticator'ı açın. Dışa aktarımı tarayın veya kayıtlı görselini seçin.",
+            "Aynı dışa aktarımın tüm parçalarını alın. Çözümlenen hesapları inceleyip uygulamadan önce gereken kayıtları seçin.",
+            "Seçili bir TOTP kaydını aynı zaman aralığında özgün doğrulayıcıyla karşılaştırın."
+          ]
+        },
+        {
+          "id": "multiple-parts",
+          "title": "Birden fazla QR kodu ve desteklenmeyen kayıtlar",
+          "paragraphs": [
+            "Büyük dışa aktarımlar birkaç QR koduna yayılabilir. Ayrı dışa aktarımların ekran görüntülerini karıştırmak yerine tek dışa aktarımın tamamını alın. İçe aktarıcı parçaları izler, tekrarlanan taramaları algılar. Eksik parça varsa özgün dışa aktarıma dönüp o parçayı net çekin.",
+            "Google Authenticator taşıma verisi, burada kod üretimi desteklenmeyen biçimler içerebilir. 2fa.hot SHA-1, SHA-256 veya SHA-512 ile altı veya sekiz haneli TOTP üretir. HOTP veya MD5 taşıma kayıtlarını çözümleyip dışa aktarabilir ama kodlarını üretmez. Her içe aktarılan kaydın kullanılabildiğini varsaymayın; sonucu inceleyin."
+          ]
+        },
+        {
+          "id": "storage",
+          "title": "İçe aktarımdan sonra ne olur?",
+          "paragraphs": [
+            "QR çözümleme tarayıcıda gerçekleşir. İçe aktarım yerel geçmişi otomatik açmaz. Kayıtları sonra kullanmak istiyorsanız geçmişi açıkça etkinleştirip parolayla koruyup korumayacağınızı seçin. Tarayıcı depolaması yalnızca bu tarayıcıya aittir, otomatik cihaz eşitlemesi değildir.",
+            "Kayıtları ve kurtarma seçeneklerini doğrulayana kadar özgün doğrulayıcıyı erişilebilir tutun. Tarayıcı verilerini temizlemek yerel kayıtları kaldırabilir. Parolalı geçmiş parolasını gerektirir; kayıp parolayı site kurtaramaz. Doğrudan erişim bağlantısı URL'sinde anahtarı gösterir; herkese açık hesap referansı olarak kullanılmamalıdır."
+          ]
+        }
+      ]
+    }
+  ]
+}

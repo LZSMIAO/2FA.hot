@@ -16,7 +16,20 @@ export function useInterfaceLocale() {
       modal: { close: tx('关闭') },
       toast: { close: tx('关闭') },
       alert: { close: tx('关闭') },
-      dropdownMenu: { noMatch: tx('没有结果'), search: tx('搜索…') }
+      dropdownMenu: { noMatch: tx('没有结果'), search: tx('搜索…') },
+      selectMenu: {
+        ...en.messages.selectMenu,
+        noData: tx('没有结果'),
+        noMatch: tx('没有结果'),
+        search: tx('搜索…')
+      },
+      inputMenu: {
+        ...en.messages.inputMenu,
+        noData: tx('没有结果'),
+        noMatch: tx('没有结果')
+      },
+      slideover: { close: tx('关闭') },
+      drawer: { close: tx('关闭') }
     }
   }))
   useHead(() => ({ htmlAttrs: { lang: current.value.language, dir: current.value.dir } }))

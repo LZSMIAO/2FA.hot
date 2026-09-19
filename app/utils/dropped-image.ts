@@ -4,6 +4,9 @@ const imageTypes = ['image/png', 'image/jpeg', 'image/webp']
 export function hasImageDrop(
   data: Pick<DataTransfer, 'types'> & Partial<Pick<DataTransfer, 'items' | 'files' | 'getData'>>
 ) {
+  const types = Array.from(data.types)
+  // Spreadsheet drags may include a rendered image alongside their text.
+  if (types.includes('text/plain') && !types.includes('text/uri-list')) return false
   const files = Array.from(data.files || [])
   if (files.length) return files.some((file) => file.type.startsWith('image/'))
   const items = Array.from(data.items || []).filter((item) => item.kind === 'file')

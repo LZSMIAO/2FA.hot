@@ -2,6 +2,9 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { gzipSync } from 'node:zlib'
 import vm from 'node:vm'
+import { stripTypeScriptTypes } from 'node:module'
+import { supportedLocales } from '../shared/locales.ts'
+import { escapeLiteText } from '../shared/lite-language.ts'
 import test from 'node:test'
 
 // No Web Crypto, typed arrays, Promise or modern URL APIs: IE11's fallback path.
@@ -175,5 +178,43 @@ test('Lite follows the main theme without writing a preference, including system
   for (const file of ['lite.ts', 'lite-help.ts']) {
     const html = readFileSync(new URL('../server/templates/' + file, import.meta.url), 'utf8')
     assert.ok(html.indexOf('/lite-assets/theme.js') < html.indexOf('<body>'))
+  }
+})
+
+test('Lite localization preserves every control and script in every available language', () => {
+  const source = readFileSync(new URL('../server/templates/lite.ts', import.meta.url), 'utf8')
+  const catalogs = JSON.parse(
+    readFileSync(new URL('../shared/lite-copy.json', import.meta.url), 'utf8')
+  )
+  const scope = vm.createContext({
+    supportedLocales,
+    escapeLiteText,
+    liteContent: (language: string) => catalogs[language]
+  })
+  vm.runInContext(
+    stripTypeScriptTypes(
+      source.replace(/^import .*$/gm, '').replace('export function', 'function')
+    ),
+    scope
+  )
+  const template = source.match(/const template = `([\s\S]*?)`/)![1]!
+  const ids = [...template.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1])
+  for (const locale of supportedLocales.filter((item) => catalogs[item.code])) {
+    const html = scope.litePage(locale.code)
+    for (const id of ids)
+      assert.ok(html.includes('id="' + id + '"'), locale.code + ': missing ' + id)
+    assert.ok(html.includes('/lite-assets/ui.js'), locale.code + ': missing runtime')
+    const messages = html.match(
+      /<script id="lite-messages" type="application\/json">(.*?)<\/script>/
+    )![1]!
+    assert.deepEqual(
+      JSON.parse(messages),
+      catalogs[locale.code].ui,
+      locale.code + ': initial translations'
+    )
+    assert.ok(
+      html.includes(escapeLiteText(catalogs[locale.code].ui.algorithm)),
+      locale.code + ': missing algorithm label'
+    )
   }
 })

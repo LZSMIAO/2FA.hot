@@ -143,7 +143,7 @@ const hint = computed(
                 color="neutral"
                 variant="outline"
                 size="sm"
-                :icon="copied && copiedAddress === address ? 'i-lucide-check' : 'i-lucide-copy'"
+                :icon="copied && copiedAddress === address ? 'i-mc-check' : 'i-lucide-copy'"
                 @click="copyAddress(address)"
                 >{{
                   copied && copiedAddress === address ? copy.copiedAddress : copy.copyAddress

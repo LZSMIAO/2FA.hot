@@ -64,15 +64,43 @@ onBeforeUnmount(() => {
         <div v-if="qr && mode === 'qr'" class="qr-image">
           <img :src="qr" :alt="tx('包含当前密钥的 TOTP 配置二维码')" width="288" height="288" />
         </div>
-        <p>
-          {{
-            tx(
-              mode === 'qr'
-                ? '二维码和配置文件包含密钥，请仅交给需要使用的人。'
-                : '此链接包含密钥，会出现在网址与浏览器历史中。请仅交给需要使用的人。'
-            )
-          }}
-        </p>
+        <div class="export-notice">
+          <p>
+            {{
+              tx(
+                mode === 'qr'
+                  ? '二维码和配置文件包含密钥，请仅交给需要使用的人。'
+                  : '链接含密钥，会留在浏览器历史中，请谨慎分享。'
+              )
+            }}
+          </p>
+          <UPopover
+            v-if="mode === 'link'"
+            mode="hover"
+            :open-delay="0"
+            :close-delay="100"
+            enable-touch
+            arrow
+            :content="{ side: 'top', align: 'end', sideOffset: 2 }"
+            :ui="{ content: 'parameter-help-tooltip h-auto', arrow: 'parameter-help-arrow' }"
+          >
+            <button type="button" class="link-info" :aria-label="tx('为什么使用 #？')">
+              <UIcon name="i-lucide-info" aria-hidden="true" />
+            </button>
+            <template #content>
+              <div class="link-info-content">
+                <strong>{{ tx('为什么使用 #？') }}</strong>
+                <p>
+                  {{
+                    tx(
+                      '片段链接将密钥放在 # 后面，由浏览器读取和计算，不随页面请求发送。完整链接仍包含密钥，请勿公开分享。'
+                    )
+                  }}
+                </p>
+              </div>
+            </template>
+          </UPopover>
+        </div>
         <textarea
           :value="value"
           readonly
@@ -93,7 +121,7 @@ onBeforeUnmount(() => {
           >{{ tx('下载 PNG') }}</UButton
         ><UButton
           class="primary-button"
-          :icon="copied ? 'i-lucide-check' : 'i-lucide-copy'"
+          :icon="copied ? 'i-mc-check' : 'i-lucide-copy'"
           @click="copy(value)"
           >{{ tx(copied ? '已复制' : mode === 'qr' ? '复制配置 URI' : '复制获取链接') }}</UButton
         >
@@ -102,6 +130,43 @@ onBeforeUnmount(() => {
   >
 </template>
 <style scoped>
+.export-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--control-gap, 0.5rem);
+}
+.export-notice p {
+  flex: 1;
+}
+.link-info {
+  display: grid;
+  place-items: center;
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ui-text-muted);
+  cursor: default;
+}
+.link-info .iconify {
+  width: 16px;
+  height: 16px;
+}
+.link-info:hover,
+.link-info:focus-visible {
+  color: var(--ui-text-highlighted);
+}
+.link-info:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.link-info-content {
+  display: grid;
+  gap: 0.375rem;
+}
+
 .qr-image {
   background: white;
   width: 288px;

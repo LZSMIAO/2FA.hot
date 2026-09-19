@@ -67,13 +67,57 @@
   box-sizing: border-box;
 }
 html {
-  overflow-x: clip;
-  scrollbar-gutter: stable;
   touch-action: manipulation;
+}
+/* Anchor arrival is an out-of-flow pixel pointer, never a full-width highlight. */
+.anchor-arrival-active {
+  position: relative;
+}
+.anchor-arrival-active::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: -2.5rem;
+  top: calc(0.75em - 10px);
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  clip-path: polygon(0 45%, 75% 45%, 45% 15%, 52% 8%, 94% 50%, 52% 92%, 45% 85%, 75% 55%, 0 55%);
+  pointer-events: none;
+  animation: anchor-pointer-arrive 2.2s ease-out both;
+}
+@keyframes anchor-pointer-arrive {
+  0% {
+    opacity: 1;
+    transform: translateX(-4px);
+  }
+  10%,
+  90% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+}
+[dir='rtl'] .anchor-arrival-active::before {
+  scale: -1 1;
+}
+@media (max-width: 700px) {
+  .anchor-arrival-active::before {
+    inset-inline-start: -1.5rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .anchor-arrival-active::before {
+    animation: none;
+  }
+}
+:is(h1, h2, h3, h4, h5, h6).anchor-arrival-target:focus {
+  outline: none;
 }
 body {
   width: 100%;
-  overflow-x: clip;
   touch-action: manipulation;
   margin: 0;
   background: var(--canvas);
@@ -83,11 +127,9 @@ body {
   font-kerning: normal;
   -webkit-font-smoothing: antialiased;
 }
-@supports (scrollbar-gutter: stable) {
-  body {
-    /* The stable root gutter already reserves this space when a modal locks scrolling. */
-    padding-right: 0 !important;
-  }
+body {
+  /* Content reserves its own scrollbar width; scroll-lock padding would count it twice. */
+  padding-right: 0 !important;
 }
 button,
 a,
@@ -617,7 +659,6 @@ html.light .workspace .parameter-moon {
   animation-duration: 280ms;
   animation-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
 }
-::view-transition-old(otp-result),
 ::view-transition-old(root) {
   display: none;
 }
@@ -625,15 +666,38 @@ html.light .workspace .parameter-moon {
 ::view-transition-image-pair(otp-result) {
   overflow: visible;
 }
+::view-transition-old(otp-result),
 ::view-transition-new(otp-result) {
   height: 100%;
+  width: 100%;
+  object-fit: fill;
   overflow: visible;
   mix-blend-mode: normal;
-  animation: none;
 }
-/* Keep the help link visible until the size transition has finished. */
+::view-transition-old(otp-result) {
+  animation: otp-card-out 140ms ease-out both;
+}
+::view-transition-new(otp-result) {
+  animation: otp-card-in 140ms ease-out both;
+}
+@keyframes otp-card-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes otp-card-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/* Never carry the standalone help link onto the home page during shrinking. */
+::view-transition-old(otp-help) {
+  display: none;
+}
 ::view-transition-group(otp-help),
-::view-transition-old(otp-help),
 ::view-transition-new(otp-help) {
   animation: none;
 }

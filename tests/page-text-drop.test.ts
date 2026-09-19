@@ -118,7 +118,7 @@ test('other editors, dialogs and inactive workspaces keep their own text handlin
 test('files, empty text and previously handled drops do not replace the secret', (t) => {
   const c = setup(t)
   const file = textData()
-  file.types.push('Files')
+  file.types = ['Files']
   file.files.push(new File(['qr'], 'qr.png', { type: 'image/png' }))
   assert.equal(c.dispatch('drop', c.input, file).defaultPrevented, false)
   assert.equal(c.dispatch('drop', c.input, textData('  ')).defaultPrevented, true)
@@ -148,4 +148,13 @@ test('text highlight clears when leaving the page, cancelling, or moving over an
   c.dispatch('dragover', other)
   assert.equal(c.dragging.value, false)
   assert.deepEqual(c.received, [])
+})
+
+test('spreadsheet text wins over its accompanying rendered image', (t) => {
+  const c = setup(t)
+  const data = textData('account\tJBSWY3DPEHPK3PXP')
+  data.types.push('Files')
+  data.files.push(new File(['bitmap'], 'image.png', { type: 'image/png' }))
+  assert.equal(c.dispatch('drop', c.input, data).defaultPrevented, true)
+  assert.deepEqual(c.received, ['account\tJBSWY3DPEHPK3PXP'])
 })

@@ -21,6 +21,10 @@ export interface VaultRecord extends OtpConfig {
   id: string
   note: string
   usedAt: number
+  batchId?: string
+}
+export interface SessionRecord extends VaultRecord {
+  batch?: readonly OtpConfig[]
 }
 function validRecords(value: unknown): VaultRecord[] {
   if (!Array.isArray(value) || value.length > 1000)
@@ -31,6 +35,8 @@ function validRecords(value: unknown): VaultRecord[] {
       !r ||
       typeof r.id !== 'string' ||
       ids.has(r.id) ||
+      (r.batchId !== undefined &&
+        (typeof r.batchId !== 'string' || !r.batchId || r.batchId.length > 120)) ||
       typeof r.note !== 'string' ||
       r.note.length > 1000 ||
       !Number.isFinite(r.usedAt) ||
@@ -38,7 +44,13 @@ function validRecords(value: unknown): VaultRecord[] {
     )
       throw new Error('历史数据格式不正确。')
     ids.add(r.id)
-    return { ...validateOptions(r), id: r.id, note: r.note, usedAt: r.usedAt }
+    return {
+      ...validateOptions(r),
+      id: r.id,
+      note: r.note,
+      usedAt: r.usedAt,
+      ...(r.batchId ? { batchId: r.batchId } : {})
+    }
   })
 }
 export function createVault() {
@@ -47,12 +59,12 @@ export function createVault() {
     key = shallowRef<CryptoKey>(),
     busy = shallowRef(false),
     issue = shallowRef('')
-  const recent = shallowRef<VaultRecord[]>([])
+  const recent = shallowRef<SessionRecord[]>([])
   const recentVersion = shallowRef(0)
   function remember(configs: OtpConfig[]) {
     const next = [...recent.value]
     for (const config of configs) {
-      const index = next.findIndex((row) => identity(row) === identity(config))
+      const index = next.findIndex((row) => !row.batch && identity(row) === identity(config))
       const previous = index >= 0 ? next.splice(index, 1)[0] : undefined
       next.unshift({
         ...config,
@@ -64,12 +76,31 @@ export function createVault() {
     }
     recent.value = next.slice(0, 100)
   }
+  function rememberBatch(configs: OtpConfig[], id: string) {
+    if (!configs.length) return
+    const previous =
+      recent.value.find((row) => row.id === id) ||
+      recent.value.find((row) => row.batch && JSON.stringify(row.batch) === JSON.stringify(configs))
+    const row: SessionRecord = {
+      ...configs[0]!,
+      id,
+      label: previous?.label || '',
+      issuer: '',
+      note: '',
+      usedAt: Date.now(),
+      batch: configs.map((config) => ({ ...config }))
+    }
+    recent.value = [
+      row,
+      ...recent.value.filter((entry) => entry.id !== id && entry.id !== previous?.id)
+    ].slice(0, 100)
+  }
   function clearRecent() {
     recentVersion.value++
     recent.value = []
   }
   const ready = shallowRef(false),
-    pending = shallowRef<OtpConfig>()
+    pending = shallowRef<{ config: OtpConfig; historyPreview: boolean }>()
   const passwordProtected = computed(() => envelope.value?.version === 1)
   const unlocked = computed(() => envelope.value?.version === 2 || !!key.value),
     enabled = computed(() => envelope.value?.enabled ?? false),
@@ -211,22 +242,37 @@ export function createVault() {
       lastActive = Date.now()
     })
   }
-  async function save(configs: OtpConfig[]) {
+  async function save(configs: OtpConfig[], batchId?: string, replaceBatch = false) {
     return operation(async () => {
       if (!enabled.value || !unlocked.value) return false
-      const next = [...records.value]
+      const incoming = new Set(configs.map(identity))
+      const next = records.value.filter(
+        (row) => !replaceBatch || !batchId || row.batchId !== batchId || incoming.has(identity(row))
+      )
       for (const config of configs) {
-        const sessionRecord = recent.value.find((row) => identity(row) === identity(config))
-        const c = { ...config, label: sessionRecord?.label ?? config.label }
-        const index = next.findIndex((r) => identity(r) === identity(c))
+        const sessionRecord = recent.value.find(
+          (row) => !row.batch && identity(row) === identity(config)
+        )
+        const c = {
+          ...config,
+          label: batchId ? config.label : (sessionRecord?.label ?? config.label)
+        }
+        const index = next.findIndex((r) => identity(r) === identity(c) && r.batchId === batchId)
         if (index >= 0)
           next[index] = {
             ...next[index]!,
-            label: next[index]!.label || c.label,
-            issuer: next[index]!.issuer || c.issuer,
+            label: batchId ? c.label : next[index]!.label || c.label,
+            issuer: batchId ? c.issuer : next[index]!.issuer || c.issuer,
             usedAt: Date.now()
           }
-        else next.unshift({ ...c, id: crypto.randomUUID(), note: '', usedAt: Date.now() })
+        else
+          next.unshift({
+            ...c,
+            id: crypto.randomUUID(),
+            note: '',
+            usedAt: Date.now(),
+            ...(batchId ? { batchId } : {})
+          })
       }
       await commit(next)
       return true
@@ -239,7 +285,7 @@ export function createVault() {
       if (!row) return
       await commit(records.value.map((r) => (r.id === id ? { ...r, label, note } : r)))
       recent.value = recent.value.map((entry) =>
-        identity(entry) === identity(row) ? { ...entry, label, note } : entry
+        !entry.batch && identity(entry) === identity(row) ? { ...entry, label, note } : entry
       )
     })
   }
@@ -248,10 +294,10 @@ export function createVault() {
       if (label.length > 120) throw new Error('标签或备注过长。')
       const row = recent.value.find((entry) => entry.id === id)
       if (!row) return
-      if (enabled.value) {
+      if (enabled.value && !row.batch) {
         if (!unlocked.value) throw new Error('请先开启并解锁本地历史。')
         const next = [...records.value]
-        const index = next.findIndex((entry) => identity(entry) === identity(row))
+        const index = next.findIndex((entry) => !entry.batchId && identity(entry) === identity(row))
         if (index >= 0) next[index] = { ...next[index]!, label }
         else next.unshift({ ...row, label })
         await commit(next)
@@ -309,11 +355,11 @@ export function createVault() {
   async function merge(data: VaultRecord[]) {
     return operation(async () => {
       const next = [...records.value],
-        seen = new Set(next.map(identity))
+        seen = new Set(next.map((r) => identity(r) + ':' + (r.batchId || '')))
       for (const r of validRecords(data))
-        if (!seen.has(identity(r))) {
+        if (!seen.has(identity(r) + ':' + (r.batchId || ''))) {
           next.push({ ...r, id: crypto.randomUUID() })
-          seen.add(identity(r))
+          seen.add(identity(r) + ':' + (r.batchId || ''))
         }
       await commit(next)
     })
@@ -352,6 +398,7 @@ export function createVault() {
     recent: readonly(recent),
     recentVersion: readonly(recentVersion),
     remember,
+    rememberBatch,
     clearRecent,
     records: readonly(records),
     busy: readonly(busy),
@@ -379,7 +426,7 @@ export function createVault() {
     merge
   }
 }
-export const vaultKey: InjectionKey<ReturnType<typeof createVault>> = Symbol('vault')
+export const vaultKey: InjectionKey<ReturnType<typeof createVault>> = Symbol.for('2fa-hot.vault')
 export function useVault() {
   const v = inject(vaultKey)
   if (!v) throw new Error('Vault provider missing')

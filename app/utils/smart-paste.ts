@@ -10,6 +10,7 @@ export interface PasteAnalysis {
   kind: 'single' | 'multiple' | 'review' | 'none'
   candidates: PasteCandidate[]
   issue?: string
+  accounts?: string[]
 }
 const tryParse = (value: string) => {
   try {
@@ -21,18 +22,34 @@ const tryParse = (value: string) => {
 
 function decodeAccountCell(cell: string): string {
   const decoded = cell.replace(/""/g, '"')
-  const rows = decoded
-    .split(/\r\n?|\n/)
-    .map((row) => row.trim())
-    .filter(Boolean)
-  // A cell is an explicit record boundary; only an unambiguous pair may be joined.
-  if (rows.length === 2 && /^[^\s@]+@[^\s@]+\.[a-z]{2,63}$/i.test(rows[0]!) && tryParse(rows[1]!))
-    return rows[0] + '\t' + rows[1]
   return decoded
 }
 
 export function normalizeClipboardText(text: string): string {
-  const cleaned = text
+  // Excel serializes multiline cells as quoted TSV. Separate whole cells before
+  // removing quotes so passwords and recovery addresses cannot bleed into keys.
+  let isolated = text
+  if (text.includes('\t') && text.includes('"')) {
+    const cells: string[] = []
+    let cell = '',
+      quoted = false
+    for (let i = 0; i < text.length; i++) {
+      const char = text[i]!
+      if (char === '"') {
+        if (quoted && text[i + 1] === '"') {
+          cell += '"'
+          i++
+        } else if (quoted || !cell.trim()) quoted = !quoted
+        else cell += char
+      } else if (!quoted && (char === '\t' || char === '\n' || char === '\r')) {
+        cells.push(cell)
+        cell = ''
+      } else cell += char
+    }
+    cells.push(cell)
+    isolated = cells.join('\n')
+  }
+  const cleaned = isolated
     .replace(/^[ \t]*\|[ :|-]+\|[ \t]*$/gm, '')
     .replace(/^[ \t]*\|(.+)\|[ \t]*$/gm, (row, content: string) =>
       /<br\s*\/?\s*>/i.test(content)
@@ -53,27 +70,13 @@ export function normalizeClipboardText(text: string): string {
   const lines = cleaned.split(/\r\n?|\n/).flatMap((line) => {
     const cells = line.replace(/\\\s*$/, '').split('\t')
     // Distinct spreadsheet cells containing complete keys are separate records.
-    return cells.length > 1 && cells.every((cell) => tryParse(cell.trim()))
+    return cells.length > 1 &&
+      (cells.length > 2 ||
+        cells.some((cell) => cell.includes('@')) ||
+        cells.every((cell) => tryParse(cell.trim())))
       ? cells
       : [line.replace(/\\\s*$/, '')]
   })
-  for (let i = 0; i < lines.length - 1; i++) {
-    const account = lines[i]!.trim().replace(/\\$/, '').trim()
-    const parts = lines[i + 1]!.trim().split(/\s+/)
-    const nextAccountOffset = lines
-      .slice(i + 1)
-      .findIndex((line) => /^[^\s@]+@[^\s@]+\.[a-z]{2,63}$/i.test(line.trim()))
-    const blockEnd = nextAccountOffset < 0 ? lines.length : i + 1 + nextAccountOffset
-    if (
-      /^[^\s@]+@[^\s@]+\.[a-z]{2,63}$/i.test(account) &&
-      (parts.length === 1 || parts.every((part) => /^[a-z2-7]{4}$/i.test(part))) &&
-      tryParse(lines[i + 1]!.trim()) &&
-      !lines.slice(i + 2, blockEnd).some((line) => line.trim())
-    ) {
-      lines[i] = account + '\t' + lines[i + 1]!.trim()
-      lines[i + 1] = ''
-    }
-  }
   return lines.join('\n')
 }
 
@@ -114,6 +117,25 @@ export function analyzePaste(text: string): PasteAnalysis {
         if (config) candidates.push({ config, line, source: match[0] })
       }
       continue
+    }
+    // Legacy named rows may contain several complete keys; email ownership is reviewed below.
+    const cells = source
+      .split('\t')
+      .map((cell) => cell.trim())
+      .filter(Boolean)
+    const accountCells = cells.filter((cell) => /^[^\s@]+@[^\s@]+\.[a-z]{2,63}$/i.test(cell))
+    if (cells.length > 1 && accountCells.length === 1) {
+      const keyCells = cells.filter((cell) => cell !== accountCells[0])
+      const configs = keyCells.map(tryParse)
+      if (configs.length && configs.every((config) => config && !config.label)) {
+        for (const config of configs)
+          candidates.push({
+            config: { ...config!, label: accountCells[0]! },
+            line,
+            source
+          })
+        continue
+      }
     }
     const pieces = source.split(/[ \t]+/)
     const complete = pieces
@@ -200,35 +222,64 @@ export function analyzePaste(text: string): PasteAnalysis {
     for (const { match, config } of tokens)
       candidates.push({ config: config!, line, source: match[0] })
   }
-  // Standalone account lines do not establish ownership of nearby secrets.
-  for (let i = 0; i < lines.length; i++) {
-    const account = lines[i]!.source
-    if (!/^[^\s@]+@[^\s@]+\.[a-z]{2,63}$/i.test(account)) continue
-    const nextAccount = lines
-      .slice(i + 1)
-      .find((row) => /^[^\s@]+@[^\s@]+\.[a-z]{2,63}(?:[ \t]|$)/i.test(row.source))
-    for (const candidate of candidates) {
-      if (
-        candidate.line > lines[i]!.line &&
-        candidate.line < (nextAccount?.line ?? Infinity) &&
-        !candidate.config.label
-      ) {
-        candidate.suggestedAccount = account
-        allStructured = false
-      }
+  // An email address is not proof of ownership: it may be a recovery address.
+  // Only a parsed OTP URI provides authoritative account metadata.
+  const unboundAccountText = lines
+    .filter(({ source }) => !/^(?:[a-z][\w+.-]*:\/\/|\/2fa)/i.test(source))
+    .map(({ source }) => source.replace(/[a-z][\w+.-]*:\/\/[^\s]+/gi, ''))
+    .join('\n')
+  const accounts = [
+    ...new Set([
+      ...Array.from(
+        unboundAccountText.matchAll(/[a-z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-z0-9-]+(?:\.[a-z0-9-]+)+/gi),
+        (match) => match[0]
+      ),
+      ...candidates.map((candidate) => candidate.config.label).filter(Boolean)
+    ])
+  ]
+  for (const candidate of candidates) {
+    if (
+      candidate.config.label.includes('@') &&
+      !/^(?:[a-z][\w+.-]*:\/\/|\/2fa)/i.test(candidate.source)
+    ) {
+      candidate.config.label = ''
+      allStructured = false
     }
   }
+  // Suggest only one-email/one-key blocks. This is a hint, never ownership metadata.
+  let blockAccounts: string[] = []
+  let blockCandidates: PasteCandidate[] = []
+  const flushSuggestion = () => {
+    if (blockAccounts.length === 1 && blockCandidates.length === 1) {
+      const candidate = blockCandidates[0]!
+      if (!candidate.config.label) candidate.suggestedAccount = blockAccounts[0]
+    }
+    blockAccounts = []
+    blockCandidates = []
+  }
+  for (const row of lines) {
+    const emails = accounts.filter((account) => row.source.includes(account))
+    if (emails.length && blockCandidates.length) flushSuggestion()
+    blockAccounts.push(...emails.filter((email) => !blockAccounts.includes(email)))
+    blockCandidates.push(...candidates.filter((candidate) => candidate.line === row.line))
+  }
+  flushSuggestion()
+  const needsAccountReview =
+    unboundAccountText.includes('@') && candidates.some((candidate) => !candidate.config.label)
   if (candidates.length > 100)
     return { kind: 'none', candidates: [], issue: '每次最多 100 条，请分批处理。' }
   return {
     kind: !candidates.length
       ? 'none'
-      : candidates.length === 1
-        ? 'single'
-        : allStructured
-          ? 'multiple'
-          : 'review',
-    candidates
+      : needsAccountReview
+        ? 'review'
+        : candidates.length === 1
+          ? 'single'
+          : allStructured
+            ? 'multiple'
+            : 'review',
+    candidates,
+    accounts
   }
 }
 
@@ -241,6 +292,7 @@ export function pastedBatchText(configs: OtpConfig[]): string {
         config.digits === defaults.digits &&
         config.period === defaults.period &&
         !config.issuer &&
+        !config.label.includes('@') &&
         !/[\r\n\t]/.test(config.label)
       )
         return config.label ? `${config.label}\t${config.secret}` : config.secret
@@ -288,4 +340,25 @@ export function parseSmartBatch(text: string): BatchEntry[] {
     seen.add(key)
     return { line, config, duplicate }
   })
+}
+
+/** Remove current batch rows using the same normalized line numbers as parsing. */
+export function removeBatchLines(text: string, lines: readonly number[]): string {
+  const removed = new Set(lines)
+  return normalizeClipboardText(text)
+    .split(/\r?\n/)
+    .filter((_, index) => !removed.has(index + 1))
+    .join('\n')
+}
+
+/** Keep pasted batch entries separate from the text on either side of the selection. */
+export function insertBatchText(current: string, incoming: string, start: number, end: number) {
+  const before = current.slice(0, start)
+  const after = current.slice(end)
+  const leading = before && !before.endsWith('\n') && !incoming.startsWith('\n') ? '\n' : ''
+  const trailing = after && !after.startsWith('\n') && !incoming.endsWith('\n') ? '\n' : ''
+  return {
+    text: before + leading + incoming + trailing + after,
+    cursor: before.length + leading.length + incoming.length + trailing.length
+  }
 }

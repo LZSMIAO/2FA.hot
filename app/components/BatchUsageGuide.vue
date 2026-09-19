@@ -178,24 +178,23 @@ onBeforeUnmount(() => {
       >
       <div v-else class="batch-guide-controls">
         <div class="batch-playback-controls">
-          <UButton
-            v-if="!complete"
-            variant="ghost"
-            color="neutral"
-            :icon="paused ? 'i-lucide-play' : 'i-lucide-pause'"
-            :aria-label="tx(paused ? '继续' : '暂停')"
-            :title="tx(paused ? '继续' : '暂停')"
-            @click="paused = !paused"
-          />
-          <UButton
-            variant="ghost"
-            color="neutral"
-            icon="i-lucide-rotate-ccw"
-            :aria-label="tx('重看')"
-            :title="tx('重看')"
-            data-sound-custom
-            @click="start"
-          />
+          <AppHint v-if="!complete" :text="tx(paused ? '继续' : '暂停')"
+            ><UButton
+              variant="ghost"
+              color="neutral"
+              :icon="paused ? 'i-lucide-play' : 'i-lucide-pause'"
+              :aria-label="tx(paused ? '继续' : '暂停')"
+              @click="paused = !paused"
+          /></AppHint>
+          <AppHint :text="tx('重看')"
+            ><UButton
+              variant="ghost"
+              color="neutral"
+              icon="i-lucide-rotate-ccw"
+              :aria-label="tx('重看')"
+              data-sound-custom
+              @click="start"
+          /></AppHint>
         </div>
         <div class="batch-guide-actions">
           <UButton v-if="complete" variant="outline" color="neutral" @click="emit('switchMode')">{{

@@ -109,13 +109,13 @@ function clear() {
   qrSequence++
   scannerRevision.value++
 }
-function toggle(account: MigrationAccount, value: boolean | 'indeterminate') {
-  const key = migrationAccountKey(account)
-  selected.value =
-    value === true
-      ? [...new Set([...selected.value, key])]
-      : selected.value.filter((item) => item !== key)
-}
+const selectionIds = computed(() => accounts.value.map(migrationAccountKey))
+const {
+  surface,
+  start: startSelection,
+  click: clickSelection,
+  cancelSelection
+} = useHistorySelection(selectionIds, selected)
 function importAccounts(account?: MigrationAccount) {
   const rows = account ? [account] : importable.value
   if (!rows.length || incomplete.value || rows.some(importIssue)) return
@@ -164,7 +164,7 @@ onBeforeUnmount(() => {
     @after:leave="finish"
   >
     <template #body>
-      <div class="modal-stack">
+      <div ref="surface" class="modal-stack" @keydown="cancelSelection">
         <p class="migration-instructions">
           {{
             tx(
@@ -249,12 +249,19 @@ onBeforeUnmount(() => {
           v-for="(account, index) in accounts"
           :key="migrationAccountKey(account)"
           class="migration-account"
+          :data-selection-id="migrationAccountKey(account)"
         >
-          <UCheckbox
-            :model-value="selected.includes(migrationAccountKey(account))"
-            :label="account.name || account.issuer || tx('第 {count} 条', { count: index + 1 })"
-            @update:model-value="toggle(account, $event)"
-          />
+          <div class="migration-selection">
+            <SelectionCheck
+              :checked="selected.includes(migrationAccountKey(account))"
+              :label="account.name || account.issuer || tx('第 {count} 条', { count: index + 1 })"
+              @pointerdown="startSelection($event, migrationAccountKey(account))"
+              @click="clickSelection($event, migrationAccountKey(account))"
+            />
+            <span>{{
+              account.name || account.issuer || tx('第 {count} 条', { count: index + 1 })
+            }}</span>
+          </div>
           <p class="migration-meta">
             {{ account.type.toUpperCase() }} · {{ account.algorithm }} · {{ account.digits
             }}<span v-if="account.type === 'hotp'"> · {{ account.counter }}</span>
@@ -312,6 +319,11 @@ onBeforeUnmount(() => {
   </UModal>
 </template>
 <style scoped>
+.migration-selection {
+  display: flex;
+  align-items: center;
+  gap: var(--control-gap);
+}
 .migration-instructions {
   margin: 0;
   line-height: 1.8;

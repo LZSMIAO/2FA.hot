@@ -1,0 +1,307 @@
+{
+  "about": {
+    "introduction": [
+      "Een multifunctionele online 2FA-tool met een door Minecraft geïnspireerd ontwerp. Plak een 2FA-geheim om de huidige verificatiecode te krijgen. Ondersteunt directe links en genereert codes lokaal.",
+      "Detecteert automatisch bulkgegevens en schakelt daarop over, en herkent meerdere geheimformaten — of het nu een of ander verkloot formaat uit Excel is, of klanten die niet weten wat ze doen en hun wachtwoord samen met het geheim kopiëren: de invoer wordt herkend en passende aanwijzingen verschijnen.",
+      "Een toegankelijke stapsgewijze handleiding met optionele gesproken uitleg leert je een geheim gebruiken om op een account in te loggen!",
+      "Meer functies worden geïntegreerd…"
+    ],
+    "sections": [
+      {
+        "title": "Wat het precies kan",
+        "blocks": [
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Een functie in gedachten? Bekijk de [functiewensenlijst](https://2fa.hot/waitlist) en deel je ideeën op GitHub."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": true,
+            "lines": [
+              "[Lite](https://2fa.hot/lite?lang=en): codes voor één geheim, kopiëren en fragmentlinks zonder animatie, geluid of het framework van de hoofdapp. 30 talen; IE11-compatibiliteit als doel."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": true,
+            "lines": [
+              "Afzonderlijke codes en bulkcodes: ondersteunt Base32-geheimen en otpauth://-configuratielinks.",
+              "QR-import: afbeeldingen, slepen en neerzetten of camera; ondersteunt Google Authenticator-exports, meerdere accounts en meerdelige exports. Verzamel alle delen en selecteer daarna de benodigde accounts.",
+              "Directe links: ondersteunt fragmentlinks met de huidige code, kopiëren met één klik en links in bulk genereren.",
+              "Lokale geschiedenis: standaard uit, met vrijwillige opslag, optionele versleuteling, back-up en herstel.",
+              "30 talen: mobiele indelingen en lichte/donkere thema’s. Hulp nodig? Volg het diamanten zwaard door de tutorial."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Ondersteunt TOTP (SHA-1/SHA-256/SHA-512, 6/8 cijfers) en Steam Guard (5 tekens, 30 seconden). Voer voor Steam een shared_secret in of plak maFile-JSON-inhoud. HOTP-codegeneratie wordt niet ondersteund; HOTP-/MD5-accounts in migratiebestanden kunnen worden ingelezen en geëxporteerd."
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Hoe je het gebruikt",
+        "blocks": [
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": true,
+            "lines": [
+              "Kopieer je 2FA-geheim en plak het in 2fa.hot, of importeer een QR-code.",
+              "Kopieer en gebruik de huidige code voordat de afteller eindigt."
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Opslag en toegang tot geheimen",
+        "blocks": [
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": true,
+            "lines": [
+              "Codegeneratie op de startpagina en QR-herkenning gebeuren volledig in je browser.",
+              "Als je lokale geschiedenis inschakelt, worden items in je browser opgeslagen. Je kunt een wachtwoord instellen voor versleuteling, of geen wachtwoord instellen en de items direct bekijken.",
+              "Gebruik `/2fa#SECRET`: het fragment na `#` wordt niet met het paginaverzoek meegestuurd en wordt lokaal door deze tool gelezen. `/2fa/SECRET` stuurt het geheim in het pad naar de hostingdienst. Een waarschuwing op de pagina kan het eerste verzoek niet onderscheppen; HTTPS verbergt het pad niet voor de ontvanger. Padlinks tonen een MC Tip met een actie voor een fragmentlink en uitleg. Heb je een padlink gebruikt, overweeg dan bij de oorspronkelijke dienst een vervangend geheim te maken en te bevestigen dat het vorige ongeldig is. Overstappen op `#` kan eerdere verzoeken niet ongedaan maken. Volledige links kunnen in de browsergeschiedenis blijven; deel ze nooit openbaar."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Tot slot: deel ze niet openbaar of met iemand die je niet vertrouwt. Vergeten wachtzinnen voor lokale geschiedenis kunnen niet worden hersteld."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": ["[Privacy](https://2fa.hot/privacy)"]
+          }
+        ]
+      },
+      {
+        "title": "Het domeindrama",
+        "blocks": [
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Oorspronkelijk wilde ik 2fa.mc, maar ik gaf het op omdat ik **2FA®** niet kon registreren om bij het domeinregister van Monaco in te dienen.\n...Wat als ik dit met een volkomen serieus gezicht schrijf?\nToen kwam .HOT. Goed, goed, ik geef het toe: dat is sexy. We gaan terug."
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Waarom heb ik dit gemaakt? Het wiel opnieuw uitvinden?",
+        "blocks": [
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Vrienden in grensoverschrijdende e-commerce moeten op accounts inloggen voor taken zoals het beheren van media-accounts, en daarbij ook aan veiligheid denken. Meer vrienden met soortgelijke behoeften helpen, en mensen die net online beginnen, was het uitgangspunt.\nEr bestaan veel vergelijkbare online tools, waaronder tools die via directe links codes genereren. Maar mocht je het niet weten: een URL met een geheim openen, zoals `/2fa/SECRET` of `?secret=SECRET`, verstuurt het geheim in een HTTP-verzoek. De externe webdienst of CDN ontvangt die gegevens en kan ze via toegangslogs, monitoring of applicatielogs vastleggen en bewaren. Met andere woorden: geheimen in die verzoeken kunnen als platte tekst worden opgeslagen; en als je ook account + wachtwoord + 2FA hebt geplakt, en de site die ook uploadde en bewaarde… BOEM! Of ze werkelijk worden bewaard, hangt natuurlijk af van de implementatie, instellingen en het privacybeleid :))"
+            ]
+          },
+          {
+            "spoiler": {
+              "label": "Verhaal",
+              "text": "...Rond 2021, de vierde industriële revolutie: de mensheid ging het AI-tijdperk in. Sindsdien zie ik steeds mensen die er misbruik van maken — zelfs professionele programmeurs die deze shit flikken — en in vijf minuten een fucking frontend met kleurverlopen, scheve uitlijning, 100 verschillende UI-ontwerpstijlen en 1.000 elementen genereren.\nZoals bepaalde mensen die niet eens mijn berichten durven te beantwoorden, met AI een gammel rotsysteem in elkaar flansen en een fortuin verdienen door het aan gebruikers op de grijze markt te verkopen.\n…Ik word er ziek van. Ik kroop uit bed en kotste keer op keer. Helaas werd ik niet stevig opgevangen.\n\nAlles wat ik wil doen, hebben rijke mensen al gedaan. Bijna heel 2fa.hot is met Vibe Coding gemaakt — natuurlijk heb ik het vóór publicatie herzien tot ik er amper tevreden over was. Net als sommige projecten van mijn collega’s en mij: we willen snel lanceren, maar blijven ze aanpassen totdat ze aan onze normen voldoen, waardoor ze nog nooit live zijn gegaan. Sommige projecten worden ooit misschien bekend bij jullie lezers, zonder dat jullie weten dat wij ze maakten. Het voelt alsof ik zes jaar terugga, Premiere Pro open, me op het creëren stort en er nooit genoeg van krijg. Maar nu kan ik geen video’s meer maken. Het zet je aan het denken.\nAlles wat ik wil zeggen, is al gezegd. Ik ben niet tegen AI. Zes jaar geleden studeerde ik geesteswetenschappen; misschien wist ik niet eens hoe ik verdomme een website online moest zetten. Ik hoop dat bepaalde mensen AI goed gaan gebruiken. Het kan je helpen dingen te doen, maar het kan nooit jou worden. Nooit. Laat het alsjeblieft niet je gedachten of je leven vervangen; gebruik het niet om een ontwerp te produceren dat je zelf niet eens wilt uitproberen, vol bugs en logica die de ervaring verpesten… Open het op localhost en verfijn het nog 100 keer. Anders is het niet van jou. Publiceer het niet om iedereen misselijk te maken. Verkopen? Dat verdien je niet. Je blijft alleen maar aanmodderen in grijze-marktsectoren.\nDe rechtvaardigheid die ik wil, is allemaal fictie bedacht door de onrechtvaardigen. Ik weet dat ik het hoge tempo van het huidige leven niet kan veranderen of die dingen kan stoppen. Hen."
+            },
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": []
+          }
+        ]
+      }
+    ]
+  },
+  "guides": [
+    {
+      "slug": "what-is-2fa",
+      "title": "Wat is 2FA? Hoe TOTP-authenticatorcodes werken",
+      "description": "Begrijp tweefactorauthenticatie, het verschil tussen een geheim en een code en het gebruik van een TOTP-generator met je bestaande instelsleutel.",
+      "sources": [
+        {
+          "title": "RFC 6238: het TOTP-algoritme",
+          "url": "https://www.rfc-editor.org/rfc/rfc6238"
+        },
+        {
+          "title": "Google: Verificatiecodes krijgen met Google Authenticator",
+          "url": "https://support.google.com/accounts/answer/1066447?hl=en"
+        }
+      ],
+      "sections": [
+        {
+          "id": "meaning",
+          "title": "Wat tweefactorauthenticatie betekent",
+          "paragraphs": [
+            "Tweefactorauthenticatie (2FA) combineert bij het inloggen twee verschillende soorten bewijs. Een wachtwoord is iets wat je weet. Een authenticator met een instelgeheim kan een bezitsfactor leveren. De dienst controleert beide voordat je toegang krijgt tot je account.",
+            "2FA is een categorie, geen enkel codeformaat. Een sms, authenticatorcode en fysieke beveiligingssleutel kunnen allemaal deel uitmaken van het inloggen, maar werken anders. Deze tool genereert tijdgebonden eenmalige wachtwoorden (TOTP) uit een geheim dat je al hebt. De tool kan geen sms’jes ontvangen of pushmeldingen goedkeuren."
+          ]
+        },
+        {
+          "id": "secret-and-code",
+          "title": "Een instelgeheim is iets anders dan een verificatiecode",
+          "paragraphs": [
+            "Wanneer een dienst het instellen van een authenticator aanbiedt, toont deze meestal een QR-code en soms een instelsleutel als tekst. Die sleutel is het langdurige geheim. Een gebruikelijke Base32-weergave gebruikt de letters A–Z en cijfers 2–7. Een otpauth-URI bundelt het geheim met instellingen zoals het accountlabel en de codelengte.",
+            "De korte code die je bij het inloggen invoert, wordt berekend uit dat geheim en de huidige tijd. Een zescijferige code in het geheimveld plakken maakt het account niet opnieuw aan. Ben je het instelgeheim en de toegang tot de authenticator kwijt, gebruik dan het herstelproces van de oorspronkelijke dienst of opgeslagen herstelcodes."
+          ]
+        },
+        {
+          "id": "using-totp",
+          "title": "Een TOTP-code uit een bestaand geheim genereren",
+          "paragraphs": [
+            "In hetzelfde tijdsinterval leveren overeenkomende geheimen en TOTP-instellingen overeenkomende codes op. In 2fa.hot zijn de standaardinstellingen SHA-1, zes cijfers en een periode van 30 seconden. Sommige diensten gebruiken andere instellingen; behoud de parameters van een geïmporteerde configuratie."
+          ],
+          "steps": [
+            "Open de generator en plak je bestaande instelsleutel of otpauth-URI, of importeer de bijbehorende QR-afbeelding.",
+            "Controleer algoritme, aantal cijfers en periode bij de oorspronkelijke dienst als ze afwijken van de standaardwaarden.",
+            "Kopieer de huidige code naar de dienst die om verificatie vraagt. Wacht op de volgende code als de afteller bijna afgelopen is."
+          ]
+        },
+        {
+          "id": "limits",
+          "title": "Kies waar je je tweede factor bewaart",
+          "paragraphs": [
+            "Gebruik een vertrouwd apparaat en beoordeel de site voordat je een echt instelgeheim invoert. Het genereren op de startpagina en het decoderen van QR-codes gebeurt in de browser. Optionele geschiedenis blijft in die browser en kan met een wachtwoord worden beveiligd. Een directe /2fa/SECRET-link is anders: het pad bereikt de hostingdienst en kan in de browsergeschiedenis blijven staan.",
+            "Een online generator maakt het apparaat of account niet immuun voor phishing. Wie je geheim verkrijgt, kan ook codes genereren. Vervang bij een gecompromitteerd geheim de authenticatorconfiguratie bij de oorspronkelijke dienst. Houd herstelmogelijkheden beschikbaar en overweeg een aparte authenticator of een phishingbestendige beveiligingssleutel waar ondersteund."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "totp-code-not-working",
+      "title": "Werkt je 2FA-code niet? Los ongeldige TOTP-codes op",
+      "description": "Controleer de apparaattijd, verlopen codes, het instelgeheim en de TOTP-parameters wanneer een dienst je authenticatorcode weigert.",
+      "sources": [
+        {
+          "title": "RFC 6238: validatie en kloksynchronisatie",
+          "url": "https://www.rfc-editor.org/rfc/rfc6238"
+        },
+        {
+          "title": "Google Authenticator: probleemoplossing en apparaattijd",
+          "url": "https://support.google.com/accounts/answer/1066447?hl=en"
+        }
+      ],
+      "sections": [
+        {
+          "id": "clock",
+          "title": "Begin bij de klok van het apparaat",
+          "paragraphs": [
+            "Als de generator een code toont maar de dienst deze weigert, controleer dan eerst de tijd op het apparaat waarop de generator draait. TOTP gebruikt de huidige tijd, dus een klok die voor- of achterloopt kan een andere code opleveren dan de server verwacht.",
+            "Schakel automatische datum en tijd in het besturingssysteem in, laat de klok synchroniseren en wacht op een nieuwe code. Alleen de weergegeven tijdzone aanpassen helpt niet als de onderliggende klok verkeerd staat. Moderne Google Authenticator-versies gebruiken ook de systeemklok; de vroegere tijdcorrectie in de app is sinds versie 7.0 niet meer beschikbaar."
+          ]
+        },
+        {
+          "id": "expiry",
+          "title": "Gebruik een nieuwe code voor het juiste account",
+          "paragraphs": [
+            "Een code die vlak voor het einde van de afteller is gekopieerd, kan vóór verzending verlopen. Wacht op het volgende interval, kopieer eenmaal en verstuur snel. Blijf niet opnieuw proberen met een oude klembordwaarde. De oorspronkelijke dienst bepaalt hoeveel tijdsafwijking is toegestaan en kan herhaalde pogingen beperken.",
+            "Controleer op welk account je inlogt. Twee accounts bij dezelfde dienst hebben normaal verschillende geheimen. Een accountlabel is slechts een geheugensteuntje; het wijzigen ervan verandert niet bij welk account het geheim hoort."
+          ]
+        },
+        {
+          "id": "settings",
+          "title": "Vergelijk het geheim en de configuratie",
+          "paragraphs": [
+            "2fa.hot ondersteunt TOTP met SHA-1, SHA-256 of SHA-512, zes of acht cijfers en de ingestelde periode. Standaard: SHA-1, zes cijfers en 30 seconden. Een geïmporteerde otpauth-URI kan andere waarden bevatten. Behoud die waarden in plaats van alle accounts naar de standaardwaarden te dwingen.",
+            "Een ontbrekend teken in het geheim, een onlangs opnieuw ingestelde authenticatorregistratie of een ander codetype kunnen herhaalde fouten verklaren. Kies voor Steam-accounts Steam Guard en gebruik de shared_secret van het account. HOTP-codes op basis van een teller worden hier niet gegenereerd. Een geldig ogend resultaat bewijst niet dat de oorspronkelijke dienst het accepteert."
+          ],
+          "steps": [
+            "Vergelijk de opgeslagen instelsleutel met de oorspronkelijke registratiegegevens op je vertrouwde apparaat.",
+            "Controleer of de tweefactorinstellingen van het account sinds het opslaan van de sleutel opnieuw zijn ingesteld.",
+            "Bevestig dat het account TOTP gebruikt en dat algoritme, aantal cijfers en periode overeenkomen.",
+            "Probeer na het verhelpen van de oorzaak eenmaal opnieuw met een nieuwe code; respecteer de poginglimieten van de dienst."
+          ]
+        },
+        {
+          "id": "recovery",
+          "title": "Wanneer accountherstel gebruiken",
+          "paragraphs": [
+            "Als je het huidige geheim of een geregistreerde authenticator niet meer hebt, herstel je de toegang niet door meer codes met een oude sleutel te genereren. Probeer een opgeslagen herstelcode of een andere geregistreerde aanmeldmethode, of neem contact op met de oorspronkelijke dienst via de officiële herstelpagina.",
+            "2fa.hot beheert je account bij die dienst niet, kan de vereiste tweede factor niet uitschakelen en kan een verloren instelsleutel niet uit een tijdelijke code terughalen. Beschrijf bij hulpvragen de fout en instellingen zonder je geheim, QR-afbeelding, directe link of herstelcodes te publiceren."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "google-authenticator-import",
+      "title": "Google Authenticator-QR-exports importeren in 2fa.hot",
+      "description": "Importeer Google Authenticator-export-QR-codes, verwerk meerdere delen, controleer accounts en begrijp wat in je browser wordt opgeslagen.",
+      "sources": [
+        {
+          "title": "Google: Je Authenticator-codes overzetten",
+          "url": "https://support.google.com/accounts/answer/1066447?hl=en"
+        },
+        {
+          "title": "Projectinformatie en ondersteunde functies van 2fa.hot",
+          "url": "https://github.com/LZSMIAO/2fa-hot"
+        }
+      ],
+      "sections": [
+        {
+          "id": "before",
+          "title": "Wat je vóór het importeren nodig hebt",
+          "paragraphs": [
+            "Je moet toegang hebben tot de Google Authenticator-items die je wilt exporteren. Een screenshot van een veranderende zescijferige code is geen export-QR-code. Exportafbeeldingen bevatten instelgeheimen van accounts: gebruik een vertrouwd apparaat en houd de afbeeldingen buiten gedeelde mappen en openbare hulpvragen.",
+            "Importeren leest de configuratie die jij aanlevert. Het logt niet in bij Google, maakt geen verbinding met je Google-account en herstelt geen items die niet meer geëxporteerd kunnen worden. Je hebt geen account bij 2fa.hot nodig."
+          ]
+        },
+        {
+          "id": "transfer",
+          "title": "Accounts exporteren, importeren en controleren",
+          "paragraphs": [
+            "Google Authenticator kan geselecteerde items via export-QR-codes overzetten. De exacte plaats van de menu’s kan per appversie verschillen. Kies in 2fa.hot de Google Authenticator-importoptie voor deze migratie-exports; voor een gewone registratie-QR van een dienst kun je de standaard QR-import gebruiken."
+          ],
+          "steps": [
+            "Open in Google Authenticator Accounts overzetten en vervolgens Accounts exporteren. Voltooi de apparaatverificatie als de app daarom vraagt.",
+            "Selecteer de te exporteren accounts en toon de QR-code. Houd bij meerdere delen elk deel beschikbaar.",
+            "Open in de generator QR importeren en daarna Google Authenticator. Scan de export of selecteer de opgeslagen afbeelding.",
+            "Importeer alle delen van dezelfde export. Controleer de gedecodeerde accounts en selecteer de benodigde items voordat je de import toepast.",
+            "Vergelijk één geselecteerd TOTP-item in hetzelfde tijdsinterval met de oorspronkelijke authenticator."
+          ]
+        },
+        {
+          "id": "multiple-parts",
+          "title": "Meerdere QR-codes en niet-ondersteunde items",
+          "paragraphs": [
+            "Een grote export kan uit meerdere QR-codes bestaan. Importeer de volledige set van die export en meng geen screenshots van verschillende exports. De importer houdt delen bij en herkent herhaalde scans. Ontbreekt een deel, ga dan terug naar de oorspronkelijke export en leg dat deel duidelijk vast.",
+            "Migratiegegevens van Google Authenticator kunnen items bevatten waarvan het formaat hier niet wordt ondersteund voor codegeneratie. 2fa.hot genereert TOTP met SHA-1, SHA-256 of SHA-512 en zes of acht cijfers. Het kan HOTP- of MD5-migratie-items decoderen en exporteren, maar niet hun codes genereren. Bekijk het resultaat in plaats van aan te nemen dat elk geïmporteerd item bruikbaar is."
+          ]
+        },
+        {
+          "id": "storage",
+          "title": "Wat er na de import gebeurt",
+          "paragraphs": [
+            "QR-decodering gebeurt in je browser. Importeren schakelt lokale geschiedenis niet automatisch in. Wil je de items later kunnen gebruiken, schakel dan uitdrukkelijk geschiedenis in en kies of je die met een wachtwoord beveiligt. De opslag hoort bij deze browser en synchroniseert apparaten niet automatisch.",
+            "Houd de oorspronkelijke authenticator beschikbaar totdat je de items en herstelopties hebt geverifieerd. Browsergegevens wissen kan lokaal opgeslagen items verwijderen. Wachtwoordbeveiligde geschiedenis vereist het bijbehorende wachtwoord; de site kan een verloren wachtwoord niet herstellen. Een directe toegangslink onthult het geheim in de URL en mag daarom niet als openbare accountverwijzing worden gebruikt."
+          ]
+        }
+      ]
+    }
+  ]
+}

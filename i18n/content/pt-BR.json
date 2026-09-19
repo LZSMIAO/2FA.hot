@@ -1,0 +1,307 @@
+{
+  "about": {
+    "introduction": [
+      "Uma ferramenta 2FA online multifuncional com design inspirado em Minecraft. Cole um segredo 2FA para obter o código de verificação atual. Aceita links diretos, com geração de códigos local.",
+      "Detecta automaticamente dados em lote e muda para esse modo, reconhecendo vários formatos de segredos — seja um formato de merda copiado do Excel, seja seu cliente que não sabe o que está fazendo e copia a senha junto com o segredo, ela reconhece a entrada e mostra os avisos adequados.",
+      "Um guia acessível passo a passo, com narração de voz opcional, ensina a usar um segredo para entrar em uma conta!",
+      "Mais recursos estão sendo integrados…"
+    ],
+    "sections": [
+      {
+        "title": "O que exatamente ela faz",
+        "blocks": [
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Tem um recurso em mente? Explore a [lista de recursos desejados](https://2fa.hot/waitlist) e compartilhe suas ideias no GitHub."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": true,
+            "lines": [
+              "[Lite](https://2fa.hot/lite?lang=en): códigos para um único segredo, cópia e links com fragmento sem animação, som ou o framework do app principal. 30 idiomas; compatibilidade com IE11 como objetivo."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": true,
+            "lines": [
+              "Códigos individuais e em lote: aceita segredos Base32 e links de configuração otpauth://.",
+              "Importação QR: imagens, arrastar e soltar ou câmera; aceita exportações do Google Authenticator, várias contas e exportações divididas em partes. Reúna todas as partes e selecione as contas necessárias.",
+              "Links diretos: aceita links com fragmento que exibem o código atual, cópia com um clique e geração de links em lote.",
+              "Histórico local: desativado por padrão, com armazenamento opcional, criptografia opcional, backup e restauração.",
+              "30 idiomas: layouts para celular e temas claro/escuro. Precisa de ajuda? Siga a espada de diamante pelo tutorial."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Aceita TOTP (SHA-1/SHA-256/SHA-512, 6/8 dígitos) e Steam Guard (5 caracteres, 30 segundos). Para Steam, digite um shared_secret ou cole o conteúdo JSON de um maFile. A geração de códigos HOTP não é suportada; contas HOTP/MD5 em arquivos de migração podem ser interpretadas e exportadas."
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Como usar",
+        "blocks": [
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": true,
+            "lines": [
+              "Copie seu segredo 2FA e cole no 2fa.hot, ou importe um código QR.",
+              "Copie e use o código atual antes do fim da contagem regressiva."
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Armazenamento e acesso aos segredos",
+        "blocks": [
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": true,
+            "lines": [
+              "A geração de códigos na página inicial e o reconhecimento QR acontecem inteiramente no navegador.",
+              "Ao ativar o histórico local, os registros são armazenados no navegador. Você pode definir uma senha para criptografar ou deixá-la em branco e visualizar os registros diretamente.",
+              "Use `/2fa#SECRET`: o fragmento após `#` não é enviado com a requisição da página e é lido localmente por esta ferramenta. `/2fa/SECRET` envia o segredo no caminho à hospedagem. Um aviso na página não pode interceptar a requisição inicial; HTTPS não oculta o caminho de quem o recebe. Links de caminho exibem um MC Tip com uma ação para usar link com fragmento e uma explicação. Se você usou um link de caminho, considere gerar um segredo substituto no serviço original e confirmar que o anterior perdeu a validade. Mudar para `#` não desfaz requisições anteriores. Links completos podem permanecer no histórico do navegador; nunca os compartilhe publicamente."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Por fim, não os compartilhe publicamente nem com quem você não confia. Senhas esquecidas do histórico local não podem ser recuperadas."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": ["[Privacidade](https://2fa.hot/privacy)"]
+          }
+        ]
+      },
+      {
+        "title": "O drama do domínio",
+        "blocks": [
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Eu queria 2fa.mc originalmente, mas desisti porque não conseguia registrar **2FA®** para apresentar ao registro de domínios de Mônaco.\n...E se eu estivesse escrevendo isso com a maior cara séria?\nEntão apareceu .HOT. Tá bom, tá bom, eu admito: isso é sexy. Estamos voltando."
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Por que fiz isso? Reinventar a roda?",
+        "blocks": [
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Amigos que trabalham com comércio eletrônico internacional precisam entrar em contas para tarefas como gerenciar contas de mídia, sem esquecer a segurança. Ajudar mais amigos com necessidades parecidas, além de quem está começando na internet, foi o ponto de partida.\nExistem muitas ferramentas online semelhantes, inclusive as que geram códigos por links diretos. Mas, se você não sabia, abrir uma URL que contém um segredo, como `/2fa/SECRET` ou `?secret=SECRET`, envia esse segredo em uma requisição HTTP. O serviço web remoto ou CDN recebe esses dados e pode registrá-los e retê-los em logs de acesso, monitoramento ou logs da aplicação. Em outras palavras, os segredos nessas requisições podem ficar armazenados em texto simples; se você também colou conta + senha + 2FA e o site também enviou e guardou tudo isso... BOOM! É claro que guardar de fato depende da implementação, das configurações e da política de privacidade :))"
+            ]
+          },
+          {
+            "spoiler": {
+              "label": "História",
+              "text": "...Por volta de 2021, a Quarta Revolução Industrial: a humanidade entrou na era da IA. Desde então, vejo gente abusando disso o tempo todo — até programadores profissionais fazendo essa merda — levando só cinco minutos para gerar a porra de um frontend com gradiente, desalinhado, com 100 estilos diferentes de interface e 1.000 elementos.\nComo certas pessoas que nem ousam responder às minhas mensagens, usando IA para montar um sistema lixo malfeito e ganhar uma fortuna vendendo para usuários do mercado cinza.\n…Tudo isso me dá enjoo. Saí da cama me arrastando e vomitei sem parar. Infelizmente, ninguém me segurou direito.\n\nTudo o que quero fazer, os ricos já fizeram. Quase todo o 2fa.hot foi feito com Vibe Coding — claro, revisei até ficar minimamente satisfeito antes de lançar. Como alguns projetos meus e dos meus colegas: queremos lançar logo, mas não paramos de revisar até atenderem aos nossos padrões, a ponto de nunca terem ido ao ar. Alguns projetos talvez um dia sejam familiares a vocês que estão lendo, embora não saibam que fomos nós que fizemos. Parece voltar seis anos, abrir o Premiere Pro, mergulhar na criação e nunca cansar. Só que agora já não consigo fazer vídeos. Dá o que pensar.\nTudo o que quero dizer já foi dito. Não sou contra a IA. Seis anos atrás eu estudava humanas; talvez nem soubesse como caralhos colocar um site no ar. Espero que certas pessoas saibam usar bem a IA. Ela pode ajudar você a fazer coisas, mas nunca pode se tornar você. Nunca. Por favor, não deixe que substitua seus pensamentos ou sua vida; não a use para produzir um design que você nem se dá ao trabalho de testar, cheio de bugs e de uma lógica que destrói a experiência… Abra no localhost e refine mais 100 vezes. Caso contrário, não é seu. Não publique para dar nojo em todo mundo. Vender? Você não merece. Só vai continuar se virando em negócios do mercado cinza.\nA justiça que quero é toda uma ficção inventada pelos injustos. Sei que não posso mudar o ritmo acelerado da vida atual nem impedir essas coisas. Eles."
+            },
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": []
+          }
+        ]
+      }
+    ]
+  },
+  "guides": [
+    {
+      "slug": "what-is-2fa",
+      "title": "O que é 2FA? Como funcionam os códigos TOTP de autenticadores",
+      "description": "Entenda a autenticação de dois fatores, a diferença entre um segredo e um código e como usar um gerador TOTP com sua chave de configuração existente.",
+      "sources": [
+        {
+          "title": "RFC 6238: o algoritmo TOTP",
+          "url": "https://www.rfc-editor.org/rfc/rfc6238"
+        },
+        {
+          "title": "Google: Receber códigos de verificação com o Google Authenticator",
+          "url": "https://support.google.com/accounts/answer/1066447?hl=en"
+        }
+      ],
+      "sections": [
+        {
+          "id": "meaning",
+          "title": "O que significa autenticação de dois fatores",
+          "paragraphs": [
+            "A autenticação de dois fatores (2FA) combina dois tipos diferentes de comprovação ao entrar. Uma senha é algo que você sabe. Um autenticador que guarda um segredo de configuração pode fornecer um fator de posse. O serviço verifica ambos antes de permitir o acesso à conta.",
+            "2FA é uma categoria, não um único formato de código. Uma mensagem de texto, um código de autenticador e uma chave de segurança física podem fazer parte do login, mas funcionam de maneiras diferentes. Esta ferramenta gera senhas de uso único baseadas em tempo (TOTP) a partir de um segredo que você já possui. Ela não recebe SMS nem aprova notificações push."
+          ]
+        },
+        {
+          "id": "secret-and-code",
+          "title": "Um segredo de configuração é diferente de um código de verificação",
+          "paragraphs": [
+            "Quando um serviço oferece a configuração de autenticador, normalmente mostra um QR e às vezes uma chave de configuração em texto. Essa chave é o segredo de longa duração. Uma representação Base32 típica usa as letras A–Z e os números 2–7. Um URI otpauth reúne o segredo e ajustes como rótulo da conta e tamanho do código.",
+            "O código curto digitado no login é um resultado calculado a partir desse segredo e da hora atual. Copiar um código de seis dígitos para o campo do segredo não recria a conta. Se você perdeu o segredo de configuração e o acesso ao autenticador, use o processo de recuperação do serviço original ou códigos de recuperação salvos."
+          ]
+        },
+        {
+          "id": "using-totp",
+          "title": "Gerar um código TOTP a partir de um segredo existente",
+          "paragraphs": [
+            "No mesmo intervalo de tempo, segredos e configurações TOTP iguais produzem códigos iguais. No 2fa.hot, os padrões são SHA-1, seis dígitos e período de 30 segundos. Alguns serviços usam outros ajustes; mantenha os parâmetros de uma configuração importada."
+          ],
+          "steps": [
+            "Abra o gerador e cole sua chave de configuração existente ou URI otpauth, ou importe a imagem QR correspondente.",
+            "Confira algoritmo, dígitos e período com o serviço original quando forem diferentes dos padrões.",
+            "Copie o código atual para o serviço que solicita a verificação. Se a contagem regressiva estiver quase acabando, espere o próximo código."
+          ]
+        },
+        {
+          "id": "limits",
+          "title": "Escolha onde guardar seu segundo fator",
+          "paragraphs": [
+            "Use um dispositivo confiável e avalie o site antes de inserir um segredo de configuração real. A geração na página inicial e a decodificação QR acontecem no navegador. O histórico opcional fica nesse navegador e pode ser protegido com senha. Um link direto /2fa/SECRET é diferente: seu caminho chega à hospedagem e pode permanecer no histórico do navegador.",
+            "Um gerador online não torna o dispositivo ou a conta imunes a phishing. Quem obtiver seu segredo também poderá gerar códigos. Se o segredo estiver comprometido, substitua a configuração do autenticador no serviço original. Mantenha opções de recuperação disponíveis e considere um autenticador separado ou uma chave de segurança resistente a phishing, quando houver suporte."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "totp-code-not-working",
+      "title": "O código 2FA não funciona? Resolva códigos TOTP inválidos",
+      "description": "Confira hora do dispositivo, códigos expirados, segredo de configuração e parâmetros TOTP quando um serviço rejeitar seu código de autenticador.",
+      "sources": [
+        {
+          "title": "RFC 6238: validação e sincronização de relógio",
+          "url": "https://www.rfc-editor.org/rfc/rfc6238"
+        },
+        {
+          "title": "Google Authenticator: solução de problemas e hora do dispositivo",
+          "url": "https://support.google.com/accounts/answer/1066447?hl=en"
+        }
+      ],
+      "sections": [
+        {
+          "id": "clock",
+          "title": "Comece pelo relógio do dispositivo",
+          "paragraphs": [
+            "Se o gerador exibe um código, mas o serviço o rejeita, primeiro confira a hora do dispositivo que executa o gerador. TOTP usa a hora atual; por isso, um relógio adiantado ou atrasado pode produzir um código diferente do esperado pelo servidor.",
+            "Ative data e hora automáticas no sistema operacional, deixe sincronizar e espere um código novo. Mudar apenas o fuso horário exibido não corrige o relógio interno errado. O Google Authenticator atual também usa a hora do sistema operacional; a antiga opção de correção de horário dentro do app não está mais disponível a partir da versão 7.0."
+          ]
+        },
+        {
+          "id": "expiry",
+          "title": "Use um código novo para a conta correta",
+          "paragraphs": [
+            "Um código copiado perto do fim da contagem pode expirar antes do envio. Espere o próximo intervalo, copie uma vez e envie logo. Não continue tentando usar um valor antigo da área de transferência. O serviço original decide quanta diferença de horário tolera e também pode limitar tentativas repetidas.",
+            "Confira em qual conta você está entrando. Duas contas no mesmo serviço normalmente têm segredos diferentes. O rótulo da conta é apenas um lembrete; alterá-lo não muda a conta à qual o segredo pertence."
+          ]
+        },
+        {
+          "id": "settings",
+          "title": "Compare o segredo e a configuração",
+          "paragraphs": [
+            "O 2fa.hot aceita TOTP com SHA-1, SHA-256 ou SHA-512, seis ou oito dígitos e o período configurado. Os padrões são SHA-1, seis dígitos e 30 segundos. Um URI otpauth importado pode conter valores diferentes. Mantenha esses valores em vez de forçar todas as contas a usar os padrões.",
+            "Um caractere faltando no segredo, um cadastro de autenticador redefinido recentemente ou outro tipo de código podem explicar falhas repetidas. Para contas Steam, selecione Steam Guard e use o shared_secret da conta. Códigos HOTP baseados em contador não são gerados aqui. Um resultado com aparência válida não comprova que o serviço original vai aceitá-lo."
+          ],
+          "steps": [
+            "Compare a chave de configuração salva com os dados do cadastro original no seu dispositivo confiável.",
+            "Confira se a configuração de dois fatores da conta foi redefinida desde que a chave foi salva.",
+            "Confirme que a conta usa TOTP e que algoritmo, dígitos e período correspondem.",
+            "Após corrigir a causa, tente novamente uma vez com um código novo; respeite os limites de tentativas do serviço."
+          ]
+        },
+        {
+          "id": "recovery",
+          "title": "Quando usar a recuperação de conta",
+          "paragraphs": [
+            "Se você não tem mais o segredo atual nem um autenticador cadastrado, gerar mais códigos com uma chave antiga não restaurará o acesso. Tente um código de recuperação salvo ou outro método de login cadastrado, ou contate o serviço original pela página oficial de recuperação.",
+            "O 2fa.hot não gerencia sua conta nesse serviço, não pode remover a exigência do segundo fator nem recuperar uma chave de configuração perdida a partir de um código temporário. Ao pedir ajuda, descreva o erro e as configurações sem publicar seu segredo, imagem QR, link direto ou códigos de recuperação."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "google-authenticator-import",
+      "title": "Importar exportações QR do Google Authenticator para o 2fa.hot",
+      "description": "Importe códigos QR de exportação do Google Authenticator, lide com várias partes, revise contas e entenda o que fica armazenado no navegador.",
+      "sources": [
+        {
+          "title": "Google: Transferir seus códigos do Authenticator",
+          "url": "https://support.google.com/accounts/answer/1066447?hl=en"
+        },
+        {
+          "title": "Informações do projeto 2fa.hot e recursos compatíveis",
+          "url": "https://github.com/LZSMIAO/2fa-hot"
+        }
+      ],
+      "sections": [
+        {
+          "id": "before",
+          "title": "O que você precisa antes de importar",
+          "paragraphs": [
+            "Você precisa acessar as entradas do Google Authenticator que deseja exportar. Uma captura de tela de um código variável de seis dígitos não é um QR de exportação. As imagens exportadas contêm segredos de configuração das contas; use um dispositivo confiável e não coloque essas imagens em pastas compartilhadas ou solicitações públicas de suporte.",
+            "A importação lê a configuração que você fornece. Ela não entra no Google, não se conecta à sua conta Google nem recupera entradas que não estão mais disponíveis para exportação. Você não precisa de uma conta no 2fa.hot."
+          ]
+        },
+        {
+          "id": "transfer",
+          "title": "Exportar, importar e revisar as contas",
+          "paragraphs": [
+            "O Google Authenticator permite transferir entradas selecionadas usando QR de exportação. A posição exata dos menus pode variar entre versões do app. No 2fa.hot, escolha a opção de importação do Google Authenticator para essas exportações de migração; um QR normal de cadastro de serviço pode usar o fluxo padrão de importação QR."
+          ],
+          "steps": [
+            "No Google Authenticator, abra Transferir contas, depois Exportar contas e conclua a verificação do dispositivo se o app solicitar.",
+            "Selecione as contas para exportar e mostre o QR. Se houver várias partes, mantenha todas disponíveis.",
+            "No gerador, abra Importar QR e depois Google Authenticator. Escaneie a exportação ou selecione a imagem salva.",
+            "Importe todas as partes da mesma exportação. Revise as contas decodificadas e selecione as entradas necessárias antes de aplicar a importação.",
+            "Compare uma entrada TOTP selecionada com o autenticador original no mesmo intervalo de tempo."
+          ]
+        },
+        {
+          "id": "multiple-parts",
+          "title": "Vários códigos QR e entradas não compatíveis",
+          "paragraphs": [
+            "Uma exportação grande pode ocupar vários QR. Importe o conjunto completo dessa exportação, sem misturar capturas de exportações diferentes. O importador acompanha as partes e detecta leituras repetidas. Se faltar uma parte, volte à exportação original e capture essa parte com clareza.",
+            "Os dados de migração do Google Authenticator podem incluir entradas cujo formato não permite gerar códigos aqui. O 2fa.hot gera TOTP com SHA-1, SHA-256 ou SHA-512 e seis ou oito dígitos. Ele pode decodificar e exportar entradas de migração HOTP ou MD5, mas não gera seus códigos. Revise o resultado em vez de presumir que toda entrada importada é utilizável."
+          ]
+        },
+        {
+          "id": "storage",
+          "title": "O que acontece depois da importação",
+          "paragraphs": [
+            "A decodificação QR acontece no navegador. Importar não ativa automaticamente o histórico local. Se quiser acessar as entradas depois, ative explicitamente o histórico e escolha se deseja protegê-lo com senha. O armazenamento é local a esse navegador e não sincroniza dispositivos automaticamente.",
+            "Mantenha o autenticador original disponível até verificar as entradas e opções de recuperação. Limpar os dados do navegador pode remover registros salvos localmente. O histórico protegido exige sua senha; o site não pode recuperar uma senha perdida. Um link de acesso direto expõe o segredo na URL e, portanto, não deve ser usado como referência pública da conta."
+          ]
+        }
+      ]
+    }
+  ]
+}

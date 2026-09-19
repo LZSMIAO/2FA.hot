@@ -171,3 +171,85 @@ test('backup timestamps must be valid dates before preview or persistence', asyn
     stop()
   }
 })
+
+test('batch session keeps one snapshot and stays separate from single records', async () => {
+  const { vault, stop } = mount()
+  try {
+    await waitFor(() => vault.ready.value)
+    const first = {
+      secret: 'JBSWY3DPEHPK3PXP',
+      algorithm: 'SHA-1' as const,
+      digits: 6 as const,
+      period: 30,
+      label: '',
+      issuer: ''
+    }
+    const second = { ...first, secret: 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ' }
+    vault.rememberBatch([first, second], 'batch-test')
+    assert.equal(vault.recent.value.length, 1)
+    assert.equal(vault.recent.value[0]!.batch?.length, 2)
+    vault.remember([first])
+    assert.equal(vault.recent.value.length, 2)
+    await vault.editRecent('batch-test', 'My batch')
+    vault.rememberBatch([second], 'batch-test')
+    assert.equal(vault.recent.value.length, 2)
+    assert.equal(vault.recent.value[0]!.label, 'My batch')
+    assert.equal(vault.recent.value[0]!.batch?.[0]?.secret, second.secret)
+    assert.equal(vault.recent.value[1]!.label, '')
+    vault.clearRecent()
+    assert.equal(vault.recent.value.length, 0)
+  } finally {
+    stop()
+  }
+})
+
+test('saved batches retain grouping through backup without absorbing single records', async () => {
+  const { vault, stop } = mount()
+  try {
+    await waitFor(() => vault.ready.value)
+    await vault.erase()
+    await vault.enable()
+    const first = {
+      secret: 'JBSWY3DPEHPK3PXP',
+      algorithm: 'SHA-1' as const,
+      digits: 6 as const,
+      period: 30,
+      label: '',
+      issuer: ''
+    }
+    const second = { ...first, secret: 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ' }
+    await vault.save([first, second], 'saved-batch')
+    await vault.save([first])
+    assert.equal(vault.records.value.length, 3)
+    assert.equal(vault.records.value.filter((r) => r.batchId === 'saved-batch').length, 2)
+    vault.remember([{ ...first, label: 'Single label' }])
+    await vault.save([{ ...first, label: 'Batch label' }], 'another-batch')
+    assert.equal(
+      vault.records.value.find((r) => r.batchId === 'another-batch')?.label,
+      'Batch label'
+    )
+    await vault.editRecent(vault.recent.value[0]!.id, 'Renamed single')
+    assert.equal(
+      vault.records.value.find((r) => r.batchId === 'another-batch')?.label,
+      'Batch label'
+    )
+    assert.equal(vault.records.value.find((r) => !r.batchId)?.label, 'Renamed single')
+    const backup = await vault.backup()
+    const imported = await vault.inspectBackup(backup, '')
+    assert.equal(imported.filter((r) => r.batchId === 'saved-batch').length, 2)
+    await vault.erase()
+    await vault.enable()
+    await vault.merge(imported)
+    assert.equal(vault.records.value.length, 4)
+    await vault.save([{ ...first, label: 'Updated batch account' }], 'saved-batch', true)
+    assert.equal(vault.records.value.filter((r) => r.batchId === 'saved-batch').length, 1)
+    assert.equal(
+      vault.records.value.find((r) => r.batchId === 'saved-batch')?.label,
+      'Updated batch account'
+    )
+    assert.equal(vault.records.value.find((r) => !r.batchId)?.label, 'Renamed single')
+    await vault.erase()
+  } finally {
+    stop()
+  }
+})

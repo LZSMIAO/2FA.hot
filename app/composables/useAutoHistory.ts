@@ -3,7 +3,8 @@ import type { OtpConfig } from '~/utils/otp'
 /** Save settled, valid input rather than individual keystrokes or copy actions. */
 export function useAutoHistory(
   configs: () => OtpConfig[],
-  shouldRecord: () => boolean = () => true
+  shouldRecord: () => boolean = () => true,
+  batchId?: () => string
 ) {
   const vault = useVault()
   const error = shallowRef('')
@@ -15,7 +16,10 @@ export function useAutoHistory(
       if (!values.length) return
       const version = vault.recentVersion.value
       const timer = setTimeout(() => {
-        if (version === vault.recentVersion.value) vault.remember(values)
+        if (version === vault.recentVersion.value) {
+          if (batchId) vault.rememberBatch(values, batchId())
+          else vault.remember(values)
+        }
       }, 300)
       onCleanup(() => clearTimeout(timer))
     },
@@ -38,7 +42,7 @@ export function useAutoHistory(
           return
         }
         try {
-          await vault.save(values)
+          await vault.save(values, batchId?.(), !!batchId)
         } catch (cause) {
           if (active) error.value = (cause as Error).message
         }

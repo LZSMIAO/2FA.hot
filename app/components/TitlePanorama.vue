@@ -149,17 +149,13 @@ onBeforeUnmount(() => {
         itemTrailingIcon: 'text-primary size-4'
       }"
     >
-      <button
-        class="panorama-control"
-        :disabled="loading"
-        :aria-label="tx('切换背景')"
-        :title="tx('切换背景')"
-      >
-        <UIcon
-          :name="loading ? 'i-lucide-loader-circle' : 'i-lucide-image'"
-          :class="{ 'animate-spin': loading }"
-        />
-      </button>
+      <AppHint :text="tx('切换背景')"
+        ><button class="panorama-control" :disabled="loading" :aria-label="tx('切换背景')">
+          <UIcon
+            :name="loading ? 'i-lucide-loader-circle' : 'i-lucide-image'"
+            :class="{ 'animate-spin': loading }"
+          /></button
+      ></AppHint>
       <template #item-leading="{ item }">
         <img
           :src="`/panorama/previews/${item.version}.png`"
@@ -170,16 +166,15 @@ onBeforeUnmount(() => {
         />
       </template>
     </UDropdownMenu>
-    <button
-      v-if="!reduced"
-      class="panorama-control"
-      :aria-label="tx(paused ? '继续' : '暂停')"
-      :title="tx(paused ? '继续' : '暂停')"
-      :aria-pressed="!paused"
-      @click="toggleAnimation"
-    >
-      <UIcon :name="paused ? 'i-lucide-play' : 'i-lucide-pause'" />
-    </button>
+    <AppHint v-if="!reduced" :text="tx(paused ? '继续' : '暂停')"
+      ><button
+        class="panorama-control"
+        :aria-label="tx(paused ? '继续' : '暂停')"
+        :aria-pressed="!paused"
+        @click="toggleAnimation"
+      >
+        <UIcon :name="paused ? 'i-lucide-play' : 'i-lucide-pause'" /></button
+    ></AppHint>
   </div>
   <ActionHint
     :open="loadError"

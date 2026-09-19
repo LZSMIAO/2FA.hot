@@ -1,4 +1,5 @@
 import { shallowRef } from 'vue'
+import { transferText } from '../utils/transfer-text.ts'
 import { hasImageDrop } from '../utils/dropped-image.ts'
 
 /** Highlight the secret field during text drags; only accept drops inside it. */
@@ -22,8 +23,9 @@ export function usePageTextDrop(options: {
     const data = event.dataTransfer
     if (event.defaultPrevented || !options.enabled() || !data) return false
     if (document.querySelector('[role="dialog"], [role="alertdialog"], [role="menu"]')) return false
-    if (!Array.from(data.types).includes('text/plain')) return false
-    if (Array.from(data.types).includes('Files') || hasImageDrop(data)) return false
+    if (!Array.from(data.types).some((type) => type === 'text/plain' || type === 'text/html'))
+      return false
+    if (hasImageDrop(data)) return false
     const editor =
       event.target instanceof Element
         ? event.target.closest(
@@ -48,7 +50,7 @@ export function usePageTextDrop(options: {
     if (!accepts(event)) return
     event.preventDefault()
     if (!inTarget(event)) return
-    const text = event.dataTransfer!.getData('text/plain')
+    const text = transferText(event.dataTransfer!)
     if (!text.trim()) return
     options.input()?.focus()
     options.text(text)

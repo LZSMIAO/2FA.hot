@@ -10,6 +10,17 @@ import { unlocalizedPath } from '~~/shared/seo/routes'
 import { toOtpUri } from '~/utils/otp'
 import SmartPasteReview from './SmartPasteReview.vue'
 const { tx } = useMessages()
+const { copy: copySecretValue, copied: secretCopied, message: secretCopyError } = useCopy()
+const copyingSecret = shallowRef(false)
+async function copySecret() {
+  if (!config.value || pathWarning.value || copyingSecret.value) return
+  copyingSecret.value = true
+  try {
+    await copySecretValue(config.value.secret)
+  } finally {
+    copyingSecret.value = false
+  }
+}
 import { parseOtp, algorithmFrom, toAccessPath, identity, type OtpConfig } from '~/utils/otp'
 const expandedConfig = useState<OtpConfig | null>('expanded-otp-config', () => null)
 const expandedHistoryPreview = useState('expanded-history-preview', () => false)
@@ -17,6 +28,7 @@ let historyPreviewIdentity =
   expandedHistoryPreview.value && expandedConfig.value ? identity(expandedConfig.value) : ''
 onBeforeRouteLeave((to) => {
   if (!/^\/2fa(?:\/|$)/.test(unlocalizedPath(to.path))) {
+    historyPreviewIdentity = ''
     expandedConfig.value = null
     expandedHistoryPreview.value = false
   }
@@ -92,6 +104,7 @@ function submit() {
   try {
     const parsed = parseOtp(input.value)
     expandedConfig.value = parsed
+    expandedHistoryPreview.value = false
     navigateTo(localePath(toAccessPath(parsed)))
     input.value = ''
   } catch (e) {
@@ -300,15 +313,27 @@ useHead({ meta: [{ name: 'referrer', content: 'no-referrer' }] })
         <div class="direct-secret-label">
           <UPopover
             mode="hover"
-            :open-delay="120"
+            :open-delay="0"
             :close-delay="100"
             enable-touch
-            :content="{ side: 'top', align: 'start', sideOffset: 8 }"
+            :content="{ side: 'top', align: 'start', sideOffset: 2 }"
+            arrow
+            :ui="{ content: 'parameter-help-tooltip h-auto', arrow: 'parameter-help-arrow' }"
           >
-            <button type="button" class="secret-parameters-trigger" :aria-label="tx('验证参数')">
-              <img src="/textures/trial-key.png" alt="" width="24" height="24" />
+            <button
+              type="button"
+              class="secret-parameters-trigger"
+              :aria-label="tx(secretCopied ? '密钥已复制' : '复制密钥')"
+              :disabled="pathWarning || copyingSecret"
+              @click="copySecret"
+            >
+              <UIcon v-if="secretCopied" name="i-mc-check" class="text-primary" />
+              <img v-else src="/textures/trial-key.png" alt="" width="24" height="24" />
             </button>
             <template #content>
+              <p class="secret-copy-hint">
+                {{ tx(secretCopyError || (secretCopied ? '密钥已复制' : '复制密钥')) }}
+              </p>
               <div class="direct-parameters">
                 <span>{{ config.kind === 'steam' ? 'Steam Guard' : 'TOTP' }}</span>
                 <span>{{ config.algorithm }}</span>
@@ -325,6 +350,9 @@ useHead({ meta: [{ name: 'referrer', content: 'no-referrer' }] })
         </div>
         <SecretReveal :key="config.secret" :secret="config.secret" label-id="direct-secret-label" />
       </div>
+      <p v-if="secretCopied || secretCopyError" class="sr-only" role="status">
+        {{ tx(secretCopyError || '密钥已复制') }}
+      </p>
     </div>
     <p v-if="missing && issue" class="inline-error" role="alert">{{ tx(issue) }}</p>
     <div class="direct-bottom">
@@ -346,8 +374,8 @@ useHead({ meta: [{ name: 'referrer', content: 'no-referrer' }] })
   color: var(--ui-text-highlighted);
 }
 .direct-page {
-  max-width: 48rem;
-  margin: clamp(1rem, 4vh, 3rem) auto 0;
+  max-width: 54rem;
+  margin: clamp(2rem, 9svh, 7rem) auto 0;
   padding: 0 1.5rem;
 }
 .direct-intro {
@@ -366,11 +394,11 @@ useHead({ meta: [{ name: 'referrer', content: 'no-referrer' }] })
   view-transition-name: otp-result;
 }
 .direct-result :deep(.otp-digits) {
-  font-size: clamp(4.5rem, 9vw, 7.5rem);
+  font-size: clamp(4.5rem, 9vw, 8rem);
   margin-block: clamp(1.5rem, 4vh, 2.5rem);
 }
 .direct-result :deep(.otp-digits.eight) {
-  font-size: clamp(3.5rem, 7.5vw, 6rem);
+  font-size: clamp(3.5rem, 7.5vw, 6.5rem);
 }
 .direct-result :deep(.result-head) {
   align-items: center;
@@ -454,9 +482,12 @@ useHead({ meta: [{ name: 'referrer', content: 'no-referrer' }] })
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem 0.625rem;
-  padding: 0.75rem;
-  max-width: min(24rem, calc(100vw - 2rem));
-  font-size: var(--text-label);
+  max-width: 100%;
+  font-size: inherit;
+}
+.secret-copy-hint {
+  margin-bottom: 0.25rem;
+  font-weight: 600;
 }
 .direct-parameters > span {
   white-space: nowrap;
@@ -533,6 +564,11 @@ useHead({ meta: [{ name: 'referrer', content: 'no-referrer' }] })
   }
   .direct-result :deep(.otp-digits.eight) {
     font-size: clamp(2rem, 10vw, 3.25rem);
+  }
+}
+@media (min-width: 601px) and (max-height: 760px) {
+  .direct-page {
+    margin-top: 1.5rem;
   }
 }
 @media (max-width: 360px) {

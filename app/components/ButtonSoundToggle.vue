@@ -304,17 +304,17 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <UButton
-    class="icon-button"
-    data-sound-toggle
-    color="neutral"
-    variant="ghost"
-    :icon="enabled ? 'i-lucide-volume-2' : 'i-lucide-volume-x'"
-    :aria-pressed="enabled"
-    :aria-label="tx('按钮音效')"
-    :title="tx(enabled ? '关闭按钮音效' : '开启按钮音效')"
-    @click="toggle"
-  />
+  <AppHint :text="tx(enabled ? '关闭按钮音效' : '开启按钮音效')"
+    ><UButton
+      class="icon-button"
+      data-sound-toggle
+      color="neutral"
+      variant="ghost"
+      :icon="enabled ? 'i-lucide-volume-2' : 'i-lucide-volume-x'"
+      :aria-pressed="enabled"
+      :aria-label="tx('按钮音效')"
+      @click="toggle"
+  /></AppHint>
   <audio
     ref="player"
     src="/audio/minecraft-click.ogg"

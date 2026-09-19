@@ -64,9 +64,54 @@ const {
 const rows = computed(() =>
   [...vault.records.value]
     .filter((r) =>
-      `${r.label} ${r.issuer} ${r.note}`.toLowerCase().includes(search.value.toLowerCase())
+      `${r.label} ${r.issuer} ${r.note}`
+        .toLocaleLowerCase(locale.value)
+        .includes(search.value.toLocaleLowerCase(locale.value))
     )
     .sort((a, b) => b.usedAt - a.usedAt)
+)
+const expandedBatches = ref(new Set<string>())
+const groups = computed(() => {
+  const grouped = new Map<string, { id: string; batch: boolean; rows: typeof rows.value }>()
+  for (const row of rows.value) {
+    const id = row.batchId ? 'batch:' + row.batchId : row.id
+    const group = grouped.get(id)
+    if (group) group.rows.push(row)
+    else grouped.set(id, { id, batch: !!row.batchId, rows: [row] })
+  }
+  return [...grouped.values()]
+})
+function toggleBatchSelection(ids: string[]) {
+  const next = new Set(selected.value)
+  const remove = ids.every((id) => next.has(id))
+  for (const id of ids) {
+    if (remove) next.delete(id)
+    else next.add(id)
+  }
+  selected.value = [...next]
+}
+async function toggleBatch(id: string, event: MouseEvent) {
+  if (expandedBatches.value.has(id)) expandedBatches.value.delete(id)
+  else {
+    const heading = (event.currentTarget as HTMLElement).closest('.history-batch-heading')!
+    expandedBatches.value.add(id)
+    await nextTick()
+    const firstRow = heading.nextElementSibling as HTMLElement | null
+    if (firstRow && firstRow.getBoundingClientRect().bottom > window.innerHeight)
+      firstRow.scrollIntoView({ block: 'nearest', behavior: 'instant' })
+  }
+}
+const {
+  surface,
+  selectedSet,
+  allSelected,
+  start: startSelection,
+  click: clickSelection,
+  toggleAll,
+  cancelSelection
+} = useHistorySelection(
+  computed(() => rows.value.map((row) => row.id)),
+  selected
 )
 watch(
   importOpen,
@@ -163,7 +208,7 @@ const date = (v: number) =>
   }).format(v)
 </script>
 <template>
-  <div class="history-surface ore-workspace-frame">
+  <div ref="surface" class="history-surface ore-workspace-frame" @keydown="cancelSelection">
     <div v-if="!vault.ready.value" class="empty-state">
       <UIcon name="i-lucide-loader-circle" />
       <p>{{ tx('正在读取本地存储…') }}</p>
@@ -183,9 +228,7 @@ const date = (v: number) =>
         }}
       </p>
       <form class="unlock-form" @submit.prevent="unlock">
-        <label v-if="!vault.exists.value" class="flex items-center gap-2"
-          ><input v-model="protect" type="checkbox" />{{ tx('使用密码保护') }}</label
-        >
+        <UCheckbox v-if="!vault.exists.value" v-model="protect" :label="tx('使用密码保护')" />
         <p v-if="!vault.exists.value && !protect" class="field-hint">
           {{ tx('不设密码，记录将直接保存在此浏览器，打开即可查看。') }}
         </p>
@@ -273,6 +316,22 @@ const date = (v: number) =>
         </div>
       </div>
       <div class="history-status">
+        <label v-if="rows.length" class="history-select-all">
+          <input
+            type="checkbox"
+            :checked="allSelected"
+            :indeterminate="selected.length > 0 && !allSelected"
+            @change="toggleAll"
+          />
+          <span class="history-check" aria-hidden="true">
+            <UIcon v-if="allSelected" name="i-mc-check" />
+            <UIcon v-else-if="selected.length" name="i-lucide-minus" />
+          </span>
+          <span>{{ tx(allSelected ? '取消全选' : '全选') }}</span>
+          <span v-if="selected.length" class="selection-count" aria-live="polite"
+            >{{ selected.length }} {{ tx('条已选') }}</span
+          >
+        </label>
         <span
           >{{ tx('记录：{count}', { count: vault.records.value.length }) }} ·
           {{ tx(vault.enabled.value ? '自动保存已开启' : '自动保存已关闭') }}</span
@@ -294,61 +353,143 @@ const date = (v: number) =>
           >{{ tx('开始取码') }}<UIcon name="i-lucide-arrow-right"
         /></UButton>
       </div>
-      <div v-for="row in rows" :key="row.id" class="history-row">
-        <input
-          v-model="selected"
-          type="checkbox"
-          :value="row.id"
-          :aria-label="tx('选择 {label}', { label: row.label || tx('未命名记录') })"
-        />
-        <UTooltip :text="tx(secretCopied && copiedSecretId === row.id ? '密钥已复制' : '复制密钥')">
+      <div
+        v-for="group in groups"
+        :key="group.id"
+        class="history-group"
+        :class="{ 'is-expanded': group.batch && (!!search || expandedBatches.has(group.id)) }"
+      >
+        <div
+          v-if="group.batch"
+          class="history-batch-heading"
+          :class="{ 'is-selected': group.rows.some((row) => selectedSet.has(row.id)) }"
+        >
+          <SelectionCheck
+            :checked="
+              group.rows.every((row) => selectedSet.has(row.id))
+                ? true
+                : group.rows.some((row) => selectedSet.has(row.id))
+                  ? 'mixed'
+                  : false
+            "
+            :label="tx('选择 {label}', { label: tx('批量取码') })"
+            @click="toggleBatchSelection(group.rows.map((row) => row.id))"
+          />
           <button
             type="button"
-            class="record-icon record-copy-secret"
-            :aria-label="tx('复制密钥')"
-            :disabled="copyingSecret || !vault.unlocked.value"
-            @click="copySecret(row.id)"
+            class="history-batch-toggle"
+            :aria-expanded="!!search || expandedBatches.has(group.id)"
+            @click="toggleBatch(group.id, $event)"
           >
+            <span class="record-icon" aria-hidden="true"
+              ><img src="/textures/trial-key.png" alt="" width="32" height="32"
+            /></span>
+            <span class="record-name">
+              <span class="record-title"
+                ><strong>{{ tx('批量取码') }}</strong></span
+              >
+              <span class="record-meta">
+                <span>{{ tx('记录：{count}', { count: group.rows.length }) }}</span>
+                <time>{{ date(group.rows[0]!.usedAt) }}</time>
+              </span>
+            </span>
             <UIcon
-              v-if="secretCopied && copiedSecretId === row.id"
-              name="i-lucide-check"
-              class="text-primary"
+              :name="
+                search || expandedBatches.has(group.id)
+                  ? 'i-lucide-chevron-down'
+                  : 'i-lucide-chevron-right'
+              "
             />
-            <img v-else src="/textures/trial-key.png" alt="" width="32" height="32" />
           </button>
-        </UTooltip>
-        <div class="record-name">
-          <div class="record-title">
-            <strong>{{ row.label || row.issuer || tx('未命名记录') }}</strong>
+        </div>
+        <div
+          v-for="row in group.rows"
+          v-show="!group.batch || !!search || expandedBatches.has(group.id)"
+          :key="row.id"
+          class="history-row"
+          :class="{ 'is-selected': selectedSet.has(row.id) }"
+          :data-selection-id="row.id"
+        >
+          <button
+            type="button"
+            role="checkbox"
+            class="history-select-cell"
+            :aria-checked="selectedSet.has(row.id)"
+            :aria-label="tx('选择 {label}', { label: row.label || tx('未命名记录') })"
+            @pointerdown="startSelection($event, row.id)"
+            @click="clickSelection($event, row.id)"
+          >
+            <span class="history-check" aria-hidden="true"
+              ><UIcon v-if="selectedSet.has(row.id)" name="i-mc-check"
+            /></span>
+          </button>
+          <AppHint
+            :text="tx(secretCopied && copiedSecretId === row.id ? '密钥已复制' : '复制密钥')"
+          >
             <button
               type="button"
-              class="record-edit"
-              :aria-label="tx('编辑备注')"
-              @click="edit(row)"
+              class="record-icon record-copy-secret"
+              :aria-label="tx('复制密钥')"
+              :disabled="copyingSecret || !vault.unlocked.value"
+              @click="copySecret(row.id)"
             >
-              <UIcon name="i-lucide-pencil" />
+              <UIcon
+                v-if="secretCopied && copiedSecretId === row.id"
+                name="i-mc-check"
+                class="text-primary"
+              />
+              <img v-else src="/textures/trial-key.png" alt="" width="32" height="32" />
             </button>
+          </AppHint>
+          <div class="record-name">
+            <div class="record-title">
+              <UPopover
+                mode="hover"
+                :open-delay="150"
+                :close-delay="150"
+                enable-touch
+                :content="{ side: 'bottom', align: 'start', collisionPadding: 12 }"
+              >
+                <button type="button" class="record-secret-trigger">
+                  <strong>{{ row.label || row.issuer || tx('未命名记录') }}</strong>
+                </button>
+                <template #content>
+                  <pre class="record-secret-preview">{{ row.secret }}</pre>
+                </template>
+              </UPopover>
+              <button
+                type="button"
+                class="record-edit"
+                :aria-label="tx('编辑备注')"
+                @click="edit(row)"
+              >
+                <UIcon name="i-lucide-pencil" />
+              </button>
+            </div>
+            <div class="record-meta">
+              <span>
+                {{
+                  row.note ||
+                  tx('{algorithm} · {digits} 位 · {period} 秒', {
+                    algorithm: row.algorithm,
+                    digits: row.digits,
+                    period: row.period
+                  })
+                }}
+              </span>
+              <time :datetime="new Date(row.usedAt).toISOString()">{{ date(row.usedAt) }}</time>
+            </div>
           </div>
-          <p>
-            {{
-              row.note ||
-              tx('{algorithm} · {digits} 位 · {period} 秒', {
-                algorithm: row.algorithm,
-                digits: row.digits,
-                period: row.period
-              })
-            }}
-          </p>
-          <small>{{ tx(date(row.usedAt)) }}</small>
+          <HistoryCode :config="row" />
+          <button
+            type="button"
+            class="record-delete"
+            :aria-label="tx('删除记录')"
+            @click="removing = [row.id]"
+          >
+            <UIcon name="i-lucide-trash-2" />
+          </button>
         </div>
-        <HistoryCode :config="row" />
-        <UButton
-          color="neutral"
-          variant="ghost"
-          icon="i-lucide-trash-2"
-          :aria-label="tx('删除记录')"
-          @click="removing = [row.id]"
-        />
       </div>
       <div class="history-danger">
         <UButton
@@ -498,9 +639,7 @@ const date = (v: number) =>
   >
     <template #body
       ><form class="modal-stack" @submit.prevent="saveProtection">
-        <label class="flex items-center gap-2"
-          ><input type="checkbox" v-model="nextProtection" />{{ tx('使用密码保护') }}</label
-        >
+        <UCheckbox v-model="nextProtection" :label="tx('使用密码保护')" />
         <p v-if="!nextProtection">{{ tx('不设密码，记录将直接保存在此浏览器，打开即可查看。') }}</p>
         <UButton
           v-if="vault.passwordProtected.value && nextProtection && !changingPassword"
@@ -536,6 +675,39 @@ const date = (v: number) =>
   </UModal>
 </template>
 <style scoped>
+.history-batch-heading {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  align-items: center;
+  gap: var(--control-gap);
+  width: 100%;
+  min-height: 4.5rem;
+  padding-block: 0.5rem;
+  text-align: start;
+  border-bottom: 1px solid var(--ui-border);
+}
+.history-batch-toggle {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 20px;
+  gap: var(--control-gap);
+  align-items: center;
+  text-align: start;
+  min-width: 0;
+}
+.history-batch-heading.is-selected {
+  background: var(--wash);
+}
+.history-group.is-expanded > .history-row {
+  margin-inline-start: calc(20px + var(--control-gap));
+}
+.history-batch-toggle[aria-expanded='true'] > .iconify {
+  color: var(--accent-ink);
+}
+.history-batch-toggle:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: -2px;
+}
+
 .history-surface {
   border-radius: var(--ui-radius);
   background: var(--panel);
@@ -566,8 +738,8 @@ const date = (v: number) =>
 .unlock-form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  margin: 25px 0;
+  gap: 1rem;
+  margin: 1.5rem 0;
   text-align: start;
 }
 .vault-gate .vault-note {
@@ -603,6 +775,8 @@ const date = (v: number) =>
 }
 .history-status {
   display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
   align-items: center;
   justify-content: space-between;
   color: var(--ui-text-muted);
@@ -612,19 +786,101 @@ const date = (v: number) =>
   border-bottom: 1px solid var(--ui-border);
 }
 .history-row {
+  position: relative;
   display: grid;
-  grid-template-columns: 20px 34px minmax(0, 1fr) auto 44px;
+  grid-template-columns: 20px 44px minmax(0, 1fr) auto 44px;
   align-items: center;
-  gap: 1rem;
-  padding: 1rem 0;
+  gap: var(--control-gap);
+  padding: 0.5rem 0;
   border-bottom: 1px solid var(--ui-border);
 }
+.history-select-all {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--control-gap);
+  min-height: 44px;
+  cursor: pointer;
+  color: var(--ui-text);
+}
+.history-select-all input {
+  position: absolute;
+  opacity: 0;
+  inset-inline-start: 0;
+}
+.history-select-all input:focus-visible + .history-check {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 3px;
+}
+.selection-count {
+  color: var(--accent-ink);
+}
+.history-select-cell {
+  display: grid;
+  place-items: center;
+  align-self: stretch;
+  min-height: 44px;
+  width: 44px;
+  margin-inline: -12px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  touch-action: none;
+  user-select: none;
+  cursor: pointer;
+}
+.history-check {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--ui-text-muted);
+  background: var(--ui-bg);
+  box-shadow: inset 2px 2px 0 rgb(0 0 0 / 18%);
+}
+.history-select-cell[aria-checked='true'] .history-check,
+.history-select-all input:checked + .history-check,
+.history-select-all input:indeterminate + .history-check {
+  background: var(--action);
+  border-color: var(--accent-ink);
+  color: #fff;
+  box-shadow: inset 2px 2px 0 rgb(255 255 255 / 18%);
+}
+.history-select-cell:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 2px;
+}
+.history-row.is-selected {
+  background: color-mix(in srgb, var(--action) 5%, transparent);
+}
 .record-icon {
-  width: 34px;
-  height: 34px;
+  width: 44px;
+  height: 44px;
   display: grid;
   place-items: center;
   flex-shrink: 0;
+}
+.record-delete {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--ui-text-muted);
+}
+.record-delete .iconify {
+  width: 20px;
+  height: 20px;
+}
+.record-delete:hover {
+  color: var(--ui-error);
+}
+.record-delete:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: -4px;
 }
 .record-icon img {
   image-rendering: pixelated;
@@ -632,13 +888,9 @@ const date = (v: number) =>
 .record-copy-secret {
   min-width: 44px;
   min-height: 44px;
-  border: 1px solid transparent;
+  border: 0;
   background: transparent;
   cursor: pointer;
-}
-.record-copy-secret:hover:not(:disabled) {
-  border-color: var(--ui-border);
-  background: var(--wash);
 }
 .record-copy-secret:focus-visible {
   outline: 2px solid var(--accent-ink);
@@ -647,7 +899,7 @@ const date = (v: number) =>
 .record-title {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--control-gap);
 }
 .record-edit {
   opacity: 0;
@@ -681,6 +933,27 @@ const date = (v: number) =>
   min-width: 0;
   line-height: 1.5;
 }
+.record-secret-trigger {
+  min-width: 0;
+  text-align: start;
+  text-decoration: underline dotted;
+  text-underline-offset: 4px;
+}
+.record-secret-trigger:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 3px;
+}
+.record-secret-preview {
+  max-width: min(32rem, calc(100vw - 24px));
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  color: var(--ui-text);
+}
+.history-batch-heading > :deep(.selection-check) {
+  margin-inline-start: -6px;
+}
 .record-name {
   min-width: 0;
   flex: 1;
@@ -690,13 +963,18 @@ const date = (v: number) =>
   font-size: var(--text-body);
   font-weight: 600;
 }
-.record-name p {
+.record-meta {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 2px 12px;
   font-size: var(--text-label);
-  line-height: 1.8;
-  margin-top: 4px;
+  line-height: 1.4;
+  margin-top: 2px;
   color: var(--ui-text-muted);
 }
-.record-name small {
+.record-meta time {
+  white-space: nowrap;
   font-size: var(--text-caption);
   color: var(--ui-text-muted);
 }
@@ -715,6 +993,19 @@ input[type='checkbox'] {
   flex-shrink: 0;
 }
 @media (max-width: 600px) {
+  .history-batch-toggle {
+    grid-template-columns: minmax(0, 1fr) 20px;
+  }
+  .history-batch-heading {
+    grid-template-columns: 20px minmax(0, 1fr);
+    gap: 8px;
+  }
+  .history-batch-toggle > .record-icon {
+    display: none;
+  }
+  .history-group.is-expanded > .history-row {
+    margin-inline-start: 12px;
+  }
   .history-surface {
     padding: 24px 20px;
   }
@@ -736,6 +1027,11 @@ input[type='checkbox'] {
     grid-column: 3;
     grid-row: 1;
     align-self: start;
+  }
+  .history-row > .history-select-cell {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: stretch;
   }
   .history-actions {
     display: grid;

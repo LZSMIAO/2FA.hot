@@ -1,0 +1,2372 @@
+{
+  "zh-CN": {
+    "ui": {
+      "title": "2FA 验证码",
+      "secretLabel": "密钥或 otpauth:// 链接",
+      "hint": "Base32 密钥或 TOTP 链接，可粘贴多条",
+      "choose": "选择密钥",
+      "review": "请核对各条密钥；附近文字不会自动视为所属账号。",
+      "limit": "每次最多 100 行，请分批粘贴。",
+      "reveal": "显示密钥",
+      "algorithm": "算法",
+      "digits": "位数",
+      "period": "周期（秒）",
+      "generate": "粘贴",
+      "pasteHelp": "无法读取剪贴板，请在密钥栏按 Ctrl+V 或长按粘贴。",
+      "clear": "清空",
+      "current": "当前验证码",
+      "copy": "复制验证码",
+      "link": "复制链接",
+      "manual": "请选中文字后手动复制",
+      "privacy": "密钥在此浏览器内处理，不储存历史记录。分享链接仍含密钥，请妥善保管。",
+      "full": "完整版本",
+      "help": "使用说明",
+      "compatibility": "支持 Internet Explorer！",
+      "left": "{n} 秒后更新",
+      "copied": "已复制。",
+      "secret": "请输入一条完整的 Base32 密钥。",
+      "multiple": "Lite 一次处理一条密钥，不支持多行输入。",
+      "invalid": "链接格式不正确。",
+      "unsupported": "请使用 Base32 密钥、TOTP 配置链接或 2fa.hot 片段链接；不支持此格式。",
+      "duplicate": "链接包含重复参数。",
+      "parameters": "请使用 SHA-1/256/512、6 或 8 位，以及 15 至 120 秒的周期。",
+      "unavailable": "取码组件未能加载，请刷新后重试。",
+      "query": "请用 # 片段放置密钥，不要放在网址路径或查询参数中。",
+      "navigation": "导航",
+      "language": "语言",
+      "source": "源码 · AGPL-3.0",
+      "javascript": "需要启用 JavaScript 才能在本地计算验证码。",
+      "languageError": "语言加载失败，请重试。",
+      "openCode": "查看独立取码页"
+    },
+    "help": {
+      "title": "Lite 使用说明",
+      "back": "返回取码",
+      "sections": [
+        [
+          "为什么需要 Lite？",
+          "Lite 为只需快速获取 TOTP 验证码的场景准备：页面更小、加载更快、依赖更少，在慢速网络、旧设备或完整版本无法正常加载时仍可使用。它保留浏览器内计算、多密钥识别和快捷取码；二维码导入、本机记录等完整功能则由完整版本提供。"
+        ],
+        [
+          "如何取码",
+          "粘贴已有的 Base32 密钥或 otpauth://totp/ 配置链接，验证码会自动显示。点“复制验证码”后，填入需要验证的网站。倒计时结束时会自动更新。"
+        ],
+        [
+          "快捷取码链接",
+          "使用 /lite#密钥 可直接打开取码页。这是浏览器页面，不是返回 JSON 或验证码的服务器 API；curl 等 HTTP 客户端只会取得页面。请使用页面的“复制链接”生成完整链接。"
+        ],
+        [
+          "自定义参数",
+          "密钥后可加 ?algorithm=SHA256&digits=8&period=30，整段必须放在 # 后。algorithm 支持 SHA1、SHA256、SHA512；digits 为 6 或 8；period 为 15–120 秒的整数。默认是 SHA1、6 位、30 秒。参数需与原服务一致。"
+        ],
+        [
+          "复制与粘贴",
+          "“粘贴”需要浏览器允许读取剪贴板。拒绝或不支持时，可用 Ctrl+V、Command+V 或长按粘贴。复制失败时会显示可选取的文字，请手动复制。"
+        ],
+        [
+          "功能范围与旧浏览器",
+          "Lite 可识别多条密钥，在本页选择并取码；箭头可打开独立取码页。不提供 QR 导入或本机记录。需要这些功能时请使用完整版本。Lite 以 IE11 为兼容目标，尚未通过 IE11 实机验证；旧系统的 HTTPS 连接能力也可能影响使用。"
+        ],
+        [
+          "密钥与隐私",
+          "密钥及验证码计算在浏览器内完成，Lite 不保存历史记录。# 后的内容不随 HTTP 页面请求发送；完整链接仍含密钥，可能留在浏览器历史、剪贴板或截图中，请勿公开分享。"
+        ],
+        [
+          "验证码不正确？",
+          "先确认密钥、算法、位数和周期与原服务相同，再检查设备时间。快到期时等下一组。Lite 不支持 HOTP 或 Steam 专用验证码。"
+        ]
+      ]
+    }
+  },
+  "zh-TW": {
+    "ui": {
+      "title": "2FA 驗證碼",
+      "secretLabel": "密鑰或 otpauth:// 連結",
+      "hint": "Base32 密鑰或 TOTP 連結，可貼上多條",
+      "choose": "選擇密鑰",
+      "review": "請核對各條密鑰；附近文字不會自動視為所屬帳號。",
+      "limit": "每次最多 100 行，請分批貼上。",
+      "reveal": "顯示密鑰",
+      "algorithm": "演算法",
+      "digits": "位數",
+      "period": "週期（秒）",
+      "generate": "貼上",
+      "pasteHelp": "無法讀取剪貼簿，請在密鑰欄按 Ctrl+V 或長按貼上。",
+      "clear": "清空",
+      "current": "目前驗證碼",
+      "copy": "複製驗證碼",
+      "link": "複製連結",
+      "manual": "請選取後手動複製",
+      "privacy": "密鑰在此瀏覽器內處理，不儲存歷史紀錄。分享連結仍含密鑰，請妥善保管。",
+      "full": "完整版本",
+      "help": "使用說明",
+      "compatibility": "支援 Internet Explorer！",
+      "left": "{n} 秒後更新",
+      "copied": "已複製。",
+      "secret": "請輸入一條完整的 Base32 密鑰。",
+      "multiple": "Lite 一次處理一條密鑰，不支援多行輸入。",
+      "invalid": "連結格式不正確。",
+      "unsupported": "請使用 Base32 密鑰、TOTP 設定連結或 2fa.hot 片段連結；此格式不受支援。",
+      "duplicate": "連結包含重複參數。",
+      "parameters": "請使用 SHA-1/256/512、6 或 8 位，以及 15 至 120 秒的週期。",
+      "unavailable": "取碼元件未能載入，請重新整理後再試。",
+      "query": "請用 # 片段放置密鑰，不要放在網址路徑或查詢參數中。",
+      "navigation": "導覽",
+      "language": "語言",
+      "source": "原始碼 · AGPL-3.0",
+      "javascript": "需要啟用 JavaScript 才能在本機計算驗證碼。",
+      "languageError": "語言載入失敗，請重試。",
+      "openCode": "查看獨立取碼頁"
+    },
+    "help": {
+      "title": "Lite 使用說明",
+      "back": "返回取碼",
+      "sections": [
+        [
+          "為什麼需要 Lite？",
+          "Lite 為只需快速取得 TOTP 驗證碼的情況而設：頁面更小、載入更快、依賴更少，在慢速網路、舊裝置或完整版本無法正常載入時仍可使用。它保留瀏覽器內計算、多密鑰識別和快捷取碼；QR 匯入、本機紀錄等完整功能則由完整版本提供。"
+        ],
+        [
+          "如何取碼",
+          "貼上已有的 Base32 密鑰或 otpauth://totp/ 設定連結，驗證碼會自動顯示。點「複製驗證碼」後，填入需要驗證的網站。倒計時結束時會自動更新。"
+        ],
+        [
+          "快捷取碼連結",
+          "使用 /lite#密鑰 可直接開啟取碼頁。這是瀏覽器頁面，不是回傳 JSON 或驗證碼的伺服器 API；curl 等 HTTP 客戶端只會取得頁面。請使用頁面的「複製連結」產生完整連結。"
+        ],
+        [
+          "自訂參數",
+          "密鑰後可加 ?algorithm=SHA256&digits=8&period=30，整段必須放在 # 後。algorithm 支援 SHA1、SHA256、SHA512；digits 為 6 或 8；period 為 15–120 秒的整數。預設是 SHA1、6 位、30 秒。參數需與原服務一致。"
+        ],
+        [
+          "複製與貼上",
+          "「貼上」需要瀏覽器允許讀取剪貼簿。拒絕或不支援時，可用 Ctrl+V、Command+V 或長按貼上。複製失敗時會顯示可選取的文字，請手動複製。"
+        ],
+        [
+          "功能範圍與舊瀏覽器",
+          "Lite 可辨識多條密鑰，在本頁選擇並取碼；箭頭可開啟獨立取碼頁。不提供 QR 匯入或本機紀錄。需要這些功能時請使用完整版本。Lite 以 IE11 為相容目標，尚未通過 IE11 實機驗證；舊系統的 HTTPS 連線能力也可能影響使用。"
+        ],
+        [
+          "密鑰與隱私",
+          "密鑰及驗證碼計算在瀏覽器內完成，Lite 不儲存歷史紀錄。# 後的內容不隨 HTTP 頁面請求傳送；完整連結仍含密鑰，可能留在瀏覽器歷史、剪貼簿或截圖中，請勿公開分享。"
+        ],
+        [
+          "驗證碼不正確？",
+          "先確認密鑰、演算法、位數和週期與原服務相同，再檢查裝置時間。快到期時等下一組。Lite 不支援 HOTP 或 Steam 專用驗證碼。"
+        ]
+      ]
+    }
+  },
+  "en": {
+    "ui": {
+      "title": "2FA verification code",
+      "secretLabel": "Secret or otpauth:// link",
+      "hint": "Base32 secrets or TOTP links",
+      "choose": "Select a secret",
+      "review": "Check each secret. Account ownership is not inferred from nearby text.",
+      "limit": "Use no more than 100 rows at a time.",
+      "reveal": "Show secret",
+      "algorithm": "Algorithm",
+      "digits": "Digits",
+      "period": "Period (seconds)",
+      "generate": "Paste",
+      "pasteHelp": "Clipboard access is unavailable. Paste into the secret field with Ctrl+V or long press.",
+      "clear": "Clear",
+      "current": "Current code",
+      "copy": "Copy code",
+      "link": "Copy link",
+      "manual": "Select and copy manually",
+      "privacy": "Secrets stay in this browser. No history is saved. Shared links still contain your secret; keep them private.",
+      "full": "Full version",
+      "help": "Usage guide",
+      "compatibility": "Supports Internet Explorer!",
+      "left": "Next code in {n}s",
+      "copied": "Copied.",
+      "secret": "Enter one complete Base32 secret.",
+      "multiple": "Use one secret at a time. Multiple lines are not supported in Lite.",
+      "invalid": "The link is not valid.",
+      "unsupported": "Use a Base32 secret, a TOTP URI or a 2fa.hot fragment link. This format is not supported.",
+      "duplicate": "The link contains duplicate parameters.",
+      "parameters": "Use SHA-1/256/512, 6 or 8 digits, and a period from 15 to 120 seconds.",
+      "unavailable": "The code engine could not load. Reload this page to try again.",
+      "query": "Use a # fragment for secrets, not URL path or query parameters.",
+      "navigation": "Navigation",
+      "language": "Language",
+      "source": "Source · AGPL-3.0",
+      "javascript": "JavaScript is required to calculate codes locally.",
+      "languageError": "Unable to load this language. Try again.",
+      "openCode": "Open standalone code page"
+    },
+    "help": {
+      "title": "Lite guide",
+      "back": "Back to codes",
+      "sections": [
+        [
+          "Why Lite?",
+          "Lite is for situations where you only need a TOTP code quickly. Its smaller page and fewer dependencies load faster on slow networks and older devices, and can remain usable when the full version cannot load properly. It keeps in-browser calculation, multiple-secret detection and quick code links; QR import, saved history and other features remain in the full version."
+        ],
+        [
+          "Get a code",
+          "Paste an existing Base32 secret or otpauth://totp/ configuration link. Your code appears automatically. Copy it into the service requesting verification. The code refreshes when the countdown ends."
+        ],
+        [
+          "Quick code links",
+          "Open /lite#SECRET to display a code directly. This is a browser page, not a server API returning JSON or codes: HTTP clients such as curl receive only the page. Use Copy link to generate the complete URL."
+        ],
+        [
+          "Parameters",
+          "Append ?algorithm=SHA256&digits=8&period=30 after the secret, keeping everything after #. algorithm accepts SHA1, SHA256 or SHA512; digits accepts 6 or 8; period is an integer from 15 to 120 seconds. Defaults: SHA1, 6 digits, 30 seconds. Match the original service’s settings."
+        ],
+        [
+          "Copy and paste",
+          "Paste requires clipboard permission. If unavailable or denied, use Ctrl+V, Command+V or long press. If copying fails, selectable text appears for manual copying."
+        ],
+        [
+          "Features and older browsers",
+          "Lite detects multiple secrets for selection on this page. The arrow opens a standalone code page. QR import and saved history are not available. Use the full version for those features. IE11 is a compatibility target: testing on actual IE11 has not been completed. Older systems may also be unable to establish an HTTPS connection."
+        ],
+        [
+          "Secrets and privacy",
+          "Secrets and code calculations stay in the browser; Lite saves no history. Content after # is not sent in the HTTP page request. The full link still contains your secret and may remain in browser history, the clipboard or screenshots. Keep it private."
+        ],
+        [
+          "Incorrect code?",
+          "Check the secret, algorithm, digits and period against the original service, then check your device clock. Wait for the next code if it is about to expire. Lite does not support HOTP or Steam-specific codes."
+        ]
+      ]
+    }
+  },
+  "es": {
+    "ui": {
+      "title": "Código de verificación 2FA",
+      "secretLabel": "Secreto o enlace otpauth://",
+      "hint": "Secretos Base32 o enlaces TOTP",
+      "choose": "Selecciona un secreto",
+      "review": "Comprueba cada secreto. No se deduce a qué cuenta pertenece a partir del texto cercano.",
+      "limit": "Usa como máximo 100 filas cada vez.",
+      "reveal": "Mostrar secreto",
+      "algorithm": "Algoritmo",
+      "digits": "Dígitos",
+      "period": "Período (segundos)",
+      "generate": "Pegar",
+      "pasteHelp": "El acceso al portapapeles no está disponible. Pega en el campo del secreto con Ctrl+V o una pulsación larga.",
+      "clear": "Borrar",
+      "current": "Código actual",
+      "copy": "Copiar código",
+      "link": "Copiar enlace",
+      "manual": "Seleccionar y copiar manualmente",
+      "privacy": "Los secretos permanecen en este navegador. No se guarda historial. Los enlaces compartidos siguen conteniendo tu secreto; mantenlos privados.",
+      "full": "Versión completa",
+      "help": "Guía de uso",
+      "compatibility": "¡Compatible con Internet Explorer!",
+      "left": "Próximo código en {n}s",
+      "copied": "Copiado.",
+      "secret": "Introduce un único secreto Base32 completo.",
+      "multiple": "Usa un secreto cada vez. Lite no admite varias líneas.",
+      "invalid": "El enlace no es válido.",
+      "unsupported": "Usa un secreto Base32, un URI TOTP o un enlace con fragmento de 2fa.hot. Este formato no es compatible.",
+      "duplicate": "El enlace contiene parámetros duplicados.",
+      "parameters": "Usa SHA-1/256/512, 6 u 8 dígitos y un período de entre 15 y 120 segundos.",
+      "unavailable": "No se pudo cargar el motor de códigos. Recarga esta página para volver a intentarlo.",
+      "query": "Usa un fragmento # para los secretos, no la ruta ni los parámetros de consulta de la URL.",
+      "navigation": "Navegación",
+      "language": "Idioma",
+      "source": "Código fuente · AGPL-3.0",
+      "javascript": "Se necesita JavaScript para calcular códigos localmente.",
+      "languageError": "No se pudo cargar el idioma. Reinténtalo.",
+      "openCode": "Abrir la página independiente del código"
+    },
+    "help": {
+      "title": "Guía de Lite",
+      "back": "Volver a los códigos",
+      "sections": [
+        [
+          "¿Por qué Lite?",
+          "Lite está pensado para cuando solo necesitas un código TOTP rápidamente. Su página más pequeña y sus pocas dependencias cargan más rápido en redes lentas y dispositivos antiguos, y pueden seguir funcionando cuando la versión completa no carga bien. Mantiene el cálculo en el navegador, la detección de varios secretos y los enlaces rápidos a códigos; la importación QR, el historial guardado y otras funciones siguen en la versión completa."
+        ],
+        [
+          "Obtener un código",
+          "Pega un secreto Base32 existente o un enlace de configuración otpauth://totp/. Tu código aparece automáticamente. Cópialo en el servicio que solicita la verificación. El código se actualiza cuando termina la cuenta atrás."
+        ],
+        [
+          "Enlaces rápidos a códigos",
+          "Abre /lite#SECRET para mostrar un código directamente. Es una página del navegador, no una API del servidor que devuelve JSON o códigos: los clientes HTTP como curl solo reciben la página. Usa Copiar enlace para generar la URL completa."
+        ],
+        [
+          "Parámetros",
+          "Añade ?algorithm=SHA256&digits=8&period=30 después del secreto, manteniendo todo detrás de #. algorithm admite SHA1, SHA256 o SHA512; digits admite 6 u 8; period es un entero entre 15 y 120 segundos. Predeterminados: SHA1, 6 dígitos, 30 segundos. Haz que coincidan con los ajustes del servicio original."
+        ],
+        [
+          "Copiar y pegar",
+          "Pegar requiere permiso de acceso al portapapeles. Si no está disponible o se deniega, usa Ctrl+V, Command+V o una pulsación larga. Si falla la copia, aparece texto seleccionable para copiarlo manualmente."
+        ],
+        [
+          "Funciones y navegadores antiguos",
+          "Lite detecta varios secretos para seleccionarlos en esta página. La flecha abre una página de código independiente. No dispone de importación QR ni historial guardado. Usa la versión completa para esas funciones. IE11 es un objetivo de compatibilidad: las pruebas en IE11 real aún no han finalizado. Los sistemas antiguos también podrían no poder establecer una conexión HTTPS."
+        ],
+        [
+          "Secretos y privacidad",
+          "Los secretos y los cálculos de códigos permanecen en el navegador; Lite no guarda historial. El contenido situado después de # no se envía en la solicitud HTTP de la página. El enlace completo sigue conteniendo tu secreto y puede permanecer en el historial del navegador, el portapapeles o capturas de pantalla. Mantenlo privado."
+        ],
+        [
+          "¿Código incorrecto?",
+          "Comprueba el secreto, algoritmo, dígitos y período con el servicio original, y después el reloj de tu dispositivo. Espera al siguiente código si está a punto de caducar. Lite no admite HOTP ni códigos específicos de Steam."
+        ]
+      ]
+    }
+  },
+  "fr": {
+    "ui": {
+      "title": "Code de vérification 2FA",
+      "secretLabel": "Secret ou lien otpauth://",
+      "hint": "Secrets Base32 ou liens TOTP",
+      "choose": "Sélectionner un secret",
+      "review": "Vérifiez chaque secret. Son appartenance à un compte n’est pas déduite du texte voisin.",
+      "limit": "Utilisez au maximum 100 lignes à la fois.",
+      "reveal": "Afficher le secret",
+      "algorithm": "Algorithme",
+      "digits": "Chiffres",
+      "period": "Période (secondes)",
+      "generate": "Coller",
+      "pasteHelp": "L’accès au presse-papiers est indisponible. Collez dans le champ du secret avec Ctrl+V ou un appui long.",
+      "clear": "Effacer",
+      "current": "Code actuel",
+      "copy": "Copier le code",
+      "link": "Copier le lien",
+      "manual": "Sélectionner et copier manuellement",
+      "privacy": "Les secrets restent dans ce navigateur. Aucun historique n’est enregistré. Les liens partagés contiennent toujours votre secret ; gardez-les privés.",
+      "full": "Version complète",
+      "help": "Guide d’utilisation",
+      "compatibility": "Compatible avec Internet Explorer !",
+      "left": "Prochain code dans {n}s",
+      "copied": "Copié.",
+      "secret": "Saisissez un seul secret Base32 complet.",
+      "multiple": "Utilisez un secret à la fois. Lite ne prend pas en charge plusieurs lignes.",
+      "invalid": "Le lien est invalide.",
+      "unsupported": "Utilisez un secret Base32, un URI TOTP ou un lien à fragment 2fa.hot. Ce format n’est pas pris en charge.",
+      "duplicate": "Le lien contient des paramètres en double.",
+      "parameters": "Utilisez SHA-1/256/512, 6 ou 8 chiffres et une période de 15 à 120 secondes.",
+      "unavailable": "Le moteur de codes n’a pas pu se charger. Rechargez cette page pour réessayer.",
+      "query": "Utilisez un fragment # pour les secrets, pas le chemin ni les paramètres de requête de l’URL.",
+      "navigation": "Navigation",
+      "language": "Langue",
+      "source": "Code source · AGPL-3.0",
+      "javascript": "JavaScript est nécessaire au calcul local des codes.",
+      "languageError": "Chargement de la langue impossible. Réessayez.",
+      "openCode": "Ouvrir la page de code séparée"
+    },
+    "help": {
+      "title": "Guide Lite",
+      "back": "Retour aux codes",
+      "sections": [
+        [
+          "Pourquoi Lite ?",
+          "Lite convient quand vous avez seulement besoin d’un code TOTP rapidement. Sa page plus légère et ses dépendances réduites se chargent plus vite sur les réseaux lents et les appareils anciens, et peuvent rester utilisables quand la version complète ne se charge pas correctement. Le calcul dans le navigateur, la détection de plusieurs secrets et les liens rapides sont conservés ; l’importation QR, l’historique enregistré et les autres fonctions restent dans la version complète."
+        ],
+        [
+          "Obtenir un code",
+          "Collez un secret Base32 existant ou un lien de configuration otpauth://totp/. Votre code apparaît automatiquement. Copiez-le dans le service demandant la vérification. Le code se renouvelle à la fin du compte à rebours."
+        ],
+        [
+          "Liens rapides vers les codes",
+          "Ouvrez /lite#SECRET pour afficher directement un code. C’est une page de navigateur, pas une API serveur renvoyant du JSON ou des codes : les clients HTTP tels que curl ne reçoivent que la page. Utilisez Copier le lien pour générer l’URL complète."
+        ],
+        [
+          "Paramètres",
+          "Ajoutez ?algorithm=SHA256&digits=8&period=30 après le secret, en conservant le tout après #. algorithm accepte SHA1, SHA256 ou SHA512 ; digits accepte 6 ou 8 ; period est un entier de 15 à 120 secondes. Par défaut : SHA1, 6 chiffres, 30 secondes. Reprenez les paramètres du service d’origine."
+        ],
+        [
+          "Copier et coller",
+          "Coller nécessite l’autorisation d’accéder au presse-papiers. Si elle est indisponible ou refusée, utilisez Ctrl+V, Command+V ou un appui long. Si la copie échoue, un texte sélectionnable apparaît pour une copie manuelle."
+        ],
+        [
+          "Fonctions et anciens navigateurs",
+          "Lite détecte plusieurs secrets pour les sélectionner sur cette page. La flèche ouvre une page de code indépendante. L’importation QR et l’historique enregistré ne sont pas disponibles. Utilisez la version complète pour ces fonctions. IE11 est une cible de compatibilité : les tests sur un véritable IE11 n’ont pas été achevés. Les anciens systèmes peuvent aussi ne pas pouvoir établir une connexion HTTPS."
+        ],
+        [
+          "Secrets et confidentialité",
+          "Les secrets et les calculs de codes restent dans le navigateur ; Lite n’enregistre aucun historique. Le contenu après # n’est pas envoyé dans la requête HTTP de la page. Le lien complet contient toujours votre secret et peut rester dans l’historique du navigateur, le presse-papiers ou des captures d’écran. Gardez-le privé."
+        ],
+        [
+          "Code incorrect ?",
+          "Comparez le secret, l’algorithme, les chiffres et la période au service d’origine, puis vérifiez l’horloge de votre appareil. Attendez le code suivant s’il est sur le point d’expirer. Lite ne prend pas en charge HOTP ni les codes spécifiques à Steam."
+        ]
+      ]
+    }
+  },
+  "de": {
+    "ui": {
+      "title": "2FA-Bestätigungscode",
+      "secretLabel": "Geheimschlüssel oder otpauth://-Link",
+      "hint": "Base32-Schlüssel oder TOTP-Links",
+      "choose": "Schlüssel auswählen",
+      "review": "Prüfe jeden Schlüssel. Die Kontozuordnung wird nicht aus benachbartem Text abgeleitet.",
+      "limit": "Verwende höchstens 100 Zeilen auf einmal.",
+      "reveal": "Schlüssel anzeigen",
+      "algorithm": "Algorithmus",
+      "digits": "Ziffern",
+      "period": "Intervall (Sekunden)",
+      "generate": "Einfügen",
+      "pasteHelp": "Zugriff auf die Zwischenablage ist nicht verfügbar. Füge mit Strg+V oder langem Drücken in das Schlüsselfeld ein.",
+      "clear": "Leeren",
+      "current": "Aktueller Code",
+      "copy": "Code kopieren",
+      "link": "Link kopieren",
+      "manual": "Auswählen und manuell kopieren",
+      "privacy": "Schlüssel bleiben in diesem Browser. Es wird kein Verlauf gespeichert. Geteilte Links enthalten weiterhin deinen Schlüssel; halte sie privat.",
+      "full": "Vollversion",
+      "help": "Nutzungsanleitung",
+      "compatibility": "Unterstützt Internet Explorer!",
+      "left": "Nächster Code in {n}s",
+      "copied": "Kopiert.",
+      "secret": "Gib einen vollständigen Base32-Schlüssel ein.",
+      "multiple": "Verwende jeweils nur einen Schlüssel. Mehrere Zeilen werden in Lite nicht unterstützt.",
+      "invalid": "Der Link ist ungültig.",
+      "unsupported": "Verwende einen Base32-Schlüssel, TOTP-URI oder 2fa.hot-Fragmentlink. Dieses Format wird nicht unterstützt.",
+      "duplicate": "Der Link enthält doppelte Parameter.",
+      "parameters": "Verwende SHA-1/256/512, 6 oder 8 Ziffern und ein Intervall von 15 bis 120 Sekunden.",
+      "unavailable": "Die Code-Engine konnte nicht geladen werden. Lade diese Seite neu, um es erneut zu versuchen.",
+      "query": "Verwende ein #-Fragment für Schlüssel, nicht den URL-Pfad oder Abfrageparameter.",
+      "navigation": "Navigation",
+      "language": "Sprache",
+      "source": "Quellcode · AGPL-3.0",
+      "javascript": "JavaScript wird benötigt, um Codes lokal zu berechnen.",
+      "languageError": "Sprache konnte nicht geladen werden. Erneut versuchen.",
+      "openCode": "Separate Code-Seite öffnen"
+    },
+    "help": {
+      "title": "Lite-Anleitung",
+      "back": "Zurück zu den Codes",
+      "sections": [
+        [
+          "Warum Lite?",
+          "Lite ist für Situationen gedacht, in denen du schnell nur einen TOTP-Code brauchst. Die kleinere Seite und weniger Abhängigkeiten laden in langsamen Netzen und auf älteren Geräten schneller und können nutzbar bleiben, wenn die Vollversion nicht richtig lädt. Berechnung im Browser, Erkennung mehrerer Schlüssel und schnelle Code-Links bleiben erhalten; QR-Import, gespeicherter Verlauf und weitere Funktionen gibt es in der Vollversion."
+        ],
+        [
+          "Einen Code erhalten",
+          "Füge einen vorhandenen Base32-Schlüssel oder otpauth://totp/-Konfigurationslink ein. Dein Code erscheint automatisch. Kopiere ihn in den Dienst, der eine Bestätigung verlangt. Nach Ablauf des Countdowns wird der Code erneuert."
+        ],
+        [
+          "Schnelle Code-Links",
+          "Öffne /lite#SECRET, um direkt einen Code anzuzeigen. Das ist eine Browserseite, keine Server-API, die JSON oder Codes zurückgibt: HTTP-Clients wie curl erhalten nur die Seite. Verwende Link kopieren, um die vollständige URL zu erzeugen."
+        ],
+        [
+          "Parameter",
+          "Hänge ?algorithm=SHA256&digits=8&period=30 an den Schlüssel an und belasse alles hinter #. algorithm akzeptiert SHA1, SHA256 oder SHA512; digits akzeptiert 6 oder 8; period ist eine ganze Zahl von 15 bis 120 Sekunden. Standard: SHA1, 6 Ziffern, 30 Sekunden. Übernimm die Einstellungen des ursprünglichen Dienstes."
+        ],
+        [
+          "Kopieren und Einfügen",
+          "Einfügen erfordert Zugriff auf die Zwischenablage. Ist er nicht verfügbar oder verweigert, verwende Strg+V, Command+V oder langes Drücken. Scheitert das Kopieren, erscheint auswählbarer Text zum manuellen Kopieren."
+        ],
+        [
+          "Funktionen und ältere Browser",
+          "Lite erkennt mehrere Schlüssel zur Auswahl auf dieser Seite. Der Pfeil öffnet eine eigenständige Codeseite. QR-Import und gespeicherter Verlauf sind nicht verfügbar. Verwende dafür die Vollversion. IE11 ist ein Kompatibilitätsziel: Tests im tatsächlichen IE11 sind noch nicht abgeschlossen. Ältere Systeme können möglicherweise auch keine HTTPS-Verbindung aufbauen."
+        ],
+        [
+          "Schlüssel und Datenschutz",
+          "Schlüssel und Codeberechnungen bleiben im Browser; Lite speichert keinen Verlauf. Inhalte nach # werden nicht in der HTTP-Seitenanfrage gesendet. Der vollständige Link enthält weiterhin deinen Schlüssel und kann im Browserverlauf, in der Zwischenablage oder in Screenshots bleiben. Halte ihn privat."
+        ],
+        [
+          "Falscher Code?",
+          "Vergleiche Schlüssel, Algorithmus, Ziffernzahl und Intervall mit dem ursprünglichen Dienst und prüfe dann die Geräteuhr. Warte auf den nächsten Code, wenn der aktuelle gleich abläuft. Lite unterstützt weder HOTP noch Steam-spezifische Codes."
+        ]
+      ]
+    }
+  },
+  "pt-BR": {
+    "ui": {
+      "title": "Código de verificação 2FA",
+      "secretLabel": "Segredo ou link otpauth://",
+      "hint": "Segredos Base32 ou links TOTP",
+      "choose": "Selecione um segredo",
+      "review": "Confira cada segredo. A conta à qual pertence não é deduzida do texto ao redor.",
+      "limit": "Use no máximo 100 linhas por vez.",
+      "reveal": "Mostrar segredo",
+      "algorithm": "Algoritmo",
+      "digits": "Dígitos",
+      "period": "Período (segundos)",
+      "generate": "Colar",
+      "pasteHelp": "O acesso à área de transferência está indisponível. Cole no campo do segredo com Ctrl+V ou toque prolongado.",
+      "clear": "Limpar",
+      "current": "Código atual",
+      "copy": "Copiar código",
+      "link": "Copiar link",
+      "manual": "Selecionar e copiar manualmente",
+      "privacy": "Os segredos ficam neste navegador. Nenhum histórico é salvo. Links compartilhados ainda contêm seu segredo; mantenha-os privados.",
+      "full": "Versão completa",
+      "help": "Guia de uso",
+      "compatibility": "Compatível com Internet Explorer!",
+      "left": "Próximo código em {n}s",
+      "copied": "Copiado.",
+      "secret": "Digite um único segredo Base32 completo.",
+      "multiple": "Use um segredo por vez. O Lite não aceita várias linhas.",
+      "invalid": "O link é inválido.",
+      "unsupported": "Use um segredo Base32, um URI TOTP ou um link com fragmento do 2fa.hot. Este formato não é suportado.",
+      "duplicate": "O link contém parâmetros duplicados.",
+      "parameters": "Use SHA-1/256/512, 6 ou 8 dígitos e um período de 15 a 120 segundos.",
+      "unavailable": "O mecanismo de códigos não carregou. Recarregue esta página para tentar novamente.",
+      "query": "Use um fragmento # para segredos, não o caminho ou os parâmetros de consulta da URL.",
+      "navigation": "Navegação",
+      "language": "Idioma",
+      "source": "Código-fonte · AGPL-3.0",
+      "javascript": "É necessário JavaScript para calcular códigos localmente.",
+      "languageError": "Falha ao carregar o idioma. Tente novamente.",
+      "openCode": "Abrir página separada do código"
+    },
+    "help": {
+      "title": "Guia do Lite",
+      "back": "Voltar aos códigos",
+      "sections": [
+        [
+          "Por que Lite?",
+          "O Lite serve para quando você só precisa de um código TOTP rapidamente. A página menor e as poucas dependências carregam mais rápido em redes lentas e dispositivos antigos, e podem continuar utilizáveis quando a versão completa não carrega corretamente. Ele mantém o cálculo no navegador, a detecção de vários segredos e links rápidos de códigos; importação QR, histórico salvo e outros recursos continuam na versão completa."
+        ],
+        [
+          "Obter um código",
+          "Cole um segredo Base32 existente ou um link de configuração otpauth://totp/. Seu código aparece automaticamente. Copie-o no serviço que pede a verificação. O código é atualizado quando a contagem regressiva termina."
+        ],
+        [
+          "Links rápidos de códigos",
+          "Abra /lite#SECRET para exibir um código diretamente. É uma página de navegador, não uma API de servidor que retorna JSON ou códigos: clientes HTTP como curl recebem apenas a página. Use Copiar link para gerar a URL completa."
+        ],
+        [
+          "Parâmetros",
+          "Acrescente ?algorithm=SHA256&digits=8&period=30 após o segredo, mantendo tudo depois de #. algorithm aceita SHA1, SHA256 ou SHA512; digits aceita 6 ou 8; period é um inteiro de 15 a 120 segundos. Padrões: SHA1, 6 dígitos, 30 segundos. Use as mesmas configurações do serviço original."
+        ],
+        [
+          "Copiar e colar",
+          "Colar exige permissão para a área de transferência. Se estiver indisponível ou for negada, use Ctrl+V, Command+V ou toque prolongado. Se a cópia falhar, aparece um texto selecionável para copiar manualmente."
+        ],
+        [
+          "Recursos e navegadores antigos",
+          "O Lite detecta vários segredos para seleção nesta página. A seta abre uma página de código independente. Importação QR e histórico salvo não estão disponíveis. Use a versão completa para esses recursos. IE11 é um objetivo de compatibilidade: os testes no IE11 real ainda não foram concluídos. Sistemas antigos também podem não conseguir estabelecer uma conexão HTTPS."
+        ],
+        [
+          "Segredos e privacidade",
+          "Segredos e cálculos de códigos ficam no navegador; o Lite não salva histórico. O conteúdo após # não é enviado na requisição HTTP da página. O link completo ainda contém seu segredo e pode permanecer no histórico do navegador, na área de transferência ou em capturas de tela. Mantenha-o privado."
+        ],
+        [
+          "Código incorreto?",
+          "Confira segredo, algoritmo, dígitos e período com o serviço original e depois verifique o relógio do dispositivo. Espere o próximo código se ele estiver prestes a expirar. O Lite não aceita HOTP nem códigos específicos do Steam."
+        ]
+      ]
+    }
+  },
+  "ru": {
+    "ui": {
+      "title": "Код подтверждения 2FA",
+      "secretLabel": "Секрет или ссылка otpauth://",
+      "hint": "Секреты Base32 или ссылки TOTP",
+      "choose": "Выберите секрет",
+      "review": "Проверьте каждый секрет. Принадлежность аккаунту не определяется по соседнему тексту.",
+      "limit": "Используйте не более 100 строк за раз.",
+      "reveal": "Показать секрет",
+      "algorithm": "Алгоритм",
+      "digits": "Цифры",
+      "period": "Период (секунды)",
+      "generate": "Вставить",
+      "pasteHelp": "Доступ к буферу обмена недоступен. Вставьте в поле секрета с помощью Ctrl+V или долгого нажатия.",
+      "clear": "Очистить",
+      "current": "Текущий код",
+      "copy": "Копировать код",
+      "link": "Копировать ссылку",
+      "manual": "Выделить и скопировать вручную",
+      "privacy": "Секреты остаются в этом браузере. История не сохраняется. Ссылки для передачи всё равно содержат секрет; не раскрывайте их.",
+      "full": "Полная версия",
+      "help": "Инструкция",
+      "compatibility": "Поддерживает Internet Explorer!",
+      "left": "Следующий код через {n}с",
+      "copied": "Скопировано.",
+      "secret": "Введите один полный секрет Base32.",
+      "multiple": "Используйте один секрет за раз. Несколько строк в Lite не поддерживаются.",
+      "invalid": "Ссылка недействительна.",
+      "unsupported": "Используйте секрет Base32, URI TOTP или ссылку с фрагментом 2fa.hot. Этот формат не поддерживается.",
+      "duplicate": "Ссылка содержит повторяющиеся параметры.",
+      "parameters": "Используйте SHA-1/256/512, 6 или 8 цифр и период от 15 до 120 секунд.",
+      "unavailable": "Не удалось загрузить механизм кодов. Перезагрузите страницу и попробуйте снова.",
+      "query": "Для секретов используйте фрагмент #, а не путь URL или параметры запроса.",
+      "navigation": "Навигация",
+      "language": "Язык",
+      "source": "Исходный код · AGPL-3.0",
+      "javascript": "Для локального вычисления кодов необходим JavaScript.",
+      "languageError": "Не удалось загрузить язык. Повторите попытку.",
+      "openCode": "Открыть отдельную страницу кода"
+    },
+    "help": {
+      "title": "Руководство Lite",
+      "back": "Назад к кодам",
+      "sections": [
+        [
+          "Зачем Lite?",
+          "Lite нужен, когда требуется лишь быстро получить код TOTP. Меньшая страница и меньше зависимостей быстрее загружаются в медленных сетях и на старых устройствах и могут оставаться работоспособными, когда полная версия не загружается нормально. Сохраняются вычисления в браузере, обнаружение нескольких секретов и быстрые ссылки на коды; импорт QR, сохранённая история и другие функции остаются в полной версии."
+        ],
+        [
+          "Получить код",
+          "Вставьте существующий секрет Base32 или ссылку настройки otpauth://totp/. Код появится автоматически. Скопируйте его в сервис, запрашивающий подтверждение. Код обновится по окончании отсчёта."
+        ],
+        [
+          "Быстрые ссылки на коды",
+          "Откройте /lite#SECRET, чтобы сразу показать код. Это страница браузера, а не серверный API, возвращающий JSON или коды: HTTP-клиенты вроде curl получают только страницу. Нажмите «Копировать ссылку», чтобы создать полный URL."
+        ],
+        [
+          "Параметры",
+          "Добавьте ?algorithm=SHA256&digits=8&period=30 после секрета, оставив всё после #. algorithm принимает SHA1, SHA256 или SHA512; digits — 6 или 8; period — целое число от 15 до 120 секунд. По умолчанию: SHA1, 6 цифр, 30 секунд. Настройки должны совпадать с исходным сервисом."
+        ],
+        [
+          "Копирование и вставка",
+          "Вставка требует разрешения на буфер обмена. Если доступ невозможен или запрещён, используйте Ctrl+V, Command+V или долгое нажатие. Если копирование не удалось, появится выделяемый текст для ручного копирования."
+        ],
+        [
+          "Функции и старые браузеры",
+          "Lite обнаруживает несколько секретов для выбора на этой странице. Стрелка открывает отдельную страницу кода. Импорт QR и сохранённая история недоступны. Для этих функций используйте полную версию. IE11 — цель совместимости: тестирование в настоящем IE11 ещё не завершено. Старые системы также могут не суметь установить HTTPS-соединение."
+        ],
+        [
+          "Секреты и конфиденциальность",
+          "Секреты и вычисления кодов остаются в браузере; Lite не сохраняет историю. Содержимое после # не отправляется в HTTP-запросе страницы. Полная ссылка по-прежнему содержит секрет и может остаться в истории браузера, буфере обмена или на скриншотах. Не раскрывайте её."
+        ],
+        [
+          "Неправильный код?",
+          "Сверьте секрет, алгоритм, число цифр и период с исходным сервисом, затем проверьте часы устройства. Дождитесь следующего кода, если текущий скоро истечёт. Lite не поддерживает HOTP и специальные коды Steam."
+        ]
+      ]
+    }
+  },
+  "ja": {
+    "ui": {
+      "title": "2FA認証コード",
+      "secretLabel": "シークレットまたはotpauth://リンク",
+      "hint": "Base32シークレットまたはTOTPリンク",
+      "choose": "シークレットを選択",
+      "review": "各シークレットを確認してください。周囲の文章からアカウントの所有者は推定しません。",
+      "limit": "一度に100行以内で使ってください。",
+      "reveal": "シークレットを表示",
+      "algorithm": "アルゴリズム",
+      "digits": "桁数",
+      "period": "期間（秒）",
+      "generate": "貼り付け",
+      "pasteHelp": "クリップボードにアクセスできません。Ctrl+Vか長押しでシークレット欄に貼り付けてください。",
+      "clear": "クリア",
+      "current": "現在のコード",
+      "copy": "コードをコピー",
+      "link": "リンクをコピー",
+      "manual": "選択して手動コピー",
+      "privacy": "シークレットはこのブラウザ内に留まり、履歴は保存しません。共有リンクにはシークレットが含まれます。非公開で保管してください。",
+      "full": "通常版",
+      "help": "使い方ガイド",
+      "compatibility": "Internet Explorerにも対応！",
+      "left": "次のコードまで{n}秒",
+      "copied": "コピーしました。",
+      "secret": "完全なBase32シークレットを1つ入力してください。",
+      "multiple": "一度に1つのシークレットを使ってください。Liteは複数行に対応していません。",
+      "invalid": "リンクが無効です。",
+      "unsupported": "Base32シークレット、TOTP URI、2fa.hotのフラグメントリンクを使ってください。この形式には対応していません。",
+      "duplicate": "リンクに重複したパラメータがあります。",
+      "parameters": "SHA-1/256/512、6桁または8桁、15～120秒を指定してください。",
+      "unavailable": "コード生成エンジンを読み込めませんでした。ページを再読み込みしてください。",
+      "query": "シークレットはURLパスやクエリではなく、#フラグメントに入れてください。",
+      "navigation": "ナビゲーション",
+      "language": "言語",
+      "source": "ソース · AGPL-3.0",
+      "javascript": "ローカルでのコード計算にはJavaScriptが必要です。",
+      "languageError": "言語を読み込めません。再試行してください。",
+      "openCode": "コード専用ページを開く"
+    },
+    "help": {
+      "title": "Liteガイド",
+      "back": "コードへ戻る",
+      "sections": [
+        [
+          "なぜLite？",
+          "LiteはTOTPコードだけをすぐ取得したい場面向けです。ページが小さく依存関係も少ないため、遅い回線や古い端末でも速く読み込め、通常版が正常に開かない場合も使えることがあります。ブラウザ内計算、複数シークレットの検出、直接コードリンクは残し、QRインポートや履歴保存などは通常版で利用します。"
+        ],
+        [
+          "コードを取得",
+          "既存のBase32シークレットかotpauth://totp/設定リンクを貼り付けます。コードが自動表示されるので、確認を要求するサービスにコピーしてください。カウントダウン終了で更新されます。"
+        ],
+        [
+          "直接コードリンク",
+          "/lite#SECRETを開くと直接コードを表示します。これはブラウザページであり、JSONやコードを返すサーバーAPIではありません。curlなどのHTTPクライアントはページだけを受け取ります。「リンクをコピー」で完全なURLを作れます。"
+        ],
+        [
+          "パラメータ",
+          "シークレットの後ろに?algorithm=SHA256&digits=8&period=30を追加し、すべて#より後ろに置きます。algorithmはSHA1・SHA256・SHA512、digitsは6・8、periodは15～120秒の整数です。既定値はSHA1、6桁、30秒。元のサービスと一致させてください。"
+        ],
+        [
+          "コピーと貼り付け",
+          "貼り付けにはクリップボード権限が必要です。使えない場合や拒否した場合はCtrl+V、Command+V、長押しを使います。コピーに失敗すると手動コピー用の選択可能な文字列が表示されます。"
+        ],
+        [
+          "機能と古いブラウザ",
+          "Liteは複数シークレットを検出し、このページで選択できます。矢印で独立したコードページを開きます。QRインポートや履歴保存は通常版を使ってください。IE11は互換性の目標で、実機での検証は未完了です。古いシステムではHTTPS接続できない場合もあります。"
+        ],
+        [
+          "シークレットとプライバシー",
+          "シークレットとコード計算はブラウザ内に留まり、Liteは履歴を保存しません。#以降はHTTPページリクエストに含まれません。ただし完全なリンクにはシークレットが含まれ、ブラウザ履歴、クリップボード、スクリーンショットに残る場合があります。非公開で保管してください。"
+        ],
+        [
+          "コードが違う？",
+          "シークレット・アルゴリズム・桁数・期間を元のサービスと照合し、端末の時計も確認してください。期限が近ければ次のコードを待ちます。LiteはHOTPやSteam専用コードに対応しません。"
+        ]
+      ]
+    }
+  },
+  "ko": {
+    "ui": {
+      "title": "2FA 인증 코드",
+      "secretLabel": "비밀 키 또는 otpauth:// 링크",
+      "hint": "Base32 비밀 키 또는 TOTP 링크",
+      "choose": "비밀 키 선택",
+      "review": "각 비밀 키를 확인하세요. 주변 텍스트로 계정 소유자를 추정하지 않습니다.",
+      "limit": "한 번에 100줄 이하로 사용하세요.",
+      "reveal": "비밀 키 표시",
+      "algorithm": "알고리즘",
+      "digits": "자릿수",
+      "period": "주기(초)",
+      "generate": "붙여넣기",
+      "pasteHelp": "클립보드에 접근할 수 없습니다. Ctrl+V 또는 길게 눌러 비밀 키 칸에 붙여넣으세요.",
+      "clear": "지우기",
+      "current": "현재 코드",
+      "copy": "코드 복사",
+      "link": "링크 복사",
+      "manual": "선택해 직접 복사",
+      "privacy": "비밀 키는 이 브라우저에 머뭅니다. 기록을 저장하지 않습니다. 공유 링크에는 비밀 키가 포함되니 비공개로 보관하세요.",
+      "full": "전체 버전",
+      "help": "사용 안내",
+      "compatibility": "Internet Explorer 지원!",
+      "left": "다음 코드까지 {n}초",
+      "copied": "복사했습니다.",
+      "secret": "완전한 Base32 비밀 키 하나를 입력하세요.",
+      "multiple": "한 번에 하나의 비밀 키를 사용하세요. Lite는 여러 줄을 지원하지 않습니다.",
+      "invalid": "링크가 잘못되었습니다.",
+      "unsupported": "Base32 비밀 키, TOTP URI 또는 2fa.hot 프래그먼트 링크를 사용하세요. 이 형식은 지원하지 않습니다.",
+      "duplicate": "링크에 중복 매개변수가 있습니다.",
+      "parameters": "SHA-1/256/512, 6자리 또는 8자리, 15~120초 주기를 사용하세요.",
+      "unavailable": "코드 엔진을 불러오지 못했습니다. 페이지를 다시 로드하세요.",
+      "query": "비밀 키는 URL 경로나 쿼리가 아닌 # 프래그먼트에 넣으세요.",
+      "navigation": "탐색",
+      "language": "언어",
+      "source": "소스 · AGPL-3.0",
+      "javascript": "로컬에서 코드를 계산하려면 JavaScript가 필요합니다.",
+      "languageError": "언어를 불러오지 못했습니다. 다시 시도하세요.",
+      "openCode": "독립 코드 페이지 열기"
+    },
+    "help": {
+      "title": "Lite 안내",
+      "back": "코드로 돌아가기",
+      "sections": [
+        [
+          "왜 Lite인가요?",
+          "Lite는 TOTP 코드만 빠르게 필요할 때 사용합니다. 작은 페이지와 적은 의존성 덕분에 느린 네트워크와 오래된 기기에서 더 빨리 로드되며, 전체 버전이 제대로 열리지 않을 때도 쓸 수 있습니다. 브라우저 내 계산, 여러 비밀 키 감지, 빠른 코드 링크는 유지하고 QR 가져오기, 기록 저장 등은 전체 버전에서 제공합니다."
+        ],
+        [
+          "코드 받기",
+          "기존 Base32 비밀 키 또는 otpauth://totp/ 설정 링크를 붙여넣으세요. 코드가 자동으로 나타납니다. 인증을 요구하는 서비스에 복사하세요. 카운트다운이 끝나면 갱신됩니다."
+        ],
+        [
+          "빠른 코드 링크",
+          "/lite#SECRET을 열면 코드를 바로 표시합니다. 이는 브라우저 페이지이며 JSON이나 코드를 반환하는 서버 API가 아닙니다. curl 같은 HTTP 클라이언트는 페이지 내용만 받습니다. 링크 복사로 전체 URL을 만들 수 있습니다."
+        ],
+        [
+          "매개변수",
+          "비밀 키 뒤에 ?algorithm=SHA256&digits=8&period=30을 추가하고 모두 # 뒤에 두세요. algorithm은 SHA1, SHA256, SHA512를, digits는 6 또는 8을 받으며, period는 15~120초 정수입니다. 기본값은 SHA1, 6자리, 30초입니다. 원래 서비스 설정과 맞추세요."
+        ],
+        [
+          "복사와 붙여넣기",
+          "붙여넣기에는 클립보드 권한이 필요합니다. 사용할 수 없거나 거부했다면 Ctrl+V, Command+V 또는 길게 누르기를 사용하세요. 복사 실패 시 직접 선택해 복사할 텍스트가 나타납니다."
+        ],
+        [
+          "기능과 오래된 브라우저",
+          "Lite는 여러 비밀 키를 감지해 이 페이지에서 선택하게 합니다. 화살표는 별도 코드 페이지를 엽니다. QR 가져오기와 기록 저장은 없으니 전체 버전을 사용하세요. IE11은 호환성 목표이며 실제 IE11 검증은 아직 완료되지 않았습니다. 오래된 시스템은 HTTPS 연결을 못 할 수도 있습니다."
+        ],
+        [
+          "비밀 키와 개인정보",
+          "비밀 키와 코드 계산은 브라우저 안에 머물고 Lite는 기록을 저장하지 않습니다. # 뒤의 내용은 HTTP 페이지 요청에 전송되지 않습니다. 전체 링크에는 여전히 비밀 키가 있고 브라우저 기록, 클립보드, 스크린샷에 남을 수 있습니다. 비공개로 보관하세요."
+        ],
+        [
+          "코드가 틀렸나요?",
+          "비밀 키, 알고리즘, 자릿수, 주기를 원래 서비스와 비교한 다음 기기 시계를 확인하세요. 만료가 가까우면 다음 코드를 기다리세요. Lite는 HOTP나 Steam 전용 코드를 지원하지 않습니다."
+        ]
+      ]
+    }
+  },
+  "ar": {
+    "ui": {
+      "title": "رمز تحقق 2FA",
+      "secretLabel": "المفتاح السري أو رابط otpauth://",
+      "hint": "مفاتيح Base32 أو روابط TOTP",
+      "choose": "اختر مفتاحًا",
+      "review": "راجع كل مفتاح. لا تُستنتج ملكية الحساب من النص المجاور.",
+      "limit": "استخدم 100 صف كحد أقصى في المرة الواحدة.",
+      "reveal": "إظهار المفتاح",
+      "algorithm": "الخوارزمية",
+      "digits": "عدد الأرقام",
+      "period": "الفترة (ثوانٍ)",
+      "generate": "لصق",
+      "pasteHelp": "الوصول إلى الحافظة غير متاح. الصق في حقل المفتاح باستخدام Ctrl+V أو الضغط المطوّل.",
+      "clear": "مسح",
+      "current": "الرمز الحالي",
+      "copy": "نسخ الرمز",
+      "link": "نسخ الرابط",
+      "manual": "تحديد ونسخ يدويًا",
+      "privacy": "تبقى المفاتيح في هذا المتصفح. لا يُحفظ سجل. الروابط المشتركة تحتوي أيضًا على مفتاحك؛ أبقها خاصة.",
+      "full": "النسخة الكاملة",
+      "help": "دليل الاستخدام",
+      "compatibility": "يدعم Internet Explorer!",
+      "left": "الرمز التالي بعد {n} ث",
+      "copied": "نُسخ.",
+      "secret": "أدخل مفتاح Base32 واحدًا كاملًا.",
+      "multiple": "استخدم مفتاحًا واحدًا كل مرة. لا تدعم Lite الأسطر المتعددة.",
+      "invalid": "الرابط غير صالح.",
+      "unsupported": "استخدم مفتاح Base32 أو TOTP URI أو رابط مقطع من 2fa.hot. هذه الصيغة غير مدعومة.",
+      "duplicate": "يحتوي الرابط على معاملات مكررة.",
+      "parameters": "استخدم SHA-1/256/512 و6 أو 8 أرقام وفترة من 15 إلى 120 ثانية.",
+      "unavailable": "تعذّر تحميل محرك الرموز. أعد تحميل الصفحة للمحاولة مجددًا.",
+      "query": "ضع المفاتيح في مقطع #، لا في مسار الرابط أو معاملات الاستعلام.",
+      "navigation": "التنقّل",
+      "language": "اللغة",
+      "source": "المصدر · AGPL-3.0",
+      "javascript": "يلزم JavaScript لحساب الرموز محليًا.",
+      "languageError": "تعذر تحميل اللغة. أعد المحاولة.",
+      "openCode": "فتح صفحة الرمز المستقلة"
+    },
+    "help": {
+      "title": "دليل Lite",
+      "back": "العودة إلى الرموز",
+      "sections": [
+        [
+          "لماذا Lite؟",
+          "Lite مخصّصة للحالات التي تحتاج فيها رمز TOTP بسرعة فقط. صفحتها الأصغر واعتمادياتها الأقل تسرّع التحميل في الشبكات البطيئة والأجهزة القديمة، وقد تظل قابلة للاستخدام عندما يتعذّر تحميل النسخة الكاملة كما ينبغي. تُبقي الحساب في المتصفح وكشف المفاتيح المتعددة وروابط الرموز السريعة؛ أما استيراد QR والسجل المحفوظ والميزات الأخرى ففي النسخة الكاملة."
+        ],
+        [
+          "الحصول على رمز",
+          "الصق مفتاح Base32 موجودًا أو رابط إعداد otpauth://totp/. يظهر الرمز تلقائيًا. انسخه إلى الخدمة التي تطلب التحقق. يتجدد عند انتهاء العد التنازلي."
+        ],
+        [
+          "روابط الرموز السريعة",
+          "افتح /lite#SECRET لعرض الرمز مباشرةً. هذه صفحة متصفح وليست واجهة API للخادم تعيد JSON أو رموزًا: عملاء HTTP مثل curl يحصلون على الصفحة فقط. استخدم «نسخ الرابط» لتوليد العنوان كاملًا."
+        ],
+        [
+          "المعاملات",
+          "أضف ?algorithm=SHA256&digits=8&period=30 بعد المفتاح، مع إبقاء الكل بعد #. يقبل algorithm القيم SHA1 أو SHA256 أو SHA512؛ ويقبل digits ‏6 أو 8؛ وperiod عدد صحيح من 15 إلى 120 ثانية. الافتراضي SHA1 و6 أرقام و30 ثانية. طابق إعدادات الخدمة الأصلية."
+        ],
+        [
+          "النسخ واللصق",
+          "يتطلّب اللصق إذن الحافظة. إذا تعذّر أو رُفض، فاستخدم Ctrl+V أو Command+V أو الضغط المطوّل. إذا فشل النسخ، يظهر نص قابل للتحديد لنسخه يدويًا."
+        ],
+        [
+          "الميزات والمتصفحات القديمة",
+          "تكتشف Lite مفاتيح متعددة للاختيار بينها في هذه الصفحة. يفتح السهم صفحة رمز مستقلة. لا تتوفر استيرادات QR أو السجلات المحفوظة؛ استخدم النسخة الكاملة لهما. نستهدف التوافق مع IE11، لكن لم يكتمل الاختبار على IE11 فعلي. وقد تعجز الأنظمة القديمة عن إنشاء اتصال HTTPS أيضًا."
+        ],
+        [
+          "المفاتيح والخصوصية",
+          "تبقى المفاتيح وحسابات الرموز في المتصفح؛ لا تحفظ Lite سجلًا. لا يُرسل المحتوى بعد # في طلب صفحة HTTP. يظل الرابط الكامل يحتوي على مفتاحك وقد يبقى في سجل المتصفح أو الحافظة أو لقطات الشاشة. أبقه خاصًا."
+        ],
+        [
+          "الرمز غير صحيح؟",
+          "قارن المفتاح والخوارزمية وعدد الأرقام والفترة بالخدمة الأصلية، ثم تحقّق من ساعة جهازك. انتظر الرمز التالي إذا أوشك الحالي على الانتهاء. لا تدعم Lite ‏HOTP أو رموز Steam الخاصة."
+        ]
+      ]
+    }
+  },
+  "hi": {
+    "ui": {
+      "title": "2FA सत्यापन कोड",
+      "secretLabel": "सीक्रेट या otpauth:// लिंक",
+      "hint": "Base32 सीक्रेट या TOTP लिंक",
+      "choose": "सीक्रेट चुनें",
+      "review": "हर सीक्रेट जाँचें। पास के टेक्स्ट से खाते का स्वामित्व नहीं निकाला जाता।",
+      "limit": "एक बार में अधिकतम 100 पंक्तियाँ लें।",
+      "reveal": "सीक्रेट दिखाएँ",
+      "algorithm": "एल्गोरिदम",
+      "digits": "अंक",
+      "period": "अवधि (सेकंड)",
+      "generate": "पेस्ट करें",
+      "pasteHelp": "क्लिपबोर्ड उपलब्ध नहीं। Ctrl+V या देर तक दबाकर सीक्रेट फ़ील्ड में पेस्ट करें।",
+      "clear": "साफ़ करें",
+      "current": "वर्तमान कोड",
+      "copy": "कोड कॉपी करें",
+      "link": "लिंक कॉपी करें",
+      "manual": "चुनकर खुद कॉपी करें",
+      "privacy": "सीक्रेट इसी ब्राउज़र में रहते हैं। इतिहास सेव नहीं होता। साझा लिंक में फिर भी सीक्रेट है; उन्हें निजी रखें।",
+      "full": "पूर्ण संस्करण",
+      "help": "इस्तेमाल की गाइड",
+      "compatibility": "Internet Explorer समर्थित!",
+      "left": "अगला कोड {n} सेकंड में",
+      "copied": "कॉपी हुआ।",
+      "secret": "एक पूरा Base32 सीक्रेट डालें।",
+      "multiple": "एक समय में एक सीक्रेट लें। Lite कई पंक्तियाँ सपोर्ट नहीं करता।",
+      "invalid": "लिंक वैध नहीं है।",
+      "unsupported": "Base32 सीक्रेट, TOTP URI या 2fa.hot फ़्रैगमेंट लिंक लें। यह फ़ॉर्मैट समर्थित नहीं।",
+      "duplicate": "लिंक में दोहराए पैरामीटर हैं।",
+      "parameters": "SHA-1/256/512, 6 या 8 अंक और 15 से 120 सेकंड की अवधि लें।",
+      "unavailable": "कोड इंजन लोड नहीं हुआ। फिर कोशिश के लिए पेज रीलोड करें।",
+      "query": "सीक्रेट के लिए # फ़्रैगमेंट लें, URL पाथ या क्वेरी पैरामीटर नहीं।",
+      "navigation": "नेविगेशन",
+      "language": "भाषा",
+      "source": "स्रोत · AGPL-3.0",
+      "javascript": "स्थानीय कोड गणना के लिए JavaScript चाहिए।",
+      "languageError": "यह भाषा लोड नहीं हो सकी। फिर कोशिश करें।",
+      "openCode": "अलग कोड पेज खोलें"
+    },
+    "help": {
+      "title": "Lite गाइड",
+      "back": "कोड पर वापस",
+      "sections": [
+        [
+          "Lite क्यों?",
+          "Lite तब के लिए है जब सिर्फ़ जल्दी TOTP कोड चाहिए। छोटा पेज और कम निर्भरताएँ धीमे नेटवर्क व पुराने डिवाइस पर जल्दी लोड होती हैं, और पूर्ण संस्करण ठीक न लोड हो तब भी चल सकती हैं। ब्राउज़र गणना, कई सीक्रेट की पहचान और त्वरित कोड लिंक रहते हैं; QR आयात, सेव इतिहास और बाकी सुविधाएँ पूर्ण संस्करण में हैं।"
+        ],
+        [
+          "कोड पाएँ",
+          "मौजूदा Base32 सीक्रेट या otpauth://totp/ कॉन्फ़िगरेशन लिंक पेस्ट करें। कोड अपने आप दिखेगा। सत्यापन माँगती सेवा में कॉपी करें। गिनती खत्म होने पर कोड बदलेगा।"
+        ],
+        [
+          "त्वरित कोड लिंक",
+          "सीधा कोड दिखाने के लिए /lite#SECRET खोलें। यह ब्राउज़र पेज है, JSON या कोड लौटाने वाला सर्वर API नहीं: curl जैसे HTTP क्लाइंट को सिर्फ़ पेज मिलता है। पूरा URL बनाने के लिए लिंक कॉपी करें।"
+        ],
+        [
+          "पैरामीटर",
+          "सीक्रेट के बाद ?algorithm=SHA256&digits=8&period=30 लगाएँ, सब # के बाद रखें। algorithm में SHA1, SHA256 या SHA512; digits में 6 या 8; period में 15 से 120 सेकंड का पूर्णांक चलता है। डिफ़ॉल्ट: SHA1, 6 अंक, 30 सेकंड। मूल सेवा की सेटिंग मिलाएँ।"
+        ],
+        [
+          "कॉपी और पेस्ट",
+          "पेस्ट के लिए क्लिपबोर्ड अनुमति चाहिए। न मिले या मना हो तो Ctrl+V, Command+V या देर तक दबाएँ। कॉपी विफल हो तो खुद कॉपी करने लायक चयनयोग्य टेक्स्ट दिखता है।"
+        ],
+        [
+          "सुविधाएँ और पुराने ब्राउज़र",
+          "Lite इसी पेज पर कई सीक्रेट पहचानकर चुनने देता है। तीर अलग कोड पेज खोलता है। QR आयात और सेव इतिहास नहीं हैं; इनके लिए पूर्ण संस्करण लें। IE11 संगतता लक्ष्य है: असली IE11 में परीक्षण पूरा नहीं हुआ। पुराने सिस्टम HTTPS कनेक्शन भी शायद न बना पाएँ।"
+        ],
+        [
+          "सीक्रेट और गोपनीयता",
+          "सीक्रेट और कोड गणना ब्राउज़र में रहते हैं; Lite इतिहास नहीं रखता। # के बाद का अंश HTTP पेज अनुरोध में नहीं जाता। पूरा लिंक फिर भी सीक्रेट रखता है और इतिहास, क्लिपबोर्ड या स्क्रीनशॉट में रह सकता है। निजी रखें।"
+        ],
+        [
+          "कोड गलत है?",
+          "सीक्रेट, एल्गोरिदम, अंक और अवधि मूल सेवा से मिलाएँ, फिर डिवाइस घड़ी जाँचें। कोड खत्म होने वाला हो तो अगले का इंतज़ार करें। Lite HOTP या Steam के खास कोड सपोर्ट नहीं करता।"
+        ]
+      ]
+    }
+  },
+  "bn": {
+    "ui": {
+      "title": "2FA যাচাইকরণ কোড",
+      "secretLabel": "কী বা otpauth:// লিংক",
+      "hint": "Base32 কী বা TOTP লিংক",
+      "choose": "কী বাছুন",
+      "review": "প্রতি কী দেখুন। পাশের লেখা থেকে অ্যাকাউন্টের মালিকানা অনুমান করা হয় না।",
+      "limit": "একবারে 100টির বেশি সারি নেবেন না।",
+      "reveal": "কী দেখান",
+      "algorithm": "অ্যালগরিদম",
+      "digits": "অঙ্ক",
+      "period": "সময়কাল (সেকেন্ড)",
+      "generate": "পেস্ট",
+      "pasteHelp": "ক্লিপবোর্ড নেই। Ctrl+V বা চেপে ধরে কী-র ঘরে পেস্ট করুন।",
+      "clear": "মুছুন",
+      "current": "বর্তমান কোড",
+      "copy": "কোড কপি",
+      "link": "লিংক কপি",
+      "manual": "বেছে হাতে কপি করুন",
+      "privacy": "কী এই ব্রাউজারেই থাকে। ইতিহাস রাখা হয় না। শেয়ার লিংকে এখনও কী থাকে; গোপন রাখুন।",
+      "full": "পূর্ণ সংস্করণ",
+      "help": "ব্যবহারবিধি",
+      "compatibility": "Internet Explorer সমর্থিত!",
+      "left": "পরের কোড {n} সেকেন্ডে",
+      "copied": "কপি হয়েছে।",
+      "secret": "একটি সম্পূর্ণ Base32 কী দিন।",
+      "multiple": "একবারে একটি কী নিন। Lite একাধিক লাইন সমর্থন করে না।",
+      "invalid": "লিংক বৈধ নয়।",
+      "unsupported": "Base32 কী, TOTP URI বা 2fa.hot ফ্র্যাগমেন্ট লিংক দিন। এই বিন্যাস সমর্থিত নয়।",
+      "duplicate": "লিংকে একই প্যারামিটার একাধিকবার আছে।",
+      "parameters": "SHA-1/256/512, 6 বা 8 অঙ্ক ও 15 থেকে 120 সেকেন্ড সময়কাল নিন।",
+      "unavailable": "কোড ইঞ্জিন লোড হয়নি। আবার চেষ্টার জন্য পাতা রিলোড করুন।",
+      "query": "কী-র জন্য # ফ্র্যাগমেন্ট নিন, URL পথ বা কুয়েরি নয়।",
+      "navigation": "নেভিগেশন",
+      "language": "ভাষা",
+      "source": "উৎস · AGPL-3.0",
+      "javascript": "স্থানীয় কোড গণনায় JavaScript দরকার।",
+      "languageError": "এই ভাষা লোড করা যায়নি। আবার চেষ্টা করুন।",
+      "openCode": "আলাদা কোড পৃষ্ঠা খুলুন"
+    },
+    "help": {
+      "title": "Lite নির্দেশিকা",
+      "back": "কোডে ফিরুন",
+      "sections": [
+        [
+          "Lite কেন?",
+          "শুধু দ্রুত TOTP কোড চাইলে Lite। ছোট পাতা ও কম নির্ভরতা ধীর নেটওয়ার্ক ও পুরনো ডিভাইসে দ্রুত খোলে; পূর্ণ সংস্করণ ঠিক না চললেও ব্যবহারযোগ্য থাকতে পারে। ব্রাউজারে গণনা, একাধিক কী চেনা ও দ্রুত কোড লিংক থাকে; QR আমদানি, রাখা ইতিহাস ও বাকি সুবিধা পূর্ণ সংস্করণে।"
+        ],
+        [
+          "কোড পান",
+          "বর্তমান Base32 কী বা otpauth://totp/ কনফিগারেশন লিংক দিন। কোড নিজে দেখা যায়। যাচাই চাওয়া পরিষেবায় কপি করুন। গুনতি শেষে কোড বদলায়।"
+        ],
+        [
+          "দ্রুত কোড লিংক",
+          "সরাসরি কোড দেখতে /lite#SECRET খুলুন। এটা ব্রাউজার পাতা, JSON বা কোড দেওয়া সার্ভার API নয়: curl-এর মতো HTTP ক্লায়েন্ট শুধু পাতা পায়। পুরো URL বানাতে লিংক কপি নিন।"
+        ],
+        [
+          "প্যারামিটার",
+          "কী-র পরে ?algorithm=SHA256&digits=8&period=30 যোগ করে সব # এর পরে রাখুন। algorithm নেয় SHA1, SHA256 বা SHA512; digits নেয় 6 বা 8; period পূর্ণসংখ্যা 15 থেকে 120 সেকেন্ড। ডিফল্ট: SHA1, 6 অঙ্ক, 30 সেকেন্ড। মূল পরিষেবার সেটিং মেলান।"
+        ],
+        [
+          "কপি ও পেস্ট",
+          "পেস্টে ক্লিপবোর্ড অনুমতি লাগে। না থাকলে বা প্রত্যাখ্যাত হলে Ctrl+V, Command+V বা চেপে ধরুন। কপি ব্যর্থ হলে নিজে কপির জন্য নির্বাচনযোগ্য লেখা দেখা যায়।"
+        ],
+        [
+          "সুবিধা ও পুরনো ব্রাউজার",
+          "Lite এই পাতায় একাধিক কী চিনে বাছতে দেয়। তীর আলাদা কোড পাতা খোলে। QR আমদানি ও রাখা ইতিহাস নেই; সেগুলোর জন্য পূর্ণ সংস্করণ নিন। IE11 সামঞ্জস্য লক্ষ্য: আসল IE11-এ পরীক্ষা শেষ হয়নি। পুরনো সিস্টেম HTTPS সংযোগও হয়তো করতে পারবে না।"
+        ],
+        [
+          "কী ও গোপনীয়তা",
+          "কী ও কোড গণনা ব্রাউজারেই থাকে; Lite ইতিহাস রাখে না। # এর পরের বিষয় HTTP পাতা অনুরোধে যায় না। পুরো লিংকে এখনও কী থাকে এবং ইতিহাস, ক্লিপবোর্ড বা স্ক্রিনশটে থাকতে পারে। গোপন রাখুন।"
+        ],
+        [
+          "কোড ভুল?",
+          "কী, অ্যালগরিদম, অঙ্ক ও সময়কাল মূল পরিষেবার সঙ্গে মেলান, তারপর ডিভাইসের ঘড়ি দেখুন। মেয়াদ শেষের কাছে হলে পরের কোডের অপেক্ষা করুন। Lite HOTP বা Steam-এর বিশেষ কোড সমর্থন করে না।"
+        ]
+      ]
+    }
+  },
+  "ur": {
+    "ui": {
+      "title": "2FA تصدیقی کوڈ",
+      "secretLabel": "کلید یا otpauth:// لنک",
+      "hint": "Base32 کلیدیں یا TOTP لنک",
+      "choose": "کلید منتخب کریں",
+      "review": "ہر کلید جانچیں۔ پاس کے متن سے اکاؤنٹ کی ملکیت اخذ نہیں ہوتی۔",
+      "limit": "ایک بار میں 100 سے زیادہ قطاریں نہ لیں۔",
+      "reveal": "کلید دکھائیں",
+      "algorithm": "الگورتھم",
+      "digits": "ہندسے",
+      "period": "وقفہ (سیکنڈ)",
+      "generate": "پیسٹ کریں",
+      "pasteHelp": "کلپ بورڈ دستیاب نہیں۔ Ctrl+V یا دیر تک دبانے سے کلید کے خانے میں پیسٹ کریں۔",
+      "clear": "صاف کریں",
+      "current": "موجودہ کوڈ",
+      "copy": "کوڈ کاپی کریں",
+      "link": "لنک کاپی کریں",
+      "manual": "منتخب کرکے دستی کاپی کریں",
+      "privacy": "کلیدیں اسی براؤزر میں رہتی ہیں۔ تاریخ محفوظ نہیں ہوتی۔ شیئر لنک میں پھر بھی کلید ہے؛ اسے نجی رکھیں۔",
+      "full": "مکمل ورژن",
+      "help": "استعمال کا رہنما",
+      "compatibility": "Internet Explorer کی معاونت!",
+      "left": "اگلا کوڈ {n} سیکنڈ میں",
+      "copied": "کاپی ہوگیا۔",
+      "secret": "ایک مکمل Base32 کلید دیں۔",
+      "multiple": "ایک وقت میں ایک کلید استعمال کریں۔ Lite متعدد سطریں نہیں لیتا۔",
+      "invalid": "لنک درست نہیں۔",
+      "unsupported": "Base32 کلید، TOTP URI یا 2fa.hot فریگمنٹ لنک لیں۔ یہ فارمیٹ معاونت یافتہ نہیں۔",
+      "duplicate": "لنک میں دہرے پیرامیٹر ہیں۔",
+      "parameters": "SHA-1/256/512، ‏6 یا 8 ہندسے اور 15 تا 120 سیکنڈ وقفہ لیں۔",
+      "unavailable": "کوڈ انجن لوڈ نہیں ہوا۔ دوبارہ کوشش کے لیے صفحہ لوڈ کریں۔",
+      "query": "کلید کے لیے # فریگمنٹ لیں، URL کا راستہ یا استفساری پیرامیٹر نہیں۔",
+      "navigation": "نیویگیشن",
+      "language": "زبان",
+      "source": "ماخذ · AGPL-3.0",
+      "javascript": "مقامی کوڈ حساب کے لیے JavaScript درکار ہے۔",
+      "languageError": "یہ زبان لوڈ نہیں ہو سکی۔ دوبارہ کوشش کریں۔",
+      "openCode": "علیحدہ کوڈ صفحہ کھولیں"
+    },
+    "help": {
+      "title": "Lite رہنما",
+      "back": "کوڈ پر واپس",
+      "sections": [
+        [
+          "Lite کیوں؟",
+          "Lite اس وقت کے لیے ہے جب صرف جلد TOTP کوڈ چاہیے۔ چھوٹا صفحہ اور کم انحصار سست نیٹ ورک اور پرانے آلات پر جلد کھلتے ہیں، اور مکمل ورژن صحیح نہ کھلے تو بھی قابلِ استعمال رہ سکتے ہیں۔ براؤزر میں حساب، کئی کلیدوں کی شناخت اور فوری کوڈ لنک برقرار ہیں؛ QR درآمد، محفوظ تاریخ اور باقی سہولتیں مکمل ورژن میں ہیں۔"
+        ],
+        [
+          "کوڈ حاصل کریں",
+          "موجودہ Base32 کلید یا otpauth://totp/ ترتیب لنک پیسٹ کریں۔ کوڈ خود ظاہر ہوگا۔ تصدیق مانگنے والی سروس میں کاپی کریں۔ الٹی گنتی پر کوڈ تازہ ہوگا۔"
+        ],
+        [
+          "فوری کوڈ لنک",
+          "براہِ راست کوڈ کے لیے /lite#SECRET کھولیں۔ یہ براؤزر صفحہ ہے، JSON یا کوڈ واپس کرنے والا سرور API نہیں: curl جیسے HTTP کلائنٹ کو صرف صفحہ ملتا ہے۔ مکمل URL کے لیے لنک کاپی کریں۔"
+        ],
+        [
+          "پیرامیٹر",
+          "کلید کے بعد ?algorithm=SHA256&digits=8&period=30 لگائیں اور سب کچھ # کے بعد رکھیں۔ algorithm میں SHA1، SHA256 یا SHA512؛ digits میں 6 یا 8؛ period میں 15 تا 120 سیکنڈ کا صحیح عدد آتا ہے۔ طے شدہ: SHA1، ‏6 ہندسے، 30 سیکنڈ۔ اصل سروس کی ترتیب ملائیں۔"
+        ],
+        [
+          "کاپی اور پیسٹ",
+          "پیسٹ کو کلپ بورڈ اجازت چاہیے۔ نہ ملے یا منع ہو تو Ctrl+V، Command+V یا دیر تک دبائیں۔ کاپی ناکام ہو تو دستی کاپی کے لیے قابلِ انتخاب متن آئے گا۔"
+        ],
+        [
+          "سہولتیں اور پرانے براؤزر",
+          "Lite اس صفحے پر انتخاب کے لیے متعدد کلیدیں پہچانتا ہے۔ تیر الگ کوڈ صفحہ کھولتا ہے۔ QR درآمد اور محفوظ تاریخ نہیں؛ ان کے لیے مکمل ورژن لیں۔ IE11 مطابقت ہدف ہے، حقیقی IE11 پر جانچ مکمل نہیں ہوئی۔ پرانے نظام HTTPS رابطہ بھی شاید نہ بنا سکیں۔"
+        ],
+        [
+          "کلیدیں اور رازداری",
+          "کلیدیں اور کوڈ حساب براؤزر میں رہتے ہیں؛ Lite تاریخ نہیں رکھتا۔ # کے بعد کا مواد HTTP صفحہ درخواست میں نہیں جاتا۔ مکمل لنک میں کلید پھر بھی ہے اور وہ تاریخ، کلپ بورڈ یا اسکرین شاٹ میں رہ سکتا ہے۔ نجی رکھیں۔"
+        ],
+        [
+          "کوڈ غلط ہے؟",
+          "کلید، الگورتھم، ہندسے اور وقفہ اصل سروس سے ملائیں، پھر آلے کی گھڑی جانچیں۔ میعاد ختم ہونے والی ہو تو اگلا کوڈ آنے دیں۔ Lite ‏HOTP یا Steam کے مخصوص کوڈ نہیں بناتا۔"
+        ]
+      ]
+    }
+  },
+  "id": {
+    "ui": {
+      "title": "Kode verifikasi 2FA",
+      "secretLabel": "Rahasia atau tautan otpauth://",
+      "hint": "Rahasia Base32 atau tautan TOTP",
+      "choose": "Pilih rahasia",
+      "review": "Periksa setiap rahasia. Kepemilikan akun tidak disimpulkan dari teks di sekitarnya.",
+      "limit": "Gunakan paling banyak 100 baris sekaligus.",
+      "reveal": "Tampilkan rahasia",
+      "algorithm": "Algoritme",
+      "digits": "Digit",
+      "period": "Periode (detik)",
+      "generate": "Tempel",
+      "pasteHelp": "Akses papan klip tidak tersedia. Tempel ke kolom rahasia dengan Ctrl+V atau tekan lama.",
+      "clear": "Kosongkan",
+      "current": "Kode saat ini",
+      "copy": "Salin kode",
+      "link": "Salin tautan",
+      "manual": "Pilih dan salin manual",
+      "privacy": "Rahasia tetap di peramban ini. Tidak ada riwayat yang disimpan. Tautan yang dibagikan tetap memuat rahasia Anda; jaga kerahasiaannya.",
+      "full": "Versi lengkap",
+      "help": "Panduan penggunaan",
+      "compatibility": "Mendukung Internet Explorer!",
+      "left": "Kode berikutnya dalam {n} dtk",
+      "copied": "Disalin.",
+      "secret": "Masukkan satu rahasia Base32 lengkap.",
+      "multiple": "Gunakan satu rahasia setiap kali. Lite tidak mendukung beberapa baris.",
+      "invalid": "Tautan tidak valid.",
+      "unsupported": "Gunakan rahasia Base32, URI TOTP, atau tautan fragmen 2fa.hot. Format ini tidak didukung.",
+      "duplicate": "Tautan memuat parameter duplikat.",
+      "parameters": "Gunakan SHA-1/256/512, 6 atau 8 digit, dan periode 15 hingga 120 detik.",
+      "unavailable": "Mesin pembuat kode gagal dimuat. Muat ulang halaman ini untuk mencoba lagi.",
+      "query": "Gunakan fragmen # untuk rahasia, bukan jalur URL atau parameter kueri.",
+      "navigation": "Navigasi",
+      "language": "Bahasa",
+      "source": "Sumber · AGPL-3.0",
+      "javascript": "JavaScript diperlukan untuk menghitung kode secara lokal.",
+      "languageError": "Tidak dapat memuat bahasa ini. Coba lagi.",
+      "openCode": "Buka halaman kode tersendiri"
+    },
+    "help": {
+      "title": "Panduan Lite",
+      "back": "Kembali ke kode",
+      "sections": [
+        [
+          "Mengapa Lite?",
+          "Lite cocok saat Anda hanya perlu kode TOTP dengan cepat. Halaman lebih kecil dan dependensi lebih sedikit membuatnya lebih cepat dimuat pada jaringan lambat dan perangkat lama, serta tetap bisa digunakan ketika versi lengkap gagal dimuat dengan benar. Perhitungan dalam peramban, deteksi beberapa rahasia, dan tautan kode cepat tetap tersedia; impor QR, riwayat tersimpan, dan fitur lain ada pada versi lengkap."
+        ],
+        [
+          "Dapatkan kode",
+          "Tempel rahasia Base32 atau tautan konfigurasi otpauth://totp/ yang sudah ada. Kode otomatis muncul. Salin ke layanan yang meminta verifikasi. Kode diperbarui saat hitung mundur berakhir."
+        ],
+        [
+          "Tautan kode cepat",
+          "Buka /lite#SECRET untuk menampilkan kode langsung. Ini halaman peramban, bukan API server yang mengembalikan JSON atau kode: klien HTTP seperti curl hanya menerima halaman. Gunakan Salin tautan untuk membuat URL lengkap."
+        ],
+        [
+          "Parameter",
+          "Tambahkan ?algorithm=SHA256&digits=8&period=30 setelah rahasia, seluruhnya tetap setelah #. algorithm menerima SHA1, SHA256, atau SHA512; digits menerima 6 atau 8; period adalah bilangan bulat 15 hingga 120 detik. Bawaan: SHA1, 6 digit, 30 detik. Sesuaikan dengan pengaturan layanan asal."
+        ],
+        [
+          "Salin dan tempel",
+          "Tempel membutuhkan izin papan klip. Jika tidak tersedia atau ditolak, gunakan Ctrl+V, Command+V, atau tekan lama. Jika penyalinan gagal, teks yang dapat dipilih muncul untuk disalin manual."
+        ],
+        [
+          "Fitur dan peramban lama",
+          "Lite mendeteksi beberapa rahasia agar dapat dipilih di halaman ini. Panah membuka halaman kode tersendiri. Impor QR dan riwayat tersimpan tidak tersedia; gunakan versi lengkap untuk fitur tersebut. IE11 adalah target kompatibilitas: pengujian pada IE11 asli belum selesai. Sistem lama mungkin juga tidak dapat membuat koneksi HTTPS."
+        ],
+        [
+          "Rahasia dan privasi",
+          "Rahasia dan perhitungan kode tetap dalam peramban; Lite tidak menyimpan riwayat. Isi setelah # tidak dikirim dalam permintaan halaman HTTP. Tautan lengkap tetap memuat rahasia dan dapat tersimpan dalam riwayat peramban, papan klip, atau tangkapan layar. Jaga kerahasiaannya."
+        ],
+        [
+          "Kode salah?",
+          "Cocokkan rahasia, algoritme, digit, dan periode dengan layanan asal, lalu periksa jam perangkat. Tunggu kode berikutnya jika hampir kedaluwarsa. Lite tidak mendukung HOTP atau kode khusus Steam."
+        ]
+      ]
+    }
+  },
+  "ms": {
+    "ui": {
+      "title": "Kod pengesahan 2FA",
+      "secretLabel": "Rahsia atau pautan otpauth://",
+      "hint": "Rahsia Base32 atau pautan TOTP",
+      "choose": "Pilih rahsia",
+      "review": "Semak setiap rahsia. Pemilikan akaun tidak disimpulkan daripada teks berdekatan.",
+      "limit": "Gunakan tidak lebih daripada 100 baris sekali gus.",
+      "reveal": "Tunjukkan rahsia",
+      "algorithm": "Algoritma",
+      "digits": "Digit",
+      "period": "Tempoh (saat)",
+      "generate": "Tampal",
+      "pasteHelp": "Akses papan keratan tidak tersedia. Tampal ke medan rahsia dengan Ctrl+V atau tekan lama.",
+      "clear": "Kosongkan",
+      "current": "Kod semasa",
+      "copy": "Salin kod",
+      "link": "Salin pautan",
+      "manual": "Pilih dan salin secara manual",
+      "privacy": "Rahsia kekal dalam pelayar ini. Tiada sejarah disimpan. Pautan yang dikongsi masih mengandungi rahsia; rahsiakannya.",
+      "full": "Versi penuh",
+      "help": "Panduan penggunaan",
+      "compatibility": "Menyokong Internet Explorer!",
+      "left": "Kod seterusnya dalam {n}s",
+      "copied": "Disalin.",
+      "secret": "Masukkan satu rahsia Base32 lengkap.",
+      "multiple": "Gunakan satu rahsia pada satu masa. Lite tidak menyokong berbilang baris.",
+      "invalid": "Pautan tidak sah.",
+      "unsupported": "Gunakan rahsia Base32, URI TOTP atau pautan fragmen 2fa.hot. Format ini tidak disokong.",
+      "duplicate": "Pautan mengandungi parameter pendua.",
+      "parameters": "Gunakan SHA-1/256/512, 6 atau 8 digit dan tempoh 15 hingga 120 saat.",
+      "unavailable": "Enjin kod tidak dapat dimuatkan. Muat semula halaman untuk mencuba lagi.",
+      "query": "Gunakan fragmen # untuk rahsia, bukan laluan URL atau parameter pertanyaan.",
+      "navigation": "Navigasi",
+      "language": "Bahasa",
+      "source": "Sumber · AGPL-3.0",
+      "javascript": "JavaScript diperlukan untuk mengira kod secara setempat.",
+      "languageError": "Tidak dapat memuatkan bahasa ini. Cuba lagi.",
+      "openCode": "Buka halaman kod berasingan"
+    },
+    "help": {
+      "title": "Panduan Lite",
+      "back": "Kembali ke kod",
+      "sections": [
+        [
+          "Mengapa Lite?",
+          "Lite sesuai apabila anda hanya memerlukan kod TOTP dengan cepat. Halamannya yang lebih kecil dan kebergantungan lebih sedikit dimuatkan lebih pantas pada rangkaian perlahan dan peranti lama, serta boleh terus digunakan apabila versi penuh gagal dimuatkan dengan baik. Pengiraan dalam pelayar, pengesanan berbilang rahsia dan pautan kod pantas dikekalkan; import QR, sejarah tersimpan dan ciri lain terdapat dalam versi penuh."
+        ],
+        [
+          "Dapatkan kod",
+          "Tampal rahsia Base32 atau pautan konfigurasi otpauth://totp/ sedia ada. Kod muncul secara automatik. Salin ke perkhidmatan yang meminta pengesahan. Kod diperbaharui apabila kira detik tamat."
+        ],
+        [
+          "Pautan kod pantas",
+          "Buka /lite#SECRET untuk memaparkan kod terus. Ini halaman pelayar, bukan API pelayan yang memulangkan JSON atau kod: klien HTTP seperti curl hanya menerima halaman. Gunakan Salin pautan untuk menjana URL lengkap."
+        ],
+        [
+          "Parameter",
+          "Tambahkan ?algorithm=SHA256&digits=8&period=30 selepas rahsia, semuanya kekal selepas #. algorithm menerima SHA1, SHA256 atau SHA512; digits menerima 6 atau 8; period ialah integer 15 hingga 120 saat. Lalai: SHA1, 6 digit, 30 saat. Padankan dengan tetapan perkhidmatan asal."
+        ],
+        [
+          "Salin dan tampal",
+          "Tampal memerlukan kebenaran papan keratan. Jika tidak tersedia atau ditolak, gunakan Ctrl+V, Command+V atau tekan lama. Jika penyalinan gagal, teks yang boleh dipilih muncul untuk disalin secara manual."
+        ],
+        [
+          "Ciri dan pelayar lama",
+          "Lite mengesan berbilang rahsia untuk dipilih pada halaman ini. Anak panah membuka halaman kod berasingan. Import QR dan sejarah tersimpan tidak tersedia; gunakan versi penuh untuk ciri itu. IE11 ialah sasaran keserasian: ujian pada IE11 sebenar belum selesai. Sistem lama mungkin juga tidak dapat mewujudkan sambungan HTTPS."
+        ],
+        [
+          "Rahsia dan privasi",
+          "Rahsia dan pengiraan kod kekal dalam pelayar; Lite tidak menyimpan sejarah. Kandungan selepas # tidak dihantar dalam permintaan halaman HTTP. Pautan penuh masih mengandungi rahsia dan mungkin kekal dalam sejarah pelayar, papan keratan atau tangkapan skrin. Rahsiakannya."
+        ],
+        [
+          "Kod salah?",
+          "Padankan rahsia, algoritma, digit dan tempoh dengan perkhidmatan asal, kemudian semak jam peranti. Tunggu kod seterusnya jika hampir tamat tempoh. Lite tidak menyokong HOTP atau kod khusus Steam."
+        ]
+      ]
+    }
+  },
+  "vi": {
+    "ui": {
+      "title": "Mã xác minh 2FA",
+      "secretLabel": "Khóa bí mật hoặc liên kết otpauth://",
+      "hint": "Khóa Base32 hoặc liên kết TOTP",
+      "choose": "Chọn khóa bí mật",
+      "review": "Kiểm tra từng khóa. Không suy ra chủ tài khoản từ văn bản gần đó.",
+      "limit": "Dùng không quá 100 dòng mỗi lần.",
+      "reveal": "Hiện khóa bí mật",
+      "algorithm": "Thuật toán",
+      "digits": "Số chữ số",
+      "period": "Chu kỳ (giây)",
+      "generate": "Dán",
+      "pasteHelp": "Không truy cập được bộ nhớ tạm. Dán vào ô khóa bằng Ctrl+V hoặc nhấn giữ.",
+      "clear": "Xóa",
+      "current": "Mã hiện tại",
+      "copy": "Sao chép mã",
+      "link": "Sao chép liên kết",
+      "manual": "Chọn và sao chép thủ công",
+      "privacy": "Khóa nằm trong trình duyệt này. Không lưu lịch sử. Liên kết chia sẻ vẫn chứa khóa; hãy giữ riêng tư.",
+      "full": "Bản đầy đủ",
+      "help": "Hướng dẫn sử dụng",
+      "compatibility": "Hỗ trợ Internet Explorer!",
+      "left": "Mã tiếp theo sau {n} giây",
+      "copied": "Đã sao chép.",
+      "secret": "Nhập một khóa Base32 đầy đủ.",
+      "multiple": "Dùng một khóa mỗi lần. Lite không hỗ trợ nhiều dòng.",
+      "invalid": "Liên kết không hợp lệ.",
+      "unsupported": "Dùng khóa Base32, URI TOTP hoặc liên kết fragment 2fa.hot. Không hỗ trợ định dạng này.",
+      "duplicate": "Liên kết có tham số trùng lặp.",
+      "parameters": "Dùng SHA-1/256/512, 6 hoặc 8 chữ số, chu kỳ 15 đến 120 giây.",
+      "unavailable": "Không tải được bộ tạo mã. Tải lại trang để thử lại.",
+      "query": "Dùng fragment # cho khóa, không dùng đường dẫn URL hoặc tham số truy vấn.",
+      "navigation": "Điều hướng",
+      "language": "Ngôn ngữ",
+      "source": "Mã nguồn · AGPL-3.0",
+      "javascript": "Cần JavaScript để tính mã cục bộ.",
+      "languageError": "Không thể tải ngôn ngữ này. Hãy thử lại.",
+      "openCode": "Mở trang mã riêng"
+    },
+    "help": {
+      "title": "Hướng dẫn Lite",
+      "back": "Quay lại mã",
+      "sections": [
+        [
+          "Vì sao Lite?",
+          "Lite dành cho lúc chỉ cần mã TOTP thật nhanh. Trang nhỏ hơn và ít phụ thuộc giúp tải nhanh trên mạng chậm, thiết bị cũ, và vẫn có thể dùng khi bản đầy đủ không tải được đúng cách. Vẫn giữ tính toán trong trình duyệt, phát hiện nhiều khóa, liên kết mã nhanh; nhập QR, lịch sử đã lưu và các tính năng khác ở bản đầy đủ."
+        ],
+        [
+          "Lấy mã",
+          "Dán khóa Base32 hiện có hoặc liên kết cấu hình otpauth://totp/. Mã tự hiện. Sao chép vào dịch vụ yêu cầu xác minh. Mã đổi khi đếm ngược kết thúc."
+        ],
+        [
+          "Liên kết mã nhanh",
+          "Mở /lite#SECRET để hiện mã trực tiếp. Đây là trang trình duyệt, không phải API máy chủ trả JSON hoặc mã: trình HTTP như curl chỉ nhận trang. Dùng Sao chép liên kết để tạo URL đầy đủ."
+        ],
+        [
+          "Tham số",
+          "Thêm ?algorithm=SHA256&digits=8&period=30 sau khóa, giữ tất cả sau #. algorithm nhận SHA1, SHA256 hoặc SHA512; digits nhận 6 hoặc 8; period là số nguyên từ 15 đến 120 giây. Mặc định: SHA1, 6 chữ số, 30 giây. Khớp với cài đặt dịch vụ gốc."
+        ],
+        [
+          "Sao chép và dán",
+          "Dán cần quyền bộ nhớ tạm. Nếu không có hoặc bị từ chối, dùng Ctrl+V, Command+V hoặc nhấn giữ. Nếu sao chép thất bại, văn bản chọn được sẽ hiện để sao chép thủ công."
+        ],
+        [
+          "Tính năng và trình duyệt cũ",
+          "Lite phát hiện nhiều khóa để chọn trên trang này. Mũi tên mở trang mã riêng. Không có nhập QR và lịch sử đã lưu; dùng bản đầy đủ cho các tính năng đó. IE11 là mục tiêu tương thích: thử trên IE11 thật chưa hoàn tất. Hệ thống cũ có thể không thiết lập được kết nối HTTPS."
+        ],
+        [
+          "Khóa và quyền riêng tư",
+          "Khóa và việc tính mã nằm trong trình duyệt; Lite không lưu lịch sử. Phần sau # không gửi trong yêu cầu trang HTTP. Liên kết đầy đủ vẫn chứa khóa và có thể còn trong lịch sử trình duyệt, bộ nhớ tạm hoặc ảnh chụp màn hình. Hãy giữ riêng tư."
+        ],
+        [
+          "Mã sai?",
+          "Đối chiếu khóa, thuật toán, số chữ số và chu kỳ với dịch vụ gốc, rồi kiểm tra đồng hồ thiết bị. Chờ mã tiếp nếu sắp hết hạn. Lite không hỗ trợ HOTP hay mã riêng của Steam."
+        ]
+      ]
+    }
+  },
+  "th": {
+    "ui": {
+      "title": "รหัสยืนยัน 2FA",
+      "secretLabel": "คีย์ลับหรือลิงก์ otpauth://",
+      "hint": "คีย์ Base32 หรือลิงก์ TOTP",
+      "choose": "เลือกคีย์ลับ",
+      "review": "ตรวจสอบแต่ละคีย์ ระบบไม่อนุมานเจ้าของบัญชีจากข้อความข้างเคียง",
+      "limit": "ใช้ไม่เกิน 100 บรรทัดต่อครั้ง",
+      "reveal": "แสดงคีย์ลับ",
+      "algorithm": "อัลกอริทึม",
+      "digits": "จำนวนหลัก",
+      "period": "ช่วงเวลา (วินาที)",
+      "generate": "วาง",
+      "pasteHelp": "เข้าถึงคลิปบอร์ดไม่ได้ วางในช่องคีย์ด้วย Ctrl+V หรือกดค้าง",
+      "clear": "ล้าง",
+      "current": "รหัสปัจจุบัน",
+      "copy": "คัดลอกรหัส",
+      "link": "คัดลอกลิงก์",
+      "manual": "เลือกแล้วคัดลอกเอง",
+      "privacy": "คีย์อยู่ในเบราว์เซอร์นี้ ไม่บันทึกประวัติ ลิงก์ที่แชร์ยังมีคีย์ของคุณ เก็บไว้เป็นส่วนตัว",
+      "full": "รุ่นเต็ม",
+      "help": "คู่มือการใช้",
+      "compatibility": "รองรับ Internet Explorer!",
+      "left": "รหัสถัดไปใน {n} วินาที",
+      "copied": "คัดลอกแล้ว",
+      "secret": "ป้อนคีย์ Base32 ที่ครบหนึ่งคีย์",
+      "multiple": "ใช้คีย์เดียวต่อครั้ง Lite ไม่รองรับหลายบรรทัด",
+      "invalid": "ลิงก์ไม่ถูกต้อง",
+      "unsupported": "ใช้คีย์ Base32, URI TOTP หรือลิงก์ fragment ของ 2fa.hot ไม่รองรับรูปแบบนี้",
+      "duplicate": "ลิงก์มีพารามิเตอร์ซ้ำ",
+      "parameters": "ใช้ SHA-1/256/512, 6 หรือ 8 หลัก และช่วงเวลา 15 ถึง 120 วินาที",
+      "unavailable": "โหลดกลไกสร้างรหัสไม่ได้ โหลดหน้านี้ใหม่เพื่อลองอีกครั้ง",
+      "query": "ใช้ fragment # สำหรับคีย์ ไม่ใช่เส้นทาง URL หรือพารามิเตอร์คำค้น",
+      "navigation": "การนำทาง",
+      "language": "ภาษา",
+      "source": "ซอร์ส · AGPL-3.0",
+      "javascript": "ต้องใช้ JavaScript เพื่อคำนวณรหัสในเครื่อง",
+      "languageError": "โหลดภาษานี้ไม่ได้ โปรดลองอีกครั้ง",
+      "openCode": "เปิดหน้ารหัสแยก"
+    },
+    "help": {
+      "title": "คู่มือ Lite",
+      "back": "กลับไปที่รหัส",
+      "sections": [
+        [
+          "ทำไมต้อง Lite?",
+          "Lite สำหรับเวลาที่ต้องการเพียงรหัส TOTP อย่างรวดเร็ว หน้าที่เล็กกว่าและมีส่วนพึ่งพาน้อยกว่าโหลดเร็วบนเครือข่ายช้าและเครื่องเก่า และอาจยังใช้ได้เมื่อรุ่นเต็มโหลดไม่สมบูรณ์ ยังคงคำนวณในเบราว์เซอร์ ตรวจจับหลายคีย์ และลิงก์รหัสด่วน ส่วนการนำเข้า QR ประวัติที่บันทึกและฟีเจอร์อื่นอยู่ในรุ่นเต็ม"
+        ],
+        [
+          "รับรหัส",
+          "วางคีย์ Base32 ที่มีอยู่หรือลิงก์ตั้งค่า otpauth://totp/ รหัสแสดงอัตโนมัติ คัดลอกไปบริการที่ขอการยืนยัน รหัสจะเปลี่ยนเมื่อหมดเวลานับถอยหลัง"
+        ],
+        [
+          "ลิงก์รหัสด่วน",
+          "เปิด /lite#SECRET เพื่อแสดงรหัสโดยตรง นี่คือหน้าเบราว์เซอร์ ไม่ใช่ API เซิร์ฟเวอร์ที่คืน JSON หรือรหัส ไคลเอนต์ HTTP เช่น curl จะได้รับแค่หน้าเว็บ ใช้คัดลอกลิงก์เพื่อสร้าง URL เต็ม"
+        ],
+        [
+          "พารามิเตอร์",
+          "เติม ?algorithm=SHA256&digits=8&period=30 หลังคีย์ โดยให้ทั้งหมดอยู่หลัง # ค่า algorithm รับ SHA1, SHA256 หรือ SHA512; digits รับ 6 หรือ 8; period เป็นจำนวนเต็ม 15 ถึง 120 วินาที ค่าเริ่มต้น: SHA1, 6 หลัก, 30 วินาที ตั้งให้ตรงบริการต้นทาง"
+        ],
+        [
+          "คัดลอกและวาง",
+          "การวางต้องใช้สิทธิ์คลิปบอร์ด ถ้าใช้ไม่ได้หรือถูกปฏิเสธ ให้ใช้ Ctrl+V, Command+V หรือกดค้าง หากคัดลอกไม่สำเร็จจะแสดงข้อความให้เลือกคัดลอกเอง"
+        ],
+        [
+          "ฟีเจอร์กับเบราว์เซอร์เก่า",
+          "Lite ตรวจพบหลายคีย์ให้เลือกในหน้านี้ ลูกศรเปิดหน้ารหัสแยก ไม่มีนำเข้า QR หรือประวัติที่บันทึก ให้ใช้รุ่นเต็มสำหรับฟีเจอร์เหล่านั้น IE11 เป็นเป้าหมายความเข้ากันได้ ยังทดสอบกับ IE11 จริงไม่เสร็จ ระบบเก่าอาจเชื่อมต่อ HTTPS ไม่ได้ด้วย"
+        ],
+        [
+          "คีย์และความเป็นส่วนตัว",
+          "คีย์และการคำนวณรหัสอยู่ในเบราว์เซอร์ Lite ไม่บันทึกประวัติ เนื้อหาหลัง # ไม่ส่งในคำขอหน้า HTTP แต่ลิงก์เต็มยังมีคีย์และอาจอยู่ในประวัติเบราว์เซอร์ คลิปบอร์ด หรือภาพหน้าจอ เก็บไว้เป็นส่วนตัว"
+        ],
+        [
+          "รหัสผิด?",
+          "เทียบคีย์ อัลกอริทึม จำนวนหลักและช่วงเวลากับบริการต้นทาง แล้วตรวจนาฬิกาเครื่อง หากใกล้หมดอายุให้รอรหัสถัดไป Lite ไม่รองรับ HOTP หรือรหัสเฉพาะ Steam"
+        ]
+      ]
+    }
+  },
+  "tr": {
+    "ui": {
+      "title": "2FA doğrulama kodu",
+      "secretLabel": "Gizli anahtar veya otpauth:// bağlantısı",
+      "hint": "Base32 anahtarı veya TOTP bağlantısı",
+      "choose": "Anahtar seçin",
+      "review": "Her anahtarı kontrol edin. Yakındaki metinden hesap sahipliği çıkarılmaz.",
+      "limit": "Bir seferde en fazla 100 satır kullanın.",
+      "reveal": "Anahtarı göster",
+      "algorithm": "Algoritma",
+      "digits": "Hane",
+      "period": "Süre (saniye)",
+      "generate": "Yapıştır",
+      "pasteHelp": "Panoya erişilemiyor. Ctrl+V veya uzun basarak anahtar alanına yapıştırın.",
+      "clear": "Temizle",
+      "current": "Güncel kod",
+      "copy": "Kodu kopyala",
+      "link": "Bağlantıyı kopyala",
+      "manual": "Seçip elle kopyalayın",
+      "privacy": "Anahtarlar bu tarayıcıda kalır. Geçmiş kaydedilmez. Paylaşılan bağlantılar anahtarınızı içerir; gizli tutun.",
+      "full": "Tam sürüm",
+      "help": "Kullanım rehberi",
+      "compatibility": "Internet Explorer desteklenir!",
+      "left": "Sonraki kod {n} sn sonra",
+      "copied": "Kopyalandı.",
+      "secret": "Bir tam Base32 anahtarı girin.",
+      "multiple": "Bir seferde tek anahtar kullanın. Lite çoklu satırı desteklemez.",
+      "invalid": "Bağlantı geçersiz.",
+      "unsupported": "Base32 anahtarı, TOTP URI veya 2fa.hot parça bağlantısı kullanın. Bu biçim desteklenmiyor.",
+      "duplicate": "Bağlantı yinelenen parametreler içeriyor.",
+      "parameters": "SHA-1/256/512, 6 veya 8 hane ve 15–120 saniye süre kullanın.",
+      "unavailable": "Kod motoru yüklenemedi. Yeniden denemek için sayfayı yükleyin.",
+      "query": "Anahtar için URL yolu veya sorgu parametresi yerine # parçası kullanın.",
+      "navigation": "Gezinme",
+      "language": "Dil",
+      "source": "Kaynak · AGPL-3.0",
+      "javascript": "Kodları yerel hesaplamak için JavaScript gerekir.",
+      "languageError": "Bu dil yüklenemiyor. Yeniden deneyin.",
+      "openCode": "Ayrı kod sayfasını aç"
+    },
+    "help": {
+      "title": "Lite rehberi",
+      "back": "Kodlara dön",
+      "sections": [
+        [
+          "Neden Lite?",
+          "Lite yalnızca hızlıca TOTP kodu gerektiğinde kullanılır. Daha küçük sayfa ve az bağımlılık, yavaş ağlarda ve eski cihazlarda daha hızlı yüklenir; tam sürüm düzgün açılmadığında kullanılabilir kalabilir. Tarayıcı içi hesaplama, çoklu anahtar algılama ve hızlı kod bağlantıları korunur; QR içe aktarma, kayıtlı geçmiş ve diğer özellikler tam sürümdedir."
+        ],
+        [
+          "Kod alın",
+          "Mevcut Base32 anahtarını veya otpauth://totp/ yapılandırma bağlantısını yapıştırın. Kod otomatik görünür. Doğrulama isteyen hizmete kopyalayın. Geri sayım bittiğinde yenilenir."
+        ],
+        [
+          "Hızlı kod bağlantıları",
+          "Doğrudan kod görmek için /lite#SECRET açın. Bu bir tarayıcı sayfasıdır, JSON veya kod döndüren sunucu API'si değildir: curl gibi HTTP istemcileri yalnızca sayfayı alır. Tam URL için Bağlantıyı kopyala'yı kullanın."
+        ],
+        [
+          "Parametreler",
+          "Anahtardan sonra ?algorithm=SHA256&digits=8&period=30 ekleyin; hepsi # sonrasında kalsın. algorithm SHA1, SHA256 veya SHA512; digits 6 veya 8 kabul eder; period 15–120 saniye arası tam sayıdır. Varsayılanlar: SHA1, 6 hane, 30 saniye. Özgün hizmetin ayarlarıyla eşleştirin."
+        ],
+        [
+          "Kopyalama ve yapıştırma",
+          "Yapıştırma pano izni ister. Erişilemiyorsa veya reddedildiyse Ctrl+V, Command+V ya da uzun basmayı kullanın. Kopyalama başarısızsa elle kopyalanabilen seçilebilir metin çıkar."
+        ],
+        [
+          "Özellikler ve eski tarayıcılar",
+          "Lite birden çok anahtarı algılar, bu sayfada seçmenizi sağlar. Ok, ayrı kod sayfasını açar. QR içe aktarma ve kayıtlı geçmiş yoktur; bunlar için tam sürümü kullanın. IE11 uyumluluk hedefidir: gerçek IE11 testi tamamlanmadı. Eski sistemler HTTPS bağlantısı da kuramayabilir."
+        ],
+        [
+          "Anahtarlar ve gizlilik",
+          "Anahtarlar ve kod hesaplaması tarayıcıda kalır; Lite geçmiş kaydetmez. # sonrası HTTP sayfa isteğinde gönderilmez. Tam bağlantı yine anahtarınızı içerir; tarayıcı geçmişinde, panoda veya ekran görüntülerinde kalabilir. Gizli tutun."
+        ],
+        [
+          "Kod yanlış mı?",
+          "Anahtarı, algoritmayı, haneyi ve süreyi özgün hizmetle karşılaştırın, sonra cihaz saatine bakın. Süre bitmek üzereyse sonraki kodu bekleyin. Lite HOTP veya Steam'e özel kodları desteklemez."
+        ]
+      ]
+    }
+  },
+  "it": {
+    "ui": {
+      "title": "Codice di verifica 2FA",
+      "secretLabel": "Segreto o link otpauth://",
+      "hint": "Segreti Base32 o link TOTP",
+      "choose": "Seleziona un segreto",
+      "review": "Controlla ogni segreto. L’appartenenza a un account non viene dedotta dal testo vicino.",
+      "limit": "Usa al massimo 100 righe alla volta.",
+      "reveal": "Mostra segreto",
+      "algorithm": "Algoritmo",
+      "digits": "Cifre",
+      "period": "Periodo (secondi)",
+      "generate": "Incolla",
+      "pasteHelp": "L’accesso agli appunti non è disponibile. Incolla nel campo del segreto con Ctrl+V o una pressione prolungata.",
+      "clear": "Cancella",
+      "current": "Codice attuale",
+      "copy": "Copia codice",
+      "link": "Copia link",
+      "manual": "Seleziona e copia manualmente",
+      "privacy": "I segreti restano in questo browser. Non viene salvata alcuna cronologia. I link condivisi contengono comunque il tuo segreto: mantienili privati.",
+      "full": "Versione completa",
+      "help": "Guida all’uso",
+      "compatibility": "Supporta Internet Explorer!",
+      "left": "Prossimo codice tra {n}s",
+      "copied": "Copiato.",
+      "secret": "Inserisci un unico segreto Base32 completo.",
+      "multiple": "Usa un segreto alla volta. Lite non supporta più righe.",
+      "invalid": "Il link non è valido.",
+      "unsupported": "Usa un segreto Base32, un URI TOTP o un link con frammento di 2fa.hot. Questo formato non è supportato.",
+      "duplicate": "Il link contiene parametri duplicati.",
+      "parameters": "Usa SHA-1/256/512, 6 o 8 cifre e un periodo da 15 a 120 secondi.",
+      "unavailable": "Impossibile caricare il motore dei codici. Ricarica questa pagina per riprovare.",
+      "query": "Usa un frammento # per i segreti, non il percorso o i parametri di query dell’URL.",
+      "navigation": "Navigazione",
+      "language": "Lingua",
+      "source": "Codice sorgente · AGPL-3.0",
+      "javascript": "JavaScript è necessario per calcolare i codici localmente.",
+      "languageError": "Impossibile caricare la lingua. Riprova.",
+      "openCode": "Apri la pagina separata del codice"
+    },
+    "help": {
+      "title": "Guida di Lite",
+      "back": "Torna ai codici",
+      "sections": [
+        [
+          "Perché Lite?",
+          "Lite è pensato per quando serve soltanto un codice TOTP rapidamente. La pagina più piccola e le minori dipendenze caricano più velocemente su reti lente e dispositivi vecchi e possono restare utilizzabili quando la versione completa non si carica bene. Mantiene il calcolo nel browser, il rilevamento di più segreti e i link rapidi ai codici; importazione QR, cronologia salvata e altre funzioni restano nella versione completa."
+        ],
+        [
+          "Ottieni un codice",
+          "Incolla un segreto Base32 esistente o un link di configurazione otpauth://totp/. Il codice appare automaticamente. Copialo nel servizio che richiede la verifica. Il codice si aggiorna quando il conto alla rovescia finisce."
+        ],
+        [
+          "Link rapidi ai codici",
+          "Apri /lite#SECRET per mostrare direttamente un codice. È una pagina del browser, non un’API server che restituisce JSON o codici: i client HTTP come curl ricevono solo la pagina. Usa Copia link per generare l’URL completo."
+        ],
+        [
+          "Parametri",
+          "Aggiungi ?algorithm=SHA256&digits=8&period=30 dopo il segreto, mantenendo tutto dopo #. algorithm accetta SHA1, SHA256 o SHA512; digits accetta 6 o 8; period è un intero da 15 a 120 secondi. Predefiniti: SHA1, 6 cifre, 30 secondi. Usa le impostazioni del servizio originale."
+        ],
+        [
+          "Copia e incolla",
+          "Incolla richiede l’autorizzazione agli appunti. Se non è disponibile o viene negata, usa Ctrl+V, Command+V o una pressione prolungata. Se la copia fallisce, appare testo selezionabile da copiare manualmente."
+        ],
+        [
+          "Funzioni e browser vecchi",
+          "Lite rileva più segreti da selezionare in questa pagina. La freccia apre una pagina di codice indipendente. L’importazione QR e la cronologia salvata non sono disponibili. Usa la versione completa per queste funzioni. IE11 è un obiettivo di compatibilità: i test su un vero IE11 non sono ancora stati completati. I sistemi vecchi potrebbero inoltre non riuscire a stabilire una connessione HTTPS."
+        ],
+        [
+          "Segreti e privacy",
+          "Segreti e calcoli dei codici restano nel browser; Lite non salva alcuna cronologia. Il contenuto dopo # non viene inviato nella richiesta HTTP della pagina. Il link completo contiene comunque il tuo segreto e può restare nella cronologia del browser, negli appunti o negli screenshot. Mantienilo privato."
+        ],
+        [
+          "Codice errato?",
+          "Confronta segreto, algoritmo, cifre e periodo con il servizio originale, quindi controlla l’orologio del dispositivo. Attendi il codice successivo se sta per scadere. Lite non supporta HOTP né codici specifici di Steam."
+        ]
+      ]
+    }
+  },
+  "nl": {
+    "ui": {
+      "title": "2FA-verificatiecode",
+      "secretLabel": "Geheim of otpauth://-link",
+      "hint": "Base32-geheimen of TOTP-links",
+      "choose": "Selecteer een geheim",
+      "review": "Controleer elk geheim. Bij welk account het hoort wordt niet uit nabije tekst afgeleid.",
+      "limit": "Gebruik maximaal 100 rijen per keer.",
+      "reveal": "Geheim tonen",
+      "algorithm": "Algoritme",
+      "digits": "Cijfers",
+      "period": "Periode (seconden)",
+      "generate": "Plakken",
+      "pasteHelp": "Klembordtoegang is niet beschikbaar. Plak in het geheimveld met Ctrl+V of door lang te drukken.",
+      "clear": "Wissen",
+      "current": "Huidige code",
+      "copy": "Code kopiëren",
+      "link": "Link kopiëren",
+      "manual": "Selecteren en handmatig kopiëren",
+      "privacy": "Geheimen blijven in deze browser. Er wordt geen geschiedenis opgeslagen. Gedeelde links bevatten nog steeds je geheim; houd ze privé.",
+      "full": "Volledige versie",
+      "help": "Gebruiksaanwijzing",
+      "compatibility": "Ondersteunt Internet Explorer!",
+      "left": "Volgende code over {n}s",
+      "copied": "Gekopieerd.",
+      "secret": "Voer één volledig Base32-geheim in.",
+      "multiple": "Gebruik één geheim tegelijk. Lite ondersteunt geen meerdere regels.",
+      "invalid": "De link is ongeldig.",
+      "unsupported": "Gebruik een Base32-geheim, TOTP-URI of 2fa.hot-fragmentlink. Dit formaat wordt niet ondersteund.",
+      "duplicate": "De link bevat dubbele parameters.",
+      "parameters": "Gebruik SHA-1/256/512, 6 of 8 cijfers en een periode van 15 tot 120 seconden.",
+      "unavailable": "De code-engine kon niet laden. Vernieuw deze pagina om opnieuw te proberen.",
+      "query": "Gebruik een #-fragment voor geheimen, geen URL-pad of queryparameters.",
+      "navigation": "Navigatie",
+      "language": "Taal",
+      "source": "Broncode · AGPL-3.0",
+      "javascript": "JavaScript is nodig om codes lokaal te berekenen.",
+      "languageError": "Kan deze taal niet laden. Probeer opnieuw.",
+      "openCode": "Aparte codepagina openen"
+    },
+    "help": {
+      "title": "Lite-handleiding",
+      "back": "Terug naar codes",
+      "sections": [
+        [
+          "Waarom Lite?",
+          "Lite is voor situaties waarin je snel alleen een TOTP-code nodig hebt. De kleinere pagina en minder afhankelijkheden laden sneller op trage netwerken en oudere apparaten en kunnen bruikbaar blijven als de volledige versie niet goed laadt. Berekening in de browser, detectie van meerdere geheimen en snelle codelinks blijven behouden; QR-import, opgeslagen geschiedenis en andere functies zitten in de volledige versie."
+        ],
+        [
+          "Een code krijgen",
+          "Plak een bestaand Base32-geheim of een otpauth://totp/-configuratielink. Je code verschijnt automatisch. Kopieer deze naar de dienst die om verificatie vraagt. De code wordt vernieuwd zodra de afteller afloopt."
+        ],
+        [
+          "Snelle codelinks",
+          "Open /lite#SECRET om direct een code te tonen. Dit is een browserpagina, geen server-API die JSON of codes teruggeeft: HTTP-clients zoals curl ontvangen alleen de pagina. Gebruik Link kopiëren om de volledige URL te maken."
+        ],
+        [
+          "Parameters",
+          "Voeg ?algorithm=SHA256&digits=8&period=30 toe na het geheim en houd alles achter #. algorithm accepteert SHA1, SHA256 of SHA512; digits accepteert 6 of 8; period is een geheel getal van 15 tot 120 seconden. Standaard: SHA1, 6 cijfers, 30 seconden. Gebruik de instellingen van de oorspronkelijke dienst."
+        ],
+        [
+          "Kopiëren en plakken",
+          "Plakken vereist klembordtoestemming. Is die niet beschikbaar of geweigerd, gebruik dan Ctrl+V, Command+V of lang drukken. Als kopiëren mislukt, verschijnt selecteerbare tekst om handmatig te kopiëren."
+        ],
+        [
+          "Functies en oudere browsers",
+          "Lite detecteert meerdere geheimen om op deze pagina te selecteren. De pijl opent een afzonderlijke codepagina. QR-import en opgeslagen geschiedenis zijn niet beschikbaar. Gebruik daarvoor de volledige versie. IE11 is een compatibiliteitsdoel: testen in de echte IE11 zijn nog niet afgerond. Oudere systemen kunnen mogelijk ook geen HTTPS-verbinding maken."
+        ],
+        [
+          "Geheimen en privacy",
+          "Geheimen en codeberekeningen blijven in de browser; Lite slaat geen geschiedenis op. Inhoud na # wordt niet meegestuurd in het HTTP-paginaverzoek. De volledige link bevat nog steeds je geheim en kan in de browsergeschiedenis, op het klembord of in screenshots blijven staan. Houd hem privé."
+        ],
+        [
+          "Verkeerde code?",
+          "Controleer geheim, algoritme, aantal cijfers en periode bij de oorspronkelijke dienst en controleer daarna de apparaatklok. Wacht op de volgende code als de huidige bijna verloopt. Lite ondersteunt geen HOTP of Steam-specifieke codes."
+        ]
+      ]
+    }
+  },
+  "pl": {
+    "ui": {
+      "title": "Kod weryfikacyjny 2FA",
+      "secretLabel": "Sekret lub link otpauth://",
+      "hint": "Sekrety Base32 lub linki TOTP",
+      "choose": "Wybierz sekret",
+      "review": "Sprawdź każdy sekret. Przynależność do konta nie jest wnioskowana z sąsiedniego tekstu.",
+      "limit": "Używaj najwyżej 100 wierszy naraz.",
+      "reveal": "Pokaż sekret",
+      "algorithm": "Algorytm",
+      "digits": "Cyfry",
+      "period": "Okres (sekundy)",
+      "generate": "Wklej",
+      "pasteHelp": "Dostęp do schowka jest niedostępny. Wklej do pola sekretu za pomocą Ctrl+V lub długiego przytrzymania.",
+      "clear": "Wyczyść",
+      "current": "Bieżący kod",
+      "copy": "Kopiuj kod",
+      "link": "Kopiuj link",
+      "manual": "Zaznacz i skopiuj ręcznie",
+      "privacy": "Sekrety pozostają w tej przeglądarce. Historia nie jest zapisywana. Udostępniane linki nadal zawierają sekret; zachowaj je dla siebie.",
+      "full": "Pełna wersja",
+      "help": "Instrukcja obsługi",
+      "compatibility": "Obsługuje Internet Explorer!",
+      "left": "Następny kod za {n}s",
+      "copied": "Skopiowano.",
+      "secret": "Wpisz jeden pełny sekret Base32.",
+      "multiple": "Używaj jednego sekretu naraz. Lite nie obsługuje wielu wierszy.",
+      "invalid": "Link jest nieprawidłowy.",
+      "unsupported": "Użyj sekretu Base32, URI TOTP lub linku z fragmentem 2fa.hot. Ten format nie jest obsługiwany.",
+      "duplicate": "Link zawiera powtórzone parametry.",
+      "parameters": "Użyj SHA-1/256/512, 6 lub 8 cyfr oraz okresu od 15 do 120 sekund.",
+      "unavailable": "Nie udało się załadować mechanizmu kodów. Odśwież stronę i spróbuj ponownie.",
+      "query": "Dla sekretów używaj fragmentu #, nie ścieżki URL ani parametrów zapytania.",
+      "navigation": "Nawigacja",
+      "language": "Język",
+      "source": "Kod źródłowy · AGPL-3.0",
+      "javascript": "Do lokalnego obliczania kodów potrzebny jest JavaScript.",
+      "languageError": "Nie można załadować tego języka. Spróbuj ponownie.",
+      "openCode": "Otwórz osobną stronę kodu"
+    },
+    "help": {
+      "title": "Poradnik Lite",
+      "back": "Wróć do kodów",
+      "sections": [
+        [
+          "Dlaczego Lite?",
+          "Lite przydaje się, gdy potrzebujesz tylko szybko uzyskać kod TOTP. Mniejsza strona i mniej zależności ładują się szybciej na wolnych łączach i starszych urządzeniach, a narzędzie może działać, gdy pełna wersja nie ładuje się prawidłowo. Zachowuje obliczenia w przeglądarce, wykrywanie wielu sekretów i szybkie linki do kodów; import QR, zapisana historia i pozostałe funkcje są w pełnej wersji."
+        ],
+        [
+          "Uzyskaj kod",
+          "Wklej istniejący sekret Base32 lub link konfiguracji otpauth://totp/. Kod pojawia się automatycznie. Skopiuj go do usługi żądającej weryfikacji. Kod odświeża się po zakończeniu odliczania."
+        ],
+        [
+          "Szybkie linki do kodów",
+          "Otwórz /lite#SECRET, aby od razu wyświetlić kod. To strona przeglądarkowa, nie API serwera zwracające JSON lub kody: klienci HTTP, tacy jak curl, otrzymują tylko stronę. Użyj Kopiuj link, aby wygenerować pełny URL."
+        ],
+        [
+          "Parametry",
+          "Dodaj ?algorithm=SHA256&digits=8&period=30 po sekrecie, pozostawiając całość za #. algorithm przyjmuje SHA1, SHA256 lub SHA512; digits przyjmuje 6 lub 8; period to liczba całkowita od 15 do 120 sekund. Domyślnie: SHA1, 6 cyfr, 30 sekund. Dopasuj ustawienia do pierwotnej usługi."
+        ],
+        [
+          "Kopiowanie i wklejanie",
+          "Wklejanie wymaga uprawnień do schowka. Gdy ich brak lub odmówiono dostępu, użyj Ctrl+V, Command+V lub długiego przytrzymania. Jeśli kopiowanie się nie powiedzie, pojawi się tekst do zaznaczenia i ręcznego skopiowania."
+        ],
+        [
+          "Funkcje i starsze przeglądarki",
+          "Lite wykrywa wiele sekretów do wyboru na tej stronie. Strzałka otwiera osobną stronę kodu. Import QR i zapisana historia są niedostępne. Użyj pełnej wersji dla tych funkcji. IE11 to cel zgodności: testy w rzeczywistym IE11 nie zostały jeszcze ukończone. Starsze systemy mogą też nie potrafić nawiązać połączenia HTTPS."
+        ],
+        [
+          "Sekrety i prywatność",
+          "Sekrety i obliczenia kodów pozostają w przeglądarce; Lite nie zapisuje historii. Treść po # nie jest wysyłana w żądaniu HTTP strony. Pełny link nadal zawiera sekret i może zostać w historii przeglądarki, schowku lub zrzutach ekranu. Zachowaj go dla siebie."
+        ],
+        [
+          "Niepoprawny kod?",
+          "Porównaj sekret, algorytm, liczbę cyfr i okres z pierwotną usługą, a następnie sprawdź zegar urządzenia. Poczekaj na następny kod, jeśli bieżący zaraz wygaśnie. Lite nie obsługuje HOTP ani kodów specyficznych dla Steam."
+        ]
+      ]
+    }
+  },
+  "uk": {
+    "ui": {
+      "title": "Код підтвердження 2FA",
+      "secretLabel": "Секрет або посилання otpauth://",
+      "hint": "Секрети Base32 або посилання TOTP",
+      "choose": "Виберіть секрет",
+      "review": "Перевірте кожен секрет. Належність до облікового запису не визначається за сусіднім текстом.",
+      "limit": "Використовуйте не більше 100 рядків за раз.",
+      "reveal": "Показати секрет",
+      "algorithm": "Алгоритм",
+      "digits": "Цифри",
+      "period": "Період (секунди)",
+      "generate": "Вставити",
+      "pasteHelp": "Доступ до буфера обміну недоступний. Вставте в поле секрету за допомогою Ctrl+V або довгого натискання.",
+      "clear": "Очистити",
+      "current": "Поточний код",
+      "copy": "Копіювати код",
+      "link": "Копіювати посилання",
+      "manual": "Виділити й скопіювати вручну",
+      "privacy": "Секрети залишаються в цьому браузері. Історія не зберігається. Посилання для передавання все одно містять секрет; не розголошуйте їх.",
+      "full": "Повна версія",
+      "help": "Інструкція",
+      "compatibility": "Підтримує Internet Explorer!",
+      "left": "Наступний код за {n}с",
+      "copied": "Скопійовано.",
+      "secret": "Введіть один повний секрет Base32.",
+      "multiple": "Використовуйте один секрет за раз. Кілька рядків у Lite не підтримуються.",
+      "invalid": "Посилання недійсне.",
+      "unsupported": "Використовуйте секрет Base32, URI TOTP або посилання з фрагментом 2fa.hot. Цей формат не підтримується.",
+      "duplicate": "Посилання містить повторювані параметри.",
+      "parameters": "Використовуйте SHA-1/256/512, 6 або 8 цифр і період від 15 до 120 секунд.",
+      "unavailable": "Не вдалося завантажити механізм кодів. Перезавантажте сторінку й спробуйте знову.",
+      "query": "Для секретів використовуйте фрагмент #, а не шлях URL або параметри запиту.",
+      "navigation": "Навігація",
+      "language": "Мова",
+      "source": "Вихідний код · AGPL-3.0",
+      "javascript": "Для локального обчислення кодів потрібен JavaScript.",
+      "languageError": "Не вдалося завантажити цю мову. Спробуйте знову.",
+      "openCode": "Відкрити окрему сторінку коду"
+    },
+    "help": {
+      "title": "Посібник Lite",
+      "back": "Назад до кодів",
+      "sections": [
+        [
+          "Навіщо Lite?",
+          "Lite потрібен, коли треба лише швидко отримати код TOTP. Менша сторінка й менше залежностей швидше завантажуються в повільних мережах і на старих пристроях та можуть працювати, коли повна версія не завантажується належно. Залишаються обчислення в браузері, виявлення кількох секретів і швидкі посилання на коди; імпорт QR, збережена історія й інші функції є в повній версії."
+        ],
+        [
+          "Отримати код",
+          "Вставте наявний секрет Base32 або посилання налаштування otpauth://totp/. Код з’явиться автоматично. Скопіюйте його в сервіс, що запитує підтвердження. Код оновиться після завершення відліку."
+        ],
+        [
+          "Швидкі посилання на коди",
+          "Відкрийте /lite#SECRET, щоб одразу показати код. Це сторінка браузера, а не серверний API, що повертає JSON чи коди: HTTP-клієнти на зразок curl отримують лише сторінку. Натисніть «Копіювати посилання», щоб створити повний URL."
+        ],
+        [
+          "Параметри",
+          "Додайте ?algorithm=SHA256&digits=8&period=30 після секрету, залишивши все після #. algorithm приймає SHA1, SHA256 або SHA512; digits — 6 або 8; period — ціле число від 15 до 120 секунд. Типово: SHA1, 6 цифр, 30 секунд. Налаштування мають відповідати початковому сервісу."
+        ],
+        [
+          "Копіювання та вставлення",
+          "Вставлення потребує дозволу на буфер обміну. Якщо доступ неможливий або заборонений, використовуйте Ctrl+V, Command+V або довге натискання. Якщо копіювання не вдалося, з’явиться текст, який можна виділити й скопіювати вручну."
+        ],
+        [
+          "Функції та старі браузери",
+          "Lite виявляє кілька секретів для вибору на цій сторінці. Стрілка відкриває окрему сторінку коду. Імпорт QR і збережена історія недоступні. Для цих функцій використовуйте повну версію. IE11 — ціль сумісності: тестування у справжньому IE11 ще не завершено. Старі системи також можуть не встановлювати HTTPS-з’єднання."
+        ],
+        [
+          "Секрети й конфіденційність",
+          "Секрети й обчислення кодів залишаються в браузері; Lite не зберігає історію. Вміст після # не надсилається в HTTP-запиті сторінки. Повне посилання все ще містить секрет і може залишитися в історії браузера, буфері обміну або на знімках екрана. Не розголошуйте його."
+        ],
+        [
+          "Неправильний код?",
+          "Звірте секрет, алгоритм, кількість цифр і період із початковим сервісом, а потім перевірте годинник пристрою. Дочекайтеся наступного коду, якщо поточний скоро втратить чинність. Lite не підтримує HOTP і спеціальні коди Steam."
+        ]
+      ]
+    }
+  },
+  "fa": {
+    "ui": {
+      "title": "کد تأیید 2FA",
+      "secretLabel": "کلید یا لینک otpauth://",
+      "hint": "کلیدهای Base32 یا لینک‌های TOTP",
+      "choose": "انتخاب کلید",
+      "review": "هر کلید را بررسی کنید. مالکیت حساب از متن کناری حدس زده نمی‌شود.",
+      "limit": "هر بار بیش از 100 ردیف استفاده نکنید.",
+      "reveal": "نمایش کلید",
+      "algorithm": "الگوریتم",
+      "digits": "تعداد ارقام",
+      "period": "دوره (ثانیه)",
+      "generate": "چسباندن",
+      "pasteHelp": "کلیپ‌بورد در دسترس نیست. با Ctrl+V یا لمس طولانی در فیلد کلید بچسبانید.",
+      "clear": "پاک‌کردن",
+      "current": "کد فعلی",
+      "copy": "کپی کد",
+      "link": "کپی لینک",
+      "manual": "انتخاب و کپی دستی",
+      "privacy": "کلیدها در این مرورگر می‌مانند. تاریخچه ذخیره نمی‌شود. لینک اشتراکی همچنان کلید دارد؛ خصوصی نگهش دارید.",
+      "full": "نسخهٔ کامل",
+      "help": "راهنمای استفاده",
+      "compatibility": "از Internet Explorer پشتیبانی می‌کند!",
+      "left": "کد بعدی تا {n} ثانیه",
+      "copied": "کپی شد.",
+      "secret": "یک کلید کامل Base32 وارد کنید.",
+      "multiple": "هر بار یک کلید استفاده کنید. Lite چند خط را پشتیبانی نمی‌کند.",
+      "invalid": "لینک معتبر نیست.",
+      "unsupported": "از کلید Base32، ‏TOTP URI یا لینک قطعه‌ای 2fa.hot استفاده کنید. این قالب پشتیبانی نمی‌شود.",
+      "duplicate": "لینک پارامتر تکراری دارد.",
+      "parameters": "از SHA-1/256/512، تعداد 6 یا 8 رقم و دورهٔ 15 تا 120 ثانیه استفاده کنید.",
+      "unavailable": "موتور کد بارگذاری نشد. برای تلاش دوباره صفحه را بارگذاری کنید.",
+      "query": "برای کلید از قطعهٔ # استفاده کنید، نه مسیر URL یا پارامتر پرس‌وجو.",
+      "navigation": "ناوبری",
+      "language": "زبان",
+      "source": "منبع · AGPL-3.0",
+      "javascript": "محاسبهٔ محلی کد به JavaScript نیاز دارد.",
+      "languageError": "بارگیری این زبان ممکن نیست. دوباره تلاش کنید.",
+      "openCode": "باز کردن صفحهٔ مستقل کد"
+    },
+    "help": {
+      "title": "راهنمای Lite",
+      "back": "بازگشت به کدها",
+      "sections": [
+        [
+          "چرا Lite؟",
+          "Lite برای زمانی است که فقط سریع کد TOTP می‌خواهید. صفحهٔ کوچک‌تر و وابستگی کمتر روی شبکهٔ کند و دستگاه قدیمی سریع‌تر بارگذاری می‌شود و ممکن است وقتی نسخهٔ کامل درست بارگذاری نمی‌شود قابل استفاده بماند. محاسبهٔ مرورگری، تشخیص چند کلید و لینک سریع کد را نگه می‌دارد؛ ورود QR، تاریخچهٔ ذخیره‌شده و دیگر امکانات در نسخهٔ کامل‌اند."
+        ],
+        [
+          "گرفتن کد",
+          "کلید Base32 موجود یا لینک تنظیم otpauth://totp/ را بچسبانید. کد خودکار ظاهر می‌شود. آن را در سرویس درخواست‌کنندهٔ تأیید کپی کنید. با پایان شمارش معکوس تازه می‌شود."
+        ],
+        [
+          "لینک سریع کد",
+          "برای نمایش مستقیم کد /lite#SECRET را باز کنید. این یک صفحهٔ مرورگر است، نه API سرور که JSON یا کد برگرداند: کلاینت HTTP مثل curl فقط صفحه را دریافت می‌کند. با «کپی لینک» URL کامل بسازید."
+        ],
+        [
+          "پارامترها",
+          "پس از کلید ?algorithm=SHA256&digits=8&period=30 اضافه کنید و همه را بعد از # نگه دارید. algorithm مقدار SHA1، SHA256 یا SHA512؛ digits مقدار 6 یا 8؛ و period عدد صحیح 15 تا 120 ثانیه می‌پذیرد. پیش‌فرض: SHA1، شش رقم، 30 ثانیه. با تنظیمات سرویس اصلی تطبیق دهید."
+        ],
+        [
+          "کپی و چسباندن",
+          "چسباندن مجوز کلیپ‌بورد می‌خواهد. اگر موجود نیست یا رد شد، از Ctrl+V، ‏Command+V یا لمس طولانی استفاده کنید. اگر کپی شکست بخورد، متن قابل انتخاب برای کپی دستی ظاهر می‌شود."
+        ],
+        [
+          "قابلیت‌ها و مرورگرهای قدیمی",
+          "Lite چند کلید را برای انتخاب در همین صفحه تشخیص می‌دهد. پیکان صفحهٔ مستقل کد را باز می‌کند. ورود QR و تاریخچه موجود نیست؛ برای آن‌ها نسخهٔ کامل را استفاده کنید. IE11 هدف سازگاری است و آزمایش روی IE11 واقعی کامل نشده. سیستم‌های قدیمی ممکن است نتوانند اتصال HTTPS برقرار کنند."
+        ],
+        [
+          "کلیدها و حریم خصوصی",
+          "کلیدها و محاسبهٔ کد در مرورگر می‌مانند؛ Lite تاریخچه ذخیره نمی‌کند. محتوای بعد از # با درخواست HTTP صفحه فرستاده نمی‌شود. لینک کامل همچنان کلید دارد و ممکن است در تاریخچه، کلیپ‌بورد یا تصویر صفحه بماند. خصوصی نگهش دارید."
+        ],
+        [
+          "کد اشتباه است؟",
+          "کلید، الگوریتم، تعداد ارقام و دوره را با سرویس اصلی تطبیق دهید و سپس ساعت دستگاه را بررسی کنید. اگر کد نزدیک انقضاست منتظر بعدی بمانید. Lite از HOTP یا کد مخصوص Steam پشتیبانی نمی‌کند."
+        ]
+      ]
+    }
+  },
+  "he": {
+    "ui": {
+      "title": "קוד אימות 2FA",
+      "secretLabel": "סוד או קישור otpauth://",
+      "hint": "סודות Base32 או קישורי TOTP",
+      "choose": "בחירת סוד",
+      "review": "בדקו כל סוד. שיוך לחשבון לא מוסק מטקסט סמוך.",
+      "limit": "השתמשו בלא יותר מ-100 שורות בכל פעם.",
+      "reveal": "הצגת הסוד",
+      "algorithm": "אלגוריתם",
+      "digits": "ספרות",
+      "period": "מחזור (שניות)",
+      "generate": "הדבקה",
+      "pasteHelp": "אין גישה ללוח. הדביקו בשדה הסוד עם Ctrl+V או לחיצה ארוכה.",
+      "clear": "ניקוי",
+      "current": "הקוד הנוכחי",
+      "copy": "העתקת קוד",
+      "link": "העתקת קישור",
+      "manual": "בחירה והעתקה ידנית",
+      "privacy": "הסודות נשארים בדפדפן הזה. לא נשמרת היסטוריה. קישורים משותפים עדיין מכילים את הסוד; שמרו על פרטיותם.",
+      "full": "הגרסה המלאה",
+      "help": "מדריך שימוש",
+      "compatibility": "תומך ב-Internet Explorer!",
+      "left": "הקוד הבא בעוד {n} שניות",
+      "copied": "הועתק.",
+      "secret": "הזינו סוד Base32 אחד מלא.",
+      "multiple": "השתמשו בסוד אחד בכל פעם. Lite לא תומך במספר שורות.",
+      "invalid": "הקישור אינו תקין.",
+      "unsupported": "השתמשו בסוד Base32, ב-TOTP URI או בקישור מקטע של 2fa.hot. הפורמט הזה אינו נתמך.",
+      "duplicate": "הקישור מכיל פרמטרים כפולים.",
+      "parameters": "השתמשו ב-SHA-1/256/512, ‏6 או 8 ספרות ומחזור בין 15 ל-120 שניות.",
+      "unavailable": "מנוע הקודים לא נטען. טענו את הדף מחדש ונסו שוב.",
+      "query": "השתמשו במקטע # לסודות, לא בנתיב הכתובת או בפרמטרי שאילתה.",
+      "navigation": "ניווט",
+      "language": "שפה",
+      "source": "מקור · AGPL-3.0",
+      "javascript": "נדרש JavaScript לחישוב קודים מקומית.",
+      "languageError": "לא ניתן לטעון שפה זו. נסו שוב.",
+      "openCode": "פתיחת עמוד קוד נפרד"
+    },
+    "help": {
+      "title": "מדריך Lite",
+      "back": "חזרה לקודים",
+      "sections": [
+        [
+          "למה Lite?",
+          "Lite מיועד למצבים שבהם צריך רק קוד TOTP במהירות. דף קטן יותר ופחות תלות ברכיבים נטענים מהר יותר ברשת איטית ובמכשירים ישנים, ויכולים להישאר שימושיים כשהגרסה המלאה לא נטענת כראוי. הוא שומר על חישוב בדפדפן, זיהוי סודות מרובים וקישורי קוד מהירים; ייבוא QR, היסטוריה שמורה ושאר התכונות נשארים בגרסה המלאה."
+        ],
+        [
+          "קבלת קוד",
+          "הדביקו סוד Base32 קיים או קישור תצורה otpauth://totp/. הקוד מופיע אוטומטית. העתיקו אותו לשירות שמבקש אימות. הקוד מתחדש בסיום הספירה."
+        ],
+        [
+          "קישורי קוד מהירים",
+          "פתחו /lite#SECRET כדי להציג קוד ישירות. זהו דף דפדפן, לא API שרת שמחזיר JSON או קודים: לקוחות HTTP כמו curl מקבלים רק את הדף. השתמשו בהעתקת קישור ליצירת הכתובת המלאה."
+        ],
+        [
+          "פרמטרים",
+          "הוסיפו ?algorithm=SHA256&digits=8&period=30 אחרי הסוד, כך שהכול יישאר אחרי #. ‏algorithm מקבל SHA1, ‏SHA256 או SHA512; ‏digits מקבל 6 או 8; ‏period הוא מספר שלם בין 15 ל-120 שניות. ברירות מחדל: SHA1, ‏6 ספרות, 30 שניות. התאימו להגדרות השירות המקורי."
+        ],
+        [
+          "העתקה והדבקה",
+          "הדבקה דורשת הרשאת לוח. אם אינה זמינה או נדחתה, השתמשו ב-Ctrl+V, ‏Command+V או לחיצה ארוכה. אם ההעתקה נכשלת, מוצג טקסט לבחירה ולהעתקה ידנית."
+        ],
+        [
+          "תכונות ודפדפנים ישנים",
+          "Lite מזהה מספר סודות לבחירה בדף הזה. החץ פותח דף קוד עצמאי. ייבוא QR והיסטוריה שמורה אינם זמינים; השתמשו בגרסה המלאה עבורם. IE11 הוא יעד תאימות: הבדיקה ב-IE11 אמיתי טרם הושלמה. ייתכן שגם מערכות ישנות לא יוכלו ליצור חיבור HTTPS."
+        ],
+        [
+          "סודות ופרטיות",
+          "הסודות וחישובי הקוד נשארים בדפדפן; Lite לא שומר היסטוריה. התוכן שאחרי # אינו נשלח בבקשת HTTP לדף. הקישור המלא עדיין מכיל את הסוד ועשוי להישאר בהיסטוריה, בלוח או בצילומי מסך. שמרו אותו פרטי."
+        ],
+        [
+          "קוד שגוי?",
+          "בדקו סוד, אלגוריתם, ספרות ומחזור מול השירות המקורי, ואז בדקו את שעון המכשיר. חכו לקוד הבא אם הנוכחי עומד לפוג. Lite לא תומך ב-HOTP או בקודים ייעודיים ל-Steam."
+        ]
+      ]
+    }
+  },
+  "sw": {
+    "ui": {
+      "title": "Msimbo wa uthibitishaji wa 2FA",
+      "secretLabel": "Siri au kiungo cha otpauth://",
+      "hint": "Siri za Base32 au viungo vya TOTP",
+      "choose": "Chagua siri",
+      "review": "Kagua kila siri. Umiliki wa akaunti hautabiriwi kutoka maandishi yaliyo karibu.",
+      "limit": "Tumia mistari isiyozidi 100 kwa wakati mmoja.",
+      "reveal": "Onyesha siri",
+      "algorithm": "Algoriti",
+      "digits": "Tarakimu",
+      "period": "Kipindi (sekunde)",
+      "generate": "Bandika",
+      "pasteHelp": "Ubao wa kunakili haupatikani. Bandika kwenye sehemu ya siri kwa Ctrl+V au kubonyeza kwa muda mrefu.",
+      "clear": "Futa",
+      "current": "Msimbo wa sasa",
+      "copy": "Nakili msimbo",
+      "link": "Nakili kiungo",
+      "manual": "Chagua na unakili mwenyewe",
+      "privacy": "Siri hubaki katika kivinjari hiki. Hakuna historia inayohifadhiwa. Viungo vinavyoshirikiwa bado vina siri yako; vihifadhi kwa faragha.",
+      "full": "Toleo kamili",
+      "help": "Mwongozo wa matumizi",
+      "compatibility": "Inakubali Internet Explorer!",
+      "left": "Msimbo unaofuata baada ya sekunde {n}",
+      "copied": "Imenakiliwa.",
+      "secret": "Weka siri moja kamili ya Base32.",
+      "multiple": "Tumia siri moja kwa wakati. Lite haikubali mistari mingi.",
+      "invalid": "Kiungo si halali.",
+      "unsupported": "Tumia siri ya Base32, URI ya TOTP au kiungo cha kipande cha 2fa.hot. Muundo huu haukubaliwi.",
+      "duplicate": "Kiungo kina vigezo vilivyorudiwa.",
+      "parameters": "Tumia SHA-1/256/512, tarakimu 6 au 8, na kipindi cha sekunde 15 hadi 120.",
+      "unavailable": "Injini ya misimbo haikupakia. Pakia upya ukurasa ujaribu tena.",
+      "query": "Tumia kipande cha # kwa siri, si njia ya URL au vigezo vya hoja.",
+      "navigation": "Urambazaji",
+      "language": "Lugha",
+      "source": "Chanzo · AGPL-3.0",
+      "javascript": "JavaScript inahitajika kuhesabu misimbo ndani ya kifaa.",
+      "languageError": "Haiwezi kupakia lugha hii. Jaribu tena.",
+      "openCode": "Fungua ukurasa tofauti wa msimbo"
+    },
+    "help": {
+      "title": "Mwongozo wa Lite",
+      "back": "Rudi kwenye misimbo",
+      "sections": [
+        [
+          "Kwa nini Lite?",
+          "Lite ni ya unapohitaji msimbo wa TOTP haraka tu. Ukurasa wake mdogo na vitegemezi vichache hupakia haraka kwenye mitandao polepole na vifaa vya zamani, na inaweza kutumika toleo kamili likishindwa kupakia vizuri. Inabaki na hesabu ndani ya kivinjari, utambuzi wa siri nyingi na viungo vya haraka vya misimbo; uingizaji wa QR, historia iliyohifadhiwa na vipengele vingine viko katika toleo kamili."
+        ],
+        [
+          "Pata msimbo",
+          "Bandika siri iliyopo ya Base32 au kiungo cha usanidi otpauth://totp/. Msimbo huonekana kiotomatiki. Unakili kwenye huduma inayoomba uthibitishaji. Msimbo hubadilika muda ukiisha."
+        ],
+        [
+          "Viungo vya haraka vya misimbo",
+          "Fungua /lite#SECRET kuonyesha msimbo moja kwa moja. Huu ni ukurasa wa kivinjari, si API ya seva inayorudisha JSON au misimbo: wateja wa HTTP kama curl hupokea ukurasa tu. Tumia Nakili kiungo kutengeneza URL kamili."
+        ],
+        [
+          "Vigezo",
+          "Ongeza ?algorithm=SHA256&digits=8&period=30 baada ya siri, vyote vikibaki baada ya #. algorithm inakubali SHA1, SHA256 au SHA512; digits inakubali 6 au 8; period ni namba kamili ya sekunde 15 hadi 120. Chaguomsingi: SHA1, tarakimu 6, sekunde 30. Linganisha na mipangilio ya huduma ya awali."
+        ],
+        [
+          "Nakili na ubandike",
+          "Kubandika kunahitaji ruhusa ya ubao wa kunakili. Ikiwa haupatikani au umekataliwa, tumia Ctrl+V, Command+V au bonyeza kwa muda mrefu. Kunakili kukishindwa, maandishi yanayochagulika huonekana ili unakili mwenyewe."
+        ],
+        [
+          "Vipengele na vivinjari vya zamani",
+          "Lite hutambua siri nyingi kwa kuchagua kwenye ukurasa huu. Mshale hufungua ukurasa tofauti wa msimbo. Uingizaji wa QR na historia iliyohifadhiwa havipatikani; tumia toleo kamili kwa hivyo. IE11 ni lengo la uoanifu: majaribio kwenye IE11 halisi hayajakamilika. Mifumo ya zamani inaweza pia kushindwa kuanzisha muunganisho wa HTTPS."
+        ],
+        [
+          "Siri na faragha",
+          "Siri na hesabu za misimbo hubaki katika kivinjari; Lite haihifadhi historia. Yaliyomo baada ya # hayatumwi katika ombi la ukurasa la HTTP. Kiungo kamili bado kina siri yako na kinaweza kubaki katika historia ya kivinjari, ubao wa kunakili au picha za skrini. Kihifadhi kwa faragha."
+        ],
+        [
+          "Msimbo si sahihi?",
+          "Linganisha siri, algoriti, tarakimu na kipindi na huduma ya awali, kisha kagua saa ya kifaa. Subiri msimbo mwingine ikiwa muda unakaribia kuisha. Lite haikubali HOTP au misimbo maalumu ya Steam."
+        ]
+      ]
+    }
+  },
+  "fil": {
+    "ui": {
+      "title": "2FA verification code",
+      "secretLabel": "Secret o otpauth:// link",
+      "hint": "Base32 secret o TOTP link",
+      "choose": "Pumili ng secret",
+      "review": "Suriin ang bawat secret. Hindi hinuhulaan ang may-ari ng account mula sa katabing teksto.",
+      "limit": "Huwag lumampas sa 100 linya bawat gamit.",
+      "reveal": "Ipakita ang secret",
+      "algorithm": "Algorithm",
+      "digits": "Mga digit",
+      "period": "Panahon (segundo)",
+      "generate": "I-paste",
+      "pasteHelp": "Hindi ma-access ang clipboard. I-paste sa secret field gamit ang Ctrl+V o matagal na pagpindot.",
+      "clear": "I-clear",
+      "current": "Kasalukuyang code",
+      "copy": "Kopyahin ang code",
+      "link": "Kopyahin ang link",
+      "manual": "Piliin at manu-manong kopyahin",
+      "privacy": "Nananatili sa browser na ito ang mga secret. Walang sine-save na history. May secret pa rin ang ibinabahaging link; panatilihing pribado.",
+      "full": "Buong bersyon",
+      "help": "Gabay sa paggamit",
+      "compatibility": "Suportado ang Internet Explorer!",
+      "left": "Susunod na code sa {n}s",
+      "copied": "Nakopya.",
+      "secret": "Maglagay ng isang buong Base32 secret.",
+      "multiple": "Isang secret lang bawat gamit. Hindi suportado ng Lite ang maraming linya.",
+      "invalid": "Hindi wasto ang link.",
+      "unsupported": "Gumamit ng Base32 secret, TOTP URI o 2fa.hot fragment link. Hindi suportado ang format na ito.",
+      "duplicate": "May dobleng parameter ang link.",
+      "parameters": "Gumamit ng SHA-1/256/512, 6 o 8 digit at panahong 15 hanggang 120 segundo.",
+      "unavailable": "Hindi ma-load ang code engine. I-reload ang pahina upang subukan muli.",
+      "query": "Gamitin ang # fragment para sa secret, hindi ang URL path o query parameter.",
+      "navigation": "Nabigasyon",
+      "language": "Wika",
+      "source": "Source · AGPL-3.0",
+      "javascript": "Kailangan ang JavaScript upang lokal na makuwenta ang code.",
+      "languageError": "Hindi ma-load ang wikang ito. Subukan muli.",
+      "openCode": "Buksan ang hiwalay na pahina ng code"
+    },
+    "help": {
+      "title": "Gabay sa Lite",
+      "back": "Bumalik sa mga code",
+      "sections": [
+        [
+          "Bakit Lite?",
+          "Para ang Lite kapag kailangan mo lang ng TOTP code nang mabilis. Mas maliit ang pahina at mas kaunti ang dependency kaya mas mabilis sa mabagal na network at lumang device, at maaaring gumana kahit hindi ma-load nang maayos ang buong bersyon. Nananatili ang pagkukuwenta sa browser, pagtukoy ng maraming secret at mabilis na code link; nasa buong bersyon ang QR import, saved history at iba pang feature."
+        ],
+        [
+          "Kumuha ng code",
+          "I-paste ang kasalukuyang Base32 secret o otpauth://totp/ configuration link. Awtomatikong lilitaw ang code. Kopyahin ito sa serbisyong humihingi ng pagpapatunay. Nagpapalit ang code pagdating sa dulo ng countdown."
+        ],
+        [
+          "Mabilis na code link",
+          "Buksan ang /lite#SECRET para direktang ipakita ang code. Browser page ito, hindi server API na nagbabalik ng JSON o code: pahina lamang ang natatanggap ng HTTP client gaya ng curl. Gamitin ang Kopyahin ang link upang buuin ang kumpletong URL."
+        ],
+        [
+          "Mga parameter",
+          "Idagdag ang ?algorithm=SHA256&digits=8&period=30 pagkatapos ng secret, lahat ay pagkatapos pa rin ng #. Tumatanggap ang algorithm ng SHA1, SHA256 o SHA512; ang digits ng 6 o 8; ang period ay integer mula 15 hanggang 120 segundo. Default: SHA1, 6 na digit, 30 segundo. Itugma sa settings ng orihinal na serbisyo."
+        ],
+        [
+          "Kopyahin at i-paste",
+          "Kailangan ng clipboard permission para mag-paste. Kung wala o tinanggihan, gamitin ang Ctrl+V, Command+V o matagal na pagpindot. Kung hindi makopya, lilitaw ang napipiling teksto para manu-manong kopyahin."
+        ],
+        [
+          "Mga feature at lumang browser",
+          "Nakikita ng Lite ang maraming secret para mapili sa pahinang ito. Binubuksan ng arrow ang hiwalay na code page. Walang QR import at saved history; gamitin ang buong bersyon para sa mga iyon. Layunin ang pagiging tugma sa IE11: hindi pa tapos ang pagsusuri sa aktuwal na IE11. Maaaring hindi rin makakonekta sa HTTPS ang lumang sistema."
+        ],
+        [
+          "Mga secret at privacy",
+          "Nananatili sa browser ang secret at pagkukuwenta ng code; walang history na sine-save ang Lite. Hindi kasama sa HTTP page request ang laman pagkatapos ng #. May secret pa rin ang buong link at maaari itong manatili sa browser history, clipboard o screenshot. Panatilihing pribado."
+        ],
+        [
+          "Maling code?",
+          "Ihambing ang secret, algorithm, digit at panahon sa orihinal na serbisyo, saka suriin ang orasan ng device. Hintayin ang susunod na code kung malapit nang mag-expire. Hindi suportado ng Lite ang HOTP o Steam-specific na code."
+        ]
+      ]
+    }
+  },
+  "ta": {
+    "ui": {
+      "title": "2FA சரிபார்ப்புக் குறியீடு",
+      "secretLabel": "ரகசியம் அல்லது otpauth:// இணைப்பு",
+      "hint": "Base32 ரகசியங்கள் அல்லது TOTP இணைப்புகள்",
+      "choose": "ரகசியத்தைத் தேர்ந்தெடு",
+      "review": "ஒவ்வொரு ரகசியத்தையும் சரிபாருங்கள். அருகிலுள்ள உரையிலிருந்து கணக்கு உரிமை ஊகிக்கப்படாது.",
+      "limit": "ஒருமுறைக்கு அதிகபட்சம் 100 வரிகள் பயன்படுத்துங்கள்.",
+      "reveal": "ரகசியத்தைக் காட்டு",
+      "algorithm": "வழிமுறை",
+      "digits": "இலக்கங்கள்",
+      "period": "காலம் (விநாடிகள்)",
+      "generate": "ஒட்டு",
+      "pasteHelp": "கிளிப்போர்டு அணுகல் இல்லை. Ctrl+V அல்லது நீண்ட அழுத்தத்தால் ரகசியப் புலத்தில் ஒட்டுங்கள்.",
+      "clear": "அழி",
+      "current": "தற்போதைய குறியீடு",
+      "copy": "குறியீட்டை நகலெடு",
+      "link": "இணைப்பை நகலெடு",
+      "manual": "தேர்ந்து கையால் நகலெடு",
+      "privacy": "ரகசியங்கள் இந்த உலாவியில் இருக்கும். வரலாறு சேமிக்கப்படாது. பகிரும் இணைப்பிலும் ரகசியம் உண்டு; தனிப்பட்டதாக வைத்திருங்கள்.",
+      "full": "முழுப் பதிப்பு",
+      "help": "பயன்பாட்டு வழிகாட்டி",
+      "compatibility": "Internet Explorer ஆதரவு!",
+      "left": "அடுத்த குறியீடு {n} விநாடிகளில்",
+      "copied": "நகலெடுக்கப்பட்டது.",
+      "secret": "ஒரு முழு Base32 ரகசியத்தை உள்ளிடுங்கள்.",
+      "multiple": "ஒருமுறைக்கு ஒரு ரகசியம் பயன்படுத்துங்கள். Lite பல வரிகளை ஆதரிக்காது.",
+      "invalid": "இணைப்பு செல்லாது.",
+      "unsupported": "Base32 ரகசியம், TOTP URI அல்லது 2fa.hot துண்டு இணைப்பைப் பயன்படுத்துங்கள். இவ்வடிவம் ஆதரிக்கப்படாது.",
+      "duplicate": "இணைப்பில் மீண்டும் வரும் அளவுருக்கள் உள்ளன.",
+      "parameters": "SHA-1/256/512, 6 அல்லது 8 இலக்கங்கள், 15 முதல் 120 விநாடிக் காலம் பயன்படுத்துங்கள்.",
+      "unavailable": "குறியீட்டு இயந்திரம் ஏறவில்லை. மீண்டும் முயலப் பக்கத்தை மீளேற்றுங்கள்.",
+      "query": "ரகசியங்களுக்கு # துண்டைப் பயன்படுத்துங்கள்; URL பாதை அல்லது வினவல் அளவுரு வேண்டாம்.",
+      "navigation": "வழிசெலுத்தல்",
+      "language": "மொழி",
+      "source": "மூலம் · AGPL-3.0",
+      "javascript": "உள்ளூர்க் குறியீட்டுக் கணக்கிற்கு JavaScript தேவை.",
+      "languageError": "இந்த மொழியை ஏற்ற முடியவில்லை. மீண்டும் முயலவும்.",
+      "openCode": "தனிக் குறியீட்டுப் பக்கத்தைத் திறக்கவும்"
+    },
+    "help": {
+      "title": "Lite வழிகாட்டி",
+      "back": "குறியீடுகளுக்குத் திரும்பு",
+      "sections": [
+        [
+          "ஏன் Lite?",
+          "விரைவாக TOTP குறியீடு மட்டும் வேண்டும்போது Lite உதவும். சிறிய பக்கமும் குறைந்த சார்புகளும் மெதுவான இணைப்புகளிலும் பழைய சாதனங்களிலும் விரைவில் ஏறும்; முழுப் பதிப்பு சரியாக ஏறாவிட்டாலும் பயன்படுத்தக்கூடியதாக இருக்கலாம். உலாவிக் கணக்கு, பல ரகசியங்கள் கண்டறிதல், விரைவுக் குறியீட்டு இணைப்புகள் உண்டு; QR இறக்குமதி, சேமித்த வரலாறு உள்ளிட்டவை முழுப் பதிப்பில் உள்ளன."
+        ],
+        [
+          "குறியீடு பெறுங்கள்",
+          "தற்போதைய Base32 ரகசியம் அல்லது otpauth://totp/ அமைப்பு இணைப்பை ஒட்டுங்கள். குறியீடு தானாகத் தோன்றும். சரிபார்ப்புக் கேட்கும் சேவையில் நகலெடுங்கள். நேரக் கணக்கு முடிந்ததும் குறியீடு மாறும்."
+        ],
+        [
+          "விரைவுக் குறியீட்டு இணைப்புகள்",
+          "நேரடிக் குறியீட்டுக்கு /lite#SECRET திறக்கவும். இது உலாவிப் பக்கம், JSON அல்லது குறியீடு தரும் சேவையக API அல்ல: curl போன்ற HTTP வாடிக்கையாளர்களுக்குப் பக்கம் மட்டுமே கிடைக்கும். முழு URL-க்கு இணைப்பை நகலெடு பயன்படுத்துங்கள்."
+        ],
+        [
+          "அளவுருக்கள்",
+          "ரகசியத்துக்குப் பின் ?algorithm=SHA256&digits=8&period=30 சேர்த்து அனைத்தையும் #க்குப் பின் வையுங்கள். algorithm SHA1, SHA256 அல்லது SHA512 ஏற்கும்; digits 6 அல்லது 8; period 15 முதல் 120 விநாடி முழு எண். இயல்புநிலை: SHA1, 6 இலக்கங்கள், 30 விநாடிகள். மூலச் சேவையின் அமைப்புடன் பொருத்துங்கள்."
+        ],
+        [
+          "நகலெடுத்தலும் ஒட்டுதலும்",
+          "ஒட்டக் கிளிப்போர்டு அனுமதி தேவை. கிடைக்காவிட்டால் அல்லது மறுத்தால் Ctrl+V, Command+V அல்லது நீண்ட அழுத்தம் பயன்படுத்துங்கள். நகலெடுப்பு தோற்றால் கையால் நகலெடுக்கத் தேர்வுசெய்யக்கூடிய உரை தோன்றும்."
+        ],
+        [
+          "வசதிகளும் பழைய உலாவிகளும்",
+          "Lite இப்பக்கத்தில் பல ரகசியங்களைக் கண்டறிந்து தேர்வளிக்கும். அம்பு தனிக் குறியீட்டுப் பக்கத்தைத் திறக்கும். QR இறக்குமதி, சேமித்த வரலாறு இல்லை; அவற்றுக்கு முழுப் பதிப்பு பயன்படுத்துங்கள். IE11 பொருந்துதல் இலக்கு; உண்மையான IE11 சோதனை இன்னும் முடிவடையவில்லை. பழைய அமைப்புகளால் HTTPS இணைப்பை ஏற்படுத்தவும் முடியாமல் போகலாம்."
+        ],
+        [
+          "ரகசியங்களும் தனியுரிமையும்",
+          "ரகசியங்களும் குறியீட்டுக் கணக்குகளும் உலாவியில் இருக்கும்; Lite வரலாறு சேமிக்காது. #க்குப் பிந்தையது HTTP பக்கக் கோரிக்கையில் அனுப்பப்படாது. முழு இணைப்பில் ரகசியம் இன்னும் உண்டு; வரலாறு, கிளிப்போர்டு, திரைப்பிடிப்பில் இருக்கலாம். தனிப்பட்டதாக வைத்திருங்கள்."
+        ],
+        [
+          "தவறான குறியீடா?",
+          "ரகசியம், வழிமுறை, இலக்கங்கள், காலத்தை மூலச் சேவையுடன் ஒப்பிட்டு சாதனக் கடிகாரத்தைச் சரிபாருங்கள். காலாவதியாகவிருந்தால் அடுத்த குறியீட்டுக்குக் காத்திருங்கள். Lite HOTP அல்லது Steam சிறப்புக் குறியீடுகளை ஆதரிக்காது."
+        ]
+      ]
+    }
+  },
+  "te": {
+    "ui": {
+      "title": "2FA ధృవీకరణ కోడ్",
+      "secretLabel": "రహస్యం లేదా otpauth:// లింక్",
+      "hint": "Base32 రహస్యాలు లేదా TOTP లింక్‌లు",
+      "choose": "రహస్యం ఎంచుకోండి",
+      "review": "ప్రతి రహస్యం చూడండి. పక్క టెక్స్ట్ నుంచి ఖాతా యాజమాన్యం ఊహించబడదు.",
+      "limit": "ఒకసారి గరిష్ఠంగా 100 వరుసలు వాడండి.",
+      "reveal": "రహస్యం చూపు",
+      "algorithm": "అల్గోరిథమ్",
+      "digits": "అంకెలు",
+      "period": "వ్యవధి (సెకన్లు)",
+      "generate": "అతికించు",
+      "pasteHelp": "క్లిప్‌బోర్డ్ అందుబాటులో లేదు. Ctrl+V లేదా నొక్కి ఉంచి రహస్య ఫీల్డ్‌లో అతికించండి.",
+      "clear": "చెరుపు",
+      "current": "ప్రస్తుత కోడ్",
+      "copy": "కోడ్ కాపీ",
+      "link": "లింక్ కాపీ",
+      "manual": "ఎంచుకుని చేతితో కాపీ",
+      "privacy": "రహస్యాలు ఈ బ్రౌజర్‌లో ఉంటాయి. చరిత్ర నిల్వ కాదు. పంచుకునే లింక్‌లలో ఇంకా రహస్యం ఉంటుంది; గోప్యంగా ఉంచండి.",
+      "full": "పూర్తి వెర్షన్",
+      "help": "వాడుక మార్గదర్శి",
+      "compatibility": "Internet Explorer మద్దతు!",
+      "left": "తర్వాతి కోడ్ {n} సెకన్లలో",
+      "copied": "కాపీ అయింది.",
+      "secret": "ఒక పూర్తి Base32 రహస్యం ఇవ్వండి.",
+      "multiple": "ఒకసారి ఒక రహస్యం వాడండి. Lite అనేక పంక్తులకు మద్దతివ్వదు.",
+      "invalid": "లింక్ చెల్లదు.",
+      "unsupported": "Base32 రహస్యం, TOTP URI లేదా 2fa.hot ఫ్రాగ్మెంట్ లింక్ వాడండి. ఈ ఆకృతికి మద్దతు లేదు.",
+      "duplicate": "లింక్‌లో నకిలీ పారామీటర్లు ఉన్నాయి.",
+      "parameters": "SHA-1/256/512, 6 లేదా 8 అంకెలు, 15 నుంచి 120 సెకన్ల వ్యవధి వాడండి.",
+      "unavailable": "కోడ్ ఇంజిన్ లోడ్ కాలేదు. మళ్లీ ప్రయత్నించడానికి పేజీ రీలోడ్ చేయండి.",
+      "query": "రహస్యాలకు # ఫ్రాగ్మెంట్ వాడండి, URL పాత్ లేదా క్వెరీ పారామీటర్లు కాదు.",
+      "navigation": "నావిగేషన్",
+      "language": "భాష",
+      "source": "మూలం · AGPL-3.0",
+      "javascript": "స్థానిక కోడ్ లెక్కలకు JavaScript అవసరం.",
+      "languageError": "ఈ భాషను లోడ్ చేయలేకపోయాము. మళ్లీ ప్రయత్నించండి.",
+      "openCode": "ప్రత్యేక కోడ్ పేజీని తెరవండి"
+    },
+    "help": {
+      "title": "Lite మార్గదర్శి",
+      "back": "కోడ్‌లకు తిరుగు",
+      "sections": [
+        [
+          "Lite ఎందుకు?",
+          "వేగంగా TOTP కోడ్ మాత్రమే కావాల్సినప్పుడే Lite. చిన్న పేజీ, తక్కువ ఆధారాలు నెమ్మది నెట్‌వర్క్, పాత పరికరాల్లో త్వరగా లోడ్ అవుతాయి; పూర్తి వెర్షన్ సరిగా రాకున్నా పని చేయవచ్చు. బ్రౌజర్ లెక్కలు, అనేక రహస్యాల గుర్తింపు, వేగవంతమైన కోడ్ లింక్‌లు ఉంటాయి; QR దిగుమతి, ఉంచిన చరిత్ర, ఇతర సదుపాయాలు పూర్తి వెర్షన్‌లో ఉంటాయి."
+        ],
+        [
+          "కోడ్ పొందండి",
+          "ప్రస్తుత Base32 రహస్యం లేదా otpauth://totp/ కాన్ఫిగరేషన్ లింక్ అతికించండి. కోడ్ స్వయంగా కనిపిస్తుంది. ధృవీకరణ అడిగే సేవలో కాపీ చేయండి. కౌంట్‌డౌన్ ముగిశాక మారుతుంది."
+        ],
+        [
+          "వేగవంతమైన కోడ్ లింక్‌లు",
+          "నేరుగా కోడ్‌కు /lite#SECRET తెరవండి. ఇది బ్రౌజర్ పేజీ, JSON లేదా కోడ్‌లు ఇచ్చే సర్వర్ API కాదు: curl వంటి HTTP క్లయింట్లకు పేజీ మాత్రమే వస్తుంది. పూర్తి URL కోసం లింక్ కాపీ వాడండి."
+        ],
+        [
+          "పారామీటర్లు",
+          "రహస్యం తర్వాత ?algorithm=SHA256&digits=8&period=30 జోడించి అన్నీ # తర్వాత ఉంచండి. algorithmకి SHA1, SHA256 లేదా SHA512; digitsకి 6 లేదా 8; periodకి 15 నుంచి 120 సెకన్ల పూర్ణసంఖ్య. డిఫాల్ట్: SHA1, 6 అంకెలు, 30 సెకన్లు. అసలు సేవ సెట్టింగ్‌లకు సరిపోల్చండి."
+        ],
+        [
+          "కాపీ, అతికించడం",
+          "అతికించడానికి క్లిప్‌బోర్డ్ అనుమతి కావాలి. అందుబాటులో లేకున్నా తిరస్కరించినా Ctrl+V, Command+V లేదా నొక్కి ఉంచడం వాడండి. కాపీ విఫలమైతే చేతితో కాపీకి ఎంచుకోగల టెక్స్ట్ కనిపిస్తుంది."
+        ],
+        [
+          "సదుపాయాలు, పాత బ్రౌజర్లు",
+          "Lite ఈ పేజీలో అనేక రహస్యాలు గుర్తించి ఎంపిక ఇస్తుంది. బాణం ప్రత్యేక కోడ్ పేజీ తెరుస్తుంది. QR దిగుమతి, ఉంచిన చరిత్ర లేవు; వాటికి పూర్తి వెర్షన్ వాడండి. IE11 అనుకూలత లక్ష్యం: అసలు IE11లో పరీక్ష పూర్తి కాలేదు. పాత సిస్టమ్‌లు HTTPS కనెక్షన్ కూడా చేయలేకపోవచ్చు."
+        ],
+        [
+          "రహస్యాలు, గోప్యత",
+          "రహస్యాలు, కోడ్ లెక్కలు బ్రౌజర్‌లోనే ఉంటాయి; Lite చరిత్ర నిల్వచేయదు. # తర్వాతి విషయం HTTP పేజీ అభ్యర్థనలో పంపబడదు. పూర్తి లింక్‌లో ఇంకా రహస్యం ఉంటుంది, చరిత్ర, క్లిప్‌బోర్డ్ లేదా స్క్రీన్‌షాట్‌లో ఉండవచ్చు. గోప్యంగా ఉంచండి."
+        ],
+        [
+          "కోడ్ తప్పా?",
+          "రహస్యం, అల్గోరిథమ్, అంకెలు, వ్యవధి అసలు సేవతో పోల్చి, తర్వాత పరికరం గడియారం చూడండి. గడువు ముగియబోతే తర్వాతి కోడ్ కోసం ఆగండి. Lite HOTP లేదా Steam ప్రత్యేక కోడ్‌లకు మద్దతివ్వదు."
+        ]
+      ]
+    }
+  },
+  "el": {
+    "ui": {
+      "title": "Κωδικός επαλήθευσης 2FA",
+      "secretLabel": "Μυστικό κλειδί ή σύνδεσμος otpauth://",
+      "hint": "Μυστικά κλειδιά Base32 ή σύνδεσμοι TOTP",
+      "choose": "Επιλέξτε μυστικό κλειδί",
+      "review": "Ελέγξτε κάθε μυστικό κλειδί. Ο λογαριασμός στον οποίο ανήκει δεν συνάγεται από το γειτονικό κείμενο.",
+      "limit": "Χρησιμοποιήστε έως 100 γραμμές κάθε φορά.",
+      "reveal": "Εμφάνιση κλειδιού",
+      "algorithm": "Αλγόριθμος",
+      "digits": "Ψηφία",
+      "period": "Περίοδος (δευτερόλεπτα)",
+      "generate": "Επικόλληση",
+      "pasteHelp": "Η πρόσβαση στο πρόχειρο δεν είναι διαθέσιμη. Επικολλήστε στο πεδίο κλειδιού με Ctrl+V ή παρατεταμένο πάτημα.",
+      "clear": "Εκκαθάριση",
+      "current": "Τρέχων κωδικός",
+      "copy": "Αντιγραφή κωδικού",
+      "link": "Αντιγραφή συνδέσμου",
+      "manual": "Επιλέξτε και αντιγράψτε χειροκίνητα",
+      "privacy": "Τα μυστικά κλειδιά παραμένουν σε αυτόν τον περιηγητή. Δεν αποθηκεύεται ιστορικό. Οι κοινοποιημένοι σύνδεσμοι περιέχουν και αυτοί το κλειδί σας· κρατήστε τους ιδιωτικούς.",
+      "full": "Πλήρης έκδοση",
+      "help": "Οδηγός χρήσης",
+      "compatibility": "Υποστηρίζει Internet Explorer!",
+      "left": "Επόμενος κωδικός σε {n} δευτ.",
+      "copied": "Αντιγράφηκε.",
+      "secret": "Εισαγάγετε ένα πλήρες μυστικό κλειδί Base32.",
+      "multiple": "Χρησιμοποιήστε ένα μυστικό κλειδί κάθε φορά. Το Lite δεν υποστηρίζει πολλαπλές γραμμές.",
+      "invalid": "Ο σύνδεσμος δεν είναι έγκυρος.",
+      "unsupported": "Χρησιμοποιήστε μυστικό κλειδί Base32, URI TOTP ή σύνδεσμο τμήματος του 2fa.hot. Αυτή η μορφή δεν υποστηρίζεται.",
+      "duplicate": "Ο σύνδεσμος περιέχει διπλές παραμέτρους.",
+      "parameters": "Χρησιμοποιήστε SHA-1/256/512, 6 ή 8 ψηφία και περίοδο από 15 έως 120 δευτερόλεπτα.",
+      "unavailable": "Δεν φορτώθηκε ο μηχανισμός κωδικών. Ανανεώστε τη σελίδα για να δοκιμάσετε ξανά.",
+      "query": "Χρησιμοποιήστε τμήμα # για μυστικά κλειδιά, όχι διαδρομή URL ή παραμέτρους ερωτήματος.",
+      "navigation": "Πλοήγηση",
+      "language": "Γλώσσα",
+      "source": "Πηγαίος κώδικας · AGPL-3.0",
+      "javascript": "Απαιτείται JavaScript για τοπικό υπολογισμό κωδικών.",
+      "languageError": "Δεν είναι δυνατή η φόρτωση αυτής της γλώσσας. Δοκιμάστε ξανά.",
+      "openCode": "Άνοιγμα ανεξάρτητης σελίδας κωδικού"
+    },
+    "help": {
+      "title": "Οδηγός Lite",
+      "back": "Επιστροφή στους κωδικούς",
+      "sections": [
+        [
+          "Γιατί Lite;",
+          "Το Lite προορίζεται για περιπτώσεις όπου χρειάζεστε γρήγορα μόνο έναν κωδικό TOTP. Η μικρότερη σελίδα και οι λιγότερες εξαρτήσεις φορτώνουν γρηγορότερα σε αργά δίκτυα και παλιότερες συσκευές και μπορεί να παραμένει χρησιμοποιήσιμο όταν η πλήρης έκδοση δεν φορτώνει σωστά. Διατηρεί τον υπολογισμό στον περιηγητή, τον εντοπισμό πολλαπλών μυστικών κλειδιών και τους γρήγορους συνδέσμους κωδικών· η εισαγωγή QR, το αποθηκευμένο ιστορικό και άλλες λειτουργίες παραμένουν στην πλήρη έκδοση."
+        ],
+        [
+          "Λήψη κωδικού",
+          "Επικολλήστε υπάρχον μυστικό κλειδί Base32 ή σύνδεσμο ρύθμισης otpauth://totp/. Ο κωδικός εμφανίζεται αυτόματα. Αντιγράψτε τον στην υπηρεσία που ζητά επαλήθευση. Ανανεώνεται όταν τελειώσει η αντίστροφη μέτρηση."
+        ],
+        [
+          "Γρήγοροι σύνδεσμοι κωδικών",
+          "Ανοίξτε /lite#SECRET για άμεση εμφάνιση κωδικού. Πρόκειται για σελίδα περιηγητή, όχι για API διακομιστή που επιστρέφει JSON ή κωδικούς: προγράμματα HTTP όπως το curl λαμβάνουν μόνο τη σελίδα. Χρησιμοποιήστε την αντιγραφή συνδέσμου για να δημιουργήσετε το πλήρες URL."
+        ],
+        [
+          "Παράμετροι",
+          "Προσθέστε ?algorithm=SHA256&digits=8&period=30 μετά το μυστικό κλειδί, κρατώντας τα πάντα μετά το #. Το algorithm δέχεται SHA1, SHA256 ή SHA512· το digits δέχεται 6 ή 8· το period είναι ακέραιος από 15 έως 120 δευτερόλεπτα. Προεπιλογές: SHA1, 6 ψηφία, 30 δευτερόλεπτα. Αντιστοιχίστε τις ρυθμίσεις της αρχικής υπηρεσίας."
+        ],
+        [
+          "Αντιγραφή και επικόλληση",
+          "Η επικόλληση απαιτεί άδεια πρόσβασης στο πρόχειρο. Αν δεν διατίθεται ή απορριφθεί, χρησιμοποιήστε Ctrl+V, Command+V ή παρατεταμένο πάτημα. Αν η αντιγραφή αποτύχει, εμφανίζεται επιλέξιμο κείμενο για χειροκίνητη αντιγραφή."
+        ],
+        [
+          "Λειτουργίες και παλαιότεροι περιηγητές",
+          "Το Lite εντοπίζει πολλαπλά μυστικά κλειδιά για επιλογή σε αυτή τη σελίδα. Το βέλος ανοίγει ανεξάρτητη σελίδα κωδικού. Δεν διατίθενται εισαγωγή QR και αποθηκευμένο ιστορικό. Για αυτά χρησιμοποιήστε την πλήρη έκδοση. Το IE11 είναι στόχος συμβατότητας: δεν έχουν ολοκληρωθεί δοκιμές σε πραγματικό IE11. Παλαιότερα συστήματα μπορεί επίσης να αδυνατούν να δημιουργήσουν σύνδεση HTTPS."
+        ],
+        [
+          "Μυστικά κλειδιά και απόρρητο",
+          "Τα μυστικά κλειδιά και ο υπολογισμός κωδικών παραμένουν στον περιηγητή· το Lite δεν αποθηκεύει ιστορικό. Το περιεχόμενο μετά το # δεν αποστέλλεται στο αίτημα HTTP της σελίδας. Ο πλήρης σύνδεσμος εξακολουθεί να περιέχει το μυστικό κλειδί και μπορεί να παραμείνει στο ιστορικό περιήγησης, στο πρόχειρο ή σε στιγμιότυπα οθόνης. Κρατήστε τον ιδιωτικό."
+        ],
+        [
+          "Λανθασμένος κωδικός;",
+          "Ελέγξτε το μυστικό κλειδί, τον αλγόριθμο, τα ψηφία και την περίοδο σε σχέση με την αρχική υπηρεσία και μετά το ρολόι της συσκευής. Αν ο κωδικός λήγει σύντομα, περιμένετε τον επόμενο. Το Lite δεν υποστηρίζει HOTP ή ειδικούς κωδικούς Steam."
+        ]
+      ]
+    }
+  }
+}

@@ -1,5 +1,6 @@
 /* Ore-inspired surfaces. Functional Nuxt UI components keep their original semantics. */
 .ore-theme {
+  --control-gap: 0.5rem;
   --ui-radius: 0;
   --ui-primary: #3c8527;
   --action: #3c8527;
@@ -49,12 +50,19 @@
   background: transparent;
 }
 .app-shell {
+  width: 100%;
+  overflow-x: clip;
   position: relative;
   z-index: 1;
+}
+.app-shell > #main-content {
+  width: calc(100vw - var(--page-scrollbar-width, 0px));
 }
 .site-header,
 .site-footer {
   background: var(--canvas);
+  /* Paint to the viewport edge while retaining the stable content alignment. */
+  padding-right: max(0px, calc(100% - 100vw + var(--page-scrollbar-width, 0px)));
 }
 .workspace-foot {
   background: var(--panel);
@@ -114,7 +122,7 @@
 .local-processing-label .local-processing-help,
 .local-processing-label .local-processing-help:hover,
 .local-processing-label .local-processing-help:focus-visible {
-  cursor: help;
+  cursor: pointer;
   min-height: 0;
   padding: 0;
   border: 0;
@@ -717,6 +725,7 @@
 
 /* Compact help bubbles, visually anchored to their triggers. */
 .parameter-help-tooltip {
+  animation: none !important;
   border: 1px solid var(--ui-border-accented);
   border-radius: 4px;
   padding: 0.375rem 0.625rem;
@@ -755,4 +764,68 @@
   .workspace-summary-links .history-toggle {
     width: 100%;
   }
+}
+
+/* Native and component checkboxes share the same pixel silhouette. */
+.ore-theme input[type='checkbox']:not([aria-hidden='true']) {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  display: inline-block;
+  flex-shrink: 0;
+  vertical-align: middle;
+  margin: 0;
+  border: 2px solid var(--ui-border);
+  border-radius: 0;
+  background-color: var(--ore-input);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 85% 85%;
+  box-shadow: var(--ore-inset);
+  cursor: pointer;
+}
+.ore-theme input[type='checkbox']:not([aria-hidden='true']):checked,
+.ore-theme input[type='checkbox']:not([aria-hidden='true']):indeterminate {
+  border-color: var(--action);
+  background-color: var(--action);
+  box-shadow: var(--ore-bevel);
+}
+.ore-theme input[type='checkbox']:not([aria-hidden='true']):checked {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='white' d='M12 2h3v3h-2v2h-2v2H9v2H7v2H4v-2H2V9H0V6h3v2h2v2h1V8h2V6h2V4h2z'/%3E%3C/svg%3E");
+}
+.ore-theme input[type='checkbox']:not([aria-hidden='true']):indeterminate {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='white' d='M3 6h10v4H3z'/%3E%3C/svg%3E");
+}
+.ore-theme input[type='checkbox']:not([aria-hidden='true']):focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 3px;
+}
+.ore-theme input[type='checkbox']:not([aria-hidden='true']):disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.ore-checkbox {
+  /* An explicit border survives the pixel inset overriding Nuxt UI's ring shadow. */
+  border: 2px solid var(--ui-border);
+  border-radius: 0;
+  background-color: var(--ore-input);
+  box-shadow: var(--ore-inset);
+}
+.ore-checkbox[data-state='checked'],
+.ore-checkbox[data-state='indeterminate'] {
+  border-color: var(--action);
+}
+@media (forced-colors: active) {
+  .ore-theme input[type='checkbox']:not([aria-hidden='true']) {
+    appearance: auto;
+    -webkit-appearance: auto;
+    background-image: none;
+    box-shadow: none;
+  }
+}
+
+/* Keep checkbox text spacing independent of anonymous text and framework defaults. */
+.ore-check-row > [data-slot='wrapper'] {
+  margin-inline-start: var(--control-gap, 0.5rem);
 }

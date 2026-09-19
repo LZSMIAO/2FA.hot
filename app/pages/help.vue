@@ -3,16 +3,17 @@ const localePath = useLocalePath()
 definePageMeta({ viewTransition: false })
 const { tx } = useMessages()
 const route = useRoute()
-// Position the freshly mounted article before its first paint. Nuxt's later
-// router scroll then resolves to the same position instead of flashing the top.
-onMounted(() => {
-  if (!route.hash) return
-  const target = document.getElementById(decodeURIComponent(route.hash.slice(1)))
-  target?.scrollIntoView({ behavior: 'instant', block: 'start' })
-})
+const sections = [
+  { id: 'start', label: '开始取码', icon: 'i-lucide-scan-line' },
+  { id: 'steam', label: 'Steam Guard', icon: 'i-lucide-gamepad-2' },
+  { id: 'troubleshooting', label: '问题排查', icon: 'i-lucide-wrench' },
+  { id: 'links', label: '取码链接', icon: 'i-lucide-link' },
+  { id: 'link-privacy', label: '为什么使用 #？', icon: 'i-lucide-shield-check' },
+  { id: 'history', label: '历史与备份', icon: 'i-lucide-archive' }
+]
 </script>
 <template>
-  <article class="content-page">
+  <article class="content-page help-page">
     <NuxtLink :to="localePath('/')" class="back-link"
       ><UIcon name="i-lucide-arrow-left" />{{ tx('返回工具') }}</NuxtLink
     >
@@ -20,12 +21,16 @@ onMounted(() => {
     <p class="article-lead">
       {{ tx('从导入密钥到获取验证码，了解 TOTP 与 Steam Guard 的用法。') }}
     </p>
-    <nav class="article-nav" :aria-label="tx('本页目录')">
-      <a href="#start">{{ tx('开始取码') }}</a
-      ><a href="#steam">Steam Guard</a><a href="#troubleshooting">{{ tx('问题排查') }}</a
-      ><a href="#links">{{ tx('取码链接') }}</a
-      ><a href="#link-privacy">{{ tx('为什么使用 #？') }}</a
-      ><a href="#history">{{ tx('历史与备份') }}</a>
+    <nav class="article-nav help-nav" :aria-label="tx('本页目录')">
+      <NuxtLink
+        v-for="section in sections"
+        :key="section.id"
+        :to="{ path: route.path, hash: `#${section.id}` }"
+        :aria-current="route.hash === `#${section.id}` ? 'location' : undefined"
+      >
+        <UIcon :name="section.icon" aria-hidden="true" />
+        <span>{{ tx(section.label) }}</span>
+      </NuxtLink>
     </nav>
     <h2 id="start">{{ tx('如何获取验证码') }}</h2>
     <ol>
@@ -121,25 +126,16 @@ onMounted(() => {
           '浏览器只把 # 前面的地址发送给服务器。/2fa/密钥 的密钥属于路径，会随请求发送；/2fa#密钥 的密钥属于片段，由页面在浏览器内读取，不包含在页面请求中。HTTPS 会加密传输，但不会向接收请求的托管服务隐藏路径。'
         )
       }}
+      {{
+        tx(
+          '在其他在线工具网站，如果密钥放在网址路径或查询参数中，也会随请求发送给网站或托管服务；是否记录和保存，取决于对方的实现与配置。'
+        )
+      }}
     </p>
     <p>
       {{
         tx(
           '建议改用 # 链接：# 后的密钥不会随页面请求发送，但完整链接仍可能留在浏览器历史中，请勿公开分享。'
-        )
-      }}
-    </p>
-    <p>
-      {{
-        tx(
-          '密钥可能留在托管服务或代理的访问记录中，这不代表已被他人获取。建议到原网站或 App 的双重验证设置中重新生成密钥，并确认原密钥已失效；不要在这里随意修改字符。'
-        )
-      }}
-    </p>
-    <p>
-      {{
-        tx(
-          '改用 # 链接只减少后续请求中的暴露，无法撤回已经发送的密钥，也不会替你更新原服务的密钥。'
         )
       }}
     </p>
@@ -184,3 +180,71 @@ onMounted(() => {
     </p>
   </article>
 </template>
+
+<style scoped>
+.help-page h1 {
+  margin-block: 1.25rem 0.625rem;
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  letter-spacing: -0.025em;
+}
+.help-page .article-lead {
+  max-width: 48rem;
+  margin-block: 0 1.75rem;
+  line-height: 1.7;
+}
+.help-page .help-nav {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.375rem 1rem;
+  padding: 0.75rem 0;
+  border: 0;
+  border-block: 1px solid var(--ui-border);
+  background: transparent;
+  box-shadow: none;
+}
+.help-page .help-nav a {
+  gap: 0.625rem;
+  min-height: 44px;
+  padding: 0.625rem 0.75rem;
+  border: 0;
+  border-inline-start: 2px solid transparent;
+  box-shadow: none;
+  color: var(--ui-text-muted);
+  text-decoration: none;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.help-nav a .iconify {
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+}
+.help-page .help-nav a:hover,
+.help-page .help-nav a:focus-visible {
+  background: var(--wash);
+  color: var(--ui-text-highlighted);
+  box-shadow: none;
+}
+.help-page .help-nav a[aria-current='location'] {
+  background: var(--wash);
+  border-inline-start-color: var(--accent-ink);
+  color: var(--accent-ink);
+}
+.help-page .help-nav a:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 2px;
+}
+.help-page .help-nav + h2 {
+  margin-top: 2rem;
+}
+@media (max-width: 600px) {
+  .help-page .help-nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 0.5rem;
+  }
+  .help-page .help-nav a {
+    padding-inline: 0.5rem;
+    overflow-wrap: anywhere;
+  }
+}
+</style>
