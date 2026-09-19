@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import { motion, useReducedMotion } from 'motion-v'
+import type { OtpDisplaySnapshot } from '~/composables/useOtp'
+import { countdownState } from '~/utils/countdown-state'
+
+const reducedMotion = useReducedMotion()
 const localePath = useLocalePath()
 const { tx } = useMessages()
 useHead({
@@ -16,23 +21,33 @@ import { toAccessPath, type OtpConfig } from '~/utils/otp'
 const props = defineProps<{
   config: OtpConfig | null
   error?: string
+  compactLayout?: boolean
   standalone?: boolean
+  historyPreview?: boolean
   guideStep?: number
 }>()
 const vault = useVault()
+const sizeTransitionActive = useState('otp-size-transition-active', () => false)
 const expandedConfig = useState<OtpConfig | null>('expanded-otp-config', () => null)
+const expandedHistoryPreview = useState('expanded-history-preview', () => false)
 const emit = defineEmits<{ code: [value: string] }>()
 const codeElement = useTemplateRef<HTMLElement>('codeElement')
 const config = computed(() => props.config)
 const digitCount = computed(() => props.config?.digits ?? 6)
-const { code, error: calculationError, remaining, progress, current } = useOtp(config)
+const displayHandoff = useState<OtpDisplaySnapshot | null>('otp-display-handoff', () => null)
+const {
+  code,
+  error: calculationError,
+  remaining,
+  progress,
+  current,
+  generatedAt
+} = useOtp(config, displayHandoff.value)
+onMounted(() => {
+  displayHandoff.value = null
+})
 const showResultLinks = computed(
-  () =>
-    !!config.value &&
-    !!code.value &&
-    !props.error &&
-    !calculationError.value &&
-    config.value.kind !== 'steam'
+  () => !!config.value && !props.error && !calculationError.value && config.value.kind !== 'steam'
 )
 const { copied, message, copy } = useCopy()
 const { copied: linkCopied, message: linkMessage, copy: copyLink } = useCopy()
@@ -50,6 +65,7 @@ const copyConfirmed = computed(
 watch(code, (value) => emit('code', value), { immediate: true })
 const successKey = computed(() =>
   props.config &&
+  !props.historyPreview &&
   code.value &&
   !props.error &&
   !calculationError.value &&
@@ -104,14 +120,16 @@ onBeforeUnmount(() => {
   clearTimeout(shortcutTimer)
 })
 
-const autoHistoryError = useAutoHistory(() =>
-  props.config &&
-  code.value &&
-  !props.error &&
-  !calculationError.value &&
-  props.guideStep === undefined
-    ? [props.config]
-    : []
+const autoHistoryError = useAutoHistory(
+  () =>
+    props.config &&
+    code.value &&
+    !props.error &&
+    !calculationError.value &&
+    props.guideStep === undefined
+      ? [props.config]
+      : [],
+  () => !props.historyPreview
 )
 const working = shallowRef(false),
   note = shallowRef(''),
@@ -124,6 +142,19 @@ watch(config, () => {
   linkCopied.value = false
   linkMessage.value = ''
 })
+let navigationRevision = 0
+watch(
+  vault.unlocked,
+  (unlocked) => {
+    if (unlocked || !props.historyPreview) return
+    navigationRevision++
+    exportMode.value = null
+    displayHandoff.value = null
+    expandedConfig.value = null
+    expandedHistoryPreview.value = false
+  },
+  { flush: 'sync' }
+)
 async function copyCurrent(fromButton = false) {
   if (
     !props.config ||
@@ -202,23 +233,54 @@ function prepareSizeChange() {
   ).catch(() => {})
 }
 async function expand() {
-  if (!props.config || props.guideStep !== undefined) return
+  if (!props.config || !config.value || props.guideStep !== undefined || sizeTransitionActive.value)
+    return
+  const revision = navigationRevision
   window.dispatchEvent(
     new CustomEvent('2fa-ui-sound', { detail: props.standalone ? 'parameters' : 'expand' })
   )
+  displayHandoff.value = code.value
+    ? { config: { ...props.config }, code: code.value, at: generatedAt.value }
+    : null
   if (props.standalone) {
     vault.pending.value = { ...props.config }
-    await navigateTo(localePath('/'))
   } else {
     expandedConfig.value = { ...props.config }
-    await navigateTo(localePath(toAccessPath(props.config)))
+    expandedHistoryPreview.value = !!props.historyPreview
+  }
+  const target = localePath(props.standalone ? '/' : toAccessPath(props.config))
+  await preloadRouteComponents(target).catch(() => {})
+  if (revision !== navigationRevision) return
+  const navigate = async () => {
+    if (revision !== navigationRevision) return
+    await navigateTo(target)
+    await nextTick()
+  }
+  // Only the explicit size control animates; ordinary navigation stays immediate.
+  sizeTransitionActive.value = true
+  try {
+    if (document.startViewTransition && !reducedMotion.value) {
+      const transition = document.startViewTransition(navigate)
+      await transition.finished.catch(() => {})
+    } else {
+      await navigate()
+    }
+  } finally {
+    sizeTransitionActive.value = false
   }
 }
 </script>
 <template>
-  <div class="result-head">
-    <span>{{ tx(standalone ? '当前有效验证码' : '当前验证码') }}</span>
+  <div class="result-head" :class="{ 'is-compact': compactLayout }">
+    <span v-if="config">{{ tx(standalone ? '当前有效验证码' : '当前验证码') }}</span>
     <div class="result-head-actions">
+      <OtpCountdownMeta
+        v-if="compactLayout || standalone"
+        :compact="compactLayout"
+        :active="!!config && !!code && !error && !calculationError"
+        :remaining="remaining"
+        :period="config?.period ?? 30"
+      />
       <UButton
         color="neutral"
         variant="ghost"
@@ -240,106 +302,181 @@ async function expand() {
       />
     </div>
   </div>
-  <div
-    ref="codeElement"
-    class="otp-digits"
-    :class="{ empty: !code, eight: digitCount === 8 }"
-    data-testid="otp-code"
-    :aria-label="code ? tx('当前验证码 {code}', { code }) : tx('输入密钥后显示验证码')"
-  >
-    <span class="otp-slots" aria-hidden="true">
-      <span
-        v-for="position in digitCount"
-        :key="position"
-        class="otp-slot"
-        :class="{ 'otp-slot-group': position === digitCount / 2 + 1 }"
-      >
-        <Transition name="otp-ready">
-          <span v-if="code" :key="code" class="otp-slot-value">{{ code[position - 1] }}</span>
-          <span v-else key="waiting" class="otp-slot-dot" />
-        </Transition>
+  <div class="result-code" :class="{ 'is-compact': compactLayout }">
+    <OtpCountdownMeta
+      v-if="!compactLayout && !standalone"
+      :active="!!config && !!code && !error && !calculationError"
+      :remaining="remaining"
+      :period="config?.period ?? 30"
+    />
+    <div
+      ref="codeElement"
+      class="otp-digits"
+      :class="{ empty: !code, eight: digitCount === 8 }"
+      data-testid="otp-code"
+      :aria-label="code ? tx('当前验证码 {code}', { code }) : tx('输入密钥后显示验证码')"
+    >
+      <span class="otp-slots" aria-hidden="true">
+        <span
+          v-for="position in digitCount"
+          :key="position"
+          class="otp-slot"
+          :class="{ 'otp-slot-group': position === digitCount / 2 + 1 }"
+        >
+          <Transition name="otp-ready" :css="!sizeTransitionActive">
+            <span v-if="code" :key="code" class="otp-slot-value">{{ code[position - 1] }}</span>
+          </Transition>
+          <span class="otp-slot-dot" :class="{ 'is-visible': !code }" />
+        </span>
       </span>
-    </span>
-  </div>
-  <div :class="{ expiring: config && remaining <= 5 }">
-    <div class="countdown-meta">
-      <span>{{ config ? tx(remaining <= 5 ? '即将更新' : '剩余时间') : '' }}</span
-      ><span v-if="config" class="countdown-value mono" aria-hidden="true"
-        ><span>{{ String(remaining).padStart(2, '0') }}</span>
-        <span>/ {{ config.period }}s</span></span
-      ><span v-else class="countdown-value mono">— / 30s</span>
     </div>
-    <div class="countdown-track" aria-hidden="true">
-      <div
-        class="countdown-fill"
-        :style="{ clipPath: `inset(0 ${100 - (config ? progress : 0)}% 0 0)` }"
-      />
-    </div>
-  </div>
-  <UButton
-    class="primary-button result-copy"
-    :id="standalone ? undefined : 'tutorial-copy-code'"
-    :aria-disabled="guideStep !== undefined || undefined"
-    :class="{ 'is-copied': copyConfirmed }"
-    :disabled="!config || !!error || !!calculationError"
-    :loading="working"
-    aria-keyshortcuts="Enter"
-    @click="copyCurrent(true)"
-    ><span class="copy-icon" aria-hidden="true"
-      ><Transition name="copy-feedback"
-        ><UIcon
-          :key="copyConfirmed ? 'copied' : 'copy'"
-          :name="copyConfirmed ? 'i-lucide-check' : 'i-lucide-copy'" /></Transition></span
-    >{{ tx(copyConfirmed ? '已复制' : '复制验证码') }}<UKbd value="↵" class="copy-shortcut-key"
-  /></UButton>
-  <ActionHint
-    :open="shortcutHint && !!code && guideStep === undefined"
-    :message="tx('按回车可快速复制验证码')"
-    icon="i-lucide-corner-down-left"
-    @close="finishShortcutHint"
-  />
-  <p v-if="error || calculationError" class="inline-error" role="alert">
-    {{ tx(error || calculationError) }}
-  </p>
-  <p class="sr-only" role="status">{{ tx(copyConfirmed ? '验证码已复制' : '') }}</p>
-  <p v-if="autoHistoryError" class="inline-error" role="alert">{{ tx(autoHistoryError) }}</p>
-  <p v-if="message || note" class="inline-notice" role="status">{{ tx(message || note) }}</p>
-  <div
-    class="export-reveal"
-    :class="{ 'is-open': showResultLinks }"
-    :inert="!showResultLinks"
-    :aria-hidden="!showResultLinks"
-  >
-    <div class="export-reveal-inner">
-      <div class="result-links">
-        <button
-          class="text-action"
-          :disabled="!config || guideStep !== undefined"
-          @click="exportMode = 'qr'"
-        >
-          <UIcon name="i-lucide-qr-code" />{{ tx('二维码') }}</button
-        ><button
-          class="text-action"
-          :disabled="!config || guideStep !== undefined"
-          @click="handleLink"
-        >
-          <UIcon :name="standalone && linkCopied ? 'i-lucide-check' : 'i-lucide-link'" />{{
-            tx(standalone ? (linkCopied ? '已复制' : '复制链接') : '获取链接')
-          }}
-        </button>
+    <div
+      class="result-progress"
+      :data-countdown-state="
+        countdownState(
+          !!config && !!code && !error && !calculationError,
+          remaining,
+          config?.period ?? 30
+        )
+      "
+    >
+      <div class="countdown-track" aria-hidden="true">
+        <div
+          class="countdown-fill"
+          :style="{ clipPath: `inset(0 ${100 - (config ? progress : 0)}% 0 0)` }"
+        />
       </div>
     </div>
   </div>
-  <p v-if="standalone && linkMessage" class="inline-error" role="alert">{{ tx(linkMessage) }}</p>
-  <LazyExportDialog
-    v-if="exportMode && config"
-    :mode="exportMode"
-    :config="config"
-    @close="exportMode = null"
-  />
+  <div class="result-output" :class="{ 'has-exports': showResultLinks }">
+    <motion.div
+      class="result-copy-position"
+      :layout="compactLayout && !reducedMotion && !sizeTransitionActive ? 'position' : false"
+      :layout-dependency="showResultLinks"
+      :transition="{ layout: { duration: 0.28, ease: [0.22, 1, 0.36, 1] } }"
+    >
+      <UButton
+        class="primary-button result-copy"
+        :id="standalone ? undefined : 'tutorial-copy-code'"
+        :aria-disabled="guideStep !== undefined || undefined"
+        :class="{ 'is-copied': copyConfirmed }"
+        :disabled="!config || !!error || !!calculationError"
+        :loading="working"
+        aria-keyshortcuts="Enter"
+        @click="copyCurrent(true)"
+        ><span class="copy-icon" aria-hidden="true"
+          ><Transition name="copy-feedback"
+            ><UIcon
+              :key="copyConfirmed ? 'copied' : 'copy'"
+              :name="copyConfirmed ? 'i-lucide-check' : 'i-lucide-copy'" /></Transition></span
+        >{{ tx(copyConfirmed ? '已复制' : '复制验证码') }}<UKbd value="↵" class="copy-shortcut-key"
+      /></UButton>
+    </motion.div>
+    <ActionHint
+      :open="shortcutHint && !!code && guideStep === undefined"
+      :message="tx('按回车可快速复制验证码')"
+      icon="i-lucide-corner-down-left"
+      @close="finishShortcutHint"
+    />
+    <p v-if="error || calculationError" class="inline-error" role="alert">
+      {{ tx(error || calculationError) }}
+    </p>
+    <p class="sr-only" role="status">{{ tx(copyConfirmed ? '验证码已复制' : '') }}</p>
+    <p v-if="autoHistoryError" class="inline-error" role="alert">{{ tx(autoHistoryError) }}</p>
+    <p v-if="message || note" class="inline-notice" role="status">{{ tx(message || note) }}</p>
+    <div
+      class="export-reveal"
+      :class="{ 'is-open': showResultLinks, 'is-resizing': sizeTransitionActive }"
+      :inert="!showResultLinks"
+      :aria-hidden="!showResultLinks"
+    >
+      <div class="export-reveal-inner">
+        <div class="result-links">
+          <UButton
+            class="result-link"
+            color="neutral"
+            variant="outline"
+            :disabled="!config || guideStep !== undefined"
+            @click="exportMode = 'qr'"
+          >
+            <UIcon name="i-lucide-qr-code" />{{ tx('二维码') }}</UButton
+          ><UButton
+            class="result-link"
+            color="neutral"
+            variant="outline"
+            :disabled="!config || guideStep !== undefined"
+            @click="handleLink"
+          >
+            <UIcon :name="standalone && linkCopied ? 'i-lucide-check' : 'i-lucide-link'" />{{
+              tx(standalone ? (linkCopied ? '已复制' : '复制链接') : '获取链接')
+            }}
+          </UButton>
+        </div>
+      </div>
+    </div>
+    <p v-if="standalone && linkMessage" class="inline-error" role="alert">{{ tx(linkMessage) }}</p>
+    <LazyExportDialog
+      v-if="exportMode && config"
+      :mode="exportMode"
+      :config="config"
+      @close="exportMode = null"
+    />
+  </div>
 </template>
 
 <style scoped>
+.result-head {
+  padding-inline-end: 2rem;
+}
+.result-head .expand-button {
+  position: absolute;
+  inset-block-start: 0.125rem;
+  inset-inline-end: 0.125rem;
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+  transform: none;
+  transition: color 120ms ease;
+}
+.result-head .expand-button:hover:not(:disabled) {
+  background: transparent;
+  box-shadow: none;
+  color: var(--ui-text-highlighted);
+  transform: none;
+}
+.result-head .expand-button:focus-visible {
+  outline: 2px solid var(--ui-primary);
+  outline-offset: -4px;
+}
+
+.result-head.is-compact {
+  flex-wrap: wrap;
+}
+.result-head.is-compact .result-head-actions {
+  margin-inline-start: auto;
+}
+.result-code.is-compact .otp-digits {
+  margin: 0;
+  padding-block: 0;
+}
+.result-code.is-compact .countdown-track {
+  margin-top: 0;
+}
+/* Only stacked layouts need spacing; desktop aligns the track to the input grid. */
+@media (max-width: 700px), (max-height: 500px) and (pointer: coarse) {
+  .result-code.is-compact .result-progress {
+    padding-top: 0.875rem;
+  }
+}
+.result-code {
+  min-width: 0;
+}
+.result-output {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
 .export-reveal {
   display: grid;
   grid-template-rows: 0fr;
@@ -358,6 +495,10 @@ async function expand() {
 }
 .export-reveal.is-open .result-links {
   transform: translateY(0);
+}
+.export-reveal.is-resizing,
+.export-reveal.is-resizing .result-links {
+  transition: none;
 }
 @media (prefers-reduced-motion: reduce) {
   .export-reveal,
@@ -385,6 +526,7 @@ async function expand() {
 }
 .otp-slot {
   display: grid;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
   place-items: center;
   width: 0.74em;
   overflow: hidden;
@@ -409,21 +551,33 @@ async function expand() {
   width: 0.08em;
   height: 0.08em;
   background: var(--ui-text-muted);
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+.otp-slot-dot.is-visible {
+  opacity: 1;
 }
 /* Only the numerals move; slot geometry and the current copy value stay stable. */
 .otp-ready-enter-active {
-  transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition:
+    transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 220ms ease;
 }
 .otp-ready-leave-active {
-  transition: transform 180ms cubic-bezier(0.4, 0, 1, 1);
+  transition:
+    transform 180ms cubic-bezier(0.4, 0, 1, 1),
+    opacity 180ms ease;
 }
 .otp-ready-enter-from {
+  opacity: 0;
   transform: translateY(120%);
 }
 .otp-ready-leave-to {
+  opacity: 0;
   transform: translateY(-120%);
 }
 @media (prefers-reduced-motion: reduce) {
+  .otp-slot-dot,
   .otp-ready-enter-active,
   .otp-ready-leave-active {
     transition: none;

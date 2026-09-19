@@ -23,6 +23,18 @@
       </div>
       <p id="error" class="message error" role="alert" hidden></p>
       <p id="notice" class="message notice" role="status" hidden></p>
+      <div id="companion-info" class="request-info" hidden>
+        <span>请求来源</span><strong id="companion-origin"></strong>
+        <p>
+          确认后，网站可在当前弹窗显示网站域名、账号名称和使用时间。主口令、私钥和备份文件留在扩展中，不会传给网页。
+        </p>
+      </div>
+      <button id="companion-cancel" class="secondary" hidden>取消并返回网站</button>
+      <section id="share-list" class="panel" hidden>
+        <h2>允许在网站中显示列表？</h2>
+        <p id="share-summary"></p>
+        <button id="share-confirm" class="primary">确认显示列表</button>
+      </section>
       <section id="gate" class="panel">
         <h2 id="gate-title">解锁密钥库</h2>
         <form id="unlock-form">

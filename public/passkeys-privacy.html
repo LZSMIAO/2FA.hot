@@ -60,7 +60,7 @@
     <section id="zh">
       <h1>2fa.hot Passkeys 隐私政策</h1>
       <p>
-        更新日期：2026 年 9 月 20 日。适用于 2fa.hot Passkeys 浏览器扩展 0.2.0。本扩展由 LONGMIAO
+        更新日期：2026 年 9 月 20 日。适用于 2fa.hot Passkeys 浏览器扩展 0.3.x。本扩展由 LONGMIAO
         LTD （英国公司编号 16596876）提供。本政策仅涵盖通行密钥扩展及其网站连接功能；本站 TOTP
         工具另有隐私说明。
       </p>
@@ -88,7 +88,8 @@
       </p>
       <p>
         待确认请求的域名、账号标识、挑战和标签页信息会临时保存在浏览器会话存储中，供扩展确认窗口使用；结果被取回后删除，过期请求由定时清理，通常不超过约
-        4 分钟。会话存储不包含私钥或主口令。
+        4 分钟。网站管理请求及经确认的列表摘要也会暂存在会话存储，结果取回后删除，最长约 6
+        分钟由定时任务清理。会话存储不包含私钥或主口令。
       </p>
       <h2>向谁提供数据</h2>
       <p>
@@ -100,9 +101,12 @@
         扩展没有向开发者上传密钥库的接口，不包含遥测、广告、数据售卖或远程执行代码。数据仅用于用户请求的通行密钥功能，不用于广告画像、征信或借贷决定，也不转移给数据经纪商。
       </p>
       <p>
-        只有本站 https://2fa.hot
-        能通过商店版的连接功能检测扩展版本、打开扩展管理页。此连接不会返回账号列表、密钥库内容、是否已创建密钥库或解锁状态。开发版还允许
-        localhost 用于测试。安装检测只是界面提示，不是身份认证。
+        只有本站 https://2fa.hot 能通过商店版连接检测扩展并发起管理请求。
+        在扩展窗口解锁并明确确认后，网站可获得域名、账号名称、凭据标识、创建及使用时间，在当前弹窗显示列表。
+        列表仅保存在网页内存中，关闭弹窗或 5
+        分钟后清除，不上传服务端。主口令、私钥、备份内容不会通过此连接传给网页。
+        导入、导出和删除需要在扩展窗口确认；请求绑定来源、标签页和文档，导航后失效。
+        本地测试版还允许 localhost。安装检测只是界面提示，不是身份认证。
       </p>
       <h2>备份、迁移与删除</h2>
       <p>
@@ -140,7 +144,7 @@
     <section id="en" lang="en">
       <h1>2fa.hot Passkeys privacy policy</h1>
       <p>
-        Updated September 20, 2026. Applies to version 0.2.0 of the 2fa.hot Passkeys browser
+        Updated September 20, 2026. Applies to version 0.3.x of the 2fa.hot Passkeys browser
         extension. Provided by LONGMIAO LTD (UK company number 16596876). This policy covers the
         extension and its companion website connection; the website's TOTP tool has a separate
         privacy notice.
@@ -184,6 +188,8 @@
         Pending requests temporarily retain their domains, account identifiers, challenges and tab
         details in browser session storage for the confirmation window. Results are removed when
         retrieved; periodic cleanup removes expired requests, normally within about four minutes.
+        Website management requests and approved account summaries are also held temporarily in
+        session storage until retrieved, with periodic expiry cleanup within about six minutes.
         Session storage does not contain private keys or master passwords.
       </p>
       <h2>Disclosure and sharing</h2>
@@ -200,10 +206,15 @@
         brokers.
       </p>
       <p>
-        Only https://2fa.hot can check the store extension's version or open its manager through the
-        companion connection. It cannot retrieve accounts, vault contents, vault existence or unlock
-        status. Developer builds additionally allow localhost for testing. Installation detection is
-        a UI hint, not authentication.
+        Only https://2fa.hot can check the store extension and initiate management requests. After
+        unlocking and explicitly approving in the extension window, the requesting page receives
+        domains, account names, credential identifiers and creation/use times for its account list.
+        This list is held in page memory for up to five minutes or until the dialog closes, and is
+        not uploaded. Passwords, private keys and backup contents are never sent over this
+        connection. Import, export and deletion require confirmation in the extension. Requests are
+        bound to the requesting origin, tab and document and become invalid after navigation. Local
+        preview builds also allow localhost. Installation detection is a UI hint, not
+        authentication.
       </p>
       <h2>Exports and deletion</h2>
       <p>

@@ -1,57 +1,33 @@
-name: Feature request / 功能许愿
-description: Suggest a feature or improvement / 提交想要的功能或改进
-title: '[Wish] '
+name: Feature suggestion / 功能建议
+description: Suggest a feature or tell us what could work better / 想加什么功能，或哪里不好用
+title: '[Feature] '
 labels: [enhancement]
 body:
   - type: markdown
     attributes:
       value: |
-        Thank you for helping shape 2fa.hot. You can write in any language.
-        欢迎用你熟悉的语言许愿。提交前请先查看已有建议，重复需求可以点赞或补充。
+        Describe what you would like to change. Any language is welcome.
+        说说你想改进什么，用你熟悉的语言填写就好。
 
-        [Wait list / 功能清单](https://github.com/LZSMIAO/2fa-hot/blob/main/docs/WAITLIST.md) · [Existing wishes / 已有愿望](https://github.com/LZSMIAO/2fa-hot/issues?q=is%3Aissue%20label%3Aenhancement)
+        [Feature list / 功能清单](https://github.com/LZSMIAO/2fa-hot/blob/main/docs/WAITLIST.md) · [Existing suggestions / 已有建议](https://github.com/LZSMIAO/2fa-hot/issues?q=is%3Aissue%20label%3Aenhancement)
 
-        **This is public. Do not include real secrets, OTP codes, passwords, private links, QR codes or backups.**
-        **内容公开。不要上传真实密钥、验证码、密码、私密取码链接、二维码或备份文件。**
-        Report vulnerabilities privately through [Security](https://github.com/LZSMIAO/2fa-hot/security/advisories/new).
-  - type: dropdown
-    id: area
+        Posts are public. Do not include real secrets, passwords, account QR codes or backups.
+        内容公开，请勿附上真实密钥、密码、账号二维码或备份文件。
+        For security issues, use a [private report / 私密报告](https://github.com/LZSMIAO/2fa-hot/security/advisories/new).
+  - type: textarea
+    id: proposal
     attributes:
-      label: Area / 功能方向
-      options:
-        - Code generation / 取码
-        - Import and batch processing / 导入与批量处理
-        - Sharing and privacy / 分享与隐私
-        - Local history / 本地历史
-        - Interface, languages and accessibility / 界面、语言与无障碍
-        - Other / 其他
+      label: What would you like to change? / 想加什么功能或改进？
+      description: Tell us what you want to do and what is missing. / 说说你想做什么，现在还缺什么。
     validations:
       required: true
   - type: textarea
     id: problem
     attributes:
-      label: Use case and problem / 使用场景与问题
-      description: What are you trying to do, and what gets in the way? / 你想完成什么？现在遇到了什么困难？
-    validations:
-      required: true
+      label: What happens now? / 现在遇到了什么问题？
+      description: Optional. A simple example helps. / 选填，举个例子就好。
   - type: textarea
-    id: proposal
+    id: details
     attributes:
-      label: Your wish / 你期待的功能
-      description: Describe the behavior you want, with a non-sensitive example if useful. / 描述期待的效果，可以使用不含敏感信息的例子。
-    validations:
-      required: true
-  - type: textarea
-    id: alternatives
-    attributes:
-      label: Alternatives / 其他办法
-      description: Optional. How do you handle this today? / 选填。你目前如何处理这个问题？
-  - type: checkboxes
-    id: checks
-    attributes:
-      label: Before submitting / 提交前确认
-      options:
-        - label: I checked existing wishes for duplicates. / 我已查看是否存在相同建议。
-          required: true
-        - label: This request contains no real secrets or other sensitive data. / 内容不含真实密钥或其他敏感数据。
-          required: true
+      label: Anything else? / 补充说明
+      description: Optional. Remove private information from screenshots. / 选填，截图请遮住私人信息。

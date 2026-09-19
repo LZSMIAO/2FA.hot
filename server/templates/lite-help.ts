@@ -117,7 +117,12 @@ const content = {
 export type LiteLanguage = keyof typeof content
 export function liteHelp(language: LiteLanguage) {
   const copy = content[language]
+  const compatibility = {
+    en: 'Supports Internet Explorer!',
+    'zh-CN': '支持 Internet Explorer！',
+    'zh-TW': '支援 Internet Explorer！'
+  }[language]
   const escape = (s: string) =>
     s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;')
-  return `<!doctype html><html lang="${language}"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="referrer" content="no-referrer"><title>${copy.title} · 2fa.hot</title><link rel="icon" href="data:,"><link rel="stylesheet" href="/lite-assets/style.css?v=2"></head><body><main class="page guide"><a href="/lite?lang=${language}">${copy.back}</a><nav class="languages" aria-label="Language"><a href="?lang=zh-TW" lang="zh-TW">繁體中文</a> · <a href="?lang=zh-CN" lang="zh-CN">简体中文</a> · <a href="?lang=en" lang="en">English</a></nav><h1>${copy.title}</h1>${copy.sections.map(([title, body]) => `<section><h2>${title}</h2><p>${escape(body)}</p></section>`).join('')}<footer class="footer"><a href="https://github.com/LZSMIAO/2fa-hot" target="_blank" rel="noopener noreferrer">Source · AGPL-3.0</a>2fa.hot Lite</footer></main></body></html>`
+  return `<!doctype html><html lang="${language}"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="referrer" content="no-referrer"><title>${copy.title} · 2fa.hot</title><link rel="icon" href="data:,"><script src="/lite-assets/theme.js?v=1"></script><link rel="stylesheet" href="/lite-assets/style.css?v=6"></head><body><main class="page guide"><a href="/lite?lang=${language}">${copy.back}</a><nav class="languages" aria-label="Language"><a href="?lang=zh-TW" lang="zh-TW">繁體中文</a> · <a href="?lang=zh-CN" lang="zh-CN">简体中文</a> · <a href="?lang=en" lang="en">English</a></nav><h1>${copy.title}</h1>${copy.sections.map(([title, body]) => `<section><h2>${title}</h2><p>${escape(body)}</p></section>`).join('')}<footer class="footer"><a href="https://github.com/LZSMIAO/2fa-hot" target="_blank" rel="noopener noreferrer">Source · AGPL-3.0</a>2fa.hot Lite<strong class="compatibility">${compatibility}</strong></footer></main></body></html>`
 }

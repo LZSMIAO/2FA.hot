@@ -70,7 +70,7 @@ watch(open, (visible) => {
         <span class="history-switch-thumb" />
       </button>
       <NuxtLink class="history-view-link" :to="localePath('/history')" :title="tx('查看历史')">
-        {{ tx('本地历史') }}
+        {{ tx('历史记录') }}
       </NuxtLink>
     </div>
     <span v-if="error && !open" role="alert">{{ tx(error) }}</span>
@@ -154,7 +154,7 @@ watch(open, (visible) => {
 }
 .history-toggle-control .history-view-link {
   min-height: 0;
-  font-size: var(--text-caption);
+  font-size: var(--text-label);
   line-height: 1.5;
 }
 .history-controls {

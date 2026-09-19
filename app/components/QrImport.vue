@@ -1,21 +1,95 @@
 <script setup lang="ts">
 const clipboardHint = useClipboardHint()
+import { collectQrChoices } from '~/utils/qr-choices'
 import { decodeQrImage } from '~/utils/qr-image'
+import { hasImageDrop } from '~/utils/dropped-image'
 import { isMigrationUri } from '~/utils/ga-migration'
 const { tx } = useMessages()
 import { parseOtp, toOtpUri } from '~/utils/otp'
+const props = defineProps<{
+  initialImages?: File[]
+  initialImage?: File
+  initialImagePasted?: boolean
+  initialIssue?: string
+  externalDrop?: boolean
+  externalLoading?: boolean
+}>()
 const emit = defineEmits<{
   close: []
+  dismiss: []
   import: [value: string]
   batch: [value: string]
   migration: [value: string]
+  pasted: []
 }>()
+const pasteConfirmed = shallowRef(false)
+let pasteTimer: ReturnType<typeof setTimeout> | undefined
+let imageWasPasted = false
+function confirmImagePaste() {
+  clearTimeout(pasteTimer)
+  pasteConfirmed.value = true
+  pasteTimer = setTimeout(() => (pasteConfirmed.value = false), 3000)
+}
 const open = shallowRef(true),
-  issue = shallowRef(''),
+  issue = shallowRef(props.initialIssue || ''),
   scanning = shallowRef(false),
   processing = shallowRef(false)
 const choices = shallowRef<string[]>([]),
   facing = shallowRef<'environment' | 'user'>('environment')
+const selectedChoices = shallowRef<string[]>([])
+const ordinaryChoices = computed(() => choices.value.filter((value) => !isMigrationUri(value)))
+const migrationChoices = computed(() => choices.value.filter(isMigrationUri))
+const fileIssues = shallowRef<Array<{ name: string; message: string }>>([])
+const duplicateCount = shallowRef(0)
+const progress = shallowRef({ done: 0, total: 0 })
+function selectChoice(value: string, selected: boolean) {
+  selectedChoices.value = selected
+    ? [...new Set([...selectedChoices.value, value])]
+    : selectedChoices.value.filter((item) => item !== value)
+}
+const dropZone = useTemplateRef<HTMLElement>('dropZone')
+defineExpose({ dropTarget: dropZone })
+const { loading: localDropLoading, cancel: cancelLocalDrop } = useImageDrop({
+  enabled: () => open.value && !props.externalDrop,
+  target: () => dropZone.value,
+  image: (file) => image(file),
+  images: (files) => images(files),
+  issue: (message) => {
+    issue.value = message
+  }
+})
+const dragging = shallowRef(false)
+function highlightDropZone(event: DragEvent) {
+  dragging.value = !!event.dataTransfer && hasImageDrop(event.dataTransfer)
+}
+function leaveDropZone(event: DragEvent) {
+  if (!(event.relatedTarget instanceof Node) || !dropZone.value?.contains(event.relatedTarget))
+    dragging.value = false
+}
+function clearDropHighlight() {
+  dragging.value = false
+}
+const dropLoading = computed(() =>
+  props.externalDrop ? !!props.externalLoading : localDropLoading.value
+)
+watch(
+  () => props.initialIssue,
+  (message) => {
+    issue.value = message || ''
+  }
+)
+watch(
+  () => props.initialImage,
+  (file) => {
+    if (file) void image(file, props.initialImagePasted !== false)
+  }
+)
+watch(
+  () => props.initialImages,
+  (files) => {
+    if (files?.length) void images(files)
+  }
+)
 const video = useTemplateRef<HTMLVideoElement>('video'),
   input = useTemplateRef<HTMLInputElement>('file')
 let stream: MediaStream | undefined,
@@ -26,6 +100,8 @@ function finishClose() {
   if (pendingResult?.kind === 'import') emit('import', pendingResult.value)
   if (pendingResult?.kind === 'batch') emit('batch', pendingResult.value)
   if (pendingResult?.kind === 'migration') emit('migration', pendingResult.value)
+  // Restore the same feedback on the home input after importing resets its value.
+  if (pendingResult && imageWasPasted) emit('pasted')
   pendingResult = undefined
   emit('close')
 }
@@ -36,10 +112,12 @@ function stop() {
   scanning.value = false
 }
 function openMigration(value = '') {
+  if (!value) imageWasPasted = false
   pendingResult = { kind: 'migration', value }
   open.value = false
 }
 function accept(value: string) {
+  if (!active || !open.value) return
   if (isMigrationUri(value)) {
     openMigration(value)
     return
@@ -53,43 +131,87 @@ function accept(value: string) {
     issue.value = (e as Error).message
   }
 }
-async function image(file?: File) {
-  if (!file || processing.value || !open.value || !active) return
+async function decodeFile(file: File) {
+  if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type) || file.size > 10_000_000)
+    throw new Error('请选择 10MB 以内的 PNG、JPEG 或 WebP 图片。')
+  const bitmap = await createImageBitmap(file).catch(() => {
+    throw new Error('未识别到二维码，请换一张清晰图片。')
+  })
+  try {
+    if (bitmap.width * bitmap.height > 16_000_000)
+      throw new Error('图片尺寸过大，请裁剪二维码后重试。')
+    return await decodeQrImage(bitmap, bitmap.width, bitmap.height, true)
+  } finally {
+    bitmap.close()
+  }
+}
+async function image(file?: File, fromPaste = false) {
+  if (file) await images([file], fromPaste)
+}
+async function images(files: File[], fromPaste = false) {
+  if (!files.length || processing.value || !open.value || !active) return
+  if (files.length > 20) {
+    issue.value = tx('每次最多选择 20 张图片，请分批导入。')
+    if (input.value) input.value.value = ''
+    return
+  }
+  imageWasPasted = fromPaste
+  clearTimeout(pasteTimer)
+  pasteConfirmed.value = false
+  if (fromPaste) confirmImagePaste()
   stop()
   issue.value = ''
   choices.value = []
+  selectedChoices.value = []
+  fileIssues.value = []
+  duplicateCount.value = 0
+  progress.value = { done: 0, total: files.length }
   processing.value = true
+  const values: string[] = []
   try {
-    if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type) || file.size > 10_000_000)
-      throw new Error('请选择 10MB 以内的 PNG、JPEG 或 WebP 图片。')
-    const bitmap = await createImageBitmap(file)
-    try {
-      if (bitmap.width * bitmap.height > 16_000_000)
-        throw new Error('图片尺寸过大，请裁剪二维码后重试。')
-      const values = await decodeQrImage(bitmap, bitmap.width, bitmap.height, true)
-      if (active) {
-        if (values.length === 1) accept(values[0]!)
-        else if (values.length > 1) choices.value = values
-        else issue.value = '未识别到二维码，请换一张清晰图片。'
+    for (const file of files) {
+      if (!active || !open.value) return
+      try {
+        const decoded = await decodeFile(file)
+        if (!active || !open.value) return
+        if (!decoded.length) throw new Error('未识别到二维码，请换一张清晰图片。')
+        const result = collectQrChoices(decoded)
+        if (result.unsupported) {
+          fileIssues.value = [
+            ...fileIssues.value,
+            { name: file.name, message: '二维码不是 TOTP 配置。' }
+          ]
+        }
+        values.push(...decoded)
+      } catch (e) {
+        if (!active || !open.value) return
+        fileIssues.value = [...fileIssues.value, { name: file.name, message: (e as Error).message }]
       }
-    } finally {
-      bitmap.close()
+      progress.value = { done: progress.value.done + 1, total: files.length }
     }
-  } catch (e) {
-    issue.value = (e as Error).message
+    if (!active || !open.value) return
+    const result = collectQrChoices(values)
+    duplicateCount.value = result.duplicates
+    if (files.length === 1 && result.choices.length === 1 && !fileIssues.value.length) {
+      accept(result.choices[0]!)
+    } else {
+      choices.value = result.choices
+      selectedChoices.value = result.choices.filter((value) => !isMigrationUri(value))
+      if (!choices.value.length) issue.value = '没有可导入的 TOTP 配置。'
+    }
   } finally {
     processing.value = false
     if (input.value) input.value.value = ''
   }
 }
 function pastedImage(event: ClipboardEvent) {
-  if (!open.value || !active) return
+  if (event.defaultPrevented || !open.value || !active) return
   const file = Array.from(event.clipboardData?.items || [])
     .find((item) => item.kind === 'file' && item.type.startsWith('image/'))
     ?.getAsFile()
   if (!file) return
   event.preventDefault()
-  void image(file)
+  void image(file, true)
 }
 async function pasteImage() {
   if (processing.value || !open.value) return
@@ -106,7 +228,7 @@ async function pasteImage() {
       )
       if (type) {
         const blob = await item.getType(type)
-        await image(new File([blob], 'clipboard-image', { type }))
+        await image(new File([blob], 'clipboard-image', { type }), true)
         return
       }
     }
@@ -139,6 +261,7 @@ async function scan() {
   timer = setTimeout(scan, 200)
 }
 async function camera() {
+  imageWasPasted = false
   stop()
   issue.value = ''
   try {
@@ -167,23 +290,17 @@ function switchCamera() {
   facing.value = facing.value === 'environment' ? 'user' : 'environment'
   return camera()
 }
-function importAll() {
-  if (choices.value.some(isMigrationUri)) {
-    openMigration(choices.value.join('\n'))
+function importSelected() {
+  if (processing.value || !open.value || !selectedChoices.value.length) return
+  if (selectedChoices.value.length > 100) {
+    issue.value = '每次最多 100 条，请分批处理。'
     return
   }
-  const valid = choices.value.filter((value) => {
-    try {
-      return value.startsWith('otpauth://') && !!parseOtp(value)
-    } catch {
-      return false
-    }
-  })
-  if (!valid.length) {
-    issue.value = '没有可导入的 TOTP 配置。'
+  if (selectedChoices.value.length === 1) {
+    accept(selectedChoices.value[0]!)
     return
   }
-  pendingResult = { kind: 'batch', value: valid.join('\n') }
+  pendingResult = { kind: 'batch', value: selectedChoices.value.join('\n') }
   open.value = false
 }
 function choiceLabel(value: string, index: number) {
@@ -200,15 +317,24 @@ function hidden() {
 }
 watch(open, (v) => {
   if (!v) {
+    cancelLocalDrop()
+    emit('dismiss')
     stop()
   }
 })
 onMounted(() => {
+  document.addEventListener('dragend', clearDropHighlight)
+  window.addEventListener('blur', clearDropHighlight)
   document.addEventListener('visibilitychange', hidden)
   document.addEventListener('paste', pastedImage)
+  if (props.initialImages?.length) void images(props.initialImages)
+  else if (props.initialImage) void image(props.initialImage, props.initialImagePasted !== false)
 })
 onBeforeUnmount(() => {
+  document.removeEventListener('dragend', clearDropHighlight)
+  window.removeEventListener('blur', clearDropHighlight)
   active = false
+  clearTimeout(pasteTimer)
   stop()
   document.removeEventListener('visibilitychange', hidden)
   document.removeEventListener('paste', pastedImage)
@@ -222,61 +348,119 @@ onBeforeUnmount(() => {
     :description="tx('识别在此设备完成，图片不会上传。')"
     ><template #body
       ><div class="modal-stack">
-        <UContextMenu
-          :items="[
-            {
-              label: tx('粘贴'),
-              icon: 'i-lucide-clipboard-paste',
-              disabled: processing,
-              onSelect: pasteImage
-            }
-          ]"
-        >
-          <div
-            class="drop-zone"
-            @dragover.prevent
-            @drop.prevent="image($event.dataTransfer?.files[0])"
+        <div class="qr-import-region">
+          <p class="qr-paste-confirmation" role="status" aria-live="polite">
+            <span v-if="pasteConfirmed">{{ tx('已粘贴内容') }}</span>
+          </p>
+          <UContextMenu
+            :items="[
+              {
+                label: tx('粘贴'),
+                icon: 'i-lucide-clipboard-paste',
+                disabled: processing,
+                onSelect: pasteImage
+              }
+            ]"
           >
-            <UIcon name="i-lucide-scan-line" class="text-3xl text-muted" />
-            <p>{{ tx('将二维码图片拖到这里') }}</p>
-            <UButton
-              variant="outline"
-              color="neutral"
-              :loading="processing"
-              @click="input?.click()"
-              >{{ tx('选择图片') }}</UButton
+            <div
+              ref="dropZone"
+              class="drop-zone"
+              :class="{ 'is-dragging': dragging }"
+              :aria-busy="processing || dropLoading"
+              @dragenter="highlightDropZone"
+              @dragover="highlightDropZone"
+              @dragleave="leaveDropZone"
+              @drop="clearDropHighlight"
             >
-            <UButton
-              variant="outline"
-              color="neutral"
-              icon="i-lucide-clipboard-paste"
-              :disabled="processing"
-              @click="pasteImage"
-              >{{ tx('粘贴') }}</UButton
-            >
-            <span>{{ tx('PNG、JPEG、WebP · 最大 10MB') }}</span
-            ><input
-              ref="file"
-              type="file"
-              accept="image/png,image/jpeg,image/webp"
-              class="sr-only"
-              :aria-label="tx('选择二维码图片')"
-              @change="image(($event.target as HTMLInputElement).files?.[0])"
-            />
-          </div>
-        </UContextMenu>
+              <UIcon name="i-lucide-scan-line" class="text-3xl text-muted" />
+              <p class="qr-drop-instruction" :class="{ 'is-active': dragging }" role="status">
+                {{ tx(dragging ? '松开鼠标，识别二维码' : '将二维码图片拖到这里') }}
+              </p>
+              <div class="qr-image-actions">
+                <UButton
+                  variant="outline"
+                  color="neutral"
+                  :loading="processing || dropLoading"
+                  @click="input?.click()"
+                  >{{ tx('选择图片') }}</UButton
+                >
+                <UButton
+                  variant="outline"
+                  color="neutral"
+                  icon="i-lucide-clipboard-paste"
+                  :disabled="processing || dropLoading"
+                  @click="pasteImage"
+                  >{{ tx('粘贴') }}</UButton
+                >
+              </div>
+              <p class="text-sm text-muted">{{ tx('支持多张图片，每张不超过 10MB。') }}</p>
+              <input
+                ref="file"
+                type="file"
+                multiple
+                accept="image/png,image/jpeg,image/webp"
+                class="sr-only"
+                :aria-label="tx('选择二维码图片')"
+                @change="images(Array.from(($event.target as HTMLInputElement).files || []))"
+              />
+              <div v-if="issue" class="qr-error" role="alert">
+                <UIcon name="i-lucide-circle-alert" class="qr-error-icon" />
+                <p>{{ tx(issue) }}</p>
+              </div>
+            </div>
+          </UContextMenu>
+        </div>
+        <p v-if="processing" role="status" aria-live="polite">
+          {{ tx('正在识别图片：{done}/{total}', progress) }}
+        </p>
+        <div v-if="fileIssues.length" class="qr-file-issues" role="status">
+          <p v-for="(failure, index) in fileIssues" :key="index">
+            <strong>{{ failure.name }}</strong
+            >：{{ tx(failure.message) }}
+          </p>
+        </div>
         <div v-if="choices.length" class="modal-stack">
           <p>{{ tx('识别到二维码：{count}，请选择配置。', { count: choices.length }) }}</p>
+          <p v-if="duplicateCount" class="text-muted">
+            {{ tx('已去除 {count} 个重复配置。', { count: duplicateCount }) }}
+          </p>
+          <template v-if="ordinaryChoices.length">
+            <UCheckbox
+              :label="tx('全选')"
+              :model-value="
+                selectedChoices.length === ordinaryChoices.length
+                  ? true
+                  : selectedChoices.length
+                    ? 'indeterminate'
+                    : false
+              "
+              @update:model-value="selectedChoices = $event === true ? [...ordinaryChoices] : []"
+            />
+            <div class="qr-choice-list">
+              <UCheckbox
+                v-for="(choice, index) in ordinaryChoices"
+                :key="choice"
+                :label="choiceLabel(choice, index)"
+                :model-value="selectedChoices.includes(choice)"
+                @update:model-value="selectChoice(choice, $event === true)"
+              />
+            </div>
+            <UButton
+              class="primary-button"
+              :disabled="!selectedChoices.length || processing"
+              @click="importSelected"
+            >
+              {{ tx('导入所选（{count}）', { count: selectedChoices.length }) }}
+            </UButton>
+          </template>
           <UButton
-            v-for="(choice, index) in choices"
-            :key="index"
+            v-for="(choice, index) in migrationChoices"
+            :key="choice"
             color="neutral"
             variant="outline"
             @click="accept(choice)"
             >{{ choiceLabel(choice, index) }}</UButton
-          ><UButton class="primary-button" @click="importAll">{{
-            tx('将有效配置加入批量取码')
-          }}</UButton>
+          >
         </div>
         <video
           v-if="scanning"
@@ -293,28 +477,54 @@ onBeforeUnmount(() => {
           @click="switchCamera"
           >{{ tx('切换摄像头') }}</UButton
         >
-        <UButton color="neutral" variant="outline" icon="i-lucide-import" @click="openMigration()"
-          >Google Authenticator · {{ tx('导入') }}</UButton
-        >
         <ActionHint
           :open="clipboardHint.visible.value"
           :message="tx('如果浏览器询问剪贴板权限，请点允许。')"
           icon="i-lucide-clipboard-paste"
           @close="clipboardHint.visible.value = false"
         />
-        <p v-if="issue" class="inline-error" role="alert">{{ tx(issue) }}</p>
-        <UButton
-          color="neutral"
-          variant="ghost"
-          :icon="scanning ? 'i-lucide-camera-off' : 'i-lucide-camera'"
-          @click="scanning ? stop() : camera()"
-          >{{ tx(scanning ? '关闭摄像头' : '使用摄像头扫描') }}</UButton
-        >
+        <div class="qr-source-actions">
+          <UButton
+            color="neutral"
+            variant="outline"
+            :disabled="processing"
+            :icon="scanning ? 'i-lucide-camera-off' : 'i-lucide-camera'"
+            @click="scanning ? stop() : camera()"
+            >{{ tx(scanning ? '关闭摄像头' : '使用摄像头扫描') }}</UButton
+          >
+          <UButton color="neutral" variant="outline" icon="i-lucide-import" @click="openMigration()"
+            >Google Authenticator · {{ tx('导入') }}</UButton
+          >
+        </div>
       </div></template
     ></UModal
   >
 </template>
 <style scoped>
+.qr-choice-list,
+.qr-file-issues {
+  display: grid;
+  gap: 0.75rem;
+  max-height: 220px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  overflow-wrap: anywhere;
+}
+.qr-file-issues {
+  color: var(--ui-text-muted);
+  font-size: 0.875rem;
+}
+.qr-source-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+.qr-source-actions > button {
+  min-width: 0;
+  justify-content: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
 .drop-zone {
   display: flex;
   flex-direction: column;
@@ -325,9 +535,63 @@ onBeforeUnmount(() => {
   border-radius: var(--ui-radius);
   background: var(--wash);
 }
-.drop-zone span {
+.drop-zone.is-dragging {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: -2px;
+  background: var(--accent-wash);
+}
+.drop-zone .qr-drop-instruction.is-active {
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+.qr-import-region {
+  position: relative;
+  padding-top: 1.5rem;
+}
+.qr-paste-confirmation {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  margin: 0;
+  color: var(--accent-ink);
   font-size: var(--text-caption);
-  color: var(--ui-text-muted);
+  line-height: 1.25rem;
+}
+.qr-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  width: 100%;
+  margin-top: 0.25rem;
+  padding-top: 0.875rem;
+  border-top: 1px solid var(--control-line);
+  color: light-dark(#b42318, #ff8a80);
+  font-size: var(--text-caption);
+  line-height: 1.6;
+  text-align: start;
+  overflow-wrap: anywhere;
+}
+.qr-error p {
+  margin: 0;
+  color: inherit;
+}
+.qr-error-icon {
+  flex-shrink: 0;
+  width: 1.125rem;
+  height: 1.125rem;
+  margin-top: 0.15rem;
+}
+.qr-image-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+.qr-image-actions > button {
+  min-width: 0;
+  justify-content: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 .camera-preview {
   width: 100%;

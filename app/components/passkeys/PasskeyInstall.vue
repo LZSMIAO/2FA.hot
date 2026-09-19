@@ -1,9 +1,39 @@
 <script setup lang="ts">
+import PasskeyManager from './PasskeyManager.vue'
 import type { PasskeyCopy } from '~~/shared/passkeys-copy'
 import { passkeyStoreIds, passkeyStoreUrl } from '~~/shared/passkeys'
+import release from '~~/shared/passkeys-release.json'
 
 const props = defineProps<{ copy: PasskeyCopy }>()
-const { status, version, browser, opening, openResult, check, open } = usePasskeyExtension()
+const pageUrl = useRequestURL()
+const localPreview = pageUrl.hostname === 'localhost'
+const downloadUrl = localPreview ? release.localDownload : release.download
+const { tx } = useMessages()
+const { copied, message: copyError, copy: copyText } = useCopy()
+const copiedAddress = shallowRef('')
+const {
+  status,
+  version,
+  browser,
+  supportedManager,
+  records,
+  managing,
+  outcome,
+  check,
+  manage,
+  lock,
+  cancel
+} = usePasskeyExtension()
+const addresses = computed(() =>
+  browser.value === 'edge'
+    ? ['edge://extensions']
+    : browser.value === 'chrome'
+      ? ['chrome://extensions']
+      : ['chrome://extensions', 'edge://extensions']
+)
+async function copyAddress(address: string) {
+  if (await copyText(address)) copiedAddress.value = address
+}
 const stores = computed(() =>
   (browser.value === 'edge' ? (['edge', 'chrome'] as const) : (['chrome', 'edge'] as const)).map(
     (name) => ({ name, url: passkeyStoreUrl(name, passkeyStoreIds[name]) })
@@ -35,17 +65,11 @@ const hint = computed(
     </div>
     <p>{{ hint }}</p>
     <div class="install-actions">
-      <UButton
-        v-if="status === 'installed'"
-        data-passkey-open
-        :loading="opening"
-        :disabled="opening"
-        class="primary-button"
-        icon="i-lucide-key-round"
-        @click="open"
-        >{{ copy.open }}</UButton
+      <template
+        v-if="
+          status !== 'installed' && published && status !== 'unsupported' && status !== 'checking'
+        "
       >
-      <template v-else-if="published && status !== 'unsupported' && status !== 'checking'">
         <UButton
           v-for="store in stores.filter((entry) => entry.url)"
           :key="store.name"
@@ -59,49 +83,89 @@ const hint = computed(
         >
       </template>
       <UButton
+        v-else-if="
+          !published &&
+          status !== 'checking' &&
+          status !== 'unsupported' &&
+          (status !== 'installed' || !supportedManager)
+        "
+        :href="downloadUrl"
+        external
+        download
+        data-passkey-download
+        class="primary-button"
+        icon="i-lucide-download"
+        >{{ status === 'installed' ? copy.manager.updateButton : copy.download }}
+        <span class="download-format">ZIP · v{{ release.version }}</span></UButton
+      >
+      <UButton
         color="neutral"
         variant="outline"
-        :disabled="status === 'checking' || opening"
+        :disabled="status === 'checking' || managing"
         icon="i-lucide-refresh-cw"
         @click="check"
         >{{ copy.recheck }}</UButton
       >
     </div>
-    <p v-if="openResult" :role="openResult === 'failed' ? 'alert' : 'status'">
-      {{ copy[openResult] }}
+    <PasskeyManager
+      v-if="status === 'installed' && supportedManager"
+      :copy="copy.manager"
+      :records="records"
+      :busy="managing"
+      :outcome="outcome"
+      @manage="manage"
+      @lock="lock"
+      @cancel="cancel"
+    />
+    <p v-if="status === 'installed' && !supportedManager" role="status">
+      {{ copy.manager.update }}
     </p>
-    <p class="install-note">{{ published ? copy.storeHint : copy.notPublished }}</p>
-    <details class="developer-guide">
-      <summary>{{ copy.developer }}</summary>
+    <p v-if="status !== 'installed' && status !== 'unsupported'" class="install-note">
+      {{ published ? copy.storeHint : copy.notPublished }}
+    </p>
+    <section
+      v-if="
+        !published && status !== 'installed' && status !== 'unsupported' && status !== 'checking'
+      "
+      class="installation-guide"
+    >
+      <h3>{{ copy.developer }}</h3>
       <p>{{ copy.developerIntro }}</p>
-      <a
-        href="https://github.com/LZSMIAO/2fa-hot/tree/main/extensions/passkeys"
-        target="_blank"
-        rel="noopener noreferrer"
-        >{{ copy.source }} ↗</a
-      >
       <ol>
-        <li v-for="step in copy.steps" :key="step">{{ step }}</li>
+        <li v-for="(step, index) in copy.steps" :key="step">
+          {{ step }}
+          <details v-if="index === 1" class="browser-addresses">
+            <summary>{{ copy.addressAlternative }}</summary>
+            <p>{{ copy.addressHelp }}</p>
+            <div v-for="address in addresses" :key="address" class="browser-address">
+              <code dir="ltr">{{ address }}</code>
+              <UButton
+                color="neutral"
+                variant="outline"
+                size="sm"
+                :icon="copied && copiedAddress === address ? 'i-lucide-check' : 'i-lucide-copy'"
+                @click="copyAddress(address)"
+                >{{
+                  copied && copiedAddress === address ? copy.copiedAddress : copy.copyAddress
+                }}</UButton
+              >
+            </div>
+            <p v-if="copyError" role="status">{{ tx(copyError) }}</p>
+          </details>
+        </li>
       </ol>
-      <pre dir="ltr"><code>pnpm --dir extensions/passkeys install --frozen-lockfile
-pnpm --dir extensions/passkeys build</code></pre>
-      <p>{{ copy.extensionsPage }}</p>
-      <div class="browser-addresses" dir="ltr">
-        <code>chrome://extensions</code><code>edge://extensions</code>
-      </div>
-    </details>
+      <a :href="release.source" download class="source-download">{{ copy.source }}</a>
+    </section>
   </section>
 </template>
 
 <style scoped>
 .passkey-install {
-  padding: 1.5rem;
-  margin-block: 2rem;
-  border: 2px solid var(--ore-outline);
-  background: var(--wash);
+  min-width: 0;
 }
 .passkey-install h2 {
-  margin-top: 0;
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
 }
 .connection-state {
   display: flex;
@@ -136,44 +200,55 @@ pnpm --dir extensions/passkeys build</code></pre>
 .install-note {
   font-size: var(--text-label);
 }
-.developer-guide {
+.download-format {
+  font-size: var(--text-caption);
+}
+.installation-guide {
   border-top: 1px solid var(--ui-border);
   margin-top: 1.5rem;
   padding-top: 1rem;
 }
-.developer-guide summary {
-  cursor: pointer;
+.installation-guide h3 {
+  font-size: 1rem;
   font-weight: 600;
+  margin: 0 0 0.5rem;
+}
+.installation-guide ol {
+  list-style: decimal;
+  padding-inline-start: 1.5rem;
+}
+.installation-guide li {
+  margin-block: 1rem;
+  overflow-wrap: anywhere;
+}
+.source-download {
+  font-size: var(--text-caption);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.browser-addresses {
+  margin-top: 0.75rem;
+}
+.browser-addresses summary {
+  cursor: pointer;
+  font-size: var(--text-label);
   min-height: 2.75rem;
   align-content: center;
 }
-.developer-guide summary:focus-visible {
+.browser-addresses summary:focus-visible {
   outline: 2px solid var(--accent-ink);
   outline-offset: 4px;
 }
-.developer-guide li {
-  margin-block: 0.75rem;
-  overflow-wrap: anywhere;
-}
-.developer-guide pre {
-  max-width: 100%;
-  overflow-x: auto;
-  padding: 1rem;
-  background: var(--ore-input);
-  font-size: 0.8rem;
-  line-height: 1.8;
-}
-.browser-addresses {
+.browser-address {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
-  gap: 0.75rem 1.5rem;
+  gap: 0.5rem;
+  margin-block: 0.5rem;
   font-size: 0.875rem;
   overflow-wrap: anywhere;
 }
 @media (max-width: 480px) {
-  .passkey-install {
-    padding: 1rem;
-  }
   .install-actions {
     flex-direction: column;
     align-items: stretch;

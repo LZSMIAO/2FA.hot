@@ -4,6 +4,7 @@ import BatchWorkspace from '~/components/BatchWorkspace.vue'
 import UsageGuide from '~/components/UsageGuide.vue'
 import { toolHeadings } from '~~/shared/seo/copy'
 const { tx, locale } = useMessages()
+const localePath = useLocalePath()
 const mode = shallowRef('single')
 const batchInput = shallowRef('')
 const batchImportVersion = shallowRef(0)
@@ -200,8 +201,26 @@ watch(
 
         <div class="workspace-foot workspace-summary">
           <div class="workspace-summary-copy">
-            <span><UIcon name="i-lucide-monitor" />{{ tx('浏览器内计算') }}</span>
-            <p>{{ tx('验证码不正确？先检查设备时间与原服务的验证参数。') }}</p>
+            <span>
+              <UIcon name="i-lucide-monitor" />
+              <span class="local-processing-label">
+                {{ tx('所有数据由本地浏览器处理') }}
+                <UTooltip
+                  :text="tx('隐私说明')"
+                  :delay-duration="150"
+                  :content="{ side: 'top', align: 'center', sideOffset: 2 }"
+                  arrow
+                  :ui="{ content: 'parameter-help-tooltip', arrow: 'parameter-help-arrow' }"
+                >
+                  <NuxtLink
+                    :to="localePath('/privacy')"
+                    class="local-processing-help"
+                    :aria-label="tx('隐私说明')"
+                    ><UIcon name="i-lucide-circle-help"
+                  /></NuxtLink>
+                </UTooltip>
+              </span>
+            </span>
           </div>
           <div class="workspace-summary-links">
             <HistoryToggle />

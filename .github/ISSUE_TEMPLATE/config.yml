@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
-  - name: Wait list / 功能许愿清单
+  - name: Feature suggestions / 功能建议
     url: https://2fa.hot/waitlist
-    about: Explore planned ideas and join existing feature discussions. / 查看探索中的功能与已有建议。
+    about: See planned features and existing suggestions. / 查看待做功能和已有建议。
   - name: User guide
     url: https://2fa.hot/help
     about: Input formats, QR import, local history and common questions.

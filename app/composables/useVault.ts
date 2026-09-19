@@ -33,7 +33,8 @@ function validRecords(value: unknown): VaultRecord[] {
       ids.has(r.id) ||
       typeof r.note !== 'string' ||
       r.note.length > 1000 ||
-      !Number.isFinite(r.usedAt)
+      !Number.isFinite(r.usedAt) ||
+      !Number.isFinite(new Date(r.usedAt).getTime())
     )
       throw new Error('历史数据格式不正确。')
     ids.add(r.id)
@@ -55,8 +56,9 @@ export function createVault() {
       const previous = index >= 0 ? next.splice(index, 1)[0] : undefined
       next.unshift({
         ...config,
+        label: previous?.label ?? config.label,
         id: previous?.id ?? crypto.randomUUID(),
-        note: '',
+        note: previous?.note ?? '',
         usedAt: Date.now()
       })
     }
@@ -213,7 +215,9 @@ export function createVault() {
     return operation(async () => {
       if (!enabled.value || !unlocked.value) return false
       const next = [...records.value]
-      for (const c of configs) {
+      for (const config of configs) {
+        const sessionRecord = recent.value.find((row) => identity(row) === identity(config))
+        const c = { ...config, label: sessionRecord?.label ?? config.label }
         const index = next.findIndex((r) => identity(r) === identity(c))
         if (index >= 0)
           next[index] = {
@@ -229,9 +233,30 @@ export function createVault() {
     })
   }
   async function edit(id: string, label: string, note: string) {
-    return operation(() => {
+    return operation(async () => {
       if (label.length > 120 || note.length > 1000) throw new Error('标签或备注过长。')
-      return commit(records.value.map((r) => (r.id === id ? { ...r, label, note } : r)))
+      const row = records.value.find((record) => record.id === id)
+      if (!row) return
+      await commit(records.value.map((r) => (r.id === id ? { ...r, label, note } : r)))
+      recent.value = recent.value.map((entry) =>
+        identity(entry) === identity(row) ? { ...entry, label, note } : entry
+      )
+    })
+  }
+  async function editRecent(id: string, label: string) {
+    return operation(async () => {
+      if (label.length > 120) throw new Error('标签或备注过长。')
+      const row = recent.value.find((entry) => entry.id === id)
+      if (!row) return
+      if (enabled.value) {
+        if (!unlocked.value) throw new Error('请先开启并解锁本地历史。')
+        const next = [...records.value]
+        const index = next.findIndex((entry) => identity(entry) === identity(row))
+        if (index >= 0) next[index] = { ...next[index]!, label }
+        else next.unshift({ ...row, label })
+        await commit(next)
+      }
+      recent.value = recent.value.map((entry) => (entry.id === id ? { ...entry, label } : entry))
     })
   }
   async function remove(ids: string[]) {
@@ -285,7 +310,7 @@ export function createVault() {
     return operation(async () => {
       const next = [...records.value],
         seen = new Set(next.map(identity))
-      for (const r of data)
+      for (const r of validRecords(data))
         if (!seen.has(identity(r))) {
           next.push({ ...r, id: crypto.randomUUID() })
           seen.add(identity(r))
@@ -344,6 +369,7 @@ export function createVault() {
     unlock,
     save,
     edit,
+    editRecent,
     remove,
     toggle,
     disable,

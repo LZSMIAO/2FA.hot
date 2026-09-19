@@ -28,12 +28,39 @@ const editor = shallowRef<VaultRecord | null>(null),
   remark = shallowRef(''),
   removing = shallowRef<string[] | null>(null),
   eraseOpen = shallowRef(false)
-const importOpen = shallowRef(false),
-  backupText = shallowRef(''),
-  backupPassword = shallowRef(''),
-  imported = shallowRef<VaultRecord[] | null>(null),
-  importing = shallowRef(false)
-const fileInput = useTemplateRef<HTMLInputElement>('backupFile')
+const importOpen = shallowRef(false)
+const { copy: copySecretValue, copied: secretCopied, message: secretCopyError } = useCopy()
+const copiedSecretId = shallowRef('')
+const copyingSecret = shallowRef(false)
+async function copySecret(id: string) {
+  if (!vault.unlocked.value || copyingSecret.value) return
+  const record = vault.records.value.find((item) => item.id === id)
+  if (!record) return
+  copyingSecret.value = true
+  copiedSecretId.value = id
+  error.value = ''
+  note.value = ''
+  try {
+    if (await copySecretValue(record.secret)) note.value = '密钥已复制'
+    else error.value = secretCopyError.value
+  } finally {
+    copyingSecret.value = false
+  }
+}
+const backupImport = useBackupImport({
+  active: () => importOpen.value && vault.unlocked.value,
+  inspect: vault.inspectBackup,
+  merge: vault.merge
+})
+const {
+  text: backupText,
+  password: backupPassword,
+  records: imported,
+  error: importError,
+  reading,
+  inspecting: importing,
+  inspect
+} = backupImport
 const rows = computed(() =>
   [...vault.records.value]
     .filter((r) =>
@@ -41,13 +68,13 @@ const rows = computed(() =>
     )
     .sort((a, b) => b.usedAt - a.usedAt)
 )
-watch(importOpen, (open) => {
-  if (!open) {
-    imported.value = null
-    backupPassword.value = ''
-    backupText.value = ''
-  }
-})
+watch(
+  importOpen,
+  (open) => {
+    if (!open) backupImport.reset()
+  },
+  { flush: 'sync' }
+)
 watch(
   () => vault.unlocked.value,
   () => {
@@ -56,11 +83,17 @@ watch(
     remark.value = ''
     search.value = ''
     selected.value = []
-    imported.value = null
-    backupPassword.value = ''
-    backupText.value = ''
-  }
+    backupImport.reset()
+    importOpen.value = false
+  },
+  { flush: 'sync' }
 )
+function leaveImport() {
+  importOpen.value = false
+  backupImport.reset()
+}
+onMounted(() => window.addEventListener('pagehide', leaveImport))
+onBeforeUnmount(() => window.removeEventListener('pagehide', leaveImport))
 async function run(action: () => Promise<unknown>, success = '') {
   error.value = ''
   note.value = ''
@@ -112,32 +145,14 @@ async function backup() {
     )
   }, '备份已导出，请妥善保管。')
 }
-async function file(event: Event) {
-  const f = (event.target as HTMLInputElement).files?.[0]
-  if (!f) return
-  if (f.size > 10_000_000) {
-    error.value = '备份不能超过 10MB。'
-    return
-  }
-  backupText.value = await f.text()
-  imported.value = null
-}
-async function inspect() {
-  importing.value = true
-  await run(async () => {
-    imported.value = await vault.inspectBackup(backupText.value, backupPassword.value)
-    backupPassword.value = ''
-  })
-  importing.value = false
+function file(event: Event) {
+  return backupImport.read((event.target as HTMLInputElement).files?.[0])
 }
 async function merge() {
-  if (!imported.value) return
-  await run(async () => {
-    await vault.merge(imported.value!)
-    imported.value = null
-    backupText.value = ''
+  if (await backupImport.merge()) {
     importOpen.value = false
-  }, '已合并备份，现有记录优先保留。')
+    note.value = '已合并备份，现有记录优先保留。'
+  }
 }
 const date = (v: number) =>
   new Intl.DateTimeFormat(locale.value, {
@@ -217,6 +232,7 @@ const date = (v: number) =>
           :placeholder="tx('搜索标签或备注')"
           :aria-label="tx('搜索本地历史')"
           class="history-search"
+          size="xl"
         />
         <div class="history-actions">
           <UButton
@@ -229,9 +245,13 @@ const date = (v: number) =>
             >{{ tx(vault.enabled.value ? '关闭自动保存' : '开启自动保存') }}</UButton
           >
           <div class="history-action-buttons">
-            <UButton color="neutral" variant="ghost" @click="openProtection">{{
-              tx(vault.passwordProtected.value ? '密码保护已开启' : '使用密码保护')
-            }}</UButton>
+            <UButton
+              color="neutral"
+              variant="outline"
+              icon="i-lucide-shield-check"
+              @click="openProtection"
+              >{{ tx(vault.passwordProtected.value ? '密码保护已开启' : '使用密码保护') }}</UButton
+            >
             <UButton
               v-if="vault.passwordProtected.value"
               color="neutral"
@@ -280,11 +300,26 @@ const date = (v: number) =>
           type="checkbox"
           :value="row.id"
           :aria-label="tx('选择 {label}', { label: row.label || tx('未命名记录') })"
-        /><span class="record-icon"
-          ><img src="/textures/trial-key.png" alt="" width="32" height="32"
-        /></span>
+        />
+        <UTooltip :text="tx(secretCopied && copiedSecretId === row.id ? '密钥已复制' : '复制密钥')">
+          <button
+            type="button"
+            class="record-icon record-copy-secret"
+            :aria-label="tx('复制密钥')"
+            :disabled="copyingSecret || !vault.unlocked.value"
+            @click="copySecret(row.id)"
+          >
+            <UIcon
+              v-if="secretCopied && copiedSecretId === row.id"
+              name="i-lucide-check"
+              class="text-primary"
+            />
+            <img v-else src="/textures/trial-key.png" alt="" width="32" height="32" />
+          </button>
+        </UTooltip>
         <div class="record-name">
           <div class="record-title">
+            <strong>{{ row.label || row.issuer || tx('未命名记录') }}</strong>
             <button
               type="button"
               class="record-edit"
@@ -293,7 +328,6 @@ const date = (v: number) =>
             >
               <UIcon name="i-lucide-pencil" />
             </button>
-            <strong>{{ row.label || row.issuer || tx('未命名记录') }}</strong>
           </div>
           <p>
             {{
@@ -346,9 +380,22 @@ const date = (v: number) =>
     ><template #body
       ><div class="modal-stack">
         <UFormField :label="tx('标签')"
-          ><UInput v-model="label" maxlength="120" class="w-full" /></UFormField
+          ><UInput
+            v-model="label"
+            name="history-record-label"
+            autocomplete="off"
+            data-1p-ignore
+            maxlength="120"
+            class="w-full" /></UFormField
         ><UFormField :label="tx('备注')"
-          ><UTextarea v-model="remark" maxlength="1000" :rows="4" class="w-full"
+          ><UTextarea
+            v-model="remark"
+            name="history-record-note"
+            autocomplete="off"
+            data-1p-ignore
+            maxlength="1000"
+            :rows="4"
+            class="w-full"
         /></UFormField>
         <p v-if="error" class="inline-error">{{ tx(error) }}</p>
       </div></template
@@ -404,7 +451,6 @@ const date = (v: number) =>
     ><template #body
       ><div class="modal-stack">
         <input
-          ref="backupFile"
           type="file"
           accept=".2fahot,application/json"
           :aria-label="tx('导入备份')"
@@ -413,14 +459,15 @@ const date = (v: number) =>
           ><UFormField :label="tx('备份的解锁口令')"
             ><UInput
               v-model="backupPassword"
+              :disabled="importing"
               type="password"
               class="w-full"
               autocomplete="off" /></UFormField
           ><UButton
             color="neutral"
             variant="outline"
-            :disabled="!backupText"
-            :loading="importing"
+            :disabled="!backupText || reading"
+            :loading="importing || reading"
             @click="inspect"
             >{{ tx('解锁并预览') }}</UButton
           ></template
@@ -432,7 +479,7 @@ const date = (v: number) =>
             })
           }}
         </p>
-        <p v-if="error" class="inline-error">{{ tx(error) }}</p>
+        <p v-if="importError" class="inline-error">{{ tx(importError) }}</p>
       </div></template
     ><template #footer
       ><UButton
@@ -528,15 +575,20 @@ const date = (v: number) =>
 }
 .history-toolbar {
   display: flex;
-  justify-content: space-between;
-  gap: 20px;
+  align-items: center;
+  gap: 1rem;
   flex-wrap: wrap;
+}
+.history-actions :deep(button) {
+  min-height: 44px;
+  font-size: var(--text-label);
 }
 .history-actions {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 12px;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   max-width: 100%;
 }
 .history-action-buttons {
@@ -546,22 +598,25 @@ const date = (v: number) =>
   gap: 8px;
 }
 .history-search {
-  width: 260px;
+  flex: 1 1 16rem;
+  min-width: 0;
 }
 .history-status {
   display: flex;
   align-items: center;
   justify-content: space-between;
   color: var(--ui-text-muted);
-  font-size: var(--text-caption);
-  padding: 14px 0;
+  font-size: var(--text-label);
+  padding: 1rem 0;
+  margin-top: 0.25rem;
   border-bottom: 1px solid var(--ui-border);
 }
 .history-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 20px 34px minmax(0, 1fr) auto 44px;
   align-items: center;
-  gap: 16px;
-  padding: 20px 0;
+  gap: 1rem;
+  padding: 1rem 0;
   border-bottom: 1px solid var(--ui-border);
 }
 .record-icon {
@@ -574,12 +629,28 @@ const date = (v: number) =>
 .record-icon img {
   image-rendering: pixelated;
 }
+.record-copy-secret {
+  min-width: 44px;
+  min-height: 44px;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+}
+.record-copy-secret:hover:not(:disabled) {
+  border-color: var(--ui-border);
+  background: var(--wash);
+}
+.record-copy-secret:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 2px;
+}
 .record-title {
   display: flex;
   align-items: center;
   gap: 6px;
 }
 .record-edit {
+  opacity: 0;
   display: inline-grid;
   place-items: center;
   flex: 0 0 28px;
@@ -589,6 +660,10 @@ const date = (v: number) =>
   color: var(--ui-text-muted);
   cursor: pointer;
 }
+.history-row:hover .record-edit,
+.record-title:focus-within .record-edit {
+  opacity: 1;
+}
 .record-edit :deep(.iconify) {
   width: 16px;
   height: 16px;
@@ -596,7 +671,7 @@ const date = (v: number) =>
 .record-edit:hover,
 .record-edit:focus-visible {
   color: var(--accent-ink);
-  background: var(--wash);
+  background: transparent;
 }
 .record-edit:focus-visible {
   outline: 2px solid var(--accent-ink);
@@ -612,11 +687,11 @@ const date = (v: number) =>
   overflow-wrap: anywhere;
 }
 .record-name strong {
-  font-size: var(--text-caption);
+  font-size: var(--text-body);
   font-weight: 600;
 }
 .record-name p {
-  font-size: var(--text-caption);
+  font-size: var(--text-label);
   line-height: 1.8;
   margin-top: 4px;
   color: var(--ui-text-muted);
@@ -635,8 +710,8 @@ const date = (v: number) =>
 }
 input[type='checkbox'] {
   accent-color: var(--action);
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   flex-shrink: 0;
 }
 @media (max-width: 600px) {
@@ -645,20 +720,40 @@ input[type='checkbox'] {
   }
   .history-row {
     display: grid;
-    grid-template-columns: 16px minmax(0, 1fr) 44px;
+    grid-template-columns: 20px minmax(0, 1fr) 44px;
     gap: 8px;
   }
   .record-name {
-    grid-column: 2 / -1;
+    grid-column: 2;
+    grid-row: 1;
   }
   .history-row :deep(.history-code) {
-    grid-column: 2;
+    grid-column: 1 / 3;
+    grid-row: 2;
+    justify-self: start;
   }
   .history-row > button {
     grid-column: 3;
+    grid-row: 1;
+    align-self: start;
   }
   .history-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     width: 100%;
+  }
+  .history-action-buttons {
+    display: contents;
+  }
+  .history-actions :deep(button) {
+    justify-content: center;
+    min-width: 0;
+    padding-inline: 0.5rem;
+    font-size: var(--text-caption);
+    white-space: normal;
+  }
+  .history-action-buttons > button:first-child :deep(.iconify) {
+    display: none;
   }
   .history-toolbar {
     gap: 12px;
@@ -667,7 +762,12 @@ input[type='checkbox'] {
     width: 100%;
   }
   .record-icon {
-    display: none;
+    display: grid;
+  }
+  .history-row > .record-copy-secret {
+    grid-column: 3;
+    grid-row: 2;
+    align-self: center;
   }
 }
 @media (pointer: coarse) {
@@ -675,6 +775,11 @@ input[type='checkbox'] {
     flex-basis: 44px;
     width: 44px;
     height: 44px;
+  }
+}
+@media (hover: none), (pointer: coarse) {
+  .record-edit {
+    opacity: 1;
   }
 }
 </style>

@@ -8,15 +8,18 @@ export default `<!doctype html>
     <meta name="robots" content="noindex, nofollow, noarchive" />
     <title>2fa.hot Lite</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="/lite-assets/style.css?v=2" />
+    <script src="/lite-assets/theme.js?v=1"></script><link rel="stylesheet" href="/lite-assets/style.css?v=6" />
   </head>
   <body>
     <div class="page">
       <div class="header">
-        <a class="brand" href="/lite">2fa.hot<span class="brand-beta">BETA</span></a><span class="mode">Lite</span
-        ><select id="language" class="language-select" aria-label="Language">
+        <div class="header-title"><a class="brand" href="/lite">2fa.hot<span class="brand-beta">BETA</span></a><span class="mode">Lite</span></div>
+        <nav class="header-actions" aria-label="Navigation">
+          <a id="full" class="full" href="/">Full version</a>
+          <select id="language" class="language-select" aria-label="Language">
           <option value="zh-TW">繁體中文</option><option value="zh-CN">简体中文</option><option value="en">English</option>
-        </select>
+          </select>
+        </nav>
       </div>
 
 
@@ -78,15 +81,17 @@ export default `<!doctype html>
       </p>
       </div>
 
-      <p class="page-links"><a id="help" href="/lite/help?lang=en">Usage guide</a><a id="full" class="full" href="/">Full version</a></p>
+
+      <p class="page-links"><a id="help" href="/lite/help?lang=en">Usage guide</a></p>
       <div class="footer">
-        <span>2fa.hot Lite</span><a href="https://github.com/LZSMIAO/2fa-hot" target="_blank" rel="noopener noreferrer">Source · AGPL-3.0</a>
+        <a href="https://github.com/LZSMIAO/2fa-hot" target="_blank" rel="noopener noreferrer">Source · AGPL-3.0</a><span>2fa.hot Lite</span>
+        <strong class="compatibility" data-text="compatibility">Supports Internet Explorer!</strong>
       </div>
     </div>
     <script src="/lite-assets/sha.js"></script>
     <script src="/lite-assets/otp.js"></script>
     <script src="/lite-assets/paste.js"></script>
-    <script src="/lite-assets/ui.js"></script>
+    <script src="/lite-assets/ui.js?v=4"></script>
   </body>
 </html>
 `

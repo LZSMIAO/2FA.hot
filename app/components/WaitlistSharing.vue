@@ -5,18 +5,14 @@ const { tx } = useMessages()
 
 <template>
   <section class="waitlist-sharing" aria-labelledby="sharing-title">
-    <p class="sharing-status">{{ tx('探索中 · 尚未上线') }}</p>
-    <h2 id="sharing-title">{{ tx('授权取码分享') }}</h2>
-    <p>{{ tx('密钥留在本人设备，接收人经授权后只获取验证码。支持限时分享与撤销。') }}</p>
+    <p class="sharing-status">{{ tx('尚未上线') }}</p>
+    <h2 id="sharing-title">{{ tx('临时分享验证码') }}</h2>
+    <p>{{ tx('计划支持临时分享验证码，密钥留在自己的设备上。') }}</p>
     <p>
-      {{
-        tx(
-          '优先探索本人在线代算：分享者需保持在线；撤销后停止提供新码，已收到的有效验证码无法收回。'
-        )
-      }}
+      {{ tx('分享时需要保持在线，可以随时停止。对方已收到的验证码无法收回。') }}
     </p>
     <a :href="waitlistLinks.sharing" target="_blank" rel="noopener noreferrer">{{
-      tx('设计说明与备选方案（GitHub）')
+      tx('查看方案（GitHub）')
     }}</a>
   </section>
 </template>

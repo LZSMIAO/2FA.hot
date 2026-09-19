@@ -3,6 +3,73 @@ import assert from 'node:assert/strict'
 import { effectScope, nextTick, shallowRef, watch } from 'vue'
 import { useAutoHistory } from '../app/composables/useAutoHistory.ts'
 
+test('browsing history cancels pending writes and never records previews, including after remount', async () => {
+  const preview = shallowRef(false),
+    input = shallowRef<any[]>([{ secret: 'draft' }])
+  const enabled = shallowRef(true),
+    unlocked = shallowRef(true),
+    busy = shallowRef(false)
+  const recent: any[] = [],
+    saved: any[] = []
+  Object.assign(globalThis, {
+    shallowRef,
+    watch,
+    useVault: () => ({
+      enabled,
+      unlocked,
+      busy,
+      recentVersion: shallowRef(0),
+      remember: (rows: any[]) => recent.push(...rows),
+      save: async (rows: any[]) => {
+        saved.push(...rows)
+      }
+    })
+  })
+  let scope = effectScope()
+  const mount = () =>
+    scope.run(() =>
+      useAutoHistory(
+        () => input.value,
+        () => !preview.value
+      )
+    )
+  const settle = () => new Promise((resolve) => setTimeout(resolve, 900))
+  mount()
+  preview.value = true
+  input.value = [{ secret: 'older' }]
+  await nextTick()
+  await settle()
+  input.value = [{ secret: 'newer' }]
+  enabled.value = false
+  await nextTick()
+  enabled.value = true
+  await nextTick()
+  scope.stop()
+  scope = effectScope()
+  mount()
+  await settle()
+  assert.deepEqual(recent, [])
+  assert.deepEqual(saved, [])
+  // Editing a preview is a new input and should still be recorded normally.
+  preview.value = false
+  input.value = [{ secret: 'edited' }]
+  await nextTick()
+  await settle()
+  assert.deepEqual(recent, [{ secret: 'edited' }])
+  assert.deepEqual(saved, [{ secret: 'edited' }])
+  // A save waiting on another vault operation must also be cancelled on browsing.
+  busy.value = true
+  input.value = [{ secret: 'queued' }]
+  await nextTick()
+  await settle()
+  preview.value = true
+  await nextTick()
+  busy.value = false
+  await new Promise((resolve) => setTimeout(resolve, 150))
+  assert.deepEqual(saved, [{ secret: 'edited' }])
+  scope.stop()
+})
+
 test('auto history waits for settled input, requires enable/unlock, and cancels pending writes', async () => {
   const enabled = shallowRef(false),
     unlocked = shallowRef(true)

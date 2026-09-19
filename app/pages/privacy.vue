@@ -10,7 +10,7 @@ const { tx } = useMessages()
     >
     <h1>{{ tx('隐私说明') }}</h1>
     <p class="article-lead">{{ tx('密钥如何计算、保存和传递。') }}</p>
-    <h2>{{ tx('首页：在浏览器中计算') }}</h2>
+    <h2 id="local-processing" class="local-processing-heading">{{ tx('首页：在浏览器中计算') }}</h2>
     <p>
       {{
         tx(
@@ -24,21 +24,6 @@ const { tx } = useMessages()
       {{
         tx(
           '片段链接将密钥放在 # 后面，由浏览器读取和计算，不随页面请求发送。完整链接仍包含密钥，请勿公开分享。'
-        )
-      }}
-    </p>
-    <p>
-      <code dir="ltr">/2fa/YOUR_SECRET</code
-      >{{
-        tx(
-          '是独立取码页。密钥位于网址路径中，打开链接时会随页面请求发送至网站托管服务，验证码仍由浏览器本地计算。这与在首页输入框粘贴密钥不同。'
-        )
-      }}
-    </p>
-    <p>
-      {{
-        tx(
-          '“随请求发送”不等于“已被保存为日志”：是否留存请求网址取决于托管服务及其日志配置，本说明不表示已确认密钥被记录。网址也可能保留在浏览器历史中。请妥善保管链接，不要公开分享。'
         )
       }}
     </p>
@@ -88,3 +73,9 @@ const { tx } = useMessages()
     </p>
   </article>
 </template>
+
+<style scoped>
+.local-processing-heading {
+  scroll-margin-top: 6rem;
+}
+</style>

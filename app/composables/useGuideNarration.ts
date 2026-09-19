@@ -1,4 +1,4 @@
-import { narrationLanguage, narrationSegments } from '~/utils/guide-narration'
+import { narrationLanguage, narrationSegments, selectNarrationVoice } from '~/utils/guide-narration'
 
 export function useGuideNarration(text: () => string, paused: () => boolean) {
   const { locale } = useI18n()
@@ -24,7 +24,7 @@ export function useGuideNarration(text: () => string, paused: () => boolean) {
     enabled.value = false
     issue.value = true
   }
-  function restart() {
+  async function restart() {
     stop()
     if (!supported.value) {
       enabled.value = false
@@ -42,11 +42,30 @@ export function useGuideNarration(text: () => string, paused: () => boolean) {
     const chunks = narrationSegments(text(), narrationLanguage(locale.value)!)
     speaking.value = chunks.length > 0
     const lang = narrationLanguage(locale.value)!
-    const voices = synth.getVoices()
-    const voice =
-      voices.find((v) => v.lang.toLowerCase() === lang.toLowerCase()) ||
-      voices.find((v) => lang.startsWith('en') && v.lang.startsWith('en')) ||
-      null
+    // Some browsers populate voices only after the first request.
+    if (!synth.getVoices().length) {
+      await new Promise<void>((resolve) => {
+        const finish = () => {
+          clearTimeout(timer)
+          synth.removeEventListener('voiceschanged', finish)
+          resolve()
+        }
+        const timer = setTimeout(finish, 1200)
+        synth.addEventListener('voiceschanged', finish, { once: true })
+      })
+    }
+    if (id !== generation) return
+    if (paused() || document.hidden) {
+      speaking.value = false
+      pendingRestart = true
+      return
+    }
+    const voice = selectNarrationVoice(synth.getVoices(), lang)
+    // Do not let the OS silently pronounce Chinese using an unrelated voice.
+    if (!voice) {
+      fail()
+      return
+    }
     function next() {
       if (id !== generation) return
       const chunk = chunks.shift()
@@ -58,8 +77,8 @@ export function useGuideNarration(text: () => string, paused: () => boolean) {
       const speech = new SpeechSynthesisUtterance(chunk.text)
       utterance = speech
       speech.lang = lang
-      speech.rate = 0.95
-      speech.voice = voice
+      speech.rate = 1
+      speech.voice = voice ?? null
       speech.onstart = () => {
         if (id !== generation) return
         clearTimeout(timeout)

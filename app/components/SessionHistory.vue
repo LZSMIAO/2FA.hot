@@ -3,6 +3,37 @@ import type { VaultRecord } from '~/composables/useVault'
 const { tx, locale } = useMessages()
 const vault = useVault()
 const emit = defineEmits<{ select: [] }>()
+const editing = shallowRef<string | null>(null)
+const label = shallowRef('')
+const error = shallowRef('')
+function edit(row: VaultRecord) {
+  editing.value = row.id
+  label.value = row.label
+  error.value = ''
+  nextTick(() => document.querySelector<HTMLInputElement>('.session-name-input')?.focus())
+}
+async function save() {
+  if (!editing.value || vault.busy.value) return
+  const id = editing.value
+  try {
+    await vault.editRecent(id, label.value.trim())
+    if (editing.value === id) {
+      editing.value = null
+      error.value = ''
+    }
+  } catch (cause) {
+    if (editing.value === id) error.value = (cause as Error).message
+  }
+}
+watch(
+  () => vault.recent.value.map((row) => row.id),
+  (ids) => {
+    if (editing.value && !ids.includes(editing.value)) {
+      editing.value = null
+      error.value = ''
+    }
+  }
+)
 function select(row: VaultRecord) {
   emit('select')
   vault.pending.value = { ...row }
@@ -14,128 +45,331 @@ function time(value: number) {
 <template>
   <section class="session-history" :aria-label="tx('本次会话')">
     <div class="session-heading">
-      <strong
-        >{{ tx('本次会话') }} <span>{{ vault.recent.value.length }}</span></strong
+      <h2>
+        {{ tx('本次会话') }} <span class="session-count">{{ vault.recent.value.length }}</span>
+      </h2>
+      <UButton
+        color="neutral"
+        variant="ghost"
+        icon="i-lucide-trash-2"
+        class="session-clear"
+        :disabled="!vault.recent.value.length"
+        @click="vault.clearRecent"
       >
-      <button class="text-action" :disabled="!vault.recent.value.length" @click="vault.clearRecent">
         {{ tx('清空') }}
-      </button>
+      </UButton>
     </div>
-    <div
-      class="session-body"
-      :class="{ 'is-empty': !vault.recent.value.length }"
-      :style="{ height: `${Math.min(vault.recent.value.length * 2.75, 10)}rem` }"
-      :inert="!vault.recent.value.length"
-      :aria-hidden="!vault.recent.value.length"
+    <Transition
+      name="session-reveal"
+      @before-leave="(element) => element.setAttribute('inert', '')"
     >
-      <div v-if="vault.recent.value.length" class="session-rows">
-        <button
-          v-for="row in vault.recent.value"
-          :key="row.id"
-          class="session-row"
-          @click="select(row)"
-        >
-          <time>{{ time(row.usedAt) }}</time>
-          <span class="session-label">{{ row.label || row.issuer || tx('未命名记录') }}</span>
-          <code>{{ row.secret.slice(0, 4) }}••••{{ row.secret.slice(-4) }}</code>
-          <UIcon name="i-lucide-arrow-up-right" />
-        </button>
+      <div v-if="vault.recent.value.length" class="session-content">
+        <div class="session-content-clip">
+          <div
+            class="session-body"
+            :style="{ '--session-count': Math.min(vault.recent.value.length, 3) }"
+          >
+            <div class="session-rows">
+              <div v-for="row in vault.recent.value" :key="row.id" class="session-row">
+                <time>{{ time(row.usedAt) }}</time>
+                <form
+                  v-if="editing === row.id"
+                  class="session-name session-name-editor"
+                  autocomplete="off"
+                  @submit.prevent="save"
+                >
+                  <input
+                    v-model="label"
+                    type="text"
+                    name="session-record-label"
+                    class="session-name-input"
+                    :aria-label="tx('标签')"
+                    autocomplete="off"
+                    data-1p-ignore
+                    maxlength="120"
+                    @keydown.esc="editing = null"
+                  />
+                  <button
+                    type="submit"
+                    class="session-icon"
+                    :aria-label="tx('保存')"
+                    :disabled="vault.busy.value"
+                  >
+                    <UIcon name="i-lucide-check" />
+                  </button>
+                  <button
+                    type="button"
+                    class="session-icon"
+                    :aria-label="tx('取消')"
+                    @click="editing = null"
+                  >
+                    <UIcon name="i-lucide-x" />
+                  </button>
+                </form>
+                <div v-else class="session-name">
+                  <button class="session-label" @click="select(row)">
+                    {{ row.label || row.issuer || tx('未命名记录') }}
+                  </button>
+                  <button
+                    class="session-icon session-edit"
+                    :aria-label="tx('编辑记录')"
+                    @click="edit(row)"
+                  >
+                    <UIcon name="i-lucide-pencil" />
+                  </button>
+                </div>
+                <code>{{ row.secret.slice(0, 4) }}••••{{ row.secret.slice(-4) }}</code>
+                <button
+                  class="session-open session-icon"
+                  :aria-label="tx('取码')"
+                  @click="select(row)"
+                >
+                  <UIcon name="i-lucide-arrow-up-right" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </Transition>
+    <p v-if="error" class="inline-error" role="alert">{{ tx(error) }}</p>
   </section>
 </template>
 <style scoped>
 .session-history {
+  grid-column: 1 / -1;
+  --session-row-height: 4rem;
   flex-basis: 100%;
   min-width: 0;
-  padding-top: 0.75rem;
+  padding-top: 0.5rem;
   border-top: 1px solid var(--ui-border);
 }
 .session-heading {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  font-size: var(--text-label);
+  gap: 0.75rem;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
-.session-heading strong {
-  color: var(--ui-text-highlighted);
-}
-.session-heading span,
-.session-history p {
-  color: var(--ui-text-muted);
-}
-.session-heading button {
-  margin-inline-start: auto;
-}
-.session-history p {
-  margin: 0;
-  min-height: 2.75rem;
+.session-heading h2 {
   display: flex;
   align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: var(--text-section);
+  font-weight: 600;
+  color: var(--ui-text-highlighted);
+}
+.session-count {
+  min-width: 1.5rem;
+  padding: 0.0625rem 0.375rem;
+  background: var(--wash);
+  line-height: 1.4;
+  text-align: center;
+  font-size: var(--text-label);
+  font-variant-numeric: tabular-nums;
+  color: var(--ui-text-muted);
+}
+.session-heading .session-clear {
+  min-height: 2.75rem;
+  padding-inline: 0.75rem;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--ui-text-muted);
+  transform: none;
   font-size: var(--text-label);
 }
+.session-heading .session-clear:hover:not(:disabled) {
+  background: transparent;
+  color: var(--ui-text-highlighted);
+}
+.session-heading .session-clear:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: -2px;
+}
+.session-content {
+  display: grid;
+  grid-template-rows: 1fr;
+}
+.session-content-clip {
+  min-height: 0;
+  overflow: hidden;
+}
+.session-reveal-enter-active,
+.session-reveal-leave-active {
+  transition:
+    grid-template-rows 200ms var(--ease-out),
+    opacity 200ms var(--ease-out);
+}
+.session-reveal-enter-from,
+.session-reveal-leave-to {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+.session-reveal-leave-active {
+  pointer-events: none;
+}
 .session-body {
+  height: calc(var(--session-count) * var(--session-row-height));
   margin-top: 0.5rem;
   overflow: hidden;
-  transition:
-    height 240ms cubic-bezier(0.22, 1, 0.36, 1),
-    margin-top 240ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-.session-body.is-empty {
-  margin-top: 0;
+  transition: height 200ms var(--ease-out);
 }
 .session-rows {
   height: 100%;
   overflow-y: auto;
   scrollbar-gutter: stable;
-  animation: session-appear 240ms ease-out;
 }
 .session-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto 1.25rem;
+  grid-template-rows: auto auto;
   align-items: center;
-  gap: 1rem;
+  gap: 0.125rem 1rem;
   width: 100%;
-  height: 2.75rem;
+  height: var(--session-row-height);
   padding: 0.625rem 0;
-  border-top: 1px solid var(--ui-border);
+  background: transparent;
+  border-radius: 0;
+  border-bottom: 1px solid var(--ui-border);
   text-align: start;
-  font-size: var(--text-label);
+  font-size: var(--text-body);
   cursor: pointer;
 }
+.session-row:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: -2px;
+}
 .session-row:hover {
-  background: var(--wash);
+  background: transparent;
+}
+.session-row:hover .session-label,
+.session-row:hover > .iconify {
+  color: var(--accent-ink);
 }
 .session-row time {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  font-size: var(--text-label);
   color: var(--ui-text-muted);
 }
-@keyframes session-appear {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+.session-row code {
+  grid-column: 1;
+  grid-row: 2;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  color: var(--ui-text-muted);
+  white-space: nowrap;
+}
+.session-row time {
+  font-variant-numeric: tabular-nums;
+}
+.session-row > .session-open {
+  grid-column: 3;
+  grid-row: 1 / 3;
+  color: var(--ui-text-muted);
+}
+.session-row:last-child {
+  border-bottom: 0;
 }
 @media (prefers-reduced-motion: reduce) {
-  .session-body {
+  .session-body,
+  .session-reveal-enter-active,
+  .session-reveal-leave-active {
     transition: none;
-  }
-  .session-rows {
-    animation: none;
   }
 }
 .session-label {
-  flex: 1;
+  grid-column: 1;
+  grid-row: 1;
+  color: var(--ui-text-highlighted);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.session-name {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-width: 0;
+}
+.session-label {
+  min-width: 0;
+  text-align: start;
+}
+.session-icon {
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  flex-shrink: 0;
+  color: var(--ui-text-muted);
+}
+.session-icon:hover {
+  color: var(--accent-ink);
+}
+.session-icon:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 2px;
+}
+.session-edit :deep(.iconify) {
+  width: 16px;
+  height: 16px;
+}
+.session-edit {
+  opacity: 0;
+}
+.session-row:hover .session-edit,
+.session-name:focus-within .session-edit {
+  opacity: 1;
+}
+.session-name-editor {
+  justify-self: start;
+  width: max-content;
+  max-width: 100%;
+}
+.session-name-input {
+  flex: 0 1 12ch;
+  min-width: 0;
+  width: 12ch;
+  height: 1.75rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  background: var(--ui-bg-elevated);
+  border: 1px solid var(--ui-border-accented);
+  padding: 0 0.375rem;
+}
+.session-name-input:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: -2px;
+}
+@media (hover: none), (pointer: coarse) {
+  .session-edit {
+    opacity: 1;
+  }
+}
 @media (max-width: 700px) {
+  .session-heading h2 {
+    font-size: var(--text-body);
+  }
   .session-history {
+    --session-row-height: 4rem;
     padding-inline: 0;
   }
   .session-row {
-    gap: 0.5rem;
+    grid-template-columns: minmax(0, 1fr) auto 1rem;
+    gap: 0.25rem 0.5rem;
+  }
+  .session-row code {
+    grid-row: 2;
+    grid-column: 1;
+  }
+  .session-row > .session-open {
+    grid-column: 3;
+    grid-row: 1 / 3;
   }
 }
 </style>

@@ -1,9 +1,10 @@
 import { createCredential, getCredential, matches, validateRequest } from './webauthn.js'
 import { checkPassword, mergeRecords, publicRecords, seal, unseal } from './vault.js'
 import { exportBitwarden, parseImport } from './migration.js'
-import { isCompanionOrigin } from './site-access.js'
+import { createCompanion } from './companion.js'
 
 const uiUrl = chrome.runtime.getURL('ui.html')
+const companion = createCompanion(chrome, uiUrl)
 // Never expose local/session storage to content scripts.
 const storageReady = Promise.all([
   chrome.storage.local.setAccessLevel({ accessLevel: 'TRUSTED_CONTEXTS' }),
@@ -38,26 +39,7 @@ async function handle(message, sender) {
   await storageReady
   if (!message || typeof message.action !== 'string') throw new Error('请求不正确。')
   const { action } = message
-  if (action === 'site-status' || action === 'site-open') {
-    if (
-      sender.id !== chrome.runtime.id ||
-      sender.frameId !== 0 ||
-      !sender.tab ||
-      !sender.documentId ||
-      !isCompanionOrigin(sender.origin) ||
-      new URL(sender.url).origin !== sender.origin
-    )
-      throw new Error('只有本站可以连接扩展。')
-    const frame = await chrome.webNavigation.getFrame({ tabId: sender.tab.id, frameId: 0 })
-    if (
-      !frame ||
-      frame.documentId !== sender.documentId ||
-      new URL(frame.url).origin !== sender.origin
-    )
-      throw new Error('来源网站已经改变，请刷新页面。')
-    if (action === 'site-open') await chrome.runtime.openOptionsPage()
-    return { version: chrome.runtime.getManifest().version }
-  }
+  if (action.startsWith('site-')) return companion.site(message, sender)
   if (action === 'begin') {
     if (
       sender.id !== chrome.runtime.id ||
@@ -116,13 +98,33 @@ async function handle(message, sender) {
     }
     return { done: false }
   }
-  // Page-world messages can never invoke any management operation.
+  // Mutations and vault decryption still require the extension's own trusted UI.
   if (!internal(sender)) throw new Error('只有扩展管理页可以执行此操作。')
+  const management = message.companion ? await companion.requireRequest(message.companion) : null
+  if (management) {
+    const allowed = {
+      list: [],
+      import: ['inspect', 'import'],
+      export: ['export'],
+      remove: ['remove']
+    }
+    if (
+      !['status', 'setup', 'list', 'companion-finish'].includes(action) &&
+      !allowed[management.operation].includes(action)
+    )
+      throw new Error('此窗口不能执行该操作。')
+    if (['export', 'remove'].includes(action)) message = { ...message, ids: management.ids }
+  }
   if (action === 'status') {
     const r = message.token ? await requireRequest(message.token) : null
     return {
       exists: !!(await load()),
       paused: !!(await chrome.storage.local.get('paused')).paused,
+      companion: management && {
+        operation: management.operation,
+        ids: management.ids,
+        origin: management.origin
+      },
       request: r && {
         kind: r.kind,
         origin: r.origin,
@@ -149,6 +151,11 @@ async function handle(message, sender) {
   const envelope = await load()
   if (!envelope) throw new Error('请先创建本地密钥库。')
   const records = await unseal(envelope, message.password)
+  if (management) await companion.requireRequest(message.companion)
+  if (action === 'companion-finish') {
+    if (!management) throw new Error('没有网站管理请求。')
+    return companion.finish(message.companion, records)
+  }
   if (action === 'list') {
     if (!message.token) return { records: publicRecords(records) }
     const r = await requireRequest(message.token)
@@ -198,6 +205,7 @@ async function handle(message, sender) {
   if (action === 'inspect' || action === 'import') {
     const incoming = await parseImport(message.text, message.backupPassword)
     const merged = mergeRecords(records, incoming.records)
+    if (management) await companion.requireRequest(message.companion)
     if (action === 'import') await update(merged.records, message.password)
     return {
       added: merged.added,
@@ -237,6 +245,7 @@ chrome.action.onClicked.addListener(() => chrome.runtime.openOptionsPage())
 chrome.windows.onRemoved.addListener((id) => {
   queue = queue
     .then(async () => {
+      await companion.cancelled(id)
       const r = await pending()
       if (r?.windowId === id && !r.result) await complete(r, { error: '用户关闭了确认窗口。' })
     })
@@ -246,6 +255,7 @@ chrome.alarms.create('expire', { periodInMinutes: 1 })
 chrome.alarms.onAlarm.addListener(() => {
   queue = queue
     .then(async () => {
+      await companion.expire()
       const r = await pending()
       if (r && r.expires + 60000 < Date.now()) await chrome.storage.session.remove('request')
     })

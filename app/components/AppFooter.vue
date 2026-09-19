@@ -28,7 +28,7 @@ const { tx, locale } = useMessages()
             >{{ tx('关于') }}</NuxtLink
           >
           <NuxtLink class="footer-privacy" :to="localePath('/privacy')">{{ tx('隐私') }}</NuxtLink>
-          <NuxtLink :to="localePath('/waitlist')">{{ tx('功能许愿') }}</NuxtLink>
+          <NuxtLink :to="localePath('/waitlist')">{{ tx('功能建议') }}</NuxtLink>
         </div>
         <div class="footer-contacts">
           <a

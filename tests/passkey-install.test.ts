@@ -15,5 +15,5 @@ test('installation links only use valid IDs at the official extension stores', (
     `https://microsoftedge.microsoft.com/addons/detail/${id}`
   )
   for (const id of Object.values(passkeyStoreIds)) assert.ok(id === '' || /^[a-p]{32}$/.test(id))
-  assert.deepEqual(pageLocales('/passkeys'), ['en', 'zh-CN', 'zh-TW'])
+  assert.deepEqual(pageLocales('/passkeys'), [])
 })

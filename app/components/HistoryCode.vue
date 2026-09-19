@@ -20,37 +20,92 @@ async function copyCode() {
 <template>
   <div class="history-code">
     <button
-      class="text-action"
+      class="history-code-copy"
       :disabled="!code || !!error || working"
       :aria-label="tx('复制验证码')"
       @click="copyCode"
     >
-      <span class="mono">{{ code ? groupCode(code) : '— — —' }}</span>
+      <span class="mono" :style="{ width: `${config.digits + (config.digits === 5 ? 0 : 1)}ch` }">{{
+        code ? groupCode(code) : '— — —'
+      }}</span>
       <UIcon :name="copied ? 'i-lucide-check' : 'i-lucide-copy'" />
     </button>
-    <small v-if="code">{{ remaining }}s</small>
+    <small class="history-countdown" :class="{ expiring: code && remaining <= 5 }"
+      >{{ code ? String(remaining).padStart(2, '0') : '—' }}s</small
+    >
     <span v-if="copied" class="sr-only" role="status">{{ tx('验证码已复制') }}</span>
-    <small v-if="error || message" role="alert">{{ tx(error || message) }}</small>
+    <small v-if="error || message" class="history-code-message" role="alert">{{
+      tx(error || message)
+    }}</small>
   </div>
 </template>
 <style scoped>
 .history-code {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 4ch;
   align-items: center;
-  flex-wrap: wrap;
   gap: 0.5rem;
+  direction: ltr;
+  flex-shrink: 0;
 }
-.history-code button {
-  display: inline-flex;
+.history-code-copy {
+  display: inline-grid;
+  grid-template-columns: auto 1rem;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.625rem;
   min-height: 44px;
+  padding: 0.375rem 0.625rem;
+  border: 2px solid var(--ore-outline);
+  background: var(--wash);
+  box-shadow: var(--ore-bevel);
+  color: var(--ui-text-highlighted);
+  cursor: pointer;
+}
+.history-code-copy:hover:not(:disabled) {
+  background: var(--ore-control);
+}
+.history-code-copy:focus-visible {
+  outline: 2px solid var(--ui-primary);
+  outline-offset: 3px;
+}
+.history-code-copy :deep(.iconify) {
+  width: 1rem;
+  height: 1rem;
+  color: var(--ui-text-muted);
 }
 .history-code .mono {
+  display: block;
   font-size: 1.5rem;
-  white-space: nowrap;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  white-space: pre;
+  text-align: center;
 }
-.history-code small {
+.history-countdown {
+  display: block;
+  width: 4ch;
+  text-align: end;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
   color: var(--ui-text-muted);
+}
+.history-countdown.expiring {
+  color: var(--ui-warning);
+}
+.history-code-message {
+  grid-column: 1 / -1;
+  font-size: var(--text-caption);
+  max-width: 24rem;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 600px) {
+  .history-code .mono {
+    font-size: 1.25rem;
+  }
+  .history-code-copy {
+    gap: 0.5rem;
+    padding-inline: 0.5rem;
+  }
 }
 </style>

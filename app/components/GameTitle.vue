@@ -1,4 +1,6 @@
 <script setup lang="ts">
+defineProps<{ splash?: string }>()
+
 const titleId = useId()
 const faceId = `${titleId}-face`
 const clipId = `${titleId}-clip`
@@ -41,13 +43,20 @@ const stoneId = `${titleId}-stone`
       </g>
       <path class="game-title-shine" d="M1 1H19M33 1H51M65 1H75" />
     </svg>
-    <svg class="game-title-splash" viewBox="-1 -1 22 10" focusable="false">
+    <svg
+      v-if="!splash"
+      class="game-title-splash hot-splash"
+      viewBox="-1 -1 22 10"
+      focusable="false"
+    >
       <!-- One-pixel stems and open counters keep the splash lighter than the title. -->
       <path
         fill-rule="evenodd"
         d="M0 6h1v1H0ZM3 0h1v3h1V2h2v1h1v4H7V3H5v1H4v3H3ZM11 2h3v1h1v3h-1v1h-3V6h-1V3h1Zm0 1v3h3V3ZM18 0h1v2h2v1h-2v3h2v1h-2V6h-1V3h-1V2h1Z"
       />
     </svg>
+    <span v-if="splash" class="game-title-splash message-splash fixed-splash">{{ splash }}</span>
+    <span v-else class="game-title-splash message-splash" />
   </span>
 </template>
 
@@ -105,6 +114,30 @@ const stoneId = `${titleId}-stone`
   transform-origin: center;
   animation: title-splash 500ms linear infinite;
 }
+:global(html[data-brand-splash='message'] .hot-splash) {
+  display: none;
+}
+.message-splash {
+  display: none;
+  left: 8.75rem;
+  top: 3.35rem;
+  width: 10.5rem;
+  color: oklch(0.968 0.211 109.77);
+  font-family: 'VT323', monospace;
+  font-size: 2.25rem;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+}
+:global(html[data-brand-splash='message'] .message-splash) {
+  display: block;
+}
+.fixed-splash {
+  display: block;
+}
+.message-splash:not(.fixed-splash)::after {
+  content: var(--brand-splash-message, '');
+}
 @keyframes title-splash {
   0%,
   100% {
@@ -138,6 +171,14 @@ const stoneId = `${titleId}-stone`
     left: 8.75rem;
     top: 2.65rem;
     width: 4.75rem;
+  }
+}
+@media (max-width: 600px), (max-height: 500px) and (pointer: coarse) {
+  .message-splash {
+    left: 6.25rem;
+    top: 2.8rem;
+    font-size: 1.875rem;
+    width: 9.5rem;
   }
 }
 @media (prefers-reduced-motion: reduce) {

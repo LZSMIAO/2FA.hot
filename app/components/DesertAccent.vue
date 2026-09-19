@@ -1,7 +1,14 @@
 <script setup lang="ts">
 import scene from '~/assets/art/desert-interactive.svg?raw'
+const props = defineProps<{ open: boolean }>()
 const { tx } = useMessages()
 const active = shallowRef(false)
+watch(
+  () => props.open,
+  () => {
+    active.value = false
+  }
+)
 const month = shallowRef(0)
 const line = computed(() => {
   if (month.value >= 3 && month.value <= 5) return '啊，天气好热啊，明明是春天。'
@@ -20,7 +27,7 @@ function hoverGreet() {
 }
 </script>
 <template>
-  <div class="desert-accent">
+  <div class="desert-accent" :class="{ 'is-open': open }" :inert="!open" :aria-hidden="!open">
     <button
       type="button"
       class="desert-scene"
@@ -44,19 +51,35 @@ function hoverGreet() {
 <style scoped>
 .desert-accent {
   position: relative;
-  height: 11rem;
+  height: 7rem;
+  align-self: start;
+  opacity: 0;
+  visibility: hidden;
   pointer-events: none;
+  transition:
+    height 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 200ms ease,
+    visibility 0s 200ms;
+}
+.desert-accent.is-open {
+  height: 14.5rem;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    height 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 240ms ease,
+    visibility 0s;
 }
 .desert-scene {
   position: absolute;
-  top: calc(50% - 0.5rem);
+  top: -2.25rem;
   left: 50%;
   width: 100%;
-  height: 13.5rem;
+  height: 17rem;
   padding: 0;
   border: 0;
   background: transparent;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   pointer-events: none;
   cursor: default;
 }
@@ -87,7 +110,7 @@ function hoverGreet() {
   background: var(--panel);
   color: var(--ui-text-highlighted);
   box-shadow: var(--ore-window-shadow);
-  font-size: var(--text-label);
+  font-size: 0.75rem;
   line-height: 1.6;
   pointer-events: none;
 }
@@ -96,12 +119,19 @@ function hoverGreet() {
   outline-offset: 2px;
 }
 @media (max-width: 700px) {
-  .desert-accent {
-    height: 9rem;
+  .desert-accent,
+  .desert-accent.is-open {
+    height: 11rem;
   }
   .desert-scene {
-    top: calc(50% - 0.25rem);
-    height: 10.5rem;
+    top: -1.5rem;
+    height: 12.5rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .desert-accent,
+  .desert-accent.is-open {
+    transition: none;
   }
 }
 </style>

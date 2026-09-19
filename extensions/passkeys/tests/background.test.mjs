@@ -1,5 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
+import { createCredential } from '../src/webauthn.js'
+import { seal } from '../src/vault.js'
 import { encode, random } from '../src/encoding.js'
 const local = {},
   session = {}
@@ -99,7 +101,7 @@ test('website bridge only exposes the version and locked manager to the companio
   const companion = { ...website, origin, url: `${origin}/passkeys`, documentId: 'site-document' }
   frame = { url: companion.url, documentId: companion.documentId }
   const status = await send({ action: 'site-status' }, companion)
-  assert.deepEqual(status, { ok: true, version: '0.2.0' })
+  assert.deepEqual(status, { ok: true, version: '0.2.0', managerProtocol: 1 })
   assert.equal((await send({ action: 'site-open' }, companion)).ok, true)
   assert.equal(opened, 1)
   for (const sender of [
@@ -118,4 +120,85 @@ test('website bridge only exposes the version and locked manager to the companio
       (await send({ action, password: 'background-test-password' }, companion)).ok,
       false
     )
+})
+
+test('website management requires approval, binds documents and never returns secrets', async () => {
+  const origin = 'http://localhost:3001'
+  const caller = { ...website, origin, url: `${origin}/zh-CN`, documentId: 'manager-document' }
+  frame = { url: caller.url, documentId: caller.documentId }
+  const password = 'background-test-password'
+  const created = await createCredential(request().options, 'https://example.com')
+  local.vault = await seal([created.record], password)
+  const start = await send({ action: 'site-manage', operation: 'list' }, caller)
+  assert.ok(start.token)
+  assert.equal((await send({ action: 'site-result', token: start.token }, caller)).done, false)
+  assert.equal((await send({ action: 'site-manage', operation: 'list' }, caller)).ok, false)
+  for (const foreign of [
+    { ...caller, tab: { id: 2 } },
+    { ...caller, documentId: 'other' },
+    website
+  ]) {
+    assert.equal((await send({ action: 'site-result', token: start.token }, foreign)).ok, false)
+    assert.equal((await send({ action: 'site-cancel', token: start.token }, foreign)).ok, false)
+  }
+  assert.equal(
+    (await send({ action: 'companion-finish', companion: start.token, password }, caller)).ok,
+    false
+  )
+  assert.equal(
+    (await send({ action: 'remove', companion: start.token, password, ids: ['anything'] })).ok,
+    false
+  )
+  assert.equal(
+    (await send({ action: 'companion-finish', companion: start.token, password: 'wrong' })).ok,
+    false
+  )
+  assert.equal(
+    (await send({ action: 'companion-finish', companion: start.token, password })).ok,
+    true
+  )
+  const result = await send({ action: 'site-result', token: start.token }, caller)
+  assert.equal(result.records.length, 1)
+  assert.deepEqual(Object.keys(result.records[0]).sort(), [
+    'createdAt',
+    'credentialId',
+    'lastUsedAt',
+    'rpId',
+    'userDisplayName',
+    'userName'
+  ])
+  assert.equal(JSON.stringify(result).includes(created.record.privateKey), false)
+  assert.equal(JSON.stringify(result).includes(password), false)
+  assert.equal((await send({ action: 'site-result', token: start.token }, caller)).ok, false)
+  assert.equal(session.companion, undefined)
+  const navigation = await send(
+    {
+      action: 'site-manage',
+      operation: 'remove',
+      ids: [`${created.record.rpId}:${created.record.credentialId}`]
+    },
+    caller
+  )
+  frame.documentId = 'navigated'
+  assert.equal((await send({ action: 'remove', companion: navigation.token, password })).ok, false)
+  frame.documentId = caller.documentId
+  assert.equal(
+    (await send({ action: 'site-cancel', token: navigation.token }, caller)).cancelled,
+    true
+  )
+  assert.equal(
+    (await send({ action: 'companion-finish', companion: navigation.token, password })).ok,
+    false
+  )
+  const expiring = await send({ action: 'site-manage', operation: 'list' }, caller)
+  session.companion.expires = Date.now() - 1
+  assert.equal(
+    (await send({ action: 'companion-finish', companion: expiring.token, password })).ok,
+    false
+  )
+  assert.equal(
+    (await send({ action: 'site-result', token: expiring.token }, caller)).cancelled,
+    true
+  )
+  assert.equal((await send({ action: 'list', password })).records.length, 1)
 })

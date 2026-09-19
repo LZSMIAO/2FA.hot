@@ -1,0 +1,9 @@
+{
+  "version": "0.3.0",
+  "download": "/downloads/passkeys/2fa-hot-passkeys-0.3.0.zip",
+  "localDownload": "/downloads/passkeys/2fa-hot-passkeys-0.3.0-preview.zip",
+  "source": "/downloads/passkeys/2fa-hot-passkeys-0.3.0-source.zip",
+  "sha256": "ee3d0eaef4c1b505abac70d157c1c89dba4b92b52679c9f1fbc857ee230dac88",
+  "localSha256": "9fc783bdddcd2e59f8422794996047351626affbe3f7c37cc62878f8baa5a901",
+  "sourceSha256": "d157eb11f89c12021a0864794e40632d6a4c383b10ddcb0847622a9390c938fc"
+}

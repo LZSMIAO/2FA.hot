@@ -1,5 +1,49 @@
 <script setup lang="ts">
 const { tx } = useMessages()
+const scenes = ['1.21', '1.20.1', '1.19.4', '1.18.2', '1.17.1', '1.16.5', '1.14.4'] as const
+const selected = useCookie<string>('2fa-panorama', {
+  default: () => '1.20.1',
+  maxAge: 31536000,
+  sameSite: 'lax'
+})
+const scene = computed(() =>
+  scenes.includes(selected.value as (typeof scenes)[number]) ? selected.value : '1.20.1'
+)
+function faceUrl(version: string, face: number) {
+  return `/panorama/${version === '1.20.1' ? '' : `${version}/`}panorama_${face}.png`
+}
+const loading = shallowRef(false)
+const loadError = shallowRef(false)
+let disposed = false
+async function changeScene(version: string) {
+  if (loading.value || version === scene.value) return
+  loading.value = true
+  loadError.value = false
+  try {
+    await Promise.all(
+      Array.from({ length: 6 }, async (_, face) => {
+        const image = new Image()
+        image.src = faceUrl(version, face)
+        await image.decode()
+      })
+    )
+    if (!disposed) selected.value = version
+  } catch {
+    if (!disposed) loadError.value = true
+  } finally {
+    if (!disposed) loading.value = false
+  }
+}
+const sceneItems = computed(() =>
+  scenes.map((version) => ({
+    label: `Minecraft ${version}`,
+    version,
+    type: 'checkbox' as const,
+    checked: scene.value === version,
+    disabled: loading.value,
+    onSelect: () => changeScene(version)
+  }))
+)
 const paused = shallowRef(true)
 const mobileMotion = shallowRef(false)
 const cube = useTemplateRef<HTMLElement>('cube')
@@ -22,32 +66,15 @@ function rotateFrame(now: number) {
   }
   frame = requestAnimationFrame(rotateFrame)
 }
-const animationPreferenceKey = '2fa-hot:background-animation'
-let explicitPreference = false
+// Every page load starts still, regardless of earlier playback preferences.
 function toggleAnimation() {
   paused.value = !paused.value
-  explicitPreference = true
-  try {
-    localStorage.setItem(animationPreferenceKey, paused.value ? 'paused' : 'running')
-  } catch {}
-}
-function restoreAnimation() {
-  let saved: string | null = null
-  try {
-    saved = localStorage.getItem(animationPreferenceKey)
-  } catch {}
-  explicitPreference = saved === 'paused' || saved === 'running'
-  paused.value = explicitPreference ? saved === 'paused' : !!mobile?.matches
-}
-function syncAnimation(event: StorageEvent) {
-  if (event.key === animationPreferenceKey || event.key === null) restoreAnimation()
 }
 const hidden = shallowRef(false)
 const ready = shallowRef(false)
 let mobile: MediaQueryList | undefined
 function updateMobile() {
   mobileMotion.value = !!mobile?.matches
-  if (!explicitPreference) paused.value = !!mobile?.matches
 }
 const reduced = shallowRef(false)
 let preference: MediaQueryList | undefined
@@ -59,9 +86,7 @@ function updatePreference() {
 }
 onMounted(() => {
   mobile = window.matchMedia('(max-width: 700px), (max-height: 500px) and (pointer: coarse)')
-  restoreAnimation()
   updateMobile()
-  window.addEventListener('storage', syncAnimation)
   mobile.addEventListener('change', updateMobile)
   ready.value = true
   preference = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -80,8 +105,8 @@ watch(
   { flush: 'post' }
 )
 onBeforeUnmount(() => {
+  disposed = true
   stopFrame()
-  window.removeEventListener('storage', syncAnimation)
   mobile?.removeEventListener('change', updateMobile)
   preference?.removeEventListener('change', updatePreference)
   document.removeEventListener('visibilitychange', updateVisibility)
@@ -105,26 +130,95 @@ onBeforeUnmount(() => {
           :key="face"
           class="panorama-face"
           :class="`face-${face - 1}`"
-          :style="{ backgroundImage: `url(/panorama/panorama_${face - 1}.png)` }"
+          :style="{ backgroundImage: `url(${faceUrl(scene, face - 1)})` }"
         />
       </div>
     </div>
     <div class="panorama-light" />
     <div class="panorama-shade" />
   </div>
-  <button
-    v-if="ready && !reduced"
-    class="panorama-control"
-    :aria-label="tx(paused ? '继续' : '暂停')"
-    :title="tx(paused ? '继续' : '暂停')"
-    :aria-pressed="paused"
-    @click="toggleAnimation"
-  >
-    <UIcon :name="paused ? 'i-lucide-play' : 'i-lucide-pause'" />
-  </button>
+  <div v-if="ready" class="panorama-controls">
+    <UDropdownMenu
+      :items="sceneItems"
+      :modal="false"
+      :content="{ side: 'top', align: 'end', sideOffset: 8 }"
+      :ui="{
+        content: 'panorama-menu',
+        viewport: 'panorama-menu-viewport',
+        item: 'panorama-menu-item',
+        itemTrailingIcon: 'text-primary size-4'
+      }"
+    >
+      <button
+        class="panorama-control"
+        :disabled="loading"
+        :aria-label="tx('切换背景')"
+        :title="tx('切换背景')"
+      >
+        <UIcon
+          :name="loading ? 'i-lucide-loader-circle' : 'i-lucide-image'"
+          :class="{ 'animate-spin': loading }"
+        />
+      </button>
+      <template #item-leading="{ item }">
+        <img
+          :src="`/panorama/previews/${item.version}.png`"
+          class="panorama-preview"
+          alt=""
+          width="48"
+          height="32"
+        />
+      </template>
+    </UDropdownMenu>
+    <button
+      v-if="!reduced"
+      class="panorama-control"
+      :aria-label="tx(paused ? '继续' : '暂停')"
+      :title="tx(paused ? '继续' : '暂停')"
+      :aria-pressed="!paused"
+      @click="toggleAnimation"
+    >
+      <UIcon :name="paused ? 'i-lucide-play' : 'i-lucide-pause'" />
+    </button>
+  </div>
+  <ActionHint
+    :open="loadError"
+    :message="tx('无法完成操作，请重试。')"
+    icon="i-lucide-circle-alert"
+    @close="loadError = false"
+  />
 </template>
 
 <style scoped>
+.panorama-preview {
+  width: 48px;
+  height: 32px;
+  flex-shrink: 0;
+  object-fit: cover;
+  border: 1px solid var(--ui-border);
+  image-rendering: pixelated;
+}
+:global(.panorama-menu) {
+  width: 208px;
+  min-width: 0;
+  max-width: calc(100vw - 24px);
+}
+:global(.panorama-menu-viewport) {
+  max-height: min(232px, var(--reka-dropdown-menu-content-available-height, 60vh));
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-width: thin;
+}
+:global(.panorama-menu-item) {
+  min-height: 44px;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  font-size: 13px;
+}
+:global(.panorama-menu-item[data-state='checked']) {
+  background: var(--wash);
+}
 .title-panorama {
   isolation: isolate;
   --face-size: max(100vw, 100svh);
@@ -205,11 +299,15 @@ onBeforeUnmount(() => {
 .paused .panorama-light {
   animation-play-state: paused;
 }
-.panorama-control {
+.panorama-controls {
   position: fixed;
   right: 1rem;
   bottom: 1rem;
   z-index: 10;
+  display: flex;
+  gap: 0.375rem;
+}
+.panorama-control {
   display: flex;
   align-items: center;
   gap: 0.375rem;
@@ -234,9 +332,6 @@ onBeforeUnmount(() => {
   .panorama-cube,
   .panorama-light {
     animation: none;
-  }
-  .panorama-control {
-    display: none;
   }
 }
 .mobile-motion .panorama-cube {
@@ -271,11 +366,13 @@ onBeforeUnmount(() => {
   .panorama-shade {
     transform: translateZ(0);
   }
-  .panorama-control {
+  .panorama-controls {
     position: absolute;
     right: 0.5rem;
     top: 5rem;
     bottom: auto;
+  }
+  .panorama-control {
     width: 2.75rem;
     min-height: 2.75rem;
     border: 0;

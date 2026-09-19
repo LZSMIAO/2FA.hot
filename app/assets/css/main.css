@@ -421,7 +421,8 @@ code {
   background: var(--panel);
   min-height: 23rem;
 }
-.input-panel {
+.input-panel,
+.batch-input {
   display: flex;
   flex-direction: column;
   padding: 2rem;
@@ -452,6 +453,29 @@ code {
   font-size: var(--text-body);
   line-height: 1.5;
   font-weight: 600;
+}
+.section-heading .workspace-title {
+  font-family:
+    system-ui,
+    -apple-system,
+    'PingFang SC',
+    'Microsoft YaHei',
+    sans-serif;
+  font-size: 1.375rem;
+  line-height: 1.4;
+}
+@media (min-width: 701px) and (min-height: 501px), (min-width: 701px) and (pointer: fine) {
+  .batch-workspace .batch-input {
+    padding-top: 2.5rem;
+  }
+  .batch-input .section-heading {
+    margin-bottom: 0.75rem;
+  }
+}
+@media (max-width: 700px) {
+  .section-heading .workspace-title {
+    font-size: 1.25rem;
+  }
 }
 .small-label {
   font-size: var(--text-caption);
@@ -496,25 +520,11 @@ code {
   min-height: 2.75rem;
   text-align: start;
 }
-.parameter-summary {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--ui-text-muted);
-  font-size: var(--text-caption);
-}
-.disclosure-icon {
-  transition: transform 200ms var(--ease-out);
-  flex-shrink: 0;
-}
-.disclosure-icon.expanded {
-  transform: rotate(180deg);
-}
 .option-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.5rem;
-  margin: 0.75rem 0 0.25rem;
+  margin: 0.75rem 0 0;
 }
 .option-grid label {
   display: block;
@@ -602,29 +612,41 @@ html.light .workspace .parameter-moon {
   border-radius: var(--ui-radius);
   color: var(--ui-text-muted);
 }
+/* One card snapshot keeps its contents together instead of resizing five layers. */
 ::view-transition-group(otp-result) {
-  animation-duration: 360ms;
-  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-duration: 280ms;
+  animation-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 ::view-transition-old(otp-result),
+::view-transition-old(root) {
+  display: none;
+}
+/* Preserve the external bevel throughout resizing, including the final frame. */
+::view-transition-image-pair(otp-result) {
+  overflow: visible;
+}
 ::view-transition-new(otp-result) {
   height: 100%;
-  overflow: clip;
-  border-radius: var(--ui-radius);
-  animation-duration: 240ms;
+  overflow: visible;
+  mix-blend-mode: normal;
+  animation: none;
+}
+/* Keep the help link visible until the size transition has finished. */
+::view-transition-group(otp-help),
+::view-transition-old(otp-help),
+::view-transition-new(otp-help) {
+  animation: none;
 }
 ::view-transition-group(root),
-::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;
 }
-.result-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: var(--text-caption);
-  font-weight: 400;
-  color: var(--ui-text-muted);
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
 }
 .otp-digits {
   font-family: var(--font-sans);
@@ -795,28 +817,6 @@ html.light .workspace .parameter-moon {
 .workspace-foot a:hover {
   color: var(--accent-ink);
 }
-.tool-notes {
-  border-top: 1px solid var(--ui-border);
-  margin-top: 0.75rem;
-  padding-top: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  font-size: var(--text-label);
-  color: var(--ui-text-muted);
-}
-.tool-notes p {
-  max-width: 42ch;
-  margin: 0;
-}
-.tool-notes a {
-  display: inline-flex;
-  gap: 0.5rem;
-  align-items: center;
-  white-space: nowrap;
-  min-height: 2.75rem;
-}
 #main-content:has(> .content-page) {
   padding-block: 2rem;
 }
@@ -960,6 +960,7 @@ html.light .workspace .parameter-moon {
     padding: 2.5rem 1.5rem 0;
   }
   .input-panel,
+  .batch-input,
   .result-panel {
     padding: 1.5rem;
   }
@@ -1012,7 +1013,8 @@ html.light .workspace .parameter-moon {
   .workspace {
     grid-template-columns: 1fr;
   }
-  .input-panel {
+  .input-panel,
+  .batch-input {
     padding: 1.5rem;
   }
   .result-panel {
@@ -1031,11 +1033,6 @@ html.light .workspace .parameter-moon {
     align-items: flex-start;
     flex-direction: column;
     gap: 0.125rem;
-  }
-  .tool-notes {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 0.5rem;
   }
   .site-footer {
     margin-top: 2.5rem;
@@ -1062,14 +1059,12 @@ html.light .workspace .parameter-moon {
   .home {
     padding-inline: 1rem;
   }
-  .input-panel {
+  .input-panel,
+  .batch-input {
     padding: 1.25rem;
   }
   .result-panel {
     padding: 1.25rem;
-  }
-  .parameter-summary {
-    gap: 0.25rem;
   }
   .option-grid {
     column-gap: 0.5rem;
@@ -1158,9 +1153,7 @@ html.light .workspace .parameter-moon {
 .otp-digits,
 .batch-code,
 .countdown-value,
-.parameter-summary,
 .export-value,
-.revealed-secret,
 .tutorial-secret,
 .tutorial-code-input {
   direction: ltr;
@@ -1193,9 +1186,6 @@ html.light .workspace .parameter-moon {
 }
 .advanced-toggle > span:first-child {
   min-width: 0;
-}
-.parameter-summary {
-  flex-shrink: 0;
 }
 [dir='rtl'] .countdown-fill {
   transform-origin: right;
@@ -1258,15 +1248,20 @@ html.light .workspace .parameter-moon {
 }
 
 .secret-field {
+  /* Native fonts keep initial hints, placeholder and entered text stable on refresh. */
+  --font-sans: system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  --secret-hint-font-size: var(--text-label);
   direction: ltr;
 }
-#secret::placeholder {
+#secret::placeholder,
+#batch-demo-input::placeholder {
   font-family: var(--font-sans);
+  font-size: var(--secret-hint-font-size);
+  line-height: inherit;
+  color: var(--ui-text-muted);
+  opacity: 1;
   letter-spacing: normal;
-}
-
-.parameter-digits {
-  font-family: var(--font-sans);
 }
 @media (max-width: 600px) {
   .header-actions {

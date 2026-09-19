@@ -11,8 +11,8 @@ const { tx } = useMessages()
     <NuxtLink :to="localePath('/')" class="back-link"
       ><UIcon name="i-lucide-arrow-left" />{{ tx('返回工具') }}</NuxtLink
     >
-    <h1>{{ tx('功能许愿') }}</h1>
-    <p class="article-lead">{{ tx('看看接下来想做什么，也告诉我们你想要的功能。') }}</p>
+    <h1>{{ tx('功能建议') }}</h1>
+    <p class="article-lead">{{ tx('想加什么功能，或哪里不好用？在这里提建议。') }}</p>
     <div class="waitlist-actions">
       <UButton
         :to="waitlistLinks.submit"
@@ -21,7 +21,7 @@ const { tx } = useMessages()
         rel="noopener noreferrer"
         icon="i-lucide-plus"
         class="waitlist-action waitlist-submit primary-button"
-        >{{ tx('我要许愿') }}</UButton
+        >{{ tx('提建议') }}</UButton
       >
       <UButton
         :to="waitlistLinks.browse"
@@ -31,24 +31,20 @@ const { tx } = useMessages()
         color="neutral"
         variant="outline"
         class="waitlist-action"
-        >{{ tx('查看大家的愿望') }}</UButton
+        >{{ tx('查看已有建议') }}</UButton
       >
     </div>
     <p class="waitlist-note">
-      {{ tx('将在新窗口打开 GitHub，提交需要登录，内容公开。请勿填写密钥、验证码或账号密码。') }}
+      {{ tx('将在 GitHub 打开，提交需登录。内容公开，请勿填写密钥或密码。') }}
     </p>
     <WaitlistSharing />
     <p>
-      {{
-        tx(
-          '先看看是否已有相同建议，有的话可以点赞或补充。新愿望请说明使用场景、遇到的问题和期待的效果。'
-        )
-      }}
+      {{ tx('先看看有没有相同建议。提交时说清遇到的问题和想要的改进就好。') }}
     </p>
-    <p>{{ tx('清单会持续更新，收录不代表承诺上线日期。') }}</p>
+    <p>{{ tx('列出的功能还没做好，暂无上线时间。') }}</p>
     <p>
       <a :href="waitlistLinks.markdown" target="_blank" rel="noopener noreferrer">{{
-        tx('查看 GitHub 清单')
+        tx('查看功能清单')
       }}</a>
     </p>
   </article>

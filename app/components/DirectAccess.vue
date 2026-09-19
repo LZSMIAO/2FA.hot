@@ -12,8 +12,14 @@ import SmartPasteReview from './SmartPasteReview.vue'
 const { tx } = useMessages()
 import { parseOtp, algorithmFrom, toAccessPath, identity, type OtpConfig } from '~/utils/otp'
 const expandedConfig = useState<OtpConfig | null>('expanded-otp-config', () => null)
+const expandedHistoryPreview = useState('expanded-history-preview', () => false)
+let historyPreviewIdentity =
+  expandedHistoryPreview.value && expandedConfig.value ? identity(expandedConfig.value) : ''
 onBeforeRouteLeave((to) => {
-  if (!/^\/2fa(?:\/|$)/.test(unlocalizedPath(to.path))) expandedConfig.value = null
+  if (!/^\/2fa(?:\/|$)/.test(unlocalizedPath(to.path))) {
+    expandedConfig.value = null
+    expandedHistoryPreview.value = false
+  }
 })
 const route = useRoute()
 const input = shallowRef(''),
@@ -157,7 +163,29 @@ function clear() {
   navigateTo(localePath('/'), { replace: true })
 }
 watch(() => route.fullPath, load)
-onMounted(load)
+// These routes are client-rendered; resolve before the transition captures the card.
+if (import.meta.client) load()
+const vault = useVault()
+watch(
+  vault.unlocked,
+  (unlocked) => {
+    if (
+      unlocked ||
+      !historyPreviewIdentity ||
+      (config.value && identity(config.value) !== historyPreviewIdentity)
+    )
+      return
+    historyPreviewIdentity = ''
+    config.value = null
+    input.value = ''
+    fragment.value = ''
+    expandedConfig.value = null
+    expandedHistoryPreview.value = false
+    // Remove the secret from the current URL as well as the rendered preview.
+    void navigateTo(localePath('/2fa'), { replace: true })
+  },
+  { flush: 'sync', immediate: true }
+)
 useHead({ meta: [{ name: 'referrer', content: 'no-referrer' }] })
 </script>
 <template>
@@ -216,9 +244,6 @@ useHead({ meta: [{ name: 'referrer', content: 'no-referrer' }] })
         </div>
       </template>
     </UModal>
-    <NuxtLink :to="localePath('/')" class="back-link"
-      ><UIcon name="i-lucide-arrow-left" />{{ tx('返回首页') }}</NuxtLink
-    >
     <div v-if="missing" class="direct-intro">
       <h1>{{ tx('获取验证码') }}</h1>
     </div>
@@ -265,19 +290,45 @@ useHead({ meta: [{ name: 'referrer', content: 'no-referrer' }] })
         tx('重新输入密钥')
       }}</UButton>
     </div>
-    <div v-else class="direct-result">
-      <OtpResult :config="pathWarning ? null : config" standalone />
+    <div v-else class="direct-result ore-workspace-frame">
+      <OtpResult
+        :config="pathWarning ? null : config"
+        :history-preview="!!config && historyPreviewIdentity === identity(config)"
+        standalone
+      />
       <div v-if="config" class="direct-meta">
-        <span>{{
-          tx('{digits} 位 · 每 {period} 秒更新', { digits: config.digits, period: config.period })
-        }}</span>
+        <div class="direct-secret-label">
+          <UPopover
+            mode="hover"
+            :open-delay="120"
+            :close-delay="100"
+            enable-touch
+            :content="{ side: 'top', align: 'start', sideOffset: 8 }"
+          >
+            <button type="button" class="secret-parameters-trigger" :aria-label="tx('验证参数')">
+              <img src="/textures/trial-key.png" alt="" width="24" height="24" />
+            </button>
+            <template #content>
+              <div class="direct-parameters">
+                <span>{{ config.kind === 'steam' ? 'Steam Guard' : 'TOTP' }}</span>
+                <span>{{ config.algorithm }}</span>
+                <span>{{
+                  tx('{digits} 位 · 每 {period} 秒更新', {
+                    digits: config.digits,
+                    period: config.period
+                  })
+                }}</span>
+              </div>
+            </template>
+          </UPopover>
+          <span id="direct-secret-label" class="sr-only">{{ tx('密钥') }}</span>
+        </div>
+        <SecretReveal :key="config.secret" :secret="config.secret" label-id="direct-secret-label" />
       </div>
-      <SecretReveal v-if="config" :key="config.secret" :secret="config.secret" />
     </div>
     <p v-if="missing && issue" class="inline-error" role="alert">{{ tx(issue) }}</p>
     <div class="direct-bottom">
-      <NuxtLink :to="localePath('/help')">{{ tx('验证码无法使用？') }}</NuxtLink
-      ><button @click="clear">{{ tx('清空并返回首页') }}</button>
+      <NuxtLink :to="localePath('/help')">{{ tx('验证码无法使用？') }}</NuxtLink>
     </div>
   </div>
 </template>
@@ -296,7 +347,7 @@ useHead({ meta: [{ name: 'referrer', content: 'no-referrer' }] })
 }
 .direct-page {
   max-width: 48rem;
-  margin: 2rem auto 0;
+  margin: clamp(1rem, 4vh, 3rem) auto 0;
   padding: 0 1.5rem;
 }
 .direct-intro {
@@ -308,30 +359,116 @@ useHead({ meta: [{ name: 'referrer', content: 'no-referrer' }] })
   line-height: 1.3;
 }
 .direct-result {
-  margin-top: 1.75rem;
-  padding: 2.5rem;
-  border: 1px solid var(--ui-border);
-  border-radius: var(--ui-radius);
+  position: relative;
+  margin-top: 0;
+  padding: clamp(1.25rem, 3vw, 2rem);
   background: var(--wash);
   view-transition-name: otp-result;
 }
 .direct-result :deep(.otp-digits) {
-  font-size: 5rem;
-  margin-block: 3rem;
+  font-size: clamp(4.5rem, 9vw, 7.5rem);
+  margin-block: clamp(1.5rem, 4vh, 2.5rem);
 }
 .direct-result :deep(.otp-digits.eight) {
-  font-size: 4rem;
+  font-size: clamp(3.5rem, 7.5vw, 6rem);
+}
+.direct-result :deep(.result-head) {
+  align-items: center;
+  border-bottom: 0;
+  padding-block: 0.5rem;
+  padding-inline-end: 0;
+}
+.direct-result :deep(.result-head > span) {
+  font-size: clamp(1.125rem, 2vw, 1.375rem);
+  line-height: 1.3;
+}
+.direct-result :deep(.countdown-meta) {
+  margin: 0;
+  gap: 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+}
+.direct-result :deep(.countdown-value) {
+  min-width: 8ch;
+  justify-content: flex-end;
+  font-variant-numeric: tabular-nums;
+}
+.direct-result :deep(.countdown-track) {
+  max-width: none;
+  width: 100%;
+}
+.direct-result :deep(.result-copy) {
+  min-height: 3.25rem;
+  margin-top: 1rem;
+  font-size: 1.125rem;
+  border-radius: 0;
 }
 .direct-meta {
-  display: flex;
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr);
   align-items: center;
-  justify-content: space-between;
   gap: 0.5rem;
   font-size: var(--text-caption);
   color: var(--ui-text-muted);
   margin-top: 1rem;
   border-top: 1px solid var(--ui-border);
-  padding-top: 0.5rem;
+  padding-top: 0.75rem;
+}
+.direct-result :deep(.secret-reveal) {
+  margin-top: 0;
+}
+.direct-secret-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex-shrink: 0;
+  color: var(--ui-text-highlighted);
+  font-size: var(--text-label);
+}
+.secret-parameters-trigger img {
+  width: 1.5rem;
+  height: 1.5rem;
+  image-rendering: pixelated;
+}
+.direct-secret-label .secret-parameters-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--ui-text-muted);
+  cursor: pointer;
+}
+.secret-parameters-trigger:hover,
+.secret-parameters-trigger:focus-visible {
+  color: var(--ui-text-highlighted);
+}
+.secret-parameters-trigger:focus-visible {
+  outline: 2px solid var(--accent-ink);
+}
+.direct-parameters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.625rem;
+  padding: 0.75rem;
+  max-width: min(24rem, calc(100vw - 2rem));
+  font-size: var(--text-label);
+}
+.direct-parameters > span {
+  white-space: nowrap;
+}
+.direct-parameters > span + span::before {
+  content: '·';
+  margin-inline-end: 0.625rem;
+}
+@media (max-width: 600px) {
+  .direct-parameters {
+    justify-content: flex-start;
+  }
 }
 .direct-bottom {
   display: flex;
@@ -341,6 +478,9 @@ useHead({ meta: [{ name: 'referrer', content: 'no-referrer' }] })
   font-size: var(--text-label);
   color: var(--ui-text-muted);
   margin-top: 1rem;
+}
+.direct-bottom {
+  view-transition-name: otp-help;
 }
 .direct-bottom > * {
   min-height: 2.75rem;
@@ -371,6 +511,17 @@ useHead({ meta: [{ name: 'referrer', content: 'no-referrer' }] })
     margin-top: 1rem;
     padding-inline: 1.25rem;
   }
+  .direct-result :deep(.result-head) {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .direct-result :deep(.result-head-actions) {
+    width: 100%;
+    justify-content: flex-end;
+  }
+  .direct-result :deep(.countdown-meta) {
+    font-size: 0.875rem;
+  }
   .direct-intro {
     margin: 1.5rem 0;
   }
@@ -378,10 +529,10 @@ useHead({ meta: [{ name: 'referrer', content: 'no-referrer' }] })
     padding: 1.5rem 1.25rem;
   }
   .direct-result :deep(.otp-digits) {
-    font-size: 3rem;
+    font-size: clamp(2.75rem, 13vw, 4.5rem);
   }
   .direct-result :deep(.otp-digits.eight) {
-    font-size: 2.25rem;
+    font-size: clamp(2rem, 10vw, 3.25rem);
   }
 }
 @media (max-width: 360px) {
@@ -393,10 +544,6 @@ useHead({ meta: [{ name: 'referrer', content: 'no-referrer' }] })
   }
   .direct-result :deep(.otp-digits.eight) {
     font-size: 2rem;
-  }
-  .direct-meta {
-    align-items: flex-start;
-    flex-direction: column;
   }
 }
 </style>

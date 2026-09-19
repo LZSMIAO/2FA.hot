@@ -1,5 +1,24 @@
 <script setup lang="ts">
+import { historyTarget } from '~/utils/history-navigation'
+import PasskeyButton from '~/components/passkeys/PasskeyButton.vue'
 const clipboardHint = useClipboardHint()
+const secretFocused = shallowRef(false)
+function handleSecretFocus() {
+  historyOrder = []
+  historyCursor = undefined
+  secretFocused.value = true
+  dismissInputNotices()
+}
+function dismissInputNotices() {
+  clearTimeout(validation)
+  issue.value = ''
+  pasteIssue.value = ''
+  extracted.value = ''
+}
+function handleSecretBlur() {
+  secretFocused.value = false
+  recognizeMixedInput()
+}
 import {
   analyzePaste,
   extractedSurroundingText,
@@ -14,6 +33,7 @@ const { tx } = useMessages()
 import {
   parseOtp,
   defaults,
+  identity,
   DEMO_SECRET,
   type Algorithm,
   type OtpConfig,
@@ -54,8 +74,160 @@ const extracted = shallowRef('')
 const originalInput = shallowRef('')
 const pendingPaste = shallowRef<{ source: string; analysis: PasteAnalysis } | null>(null)
 const restoredDetails = shallowRef({ label: '', issuer: '' })
+const historyPreviewIdentity = shallowRef('')
+const historyPreview = computed(
+  () => !!config.value && historyPreviewIdentity.value === identity(config.value)
+)
 const field = useTemplateRef<{ inputRef?: HTMLInputElement }>('secretField')
+const workspaceRoot = useTemplateRef<HTMLElement>('workspaceRoot')
+const qrImage = shallowRef<File>()
+const qrImages = shallowRef<File[]>([])
+const qrImagePasted = shallowRef(true)
+const qrInitialIssue = shallowRef('')
+const qrOpenedByDrag = shallowRef(false)
+const qrImport = useTemplateRef<{ dropTarget: HTMLElement | null }>('qrImport')
+const { loading: imageDropLoading, cancel: cancelImageDrop } = useImageDrop({
+  target: () => qrImport.value?.dropTarget,
+  outside: () => {
+    if (qrOpenedByDrag.value) qrOpen.value = false
+  },
+  enabled: () =>
+    !guiding.value &&
+    (!qrOpen.value || qrOpenedByDrag.value) &&
+    migrationSource.value === null &&
+    !!workspaceRoot.value?.getClientRects().length &&
+    (qrOpenedByDrag.value ||
+      !document.querySelector('[role="dialog"], [role="alertdialog"], [role="menu"]')),
+  enter: () => {
+    qrOpenedByDrag.value = true
+    qrImagePasted.value = false
+    qrOpen.value = true
+  },
+  image: (file) => {
+    qrImagePasted.value = false
+    qrImage.value = file
+    qrOpen.value = true
+  },
+  images: (files) => {
+    qrImagePasted.value = false
+    qrImages.value = files
+    qrOpen.value = true
+  },
+  issue: (message) => {
+    qrInitialIssue.value = message
+    qrOpen.value = true
+  }
+})
+const pasteConfirmed = shallowRef(false)
+let pasteFeedbackTimer: ReturnType<typeof setTimeout> | undefined
+function clearPasteFeedback() {
+  clearTimeout(pasteFeedbackTimer)
+  pasteConfirmed.value = false
+}
+function confirmPaste() {
+  clearPasteFeedback()
+  pasteConfirmed.value = true
+  pasteFeedbackTimer = setTimeout(clearPasteFeedback, 3000)
+}
+function pasteText(value: string) {
+  inspectPaste(value)
+  if (value.trim()) confirmPaste()
+}
+usePagePaste({
+  enabled: () =>
+    !guiding.value &&
+    !qrOpen.value &&
+    migrationSource.value === null &&
+    !!workspaceRoot.value?.getClientRects().length,
+  input: () => field.value?.inputRef,
+  text: pasteText,
+  image: (file) => {
+    qrImagePasted.value = true
+    qrImage.value = file
+    qrOpen.value = true
+  }
+})
+const { dragging: textDragging } = usePageTextDrop({
+  target: () => field.value?.inputRef?.closest<HTMLElement>('.secret-field'),
+  enabled: () =>
+    !guiding.value &&
+    !qrOpen.value &&
+    migrationSource.value === null &&
+    !!workspaceRoot.value?.getClientRects().length,
+  input: () => field.value?.inputRef,
+  text: inspectPaste
+})
+watch(qrOpen, (open) => {
+  if (!open) {
+    cancelImageDrop()
+    qrOpenedByDrag.value = false
+    qrImage.value = undefined
+    qrImages.value = []
+    qrInitialIssue.value = ''
+  }
+})
+onBeforeUnmount(clearPasteFeedback)
 const vault = useVault()
+const historyKeyboardTipShown = useState('history-keyboard-tip-shown', () => false)
+const historyKeyboardHint = shallowRef(false)
+let historyHintTimer: ReturnType<typeof setTimeout> | undefined
+function closeHistoryHint() {
+  historyKeyboardHint.value = false
+  clearTimeout(historyHintTimer)
+}
+function closeActionHint() {
+  clipboardHint.visible.value = false
+  closeHistoryHint()
+}
+onBeforeUnmount(closeHistoryHint)
+let historyOrder: string[] = []
+let historyCursor: string | undefined
+watch(
+  [vault.enabled, vault.unlocked],
+  () => {
+    historyOrder = []
+    historyCursor = undefined
+    if (vault.enabled.value && vault.unlocked.value) closeHistoryHint()
+  },
+  { flush: 'sync' }
+)
+function navigateHistory(event: KeyboardEvent) {
+  if (
+    !['ArrowUp', 'ArrowDown'].includes(event.key) ||
+    event.isComposing ||
+    composing.value ||
+    event.altKey ||
+    event.ctrlKey ||
+    event.metaKey ||
+    event.shiftKey ||
+    guiding.value
+  )
+    return
+  event.preventDefault()
+  if (!vault.enabled.value || !vault.unlocked.value) {
+    if (!historyKeyboardTipShown.value) {
+      historyKeyboardTipShown.value = true
+      historyKeyboardHint.value = true
+      historyHintTimer = setTimeout(closeHistoryHint, 8000)
+    }
+    return
+  }
+  const records = vault.records.value
+  if (!historyOrder.length) {
+    // Browse a stable snapshot, including if another tab updates the vault.
+    historyOrder = [...records].sort((a, b) => b.usedAt - a.usedAt).map((row) => row.id)
+    historyCursor = config.value
+      ? records.find((row) => identity(row) === identity(config.value!))?.id
+      : undefined
+  }
+  historyOrder = historyOrder.filter((id) => records.some((row) => row.id === id))
+  const target = historyTarget(historyOrder, historyCursor, event.key === 'ArrowUp')
+  const record = records.find((row) => row.id === target)
+  if (!record || target === historyCursor) return
+  historyCursor = target
+  acceptPaste(record)
+  historyPreviewIdentity.value = identity(record)
+}
 const displayRaw = computed(() =>
   guiding.value ? (props.guideStep! >= 2 ? DEMO_SECRET : '') : raw.value
 )
@@ -65,6 +237,8 @@ function toggleAdvanced() {
 }
 function updateRaw(value: string) {
   if (guiding.value) return
+  historyOrder = []
+  historyCursor = undefined
   if (isMigrationUri(value)) {
     migrationSource.value = value
     raw.value = value
@@ -125,12 +299,14 @@ watch(
   raw,
   () => {
     pasteRevision++
+    clearPasteFeedback()
+    historyPreviewIdentity.value = ''
     extracted.value = ''
     originalInput.value = ''
     pendingPaste.value = null
 
     restoredDetails.value = { label: '', issuer: '' }
-    kind.value = 'totp'
+    // Keep the selected code type while the user enters or replaces a secret.
     algorithm.value = defaults.algorithm
     digits.value = defaults.digits
     period.value = defaults.period
@@ -163,6 +339,7 @@ watch([raw, kind, algorithm, digits, period, composing], () => {
 })
 onBeforeUnmount(() => clearTimeout(validation))
 function clear() {
+  clearPasteFeedback()
   clearTimeout(validation)
   pasteRevision++
   pasteIssue.value = ''
@@ -172,6 +349,7 @@ function clear() {
   originalInput.value = ''
 
   raw.value = ''
+  kind.value = 'totp'
   revealed.value = true
   advanced.value = true
   field.value?.inputRef?.focus()
@@ -180,6 +358,13 @@ function clearWithSound() {
   window.dispatchEvent(new CustomEvent('2fa-ui-sound', { detail: 'parameters' }))
   clear()
 }
+watch(
+  vault.unlocked,
+  (unlocked) => {
+    if (!unlocked && historyPreviewIdentity.value) clear()
+  },
+  { flush: 'sync' }
+)
 async function paste() {
   const revision = ++pasteRevision
   await clipboardHint.start()
@@ -188,7 +373,7 @@ async function paste() {
     const text = await navigator.clipboard.readText()
     clipboardHint.finish(true)
     if (revision !== pasteRevision || guiding.value) return
-    inspectPaste(text)
+    pasteText(text)
   } catch {
     clipboardHint.finish(false)
     if (revision !== pasteRevision) return
@@ -196,6 +381,7 @@ async function paste() {
   }
 }
 function acceptPaste(value: OtpConfig, source = '') {
+  historyPreviewIdentity.value = ''
   raw.value = value.secret
   kind.value = value.kind ?? 'totp'
   algorithm.value = value.algorithm
@@ -213,6 +399,8 @@ function acceptPaste(value: OtpConfig, source = '') {
   issue.value = ''
 }
 function inspectPaste(source: string) {
+  historyOrder = []
+  historyCursor = undefined
   extracted.value = ''
   originalInput.value = ''
   pasteRevision++
@@ -225,6 +413,15 @@ function inspectPaste(source: string) {
   if (isMigrationUri(source.trim())) {
     updateRaw(source.trim())
     return
+  }
+  // A bare Steam secret may also look like Base32; honor the explicit selection.
+  if (kind.value === 'steam' && /^[A-Za-z0-9+/=_-]+$/.test(source.trim())) {
+    try {
+      acceptPaste(parseOtp(source, { kind: 'steam' }), source)
+      return
+    } catch {
+      // Let normal input validation explain malformed secrets.
+    }
   }
   const analysis = analyzePaste(source)
   if (analysis.kind === 'single') acceptPaste(analysis.candidates[0]!.config, source)
@@ -246,13 +443,14 @@ function finishComposition() {
 }
 function handlePaste(event: ClipboardEvent) {
   if (guiding.value || !event.clipboardData) return
+  if (Array.from(event.clipboardData.items).some((item) => item.type.startsWith('image/'))) return
   const text = event.clipboardData.getData('text/plain')
   if (!text) return
   event.preventDefault()
   const input = event.target as HTMLInputElement
   const start = input.selectionStart ?? 0,
     end = input.selectionEnd ?? raw.value.length
-  inspectPaste(pastedInputText(raw.value, text, start, end))
+  pasteText(pastedInputText(raw.value, text, start, end))
 }
 function transferPaste(value: string) {
   pendingPaste.value = null
@@ -284,6 +482,7 @@ watch(
     digits.value = value.kind === 'steam' || value.digits === 5 ? 6 : value.digits
     period.value = value.period
     restoredDetails.value = { label: value.label, issuer: value.issuer }
+    historyPreviewIdentity.value = identity(value)
     vault.pending.value = undefined
   },
   { immediate: true }
@@ -297,164 +496,263 @@ onBeforeUnmount(() => {
 })
 </script>
 <template>
-  <div class="workspace ore-workspace-frame">
+  <div ref="workspaceRoot" class="workspace ore-workspace-frame">
     <section class="input-panel" aria-labelledby="secret-heading">
       <div class="section-heading">
-        <h2 id="secret-heading">{{ tx('密钥') }}</h2>
+        <h2 id="secret-heading" class="workspace-title">{{ tx('输入密钥') }}</h2>
       </div>
-      <label class="sr-only" for="secret">{{ tx('2FA 密钥') }}</label>
-      <UInput
-        v-show="!pendingPaste || guiding"
-        id="secret"
-        ref="secretField"
-        :model-value="displayRaw"
-        :readonly="guiding"
-        @update:model-value="updateRaw"
-        class="w-full secret-field"
-        dir="ltr"
-        :type="revealed ? 'text' : 'password'"
-        size="xl"
-        :placeholder="tx('密钥或 otpauth:// 链接')"
-        autocomplete="off"
-        autocapitalize="off"
-        :spellcheck="false"
-        :aria-invalid="!guiding && !!issue"
-        :aria-describedby="!guiding && issue ? 'secret-help secret-error' : 'secret-help'"
-        :ui="{
-          base: 'font-mono text-base h-13 pr-24 ring-[var(--control-line)] focus-visible:ring-primary'
-        }"
-        @paste="handlePaste"
-        @compositionstart="composing = true"
-        @compositionend="finishComposition"
-        @blur="recognizeMixedInput"
-      >
-        <template #trailing>
-          <div class="secret-actions">
-            <UButton
-              color="neutral"
-              variant="ghost"
-              size="sm"
-              icon="i-lucide-eraser"
-              class="secret-action"
-              :aria-label="tx('清空')"
-              :title="tx('清空')"
-              :disabled="guiding || (!raw && !pendingPaste)"
-              data-sound-custom
-              @click="clearWithSound"
+      <div class="secret-entry">
+        <p class="paste-confirmation" role="status" aria-live="polite">
+          <span v-if="pasteConfirmed">{{ tx('已粘贴内容') }}</span>
+        </p>
+        <label class="sr-only" for="secret">{{ tx('2FA 密钥') }}</label>
+        <UInput
+          v-show="!pendingPaste || guiding"
+          id="secret"
+          ref="secretField"
+          :model-value="displayRaw"
+          :readonly="guiding"
+          @update:model-value="updateRaw"
+          class="w-full secret-field"
+          :class="{ 'is-text-dragging': textDragging }"
+          dir="ltr"
+          :type="revealed ? 'text' : 'password'"
+          size="xl"
+          :placeholder="secretFocused || guiding ? tx('密钥：Base32 / otpauth:// / Steam') : ''"
+          autocomplete="off"
+          autocapitalize="off"
+          :spellcheck="false"
+          :aria-invalid="!guiding && !!issue"
+          :aria-describedby="!guiding && issue ? 'secret-help secret-error' : 'secret-help'"
+          :ui="{
+            base: 'font-mono text-base h-13 pr-24 ring-[var(--control-line)] focus-visible:ring-primary'
+          }"
+          @keydown="navigateHistory"
+          @paste="handlePaste"
+          @compositionstart="composing = true"
+          @compositionend="finishComposition"
+          @focus="handleSecretFocus"
+          @pointerdown="dismissInputNotices"
+          @blur="handleSecretBlur"
+        >
+          <template #default>
+            <SecretInputHints
+              v-if="!displayRaw && !secretFocused && !guiding && !pendingPaste"
+              :default-hint="tx('密钥：Base32 / otpauth:// / Steam')"
             />
-            <UButton
-              color="neutral"
-              variant="ghost"
-              size="sm"
-              class="secret-action"
-              :icon="revealed ? 'i-lucide-eye-off' : 'i-lucide-eye'"
-              :aria-label="tx(revealed ? '隐藏密钥' : '显示密钥')"
-              @click="revealed = !revealed"
-            />
-          </div>
-        </template>
-      </UInput>
-      <SmartPasteReview
-        v-if="pendingPaste && !guiding"
-        :key="pendingPaste.source"
-        :source="pendingPaste.source"
-        :analysis="pendingPaste.analysis"
-        :masked="!revealed"
-        @select="acceptPaste"
-        @batch="transferPaste"
-        @cancel="pendingPaste = null"
-        @clear="clearWithSound"
-        @inspect="inspectPaste"
-      />
-      <PasteNotice v-if="extracted && !pendingPaste" :message="extracted" :source="originalInput" />
-      <p id="secret-help" class="field-hint">
-        {{ tx('密钥：Base32 / otpauth:// / Steam') }}
-      </p>
-      <p
-        v-if="!guiding && !pendingPaste && issue"
-        id="secret-error"
-        class="inline-error"
-        role="alert"
-      >
-        {{ tx(issue) }}
-      </p>
-      <div class="input-tools">
-        <UButton
-          color="neutral"
-          variant="outline"
-          icon="i-lucide-clipboard-paste"
-          :disabled="guiding"
-          @click="paste"
-          >{{ tx('粘贴') }}</UButton
-        >
-        <UButton
-          color="neutral"
-          variant="outline"
-          icon="i-lucide-scan-line"
-          :disabled="guiding"
-          @click="qrOpen = true"
-          >{{ tx('导入二维码') }}</UButton
-        >
-      </div>
-      <ActionHint
-        :open="clipboardHint.visible.value"
-        :message="tx('如果浏览器询问剪贴板权限，请点允许。')"
-        icon="i-lucide-clipboard-paste"
-        @close="clipboardHint.visible.value = false"
-      />
-      <p v-if="!guiding && pasteIssue" class="inline-notice">{{ tx(pasteIssue) }}</p>
-      <div class="advanced">
-        <button
-          class="advanced-toggle"
-          data-sound-custom
-          :disabled="guiding"
-          :aria-label="tx('验证参数')"
-          :aria-expanded="advanced && !guiding"
-          aria-controls="verification-options"
-          @click="toggleAdvanced"
-        >
-          <span class="parameter-sky" :class="{ 'is-moon': advanced }" aria-hidden="true">
-            <span class="parameter-sun" />
-            <span class="parameter-moon" />
-          </span>
-        </button>
-        <div class="advanced-stage">
-          <div
-            id="verification-options"
-            class="advanced-options"
-            :class="{ 'is-hidden': !advanced || guiding }"
-            :inert="!advanced || guiding"
-            :aria-hidden="!advanced || guiding"
+          </template>
+          <template #trailing>
+            <div
+              class="secret-actions"
+              :class="{ 'has-content': !!displayRaw }"
+              :inert="!displayRaw"
+              :aria-hidden="!displayRaw"
+            >
+              <UButton
+                color="neutral"
+                variant="ghost"
+                size="sm"
+                class="secret-action"
+                :icon="revealed ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+                :aria-label="tx(revealed ? '隐藏密钥' : '显示密钥')"
+                @click="revealed = !revealed"
+              />
+              <UTooltip
+                :text="tx('清空')"
+                :delay-duration="250"
+                :content="{ side: 'top', align: 'center', sideOffset: 4 }"
+                :ui="{ content: 'parameter-help-tooltip', arrow: 'parameter-help-arrow' }"
+                disable-hoverable-content
+                arrow
+              >
+                <UButton
+                  color="neutral"
+                  variant="ghost"
+                  size="sm"
+                  icon="i-lucide-x"
+                  class="secret-action secret-clear"
+                  :aria-label="tx('清空')"
+                  :disabled="guiding || (!raw && !pendingPaste)"
+                  data-sound-custom
+                  @click="clearWithSound"
+                />
+              </UTooltip>
+            </div>
+          </template>
+        </UInput>
+        <SmartPasteReview
+          v-if="pendingPaste && !guiding"
+          :key="pendingPaste.source"
+          :source="pendingPaste.source"
+          :analysis="pendingPaste.analysis"
+          :masked="!revealed"
+          @select="acceptPaste"
+          @batch="transferPaste"
+          @cancel="pendingPaste = null"
+          @clear="clearWithSound"
+          @inspect="inspectPaste"
+        />
+        <div class="input-tools">
+          <UButton
+            color="neutral"
+            variant="outline"
+            icon="i-lucide-clipboard-paste"
+            :disabled="guiding"
+            @click="paste"
+            >{{ tx('粘贴') }}</UButton
           >
-            <p v-if="isUri" class="field-hint">
-              {{ tx('参数由配置链接指定，请在原链接中修改。') }}
+          <UButton
+            color="neutral"
+            variant="outline"
+            icon="i-lucide-scan-line"
+            :disabled="guiding"
+            @click="qrOpen = true"
+            >{{ tx('导入二维码') }}</UButton
+          >
+          <PasskeyButton :disabled="guiding" />
+        </div>
+      </div>
+      <div class="input-details">
+        <div class="input-notices">
+          <Transition name="input-notice">
+            <PasteNotice
+              v-if="extracted && !pendingPaste"
+              :message="extracted"
+              :source="originalInput"
+            />
+          </Transition>
+          <p id="secret-help" class="sr-only">
+            {{ tx('密钥：Base32 / otpauth:// / Steam') }}
+          </p>
+          <Transition name="input-notice">
+            <p
+              v-if="!guiding && !pendingPaste && issue"
+              id="secret-error"
+              class="inline-error"
+              role="alert"
+            >
+              {{ tx(issue) }}
             </p>
-            <div v-else class="option-grid" :class="{ 'steam-options': steamSelected }">
-              <div class="option-field option-kind">
-                <label for="otp-kind">{{ tx('验证方式') }}</label
-                ><McSelect id="otp-kind" v-model="kind" :items="kindItems" />
-              </div>
-              <template v-if="!steamSelected">
-                <div class="option-field">
-                  <label for="algorithm">{{ tx('算法') }}</label
-                  ><McSelect id="algorithm" v-model="algorithm" :items="algorithmItems" />
+          </Transition>
+          <ActionHint
+            :open="clipboardHint.visible.value || historyKeyboardHint"
+            :message="
+              tx(
+                clipboardHint.visible.value
+                  ? '如果浏览器询问剪贴板权限，请点允许。'
+                  : '请先开启并解锁本地历史。'
+              )
+            "
+            :icon="clipboardHint.visible.value ? 'i-lucide-clipboard-paste' : 'i-lucide-history'"
+            @close="closeActionHint"
+          />
+          <Transition name="input-notice">
+            <p v-if="!guiding && pasteIssue" class="inline-notice" role="status">
+              {{ tx(pasteIssue) }}
+            </p>
+          </Transition>
+        </div>
+        <div class="advanced">
+          <button
+            class="advanced-toggle"
+            data-sound-custom
+            :disabled="guiding"
+            :aria-label="tx('验证参数')"
+            :aria-expanded="advanced && !guiding"
+            aria-controls="verification-options"
+            @click="toggleAdvanced"
+          >
+            <span
+              class="parameter-sky"
+              :class="{ 'is-moon': advanced && !guiding }"
+              aria-hidden="true"
+            >
+              <span class="parameter-sun" />
+              <span class="parameter-moon" />
+            </span>
+          </button>
+          <div class="advanced-stage">
+            <div
+              id="verification-options"
+              class="advanced-options"
+              :class="{ 'is-hidden': !advanced || guiding }"
+              :inert="!advanced || guiding"
+              :aria-hidden="!advanced || guiding"
+            >
+              <p v-if="isUri" class="field-hint">
+                {{ tx('参数由配置链接指定，请在原链接中修改。') }}
+              </p>
+              <div v-else class="option-grid" :class="{ 'steam-options': steamSelected }">
+                <div class="option-field option-kind">
+                  <McSelect
+                    id="otp-kind"
+                    v-model="kind"
+                    :items="kindItems"
+                    :caption="tx('验证方式')"
+                  />
                 </div>
-                <div class="option-field">
-                  <label for="digits">{{ tx('位数') }}</label
-                  ><McSelect id="digits" v-model="digits" :items="digitItems" />
+                <template v-if="!steamSelected">
+                  <div class="option-field">
+                    <McSelect
+                      id="algorithm"
+                      v-model="algorithm"
+                      :items="algorithmItems"
+                      :caption="tx('算法')"
+                      :hint="tx('哈希算法')"
+                    />
+                  </div>
+                  <div class="option-field">
+                    <McSelect
+                      id="digits"
+                      v-model="digits"
+                      :items="digitItems"
+                      :caption="tx('位数')"
+                      :hint="tx('验证码长度')"
+                    />
+                  </div>
+                  <div class="option-field">
+                    <McSelect
+                      id="period"
+                      v-model="period"
+                      :items="periodItems"
+                      :caption="tx('周期')"
+                      :hint="tx('更新周期')"
+                    />
+                  </div>
+                </template>
+                <div v-else class="steam-profile">
+                  <UTooltip
+                    :text="
+                      tx(
+                        '用于已有 Steam 密钥备份的账号：粘贴 shared_secret 或 maFile 内容，即可在浏览器生成登录验证码。本站不能从官方手机 App 导出密钥，也不能替代扫码登录或交易确认。'
+                      )
+                    "
+                    :delay-duration="150"
+                    :content="{ side: 'top', align: 'start', sideOffset: 6 }"
+                    :ui="{
+                      content: 'parameter-help-tooltip h-auto',
+                      arrow: 'parameter-help-arrow',
+                      text: 'whitespace-normal break-words'
+                    }"
+                    arrow
+                  >
+                    <button
+                      type="button"
+                      class="steam-help"
+                      :aria-label="`Steam Guard · ${tx('使用说明')}`"
+                    >
+                      <span aria-hidden="true">?</span>
+                    </button>
+                  </UTooltip>
+                  <span class="steam-profile-title">Steam Guard</span>
+                  <span>{{
+                    tx('{digits} 位 · 每 {period} 秒更新', { digits: 5, period: 30 })
+                  }}</span>
                 </div>
-                <div class="option-field">
-                  <label for="period">{{ tx('周期') }}</label
-                  ><McSelect id="period" v-model="period" :items="periodItems" />
-                </div>
-              </template>
-              <div v-else class="steam-profile" role="status">
-                <span class="steam-profile-title">Steam Guard</span>
-                <span>{{ tx('{digits} 位 · 每 {period} 秒更新', { digits: 5, period: 30 }) }}</span>
               </div>
             </div>
+            <DesertAccent :open="!advanced || guiding" />
           </div>
-          <DesertAccent :class="{ 'is-hidden': advanced && !guiding }" />
         </div>
       </div>
     </section>
@@ -466,15 +764,30 @@ onBeforeUnmount(() => {
     >
       <div class="result-reveal-clip">
         <section class="result-panel" :aria-label="tx('验证码结果')">
-          <OtpResult :config="config" :guide-step="guideStep" @code="emit('guideCode', $event)" />
+          <OtpResult
+            compact-layout
+            :config="config"
+            :history-preview="historyPreview"
+            :guide-step="guideStep"
+            @code="emit('guideCode', $event)"
+          />
         </section>
       </div>
     </div>
   </div>
   <LazyQrImport
     v-if="qrOpen"
+    ref="qrImport"
+    :initial-image="qrImage"
+    :initial-images="qrImages"
+    :initial-image-pasted="qrImagePasted"
+    :initial-issue="qrInitialIssue"
+    :external-drop="qrOpenedByDrag"
+    :external-loading="imageDropLoading"
+    @pasted="confirmPaste"
     @migration="migrationSource = $event"
     @close="qrOpen = false"
+    @dismiss="cancelImageDrop"
     @import="importValue"
     @batch="
       (value) => {
@@ -493,6 +806,236 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+.workspace :deep(.result-head) {
+  font-size: 1.375rem;
+  line-height: 1.4;
+}
+.secret-entry {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+}
+.paste-confirmation {
+  position: absolute;
+  inset-block-start: -0.75rem;
+  inset-inline-end: 0.75rem;
+  z-index: 1;
+  margin: 0;
+  color: var(--accent-ink);
+  font-size: var(--text-caption);
+  line-height: 1.5rem;
+  pointer-events: none;
+}
+.paste-confirmation span {
+  padding-inline: 0.375rem;
+  background: var(--panel);
+}
+.secret-entry .input-tools {
+  margin: 0 0 0.25rem;
+  flex-wrap: wrap;
+}
+.input-details {
+  min-width: 0;
+}
+.input-notices {
+  min-height: 1.5rem;
+  margin-block: 0.5rem 0.75rem;
+}
+.input-notices :deep(.field-hint),
+.input-notices .inline-error,
+.input-notices .inline-notice {
+  margin: 0;
+  font-size: var(--text-label);
+  line-height: 1.5rem;
+}
+.input-notice-enter-active,
+.input-notice-leave-active {
+  transition: opacity 180ms ease;
+}
+.input-notice-enter-from,
+.input-notice-leave-to {
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .input-notice-enter-active,
+  .input-notice-leave-active {
+    transition: none;
+  }
+}
+.workspace :deep(.result-panel) {
+  position: relative;
+}
+.workspace :deep(.result-copy) {
+  margin-top: 0;
+}
+@media (min-width: 701px) and (min-height: 501px), (min-width: 701px) and (pointer: fine) {
+  .workspace {
+    grid-template-rows: auto auto auto 1fr;
+    row-gap: 0.75rem;
+  }
+  .input-panel,
+  .result-reveal,
+  .result-reveal-clip,
+  .workspace :deep(.result-panel) {
+    display: grid;
+    grid-template-rows: subgrid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-row: 1 / span 4;
+  }
+  .input-panel {
+    grid-column: 1;
+  }
+  .input-panel,
+  .workspace :deep(.result-panel) {
+    padding-top: 2.5rem;
+  }
+  .result-reveal {
+    grid-column: 2;
+  }
+  .section-heading,
+  .workspace :deep(.result-head) {
+    grid-row: 1;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    align-self: start;
+  }
+  .workspace :deep(.result-head) {
+    padding-inline-end: 2rem;
+  }
+  .secret-entry {
+    grid-row: 2;
+    align-self: start;
+  }
+  .secret-entry .input-tools {
+    margin-bottom: 0;
+  }
+  .workspace :deep(.result-code) {
+    display: contents;
+  }
+  .workspace :deep(.otp-digits) {
+    /* The input row determines height, never the font metrics of loading digits. */
+    position: relative;
+    min-height: 0;
+    grid-row: 2;
+    align-self: stretch;
+    margin: 0;
+    padding-block: 0;
+  }
+  .workspace :deep(.otp-slots),
+  .workspace :deep(.otp-slot) {
+    height: 100%;
+  }
+  .workspace :deep(.otp-slots) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+  }
+  .workspace :deep(.otp-slot) {
+    flex: 1;
+    min-width: 0;
+    width: auto;
+  }
+  .workspace :deep(.result-progress) {
+    grid-row: 4;
+    grid-column: 1;
+    align-self: start;
+    transform: translateY(-50%);
+  }
+  .workspace :deep(.result-code .countdown-track) {
+    margin-top: 0;
+    max-width: none;
+  }
+  .input-details .advanced,
+  .workspace :deep(.result-output) {
+    grid-row: 4;
+  }
+  .input-details {
+    display: contents;
+  }
+  .input-notices {
+    grid-row: 3;
+    margin: 0;
+  }
+  .input-details .advanced {
+    display: flex;
+    flex-direction: column;
+  }
+  .input-details .advanced {
+    flex: 1;
+  }
+  .input-details .advanced-stage {
+    margin-top: 0;
+    flex: 1;
+  }
+  .workspace :deep(.result-output) {
+    display: grid;
+    grid-template-rows: repeat(2, minmax(3rem, auto));
+    gap: 1rem;
+    grid-column: 1;
+    align-self: start;
+    margin-top: 1.25rem;
+  }
+  /* Reserve the actual export row, including wrapped translations, before a code exists. */
+  .workspace :deep(.export-reveal) {
+    grid-row: 1;
+    grid-template-rows: 1fr;
+    transition: none;
+  }
+  .workspace :deep(.result-copy-position) {
+    grid-row: 2;
+    display: flex;
+  }
+  .workspace :deep(.result-copy-position .result-copy) {
+    flex: 1;
+  }
+  .workspace :deep(.result-output.has-exports .result-copy-position) {
+    grid-row: 1;
+  }
+  .workspace :deep(.result-output.has-exports .export-reveal) {
+    grid-row: 2;
+  }
+  .workspace :deep(.export-reveal:not(.is-open)) {
+    visibility: hidden;
+    opacity: 0;
+  }
+  .workspace :deep(.export-reveal.is-open) {
+    transition: opacity 200ms ease 100ms;
+  }
+  .workspace :deep(.export-reveal .result-links) {
+    height: 100%;
+    margin-top: 0;
+    transform: none;
+  }
+}
+@media (max-width: 700px) {
+  .workspace :deep(.result-head) {
+    font-size: 1.25rem;
+  }
+}
+@media (max-width: 700px), (max-height: 500px) and (pointer: coarse) {
+  .workspace :deep(.otp-digits) {
+    font-size: clamp(2rem, 8vw, 3rem);
+  }
+  .workspace :deep(.otp-digits.eight) {
+    font-size: clamp(1.75rem, 7vw, 2.5rem);
+  }
+  .workspace :deep(.otp-slots) {
+    width: 100%;
+    height: 4rem;
+  }
+  .workspace :deep(.otp-slot) {
+    flex: 1;
+    width: auto;
+    min-width: 0;
+    height: 100%;
+  }
+  .workspace :deep(.result-output) {
+    margin-top: 1rem;
+  }
+}
 .advanced-toggle {
   position: absolute;
   inset-inline-end: 0;
@@ -563,19 +1106,73 @@ onBeforeUnmount(() => {
 .secret-actions {
   display: flex;
   align-items: center;
-  gap: 0.125rem;
+  gap: 0.25rem;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
 }
-.secret-action {
-  width: 2.25rem;
-  height: 2.25rem;
-  min-width: 2.25rem;
-  min-height: 2.25rem;
-  justify-content: center;
-}
-.secret-action:disabled {
+.secret-actions.has-content {
+  visibility: visible;
   opacity: 1;
+  pointer-events: auto;
+}
+.secret-actions .secret-action,
+.secret-actions .secret-action:hover,
+.secret-actions .secret-action:active {
+  width: 2rem;
+  height: 2rem;
+  min-width: 2rem;
+  min-height: 2rem;
+  flex: 0 0 auto;
+  padding: 0;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+  color: var(--ui-text-muted);
+}
+.secret-actions .secret-action:hover:not(:disabled) {
   color: var(--ui-text-highlighted);
-  cursor: default;
+}
+.secret-actions .secret-action:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: -4px;
+}
+.secret-actions .secret-clear {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+}
+.secret-field:focus-within .has-content .secret-clear {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+@media (hover: hover) and (pointer: fine) {
+  .secret-field:hover .has-content .secret-clear {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+@media (pointer: coarse) {
+  .secret-actions .secret-action,
+  .secret-actions .secret-action:hover,
+  .secret-actions .secret-action:active {
+    width: 2.75rem;
+    height: 2.75rem;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .secret-actions,
+  .secret-actions .secret-clear {
+    transition: none;
+  }
 }
 .advanced-stage {
   display: grid;
@@ -586,21 +1183,49 @@ onBeforeUnmount(() => {
 }
 .advanced-stage .is-hidden {
   visibility: hidden;
+  opacity: 0;
   pointer-events: none;
 }
 .advanced-options {
-  align-self: start;
+  align-self: end;
+  transition:
+    opacity 200ms ease,
+    visibility 0s;
 }
-.advanced-stage > .desert-accent.is-hidden {
-  display: none;
+.advanced-options.is-hidden {
+  transition:
+    opacity 160ms ease,
+    visibility 0s 160ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  .advanced-options,
+  .advanced-options.is-hidden {
+    transition: none;
+  }
 }
 .option-field {
   min-width: 0;
+}
+@media (max-width: 480px) {
+  .option-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+  .input-notices {
+    min-height: 2.5rem;
+  }
+  .input-notices :deep(.field-hint),
+  .input-notices .inline-error,
+  .input-notices .inline-notice {
+    font-size: var(--text-caption);
+    line-height: 1.25rem;
+  }
 }
 .option-grid.steam-options {
   grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
 }
 .steam-profile {
+  position: relative;
   display: flex;
   align-items: center;
   align-self: end;
@@ -612,6 +1237,31 @@ onBeforeUnmount(() => {
   box-shadow: var(--ore-bevel);
   color: var(--ui-text-highlighted);
   font-size: var(--text-caption);
+}
+.steam-help {
+  position: absolute;
+  inset-block-start: -0.625rem;
+  inset-inline-start: -0.625rem;
+  display: grid;
+  place-items: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  padding: 0;
+  border: 1px solid var(--control-line);
+  border-radius: 50%;
+  background: var(--panel);
+  color: var(--ui-text-muted);
+  font: 600 0.75rem/1 var(--font-sans);
+  cursor: help;
+}
+.steam-help:hover,
+.steam-help:focus-visible {
+  color: var(--ui-text-highlighted);
+  border-color: currentColor;
+}
+.steam-help:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 2px;
 }
 .steam-profile-title {
   font-family: 'VT323', monospace;
@@ -632,7 +1282,6 @@ onBeforeUnmount(() => {
 
 <style scoped>
 /* Keep first-paint hints independent of downloaded Latin fonts. */
-.secret-field :deep(#secret::placeholder),
 #secret-help {
   font-family:
     system-ui,
@@ -647,5 +1296,9 @@ onBeforeUnmount(() => {
 .clipboard-permission-notice {
   color: var(--accent-ink);
   font-weight: 600;
+}
+.secret-field.is-text-dragging {
+  outline: 2px solid var(--ui-primary);
+  outline-offset: 2px;
 }
 </style>

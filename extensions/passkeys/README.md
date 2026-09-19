@@ -25,17 +25,17 @@ pnpm --dir extensions/passkeys build
 pnpm --dir extensions/passkeys package:store
 ```
 
-生成 `output/2fa-hot-passkeys-0.2.0-store.zip` 和对应源码包。商店构建会移除 localhost 匹配规则及本站桥接的本机授权，保留 HTTPS 支持，并附带隐私政策、图标和许可证。ZIP 根目录直接包含 manifest；不要上传源码包代替商店包。
+生成 `output/2fa-hot-passkeys-0.3.0-store.zip` 和对应源码包，同时将可直接下载的安装包、源码包写入网站 `public/downloads/passkeys/`，并生成 `shared/passkeys-release.json`。网站下载按钮读取该发布清单，无需用户自行构建；更新扩展后重新执行此命令，并一同发布生成文件。商店构建会移除 localhost 匹配规则及本站桥接的本机授权，保留 HTTPS 支持。打包命令同时生成 `-preview.zip` 本地测试包，为状态检测和经确认的网站管理保留 localhost 桥接；localhost 页面自动提供这个包，正式网站提供商店包，并附带隐私政策、图标和许可证。ZIP 根目录直接包含 manifest；不要上传源码包代替商店包。
 
 `store/listing.md` 包含中英文描述、权限理由、隐私申报和审核说明；`store/assets` 包含原创图标、宣传图及真实扩展界面的测试账号截图。`store/submission-status.md` 记录提交进度。准备好 ZIP 不代表已提交或通过审核。
 
 ## 网站入口与商店安装
 
-网站 `/passkeys`（另有 `/zh-CN/passkeys`、`/zh-TW/passkeys`）提供安装检测、打开扩展管理页、创建与迁移指引。扩展升级后，在浏览器扩展页点击重新加载，再刷新网站。
+首页“粘贴 / 导入二维码”右侧的通行密钥按钮，在当前页弹窗提供安装检测、账号列表、搜索、选择和导入导出删除入口。操作所需的主口令、文件和最终确认在专用扩展小窗口中完成。旧版扩展会显示更新提示。`/?passkeys=1` 可直接打开弹窗，旧 `/passkeys`（含简繁中文版本）链接会重定向到首页弹窗，不再提供独立内容页。扩展升级后，在浏览器扩展页点击重新加载，再刷新网站。
 
 网页不能静默安装扩展。商店审核通过后，将真实扩展 ID 写入项目 `shared/passkeys.ts` 的 `passkeyStoreIds`，网站会显示对应官方商店的安装按钮。未配置的商店不显示安装链接；两者均未配置时显示开发版安装指引。用户需要在商店点击添加并确认浏览器权限。
 
-仅 `https://2fa.hot` 与本机 `localhost` 页面能通过专用桥接检测版本、打开管理页。后台按浏览器提供的来源、顶层 frame 和当前 documentId 再次核验。该桥接不暴露账号列表、密钥库是否已创建、解锁状态、私钥或主口令；网站检测仅用于界面提示，不作为身份认证依据。其他部署域名无法连接这一桥接。
+仅 `https://2fa.hot` 与本机 `localhost` 页面能通过专用桥接检测版本、发起管理请求。后台按浏览器提供的来源、顶层 frame 和当前 documentId 再次核验。默认只返回版本与管理协议能力。在扩展中解锁并确认后，账号摘要返回发起请求的同一文档；网站仅在内存中保留最多 5 分钟，关闭弹窗即清除。导入、导出、删除都在对应扩展窗口确认，备份文件、私钥和主口令不经过网页。请求绑定来源、标签页和文档，过期或导航后拒绝执行。网站检测仅用于界面提示，不作为身份认证依据。其他部署域名无法连接这一桥接。
 
 ## 添加和登录
 
@@ -83,7 +83,7 @@ cd extensions/passkeys
 PLAYWRIGHT_MODULE=/absolute/path/to/playwright/index.mjs node tests/browser.mjs
 ```
 
-若网站开发环境已运行，可额外指定 `PASSKEY_COMPANION_URL=http://localhost:3001/zh-CN/passkeys`，同时验证网站检测、打开管理页、未安装状态与手机宽度布局；测试脚本不会启动服务器。
+若网站开发环境已运行，可额外指定 `PASSKEY_COMPANION_URL=http://localhost:3001/zh-CN`，同时验证网站检测、内嵌列表、搜索、导出、删除、导入恢复、取消与列表清除，以及未安装状态与手机宽度布局；测试脚本不会启动服务器。
 
 ## 参考与许可
 
@@ -93,3 +93,7 @@ PLAYWRIGHT_MODULE=/absolute/path/to/playwright/index.mjs node tests/browser.mjs
 - [Bitwarden 导出说明](https://bitwarden.com/help/export-your-data/)
 
 本扩展沿用项目 AGPL-3.0-only 许可。运行时依赖 tldts / tldts-core 使用 MIT 许可；原始依赖许可随构建保存在 `dist/licenses`，打包文件保留依赖版权注释。本实现参考公开协议与格式，没有复制 Bitwarden 实现源码。
+
+### 更新本地测试扩展
+
+下载新版本后，将文件解压覆盖到原来加载的扩展文件夹，在浏览器扩展管理页点击该扩展的重新加载按钮，再刷新网站。保留原扩展 ID 和数据：不要先卸载扩展或换一个文件夹重新安装，尤其是已保存通行密钥时。

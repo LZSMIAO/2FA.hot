@@ -4,5 +4,7 @@ pnpm-lock.yaml
 .wrangler
 node_modules
 extensions/passkeys/dist/
+extensions/passkeys/dist-store/
+extensions/passkeys/dist-preview/
 extensions/passkeys/output/
 public/lite-assets/sha.js

@@ -1,5 +1,6 @@
 const $ = (id) => document.getElementById(id)
 const token = new URLSearchParams(location.search).get('request')
+const companion = new URLSearchParams(location.search).get('companion')
 let state,
   password = '',
   records = [],
@@ -8,7 +9,7 @@ let state,
   selected = new Set(),
   busy = false
 async function send(action, values = {}) {
-  const result = await chrome.runtime.sendMessage({ action, token, password, ...values })
+  const result = await chrome.runtime.sendMessage({ action, token, companion, password, ...values })
   if (!result.ok) throw new Error(result.error)
   return result
 }
@@ -98,6 +99,43 @@ function lock() {
   selected.clear()
   location.reload()
 }
+async function finishCompanion() {
+  if (!companion) return
+  await send('companion-finish')
+  password = ''
+  records = []
+  selected.clear()
+  window.close()
+}
+function showCompanion() {
+  const operation = state.companion.operation
+  $('manager').hidden = operation === 'list'
+  $('share-list').hidden = operation !== 'list'
+  if (operation === 'list') {
+    $('share-summary').textContent =
+      `共 ${records.length} 条通行密钥。确认后在请求页面显示网站、账号和使用时间。`
+    $('share-confirm').focus()
+    return
+  }
+  selected = new Set(state.companion.ids)
+  if (operation !== 'import') records = records.filter((r) => selected.has(identity(r)))
+  render()
+  document.querySelector('.toolbar').hidden = true
+  document.querySelector('.list-heading').hidden = true
+  document.querySelector('.selection-bar').hidden = operation !== 'remove'
+  document.querySelector('#manager > details:last-child').hidden = true
+  $('records').hidden = operation === 'import'
+  $('empty').hidden = true
+  for (const name of ['import', 'export']) {
+    $(name + '-section').hidden = operation !== name
+    $(name + '-section').open = operation === name
+  }
+  // The selected IDs come from the bound request, not editable webpage messages.
+  for (const box of document.querySelectorAll('#records input')) box.disabled = true
+  if (operation === 'remove') $('remove').focus()
+}
+$('share-confirm').addEventListener('click', () => run(finishCompanion))
+$('companion-cancel').addEventListener('click', () => window.close())
 async function start() {
   state = await send('status')
   if (!state.exists) {
@@ -110,6 +148,19 @@ async function start() {
     $('confirmation').required = true
   }
   $('paused').checked = state.paused
+  if (companion) {
+    const names = {
+      list: '在网站中查看通行密钥',
+      import: '导入通行密钥',
+      export: '导出所选通行密钥',
+      remove: '删除所选通行密钥'
+    }
+    $('title').textContent = names[state.companion.operation]
+    $('subtitle').textContent = '核对请求来源，在此窗口解锁并确认，完成后自动返回原页面。'
+    $('companion-info').hidden = false
+    $('companion-origin').textContent = state.companion.origin
+    $('companion-cancel').hidden = false
+  }
   if (token) {
     $('title').textContent =
       state.request.kind === 'create' ? '保存新的通行密钥' : '使用通行密钥登录'
@@ -169,7 +220,8 @@ $('unlock-form').addEventListener('submit', (event) => {
       $('manager').hidden = false
       records = result.records
       render()
-      $('search').focus()
+      if (companion) showCompanion()
+      else $('search').focus()
     }
   })
 })
@@ -216,6 +268,7 @@ $('delete-confirm').addEventListener('click', () =>
     $('delete-dialog').close()
     await refresh()
     feedback('notice', '已删除本地副本。网站上的凭据需另行撤销。')
+    await finishCompanion()
   })
 )
 $('export-format').addEventListener('change', () => {
@@ -249,6 +302,7 @@ $('export-form').addEventListener('submit', (event) => {
     $('export-confirmation').value = ''
     $('confirm-plaintext').checked = false
     feedback('notice', '已生成导出文件。请在目标设备或管理器中导入并验证登录。')
+    await finishCompanion()
   })
 })
 function clearImport() {
@@ -288,6 +342,7 @@ $('import-confirm').addEventListener('click', () =>
     $('import-file').value = ''
     await refresh()
     feedback('notice', `已导入 ${result.added} 条，保留重复记录 ${result.duplicates} 条。`)
+    await finishCompanion()
   })
 )
 $('change-password-form').addEventListener('submit', (event) => {

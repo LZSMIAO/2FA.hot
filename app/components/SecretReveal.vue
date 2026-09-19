@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { motion, useReducedMotion } from 'motion-v'
 
-defineProps<{ secret: string }>()
+defineProps<{ secret: string; labelId?: string }>()
 const { tx } = useMessages()
 const revealed = shallowRef(false)
 const reducedMotion = useReducedMotion()
@@ -17,7 +17,8 @@ const reducedMotion = useReducedMotion()
     <UInput
       :model-value="secret"
       :type="revealed ? 'text' : 'password'"
-      :aria-label="tx('密钥')"
+      :aria-label="labelId ? undefined : tx('密钥')"
+      :aria-labelledby="labelId"
       readonly
       autocomplete="off"
       spellcheck="false"

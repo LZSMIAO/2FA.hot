@@ -1,26 +1,30 @@
 import type { OtpConfig } from '~/utils/otp'
 
 /** Save settled, valid input rather than individual keystrokes or copy actions. */
-export function useAutoHistory(configs: () => OtpConfig[]) {
+export function useAutoHistory(
+  configs: () => OtpConfig[],
+  shouldRecord: () => boolean = () => true
+) {
   const vault = useVault()
   const error = shallowRef('')
+  const recordable = () => (shouldRecord() ? configs() : [])
   watch(
-    () => JSON.stringify(configs()),
+    () => JSON.stringify(recordable()),
     (_, __, onCleanup) => {
-      const values = configs()
+      const values = recordable()
       if (!values.length) return
       const version = vault.recentVersion.value
       const timer = setTimeout(() => {
         if (version === vault.recentVersion.value) vault.remember(values)
-      }, 800)
+      }, 300)
       onCleanup(() => clearTimeout(timer))
     },
     { immediate: true }
   )
   watch(
-    [() => JSON.stringify(configs()), vault.enabled, vault.unlocked],
+    [() => JSON.stringify(recordable()), vault.enabled, vault.unlocked],
     ([, enabled, unlocked], _, onCleanup) => {
-      const values = configs()
+      const values = recordable()
       error.value = ''
       if (!enabled || !unlocked || !values.length) return
       let active = true

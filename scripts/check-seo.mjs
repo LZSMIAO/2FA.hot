@@ -33,12 +33,22 @@ await Promise.all(
 // Only the public RFC 6238 example is used here, never a real account secret.
 const demo = 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ'
 for (const path of ['/history', '/zh-CN/history', '/2fa', `/2fa/${demo}`, `/ar/2fa/${demo}`]) {
-  const { response, html } = await read(path)
+  // Access routes deliberately follow the visitor's language preference.
+  const { response, html } = await read(path, {
+    headers: { 'Accept-Language': path.startsWith('/ar/') ? 'ar' : 'en' }
+  })
   assert.equal(response.status, 200, path)
   assert.match(response.headers.get('x-robots-tag'), /noindex/, path)
   assert.match(response.headers.get('cache-control'), /no-store/, path)
   assert.doesNotMatch(html, /rel="canonical"|property="og:url"|application\/ld\+json/, path)
 }
+const { response: languageRedirect } = await read(`/ar/2fa/${demo}?digits=8`, {
+  headers: { 'Accept-Language': 'en' }
+})
+assert.equal(languageRedirect.status, 302)
+assert.equal(languageRedirect.headers.get('location'), `/2fa/${demo}?digits=8`)
+assert.match(languageRedirect.headers.get('cache-control'), /no-store/)
+assert.equal(languageRedirect.headers.get('referrer-policy'), 'no-referrer')
 const { response: redirect } = await read('/zh-CN/help/')
 assert.equal(redirect.status, 301)
 assert.equal(redirect.headers.get('location'), '/zh-CN/help')

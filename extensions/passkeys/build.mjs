@@ -3,17 +3,21 @@ import { cp, mkdir, readFile, writeFile, rm } from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import { dirname, join } from 'node:path'
 const storeBuild = process.argv.includes('--store')
-const outdir = storeBuild ? 'dist-store' : 'dist'
+const previewBuild = process.argv.includes('--preview')
+const outdir = storeBuild ? 'dist-store' : previewBuild ? 'dist-preview' : 'dist'
 const output = new URL(`./${outdir}/`, import.meta.url)
 await rm(output, { recursive: true, force: true })
 await mkdir(output, { recursive: true })
 await cp(new URL('./static/', import.meta.url), output, {
   recursive: true
 })
-if (storeBuild) {
+if (storeBuild || previewBuild) {
   const manifest = JSON.parse(await readFile(new URL('manifest.json', output), 'utf8'))
-  for (const script of manifest.content_scripts)
+  for (const script of manifest.content_scripts) {
+    // Local preview adds only status/open-UI bridging, not localhost credential interception.
+    if (previewBuild && script.js.includes('site-bridge.js')) continue
     script.matches = script.matches.filter((match) => !match.includes('localhost'))
+  }
   await writeFile(new URL('manifest.json', output), JSON.stringify(manifest, null, 2) + '\n')
 }
 await cp(

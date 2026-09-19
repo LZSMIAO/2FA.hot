@@ -2,6 +2,7 @@
 const { tx, message: deferredMessage } = useMessages()
 import { analyzePaste, pastedBatchText, parseSmartBatch } from '~/utils/smart-paste'
 import { generateOtp, groupCode, remainingSeconds, type BatchEntry } from '~/utils/otp'
+import { codeOutput } from '~/utils/code-output'
 const props = defineProps<{
   initial?: string
   importVersion?: number
@@ -120,7 +121,7 @@ async function copyRows(line?: number) {
     const text = await Promise.all(
       rows.map(async (r) => {
         const c = await generateOtp(r.config!, time)
-        return line ? c : `${r.config!.label || r.config!.secret}\t${c}`
+        return line ? c : codeOutput(r.config!.label, c)
       })
     )
     if (id !== sequence) return
@@ -147,7 +148,7 @@ async function save() {
     const ok = await vault.save(
       valid.value.filter((r) => selected.value.includes(r.line)).map((r) => r.config!)
     )
-    note.value = ok ? '所选记录已加密保存' : '请先开启并解锁本地历史。'
+    note.value = ok ? '所选记录已保存' : '请先开启并解锁本地历史。'
   } catch (e) {
     issue.value = (e as Error).message
   }
@@ -182,8 +183,7 @@ onBeforeUnmount(() => {
   <div class="batch-workspace ore-workspace-frame">
     <div class="batch-input">
       <div class="section-heading">
-        <h2>{{ tx('批量获取验证码') }}</h2>
-        <span class="small-label">{{ tx('最多 100 条 · 仅在当前页面保留') }}</span>
+        <h2 class="workspace-title">{{ tx('批量获取验证码') }}</h2>
       </div>
       <SmartPasteReview
         v-if="needsAccountReview"
@@ -206,24 +206,39 @@ onBeforeUnmount(() => {
         :readonly="guiding"
         id="batch-demo-input"
         :rows="5"
-        class="w-full"
+        class="w-full secret-field"
+        size="xl"
         :placeholder="
           tx('粘贴第一个密钥，按回车换行，再粘贴下一个。\n一行一个密钥，也支持验证器配置链接。')
         "
         :aria-label="tx('批量密钥')"
-        :ui="{ base: 'font-mono text-base leading-7 ring-[var(--control-line)]' }"
+        aria-describedby="batch-input-hint"
+        :ui="{ base: 'font-mono text-base leading-6 px-3 py-3 ring-[var(--control-line)]' }"
         :spellcheck="false"
         autocomplete="off"
       />
-      <div class="batch-toolbar">
-        <span
-          >{{ tx('有效：{count}', { count: valid.length }) }}
-          <span v-if="entries.length - valid.length"
-            >· {{ tx('需修正：{count}', { count: entries.length - valid.length }) }}</span
-          ></span
-        ><button class="text-action" :disabled="guiding || !raw" @click="clear">
+      <div class="batch-input-footer">
+        <p id="batch-input-hint" class="batch-input-hint">
+          {{ tx('最多 100 条 · 仅在当前页面保留') }}
+        </p>
+        <div class="batch-input-status" role="status">
+          <span :class="{ 'has-valid': valid.length > 0 }">{{
+            tx('有效：{count}', { count: valid.length })
+          }}</span>
+          <span v-if="entries.length - valid.length" class="batch-invalid">{{
+            tx('需修正：{count}', { count: entries.length - valid.length })
+          }}</span>
+        </div>
+        <UButton
+          color="neutral"
+          variant="ghost"
+          icon="i-lucide-trash-2"
+          class="batch-clear"
+          :disabled="guiding || !raw"
+          @click="clear"
+        >
           {{ tx('清空批量') }}
-        </button>
+        </UButton>
       </div>
     </div>
     <div
@@ -374,8 +389,56 @@ onBeforeUnmount(() => {
   background: var(--panel);
   overflow: hidden;
 }
-.batch-input {
-  padding: 28px 32px 10px;
+.batch-input-footer {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  margin-top: 0.75rem;
+  font-size: var(--text-label);
+  color: var(--ui-text-muted);
+}
+.batch-input-hint {
+  margin: 0;
+  flex: 1 1 18rem;
+}
+.batch-input-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+.batch-input-status .has-valid {
+  color: var(--ui-text-highlighted);
+}
+.batch-invalid {
+  color: var(--ui-error);
+}
+.batch-input-footer .batch-clear {
+  min-height: 2.75rem;
+  padding-inline: 0.5rem;
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+  transform: none;
+  font-size: inherit;
+  color: var(--ui-text-muted);
+}
+.batch-input-footer .batch-clear:hover:not(:disabled) {
+  color: var(--ui-text-highlighted);
+  background: transparent;
+}
+.batch-clear:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: -2px;
+}
+@media (max-width: 600px) {
+  .batch-input-hint {
+    flex-basis: 100%;
+  }
+  .batch-input-status {
+    flex: 1;
+  }
 }
 .batch-toolbar {
   display: flex;
@@ -423,7 +486,6 @@ input[type='checkbox'] {
   height: 16px;
 }
 @media (max-width: 600px) {
-  .batch-input,
   .batch-results {
     padding-inline: 20px;
   }

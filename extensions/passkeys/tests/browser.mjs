@@ -1,3 +1,4 @@
+import { verifyWebsiteManagement } from './companion-browser.mjs'
 // Standalone integration test; fulfills localhost routes without starting a server.
 import assert from 'node:assert/strict'
 import { mkdtemp, mkdir, readFile, rm } from 'node:fs/promises'
@@ -7,6 +8,10 @@ import { verifyRegistrationResponse, verifyAuthenticationResponse } from '@simpl
 import { encode, random } from '../src/encoding.js'
 const { chromium } = await import(process.env.PLAYWRIGHT_MODULE || 'playwright')
 const base = process.env.PASSKEY_TEST_ORIGIN || 'http://localhost:3001'
+const companionURL = process.env.PASSKEY_COMPANION_URL
+  ? new URL(process.env.PASSKEY_COMPANION_URL)
+  : null
+companionURL?.searchParams.set('passkeys', '1')
 const rpId = new URL(base).hostname
 const dir = await mkdtemp(resolve(tmpdir(), '2fa-passkeys-test-'))
 const extension = resolve(process.env.PASSKEY_BUILD_DIR || 'dist')
@@ -31,16 +36,6 @@ try {
   await ui.locator('#manager').waitFor({ state: 'visible' })
   await mkdir('output', { recursive: true })
   await ui.screenshot({ path: 'output/passkeys-empty.png', fullPage: true })
-  if (process.env.PASSKEY_COMPANION_URL) {
-    const companion = await context.newPage()
-    await companion.goto(process.env.PASSKEY_COMPANION_URL)
-    await companion.getByText('扩展已连接', { exact: true }).waitFor()
-    await companion.locator('[data-passkey-open]').click()
-    await companion.getByText('扩展管理页已打开，请在该标签页继续。').waitFor()
-    await companion.screenshot({ path: 'output/passkeys-website-connected.png', fullPage: true })
-    await companion.close()
-    console.log('Website detects the extension and opens its manager without accessing the vault')
-  }
   const site = await context.newPage()
   await site.route(`${base}/__passkey-test*`, (route) =>
     route.fulfill({
@@ -74,8 +69,12 @@ try {
       })
   )
   assert.equal(connection.ok, true)
-  assert.equal(connection.version, '0.2.0')
-  assert.equal(Object.keys(connection).sort().join(','), 'direction,id,namespace,ok,version')
+  assert.equal(
+    connection.version,
+    JSON.parse(await readFile(resolve(extension, 'manifest.json'), 'utf8')).version
+  )
+  assert.equal(connection.managerProtocol, 1)
+  assert.equal(connection.records, undefined)
   const settings = {
     challenge: encode(random(32)),
     rp: { id: rpId, name: 'Passkey demo' },
@@ -222,6 +221,8 @@ try {
   await ui.locator('#import-preview').waitFor({ state: 'visible' })
   await ui.locator('#import-confirm').click()
   await ui.locator('.record').waitFor()
+  if (companionURL)
+    await verifyWebsiteManagement(context, companionURL, password, 'browser-test@example.com')
   const restoredChallenge = encode(random(32))
   await prepareLogin(restoredChallenge)
   const restoredPopupPromise = context.waitForEvent('page')
@@ -270,14 +271,19 @@ if (process.env.PASSKEY_COMPANION_URL) {
   const browser = await chromium.launch({ channel: 'chromium', headless: true })
   try {
     const page = await browser.newPage()
-    await page.goto(process.env.PASSKEY_COMPANION_URL)
+    await page.goto(companionURL.href)
+    await page.getByRole('dialog').waitFor({ state: 'visible' })
     await page.getByText('尚未检测到扩展', { exact: true }).waitFor()
     assert.equal(await page.locator('[data-passkey-open]').count(), 0)
-    await page.getByText('暂未上架扩展商店。现在可以按下方步骤试用开发版。').waitFor()
+    await page.locator('[data-passkey-download]').waitFor({ state: 'visible' })
+    const release = JSON.parse(await readFile('../../shared/passkeys-release.json', 'utf8'))
+    assert.equal(
+      await page.locator('[data-passkey-download]').getAttribute('href'),
+      companionURL.hostname === 'localhost' ? release.localDownload : release.download
+    )
     await page.screenshot({ path: 'output/passkeys-website-install.png', fullPage: true })
     await page.setViewportSize({ width: 375, height: 812 })
     await page.emulateMedia({ colorScheme: 'dark' })
-    await page.locator('.developer-guide summary').click()
     assert.equal(
       await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
       false

@@ -13,7 +13,6 @@ export const publicPages = [
   '/privacy',
   '/about',
   '/waitlist',
-  '/passkeys',
   '/guides',
   ...guideSlugs.map((slug) => `/guides/${slug}`)
 ]
@@ -33,7 +32,7 @@ export function localizedPath(path: string, locale: string) {
 export function pageLocales(path: string): readonly string[] {
   const base = unlocalizedPath(path)
   if (!publicPages.includes(base)) return []
-  if (base === '/about' || base === '/passkeys') return ['en', 'zh-CN', 'zh-TW']
+  if (base === '/about') return ['en', 'zh-CN', 'zh-TW']
   return base.startsWith('/guides')
     ? editorialLocales
     : supportedLocales.map((locale) => locale.code)

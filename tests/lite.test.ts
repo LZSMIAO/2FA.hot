@@ -86,7 +86,7 @@ test('Lite refuses multiple records, unsupported types and ambiguous parameters'
 test('Lite page assets stay below 50 KiB gzipped and have no app runtime or form submission', () => {
   const html = readFileSync(new URL('../server/templates/lite.ts', import.meta.url), 'utf8')
   assert.doesNotMatch(html, /<form|_nuxt|type="module"|https?:\/\/.*\.js/)
-  const assets = ['sha.js', 'otp.js', 'paste.js', 'ui.js', 'style.css'].map((file) =>
+  const assets = ['theme.js', 'sha.js', 'otp.js', 'paste.js', 'ui.js', 'style.css'].map((file) =>
     readFileSync(new URL('../public/lite-assets/' + file, import.meta.url))
   )
   const bytes = [Buffer.from(html), ...assets].reduce(
@@ -119,4 +119,61 @@ test('Lite smart paste preserves rows and only associates unambiguous accounts',
   assert.equal(table.candidates[1].label, 'two@example.com')
   assert.equal(analyze(secret + ' ' + secret).candidates.length, 2)
   assert.equal(analyze('otpauth://hotp/Test?secret=' + secret).candidates.length, 0)
+})
+
+test('Lite follows the main theme without writing a preference, including system and storage changes', () => {
+  const source = readFileSync(new URL('../public/lite-assets/theme.js', import.meta.url), 'utf8')
+  let saved: string | null = 'dark',
+    actual = '',
+    blocked = false
+  const listeners: Record<string, (event?: any) => void> = {}
+  const media = {
+    matches: false,
+    addListener: (fn: () => void) => {
+      listeners.system = fn
+    }
+  }
+  const sandbox = {
+    window: {
+      localStorage: {
+        getItem: (key: string) => {
+          assert.equal(key, '2fa-hot-theme')
+          if (blocked) throw Error()
+          return saved
+        }
+      },
+      matchMedia: () => media,
+      addEventListener: (name: string, fn: () => void) => {
+        listeners[name] = fn
+      }
+    },
+    document: {
+      documentElement: {
+        setAttribute: (key: string, value: string) => {
+          assert.equal(key, 'data-theme')
+          actual = value
+        }
+      }
+    }
+  }
+  vm.runInNewContext(source, sandbox)
+  assert.equal(actual, 'dark')
+  saved = 'light'
+  media.matches = true
+  listeners.storage({ key: '2fa-hot-theme' })
+  assert.equal(actual, 'light')
+  saved = 'system'
+  listeners.pageshow()
+  assert.equal(actual, 'dark')
+  media.matches = false
+  listeners.system()
+  assert.equal(actual, 'light')
+  blocked = true
+  media.matches = true
+  listeners.pageshow()
+  assert.equal(actual, 'dark')
+  for (const file of ['lite.ts', 'lite-help.ts']) {
+    const html = readFileSync(new URL('../server/templates/' + file, import.meta.url), 'utf8')
+    assert.ok(html.indexOf('/lite-assets/theme.js') < html.indexOf('<body>'))
+  }
 })

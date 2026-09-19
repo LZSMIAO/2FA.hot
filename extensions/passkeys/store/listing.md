@@ -1,9 +1,9 @@
-# Store listing — 0.2.0
+# Store listing — 0.3.0
 
 Publisher: LONGMIAO LTD. Company number: 16596876 (United Kingdom).
 Product: 2fa.hot Passkeys. UI language: Simplified Chinese.
 Category: Productivity / Tools (choose the closest category offered by each store).
-Homepage: https://2fa.hot/passkeys
+Homepage: https://2fa.hot/?passkeys=1
 Privacy policy: https://2fa.hot/passkeys-privacy.html
 Support: https://github.com/LZSMIAO/2fa-hot/issues
 
@@ -28,7 +28,7 @@ Do not submit until the homepage and privacy URLs are publicly reachable. Do not
 
 这是首个公开预览版本，界面为简体中文。它使用可导出的软件密钥，不是硬件安全密钥，尚未通过独立安全审计或 FIDO 认证。iframe、条件式自动填充、PRF 等未支持请求会交回浏览器原生 WebAuthn。删除本机凭据不会撤销网站上的凭据。不要删除原有登录方式，直到你确认新保存或恢复的通行密钥能够登录。
 
-扩展需要在 HTTPS 网站运行，才能响应用户在各网站发起的通行密钥创建和登录请求。它不会读取普通网页内容来构建浏览历史。2fa.hot 网站只可以检测扩展版本并打开管理页，不能读取密钥库或账号列表。
+扩展需要在 HTTPS 网站运行，才能响应用户在各网站发起的通行密钥创建和登录请求。它不会读取普通网页内容来构建浏览历史。2fa.hot 网站可检测扩展并发起管理请求。在扩展中解锁并确认后，账号摘要返回同一网页，在弹窗中显示最多 5 分钟。私钥、主口令和备份文件不会返回网页。导入、导出和删除仍在扩展窗口中确认。
 
 ## English description
 
@@ -45,7 +45,7 @@ The vault, including account metadata, is encrypted locally using AES-256-GCM an
 
 This is an initial public preview with a Simplified Chinese interface. It uses exportable software keys, not hardware-bound keys, and has not undergone an independent security audit or FIDO certification. Unsupported requests, including iframe requests, conditional autofill and PRF, fall back to native WebAuthn. Deleting a local key does not revoke it at the website. Keep another sign-in method until you have verified that a newly created or restored passkey works.
 
-The extension runs on HTTPS websites to respond to passkey creation and sign-in requests. It does not scrape ordinary page content or build a browsing history. The 2fa.hot companion website can detect the extension version and open its management page; it cannot access vault contents or your account list.
+The extension runs on HTTPS websites to respond to passkey creation and sign-in requests. It does not scrape ordinary page content or build a browsing history. The 2fa.hot website can detect the extension and initiate management. After unlocking and approval in the extension, account summaries are returned to the requesting document for display for up to five minutes. Private keys, passwords and backup files never pass to the page. Import, export and deletion still require confirmation in the extension window.
 
 ## Privacy dashboard declarations
 
