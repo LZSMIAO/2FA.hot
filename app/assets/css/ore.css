@@ -350,6 +350,9 @@
 }
 .mode-tabs > [data-slot='list'] {
   gap: 0.5rem;
+  /* Nuxt UI pads the strip by 4px, which sets the first tab in from the
+     panel edge below it. The tabs sit flush with the card instead. */
+  padding-inline: 0;
   padding-bottom: 3px;
   max-width: 100%;
 }
