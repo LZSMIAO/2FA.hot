@@ -360,21 +360,12 @@ function time(value: number) {
   font-size: var(--text-label);
 }
 .session-record-icon {
-  grid-column: 1;
-  grid-row: 1 / 3;
   display: grid;
   place-items: center;
   opacity: 0.85;
 }
 .session-record-icon img {
   image-rendering: pixelated;
-}
-.session-child > .session-name,
-.session-child > code {
-  grid-column: 2;
-}
-.session-child > .session-open {
-  grid-column: 4;
 }
 .session-row.session-child .session-icon {
   width: 1.375rem;
@@ -418,6 +409,25 @@ function time(value: number) {
   grid-column: 3;
   grid-row: 1 / 3;
   color: var(--ui-text-muted);
+}
+.session-row.session-child {
+  column-gap: 0.5rem;
+}
+.session-row.session-child > .session-record-icon {
+  grid-column: 1;
+  grid-row: 1 / 3;
+}
+.session-row.session-child > .session-name {
+  grid-column: 2;
+  grid-row: 1;
+}
+.session-row.session-child > code {
+  grid-column: 2;
+  grid-row: 2;
+}
+.session-row.session-child > .session-open {
+  grid-column: 4;
+  grid-row: 1 / 3;
 }
 .session-row:last-child {
   border-bottom: 0;
