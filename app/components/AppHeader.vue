@@ -69,32 +69,43 @@ const backdrop = computed(() =>
         {
           label: tx('切换背景'),
           icon: 'i-lucide-image',
-          children: scenes.map((version) => ({
-            label: `Minecraft ${version}`,
-            type: 'checkbox' as const,
-            checked: selected.value === version,
-            onSelect: () => {
-              selected.value = version
-            }
-          }))
-        },
-        {
-          label: tx(playbackPaused.value === false ? '暂停' : '继续'),
-          icon: playbackPaused.value === false ? 'i-lucide-pause' : 'i-lucide-play',
-          onSelect: () => {
-            playbackPaused.value = playbackPaused.value === false
-          }
+          children: [
+            /* On its own in the top menu this read as "pause" with no object. */
+            {
+              label: tx(playbackPaused.value === false ? '暂停' : '继续'),
+              icon: playbackPaused.value === false ? 'i-lucide-pause' : 'i-lucide-play',
+              onSelect: () => {
+                playbackPaused.value = playbackPaused.value === false
+              }
+            },
+            { type: 'separator' as const },
+            ...scenes.map((version) => ({
+              label: `Minecraft ${version}`,
+              type: 'checkbox' as const,
+              checked: selected.value === version,
+              onSelect: () => {
+                selected.value = version
+              }
+            }))
+          ]
         }
       ]
     : []
 )
+/*
+ * Grouped rather than listed: where you can go, what this page looks like,
+ * the other edition, then the site's own pages. A bare "Lite" said nothing
+ * about what it is.
+ */
 const menu = computed(() => [
-  { label: 'Lite', to: liteHref.value, external: true },
   { label: tx('本地历史'), to: localePath('/history'), icon: 'i-lucide-history' },
   { label: tx('使用说明'), to: localePath('/help'), icon: 'i-lucide-book-open' },
+  ...(backdrop.value.length ? [{ type: 'separator' as const }, ...backdrop.value] : []),
+  { type: 'separator' as const },
+  { label: tx('Lite 轻量版'), to: liteHref.value, external: true, icon: 'i-lucide-feather' },
+  { type: 'separator' as const },
   { label: tx('功能建议'), to: localePath('/waitlist'), icon: 'i-lucide-plus' },
-  { label: tx('隐私说明'), to: localePath('/privacy'), icon: 'i-lucide-shield-check' },
-  ...backdrop.value
+  { label: tx('隐私说明'), to: localePath('/privacy'), icon: 'i-lucide-shield-check' }
 ])
 </script>
 <template>

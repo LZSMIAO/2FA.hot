@@ -1296,17 +1296,34 @@ html.size-transition .desert-art svg * {
  * keystroke leaves its button parked over the icons until the field is
  * blurred and focused again.
  */
+/*
+ * This entry walks the reader through installing a browser extension, which
+ * a touch browser has no page for. There is no API that reports whether a
+ * browser can install one, so the device itself is the only signal: a
+ * touch-first device cannot, however wide its screen is, and a narrow desktop
+ * window still can.
+ */
+@media (pointer: coarse) {
+  .input-tools [data-passkey-trigger] {
+    display: none;
+  }
+}
 .secret-field #secret {
   padding-inline-end: 5.5rem;
 }
 /*
  * A secret longer than the field gets clipped at that reserve's edge, part
  * way through a character, which reads as a rendering fault rather than as
- * "there is more". Fade the last characters into the field instead. Not
- * while the field has focus: the caret sits on that same edge while typing,
- * and the fade would swallow it.
+ * "there is more". Fade the last characters into the field instead.
+ *
+ * Only once there is a secret to run over: on an empty field it cut into the
+ * hint, which is not overflowing and has no business looking clipped. And not
+ * while the field has focus, since the caret sits on that same edge while
+ * typing and the fade would swallow it.
  */
-.secret-field::after {
+/* .secret-field also wraps the batch textarea, which is multi-line and must
+   not be faded - this belongs to the single secret input alone. */
+.secret-field:has(#secret):has(.secret-actions.has-content)::after {
   content: '';
   position: absolute;
   inset-block: 2px;
@@ -1316,7 +1333,7 @@ html.size-transition .desert-art svg * {
   pointer-events: none;
   transition: opacity 120ms ease;
 }
-.secret-field:focus-within::after {
+.secret-field:has(#secret):has(.secret-actions.has-content):focus-within::after {
   opacity: 0;
 }
 .record-name {

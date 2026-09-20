@@ -932,7 +932,9 @@
   .ore-theme .history-intro-help,
   .ore-theme .tutorial-tip-toggle,
   .panorama-controls .panorama-control,
-  .footer-inner .footer-contacts a {
+  .footer-inner .footer-contacts a,
+  /* A short label like "About" leaves this under the target size. */
+  .site-footer nav a {
     min-width: 44px;
     min-height: 44px;
   }
