@@ -1203,6 +1203,15 @@ html.size-transition .desert-art svg * {
   .secret-field:has(.secret-actions.has-content) #secret {
     padding-inline-end: 6.5rem;
   }
+  /*
+   * The reserve above is text padding, which the extension ignores - it docks
+   * against the field's box, where our own icons already sit. Move ours into
+   * the gap the reserve opens so the last 2rem is free for it. The visible
+   * length of the secret is unchanged.
+   */
+  .secret-field .secret-actions.has-content {
+    margin-inline-end: 1.25rem;
+  }
 }
 .record-name {
   unicode-bidi: plaintext;
