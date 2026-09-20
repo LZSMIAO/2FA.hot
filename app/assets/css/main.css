@@ -1214,6 +1214,26 @@ html.size-transition .desert-art svg * {
   .secret-field #secret {
     padding-inline-end: 8rem;
   }
+  /*
+   * A secret longer than the field gets clipped at that reserve's edge, part
+   * way through a character, which reads as a rendering fault rather than as
+   * "there is more". Fade the last characters into the field instead. Not
+   * while the field has focus: the caret sits on that same edge while typing,
+   * and the fade would swallow it.
+   */
+  .secret-field::after {
+    content: '';
+    position: absolute;
+    inset-block: 2px;
+    inset-inline-end: 8rem;
+    width: 1.5rem;
+    background: linear-gradient(to left, var(--ore-input), transparent);
+    pointer-events: none;
+    transition: opacity 120ms ease;
+  }
+  .secret-field:focus-within::after {
+    opacity: 0;
+  }
 }
 .record-name {
   unicode-bidi: plaintext;
