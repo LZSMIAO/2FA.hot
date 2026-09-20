@@ -566,5 +566,8 @@
   "accountLinkingUncertainHint": "In wat je plakte zijn accountnamen gevonden, maar nog niet elke sleutel is gekoppeld. Klik om te bevestigen.",
   "accountLinkingUnlinkedHint": "Deze sleutels hebben nog geen accountnaam. Klik om ze zelf toe te voegen.",
   "backupFileChoose": "Back-upbestand kiezen",
-  "backupFileNone": "Geen bestand gekozen"
+  "backupFileNone": "Geen bestand gekozen",
+  "m5218cd8d059e": "Groep hernoemen",
+  "m23ecddbc0102": "De groepsnaam blijft op dit apparaat en helpt om meerdere batches te onderscheiden.",
+  "mf122ec8de9c8": "Naam opgeslagen."
 }

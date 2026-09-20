@@ -24,6 +24,7 @@ const {
   saveProtection
 } = useHistoryProtection(vault, error, run)
 const editor = shallowRef<VaultRecord | null>(null),
+  groupEditor = shallowRef(''),
   label = shallowRef(''),
   remark = shallowRef(''),
   removing = shallowRef<string[] | null>(null),
@@ -64,7 +65,7 @@ const {
 const rows = computed(() =>
   [...vault.records.value]
     .filter((r) =>
-      `${r.label} ${r.issuer} ${r.note}`
+      `${r.label} ${r.issuer} ${r.note} ${r.batchLabel || ''}`
         .toLocaleLowerCase(locale.value)
         .includes(search.value.toLocaleLowerCase(locale.value))
     )
@@ -76,12 +77,25 @@ const batchExpanded = (id: string) =>
   search.value ? !collapsedSearchBatches.value.has(id) : expandedBatches.value.has(id)
 watch(search, () => collapsedSearchBatches.value.clear())
 const groups = computed(() => {
-  const grouped = new Map<string, { id: string; batch: boolean; rows: typeof rows.value }>()
+  const grouped = new Map<
+    string,
+    { id: string; batch: boolean; batchId: string; label: string; rows: typeof rows.value }
+  >()
   for (const row of rows.value) {
     const id = row.batchId ? 'batch:' + row.batchId : row.id
     const group = grouped.get(id)
-    if (group) group.rows.push(row)
-    else grouped.set(id, { id, batch: !!row.batchId, rows: [row] })
+    if (group) {
+      group.rows.push(row)
+      // A key added to the batch after it was named carries no name of its own.
+      if (!group.label) group.label = row.batchLabel || ''
+    } else
+      grouped.set(id, {
+        id,
+        batch: !!row.batchId,
+        batchId: row.batchId || '',
+        label: row.batchLabel || '',
+        rows: [row]
+      })
   }
   return [...grouped.values()]
 })
@@ -141,6 +155,7 @@ watch(
   () => vault.unlocked.value,
   () => {
     editor.value = null
+    groupEditor.value = ''
     label.value = ''
     remark.value = ''
     search.value = ''
@@ -183,7 +198,20 @@ function edit(row: VaultRecord) {
   label.value = row.label
   remark.value = row.note
 }
+function editGroup(group: { batchId: string; label: string }) {
+  groupEditor.value = group.batchId
+  label.value = group.label
+}
+function closeEditor() {
+  editor.value = null
+  groupEditor.value = ''
+}
 async function saveEdit() {
+  if (groupEditor.value)
+    return run(async () => {
+      await vault.editBatch(groupEditor.value, label.value.trim())
+      groupEditor.value = ''
+    }, '名称已保存。')
   if (!editor.value) return
   await run(async () => {
     await vault.edit(editor.value!.id, label.value, remark.value)
@@ -391,7 +419,7 @@ const date = (v: number) =>
                   ? 'mixed'
                   : false
             "
-            :label="tx('选择 {label}', { label: tx('批量取码') })"
+            :label="tx('选择 {label}', { label: group.label || tx('批量取码') })"
             @pointerdown="startSelection($event, group.id)"
             @click="clickSelection($event, group.id)"
           />
@@ -406,7 +434,7 @@ const date = (v: number) =>
             /></span>
             <span class="record-name">
               <span class="record-title"
-                ><strong>{{ tx('批量取码') }}</strong></span
+                ><strong>{{ group.label || tx('批量取码') }}</strong></span
               >
               <span class="record-meta">
                 <span>{{ tx('记录：{count}', { count: group.rows.length }) }}</span>
@@ -416,6 +444,14 @@ const date = (v: number) =>
             <UIcon
               :name="batchExpanded(group.id) ? 'i-lucide-chevron-down' : 'i-lucide-chevron-right'"
             />
+          </button>
+          <button
+            type="button"
+            class="record-edit"
+            :aria-label="tx('重命名分组')"
+            @click="editGroup(group)"
+          >
+            <UIcon name="i-lucide-pencil" />
           </button>
         </div>
         <div
@@ -531,12 +567,16 @@ const date = (v: number) =>
     <p v-if="note" class="inline-notice history-feedback" role="status">{{ tx(note) }}</p>
   </div>
   <UModal
-    :open="!!editor"
-    :title="tx('编辑记录')"
-    :description="tx('标签和备注随密钥一起保存。')"
+    :open="!!editor || !!groupEditor"
+    :title="tx(groupEditor ? '重命名分组' : '编辑记录')"
+    :description="
+      tx(
+        groupEditor ? '分组名称只保存在本机，用来区分多次批量取码。' : '标签和备注随密钥一起保存。'
+      )
+    "
     @update:open="
       (v) => {
-        if (!v) editor = null
+        if (!v) closeEditor()
       }
     "
     ><template #body
@@ -549,7 +589,7 @@ const date = (v: number) =>
             data-1p-ignore
             maxlength="120"
             class="w-full" /></UFormField
-        ><UFormField :label="tx('备注')"
+        ><UFormField v-if="!groupEditor" :label="tx('备注')"
           ><UTextarea
             v-model="remark"
             name="history-record-note"
@@ -563,7 +603,7 @@ const date = (v: number) =>
       </div></template
     ><template #footer
       ><UButton class="primary-button" :loading="vault.busy.value" @click="saveEdit">{{
-        tx('保存备注')
+        tx(groupEditor ? '保存' : '保存备注')
       }}</UButton></template
     ></UModal
   >
@@ -720,7 +760,7 @@ const date = (v: number) =>
 }
 .history-batch-heading {
   display: grid;
-  grid-template-columns: 20px minmax(0, 1fr);
+  grid-template-columns: 20px minmax(0, 1fr) 28px;
   align-items: center;
   gap: var(--control-gap);
   width: 100%;
@@ -978,6 +1018,8 @@ const date = (v: number) =>
   cursor: pointer;
 }
 .history-row:hover .record-edit,
+.history-batch-heading:hover .record-edit,
+.history-batch-heading:focus-within .record-edit,
 .record-title:focus-within .record-edit {
   opacity: 1;
 }
@@ -1073,7 +1115,7 @@ const date = (v: number) =>
     grid-template-columns: minmax(0, 1fr) 44px;
   }
   .history-batch-heading {
-    grid-template-columns: 20px minmax(0, 1fr);
+    grid-template-columns: 20px minmax(0, 1fr) 28px;
     gap: 8px;
   }
   .history-batch-toggle > .record-icon {

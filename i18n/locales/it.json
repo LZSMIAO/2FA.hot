@@ -566,5 +566,8 @@
   "accountLinkingUncertainHint": "Sono stati trovati nomi account in ciò che hai incollato, ma non tutte le chiavi sono abbinate. Fai clic per confermare.",
   "accountLinkingUnlinkedHint": "Queste chiavi non hanno ancora un nome account. Fai clic per aggiungerli manualmente.",
   "backupFileChoose": "Scegli file di backup",
-  "backupFileNone": "Nessun file scelto"
+  "backupFileNone": "Nessun file scelto",
+  "m5218cd8d059e": "Rinomina gruppo",
+  "m23ecddbc0102": "Il nome del gruppo resta su questo dispositivo e aiuta a distinguere più lotti.",
+  "mf122ec8de9c8": "Nome salvato."
 }

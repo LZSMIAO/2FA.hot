@@ -566,5 +566,8 @@
   "accountLinkingUncertainHint": "Nama akun ditemukan di teks yang Anda tempel, tetapi belum semua kunci dicocokkan. Klik untuk mengonfirmasi.",
   "accountLinkingUnlinkedHint": "Kunci ini belum punya nama akun. Klik untuk menambahkannya sendiri.",
   "backupFileChoose": "Pilih berkas cadangan",
-  "backupFileNone": "Belum ada berkas dipilih"
+  "backupFileNone": "Belum ada berkas dipilih",
+  "m5218cd8d059e": "Ubah nama grup",
+  "m23ecddbc0102": "Nama grup hanya tersimpan di perangkat ini dan membantu membedakan beberapa batch.",
+  "mf122ec8de9c8": "Nama disimpan."
 }

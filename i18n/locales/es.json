@@ -566,5 +566,8 @@
   "accountLinkingUncertainHint": "Se encontraron nombres de cuenta en lo que pegaste, pero aún no todas las claves están emparejadas. Pulsa para confirmar.",
   "accountLinkingUnlinkedHint": "Estas claves aún no tienen nombre de cuenta. Pulsa para añadirlos manualmente.",
   "backupFileChoose": "Elegir archivo de copia",
-  "backupFileNone": "Ningún archivo elegido"
+  "backupFileNone": "Ningún archivo elegido",
+  "m5218cd8d059e": "Cambiar nombre del grupo",
+  "m23ecddbc0102": "El nombre del grupo se guarda solo en este dispositivo y ayuda a distinguir varios lotes.",
+  "mf122ec8de9c8": "Nombre guardado."
 }

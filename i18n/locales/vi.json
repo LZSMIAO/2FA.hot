@@ -566,5 +566,8 @@
   "accountLinkingUncertainHint": "Đã tìm thấy tên tài khoản trong nội dung bạn dán, nhưng chưa khớp hết với các khóa. Nhấp để xác nhận.",
   "accountLinkingUnlinkedHint": "Các khóa này chưa có tên tài khoản. Nhấp để tự thêm.",
   "backupFileChoose": "Chọn tệp sao lưu",
-  "backupFileNone": "Chưa chọn tệp"
+  "backupFileNone": "Chưa chọn tệp",
+  "m5218cd8d059e": "Đổi tên nhóm",
+  "m23ecddbc0102": "Tên nhóm chỉ lưu trên thiết bị này và giúp bạn phân biệt nhiều lần lấy mã hàng loạt.",
+  "mf122ec8de9c8": "Đã lưu tên."
 }

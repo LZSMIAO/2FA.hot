@@ -566,5 +566,8 @@
   "accountLinkingUncertainHint": "Des noms de compte ont été trouvés dans ce que vous avez collé, mais toutes les clés ne sont pas encore associées. Cliquez pour confirmer.",
   "accountLinkingUnlinkedHint": "Ces clés n'ont pas encore de nom de compte. Cliquez pour les ajouter manuellement.",
   "backupFileChoose": "Choisir un fichier de sauvegarde",
-  "backupFileNone": "Aucun fichier choisi"
+  "backupFileNone": "Aucun fichier choisi",
+  "m5218cd8d059e": "Renommer le groupe",
+  "m23ecddbc0102": "Le nom du groupe reste sur cet appareil et aide à distinguer plusieurs lots.",
+  "mf122ec8de9c8": "Nom enregistré."
 }

@@ -566,5 +566,8 @@
   "accountLinkingUncertainHint": "已從貼上的內容認出帳號名稱，但還沒和密鑰全部對應。點擊確認。",
   "accountLinkingUnlinkedHint": "密鑰還沒有帳號名稱。點擊可手動對應。",
   "backupFileChoose": "選擇備份檔案",
-  "backupFileNone": "尚未選擇檔案"
+  "backupFileNone": "尚未選擇檔案",
+  "m5218cd8d059e": "重新命名群組",
+  "m23ecddbc0102": "群組名稱只保存在本機，用來區分多次批量取碼。",
+  "mf122ec8de9c8": "名稱已保存。"
 }

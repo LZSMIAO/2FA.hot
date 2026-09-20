@@ -566,5 +566,8 @@
   "accountLinkingUncertainHint": "May nakitang pangalan ng account sa idinikit mo, pero hindi pa lahat ng susi ay naitugma. I-click para kumpirmahin.",
   "accountLinkingUnlinkedHint": "Wala pang pangalan ng account ang mga susing ito. I-click para idagdag mismo.",
   "backupFileChoose": "Pumili ng backup file",
-  "backupFileNone": "Walang napiling file"
+  "backupFileNone": "Walang napiling file",
+  "m5218cd8d059e": "Palitan ang pangalan ng grupo",
+  "m23ecddbc0102": "Nasa device na ito lang ang pangalan ng grupo at tumutulong itong makilala ang iba't ibang batch.",
+  "mf122ec8de9c8": "Na-save ang pangalan."
 }

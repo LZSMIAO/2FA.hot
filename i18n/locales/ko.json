@@ -566,5 +566,8 @@
   "accountLinkingUncertainHint": "붙여넣은 내용에서 계정 이름을 찾았지만 아직 모든 키와 연결되지는 않았습니다. 클릭해 확인하세요.",
   "accountLinkingUnlinkedHint": "이 키에는 아직 계정 이름이 없습니다. 클릭해 직접 입력하세요.",
   "backupFileChoose": "백업 파일 선택",
-  "backupFileNone": "선택된 파일 없음"
+  "backupFileNone": "선택된 파일 없음",
+  "m5218cd8d059e": "그룹 이름 변경",
+  "m23ecddbc0102": "그룹 이름은 이 기기에만 저장되며 여러 번의 일괄 코드 생성을 구분하는 데 사용됩니다.",
+  "mf122ec8de9c8": "이름을 저장했습니다."
 }

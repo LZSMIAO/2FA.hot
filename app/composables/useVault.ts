@@ -22,6 +22,8 @@ export interface VaultRecord extends OtpConfig {
   note: string
   usedAt: number
   batchId?: string
+  /** A shared name for every record of one batch, so groups stay apart in history. */
+  batchLabel?: string
 }
 export interface SessionRecord extends VaultRecord {
   batch?: readonly OtpConfig[]
@@ -37,6 +39,8 @@ function validRecords(value: unknown): VaultRecord[] {
       ids.has(r.id) ||
       (r.batchId !== undefined &&
         (typeof r.batchId !== 'string' || !r.batchId || r.batchId.length > 120)) ||
+      (r.batchLabel !== undefined &&
+        (typeof r.batchLabel !== 'string' || r.batchLabel.length > 120)) ||
       typeof r.note !== 'string' ||
       r.note.length > 1000 ||
       !Number.isFinite(r.usedAt) ||
@@ -49,7 +53,8 @@ function validRecords(value: unknown): VaultRecord[] {
       id: r.id,
       note: r.note,
       usedAt: r.usedAt,
-      ...(r.batchId ? { batchId: r.batchId } : {})
+      ...(r.batchId ? { batchId: r.batchId } : {}),
+      ...(r.batchId && r.batchLabel ? { batchLabel: r.batchLabel } : {})
     }
   })
 }
@@ -289,11 +294,33 @@ export function createVault() {
       )
     })
   }
+  /**
+   * A batch is stored as one record per key, so its name lives on every member.
+   * The session row for the same batch carries it as its own label.
+   */
+  async function editBatch(batchId: string, label: string) {
+    return operation(async () => {
+      if (label.length > 120) throw new Error('标签或备注过长。')
+      if (!records.value.some((row) => row.batchId === batchId)) return
+      await commit(
+        records.value.map((row) => (row.batchId === batchId ? { ...row, batchLabel: label } : row))
+      )
+      recent.value = recent.value.map((entry) =>
+        entry.batch && entry.id === batchId ? { ...entry, label } : entry
+      )
+    })
+  }
   async function editRecent(id: string, label: string) {
     return operation(async () => {
       if (label.length > 120) throw new Error('标签或备注过长。')
       const row = recent.value.find((entry) => entry.id === id)
       if (!row) return
+      if (enabled.value && unlocked.value && row.batch) {
+        const next = records.value.map((entry) =>
+          entry.batchId === id ? { ...entry, batchLabel: label } : entry
+        )
+        if (next.some((entry, index) => entry !== records.value[index])) await commit(next)
+      }
       if (enabled.value && !row.batch) {
         if (!unlocked.value) throw new Error('请先开启并解锁本地历史。')
         const next = [...records.value]
@@ -416,6 +443,7 @@ export function createVault() {
     unlock,
     save,
     edit,
+    editBatch,
     editRecent,
     remove,
     toggle,

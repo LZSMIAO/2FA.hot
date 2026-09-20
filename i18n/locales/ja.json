@@ -566,5 +566,8 @@
   "accountLinkingUncertainHint": "貼り付けた内容からアカウント名が見つかりましたが、まだすべての鍵とは対応していません。クリックして確認してください。",
   "accountLinkingUnlinkedHint": "これらの鍵にはまだアカウント名がありません。クリックすると手動で設定できます。",
   "backupFileChoose": "バックアップファイルを選択",
-  "backupFileNone": "ファイル未選択"
+  "backupFileNone": "ファイル未選択",
+  "m5218cd8d059e": "グループ名を変更",
+  "m23ecddbc0102": "グループ名はこの端末にのみ保存され、複数の一括取得を見分けるために使います。",
+  "mf122ec8de9c8": "名前を保存しました。"
 }

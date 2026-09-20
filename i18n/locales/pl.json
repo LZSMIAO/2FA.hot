@@ -566,5 +566,8 @@
   "accountLinkingUncertainHint": "We wklejonym tekście znaleziono nazwy kont, ale nie każdy klucz jest jeszcze dopasowany. Kliknij, aby potwierdzić.",
   "accountLinkingUnlinkedHint": "Te klucze nie mają jeszcze nazw kont. Kliknij, aby dodać je ręcznie.",
   "backupFileChoose": "Wybierz plik kopii",
-  "backupFileNone": "Nie wybrano pliku"
+  "backupFileNone": "Nie wybrano pliku",
+  "m5218cd8d059e": "Zmień nazwę grupy",
+  "m23ecddbc0102": "Nazwa grupy pozostaje na tym urządzeniu i pomaga odróżnić kolejne partie.",
+  "mf122ec8de9c8": "Nazwa zapisana."
 }

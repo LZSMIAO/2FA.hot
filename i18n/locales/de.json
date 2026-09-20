@@ -566,5 +566,8 @@
   "accountLinkingUncertainHint": "Im eingefügten Text wurden Kontonamen gefunden, aber noch nicht jeder Schlüssel ist zugeordnet. Zum Bestätigen klicken.",
   "accountLinkingUnlinkedHint": "Diese Schlüssel haben noch keine Kontonamen. Zum manuellen Hinzufügen klicken.",
   "backupFileChoose": "Sicherungsdatei wählen",
-  "backupFileNone": "Keine Datei gewählt"
+  "backupFileNone": "Keine Datei gewählt",
+  "m5218cd8d059e": "Gruppe umbenennen",
+  "m23ecddbc0102": "Der Gruppenname bleibt auf diesem Gerät und hilft, mehrere Stapelabrufe zu unterscheiden.",
+  "mf122ec8de9c8": "Name gespeichert."
 }

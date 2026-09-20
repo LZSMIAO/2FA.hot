@@ -283,3 +283,59 @@ test('an account recognised after the first save fills in the still-empty name',
     stop()
   }
 })
+
+test('a batch name is shared by every record of the group, survives a backup and follows a session rename', async () => {
+  const { vault, stop } = mount()
+  try {
+    await waitFor(() => vault.ready.value)
+    // Earlier tests share this store; start from an empty one.
+    if (vault.exists.value) await vault.erase()
+    await vault.enable()
+    const base = {
+      algorithm: 'SHA-1' as const,
+      digits: 6 as const,
+      period: 30,
+      issuer: ''
+    }
+    const configs = [
+      { ...base, secret: 'JBSWY3DPEHPK3PXP', label: 'one' },
+      { ...base, secret: 'KRSXG5CTMVRXEZLU', label: 'two' }
+    ]
+    vault.rememberBatch(configs, 'batch-1')
+    await vault.save(configs, 'batch-1', true)
+    assert.deepEqual(
+      vault.records.value.map((row) => row.batchId),
+      ['batch-1', 'batch-1']
+    )
+    assert.deepEqual(
+      vault.records.value.map((row) => row.batchLabel),
+      [undefined, undefined]
+    )
+
+    await vault.editBatch('batch-1', '工作账号')
+    assert.deepEqual(
+      vault.records.value.map((row) => row.batchLabel),
+      ['工作账号', '工作账号']
+    )
+    // Each key keeps its own label; only the group name is shared.
+    assert.deepEqual(vault.records.value.map((row) => row.label).sort(), ['one', 'two'])
+    assert.equal(vault.recent.value[0]!.label, '工作账号')
+
+    const backup = await vault.backup()
+    const restored = await vault.inspectBackup(backup, '')
+    assert.deepEqual(
+      restored.map((row) => row.batchLabel),
+      ['工作账号', '工作账号']
+    )
+
+    // Renaming the same batch from the session list reaches the saved records.
+    await vault.editRecent('batch-1', '私人账号')
+    assert.deepEqual(
+      vault.records.value.map((row) => row.batchLabel),
+      ['私人账号', '私人账号']
+    )
+    await vault.erase()
+  } finally {
+    stop()
+  }
+})

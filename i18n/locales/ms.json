@@ -566,5 +566,8 @@
   "accountLinkingUncertainHint": "Nama akaun ditemui dalam teks yang anda tampal, tetapi belum semua kunci dipadankan. Klik untuk mengesahkan.",
   "accountLinkingUnlinkedHint": "Kunci ini belum mempunyai nama akaun. Klik untuk menambahnya sendiri.",
   "backupFileChoose": "Pilih fail sandaran",
-  "backupFileNone": "Tiada fail dipilih"
+  "backupFileNone": "Tiada fail dipilih",
+  "m5218cd8d059e": "Tukar nama kumpulan",
+  "m23ecddbc0102": "Nama kumpulan hanya disimpan pada peranti ini dan membantu membezakan beberapa kelompok.",
+  "mf122ec8de9c8": "Nama disimpan."
 }
