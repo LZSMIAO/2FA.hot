@@ -64,7 +64,7 @@ Then .HOT came along. Fine, fine, I'll admit it: that's sexy. We're going back.
 
 ## Why did I make this? Reinventing the wheel?
 
-Friends working in cross-border e-commerce need to log into accounts for tasks such as managing media accounts, while also considering security. Helping more friends with similar needs, as well as people just getting started online, was the starting point.
+Friends working in cross-border e-commerce need to log into accounts for tasks such as managing media accounts and account networks, while also considering security. Helping more friends with similar needs, as well as people just getting started online, was the starting point.
 There are many similar online tools, including ones that generate codes through direct links. But if you didn't know, opening a URL containing a secret, such as `?secret=SECRET`, sends the secret in an HTTP request. The remote website service or CDN receives that data and can record and retain it through access logs, monitoring or application logging. In other words, secrets in those requests may be stored in plain text. Of course, whether it actually retains them depends on its implementation, settings and privacy policy :))
 
 This is the first Vibe coding project I have made public by reinventing a wheel. It inspired me to write a few thoughts; if you are interested, visit my [profile](https://github.com/LZSMIAO).

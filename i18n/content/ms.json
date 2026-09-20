@@ -127,7 +127,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Rakan-rakan dalam e-dagang rentas sempadan perlu log masuk ke akaun untuk kerja seperti mengurus akaun media sambil mempertimbangkan keselamatan. Membantu lebih ramai rakan dengan keperluan serupa serta orang yang baru mula menggunakan internet ialah titik permulaannya.\nBanyak alat dalam talian serupa, termasuk yang menjana kod melalui pautan terus. Tetapi jika anda belum tahu, membuka URL berahsia seperti `?secret=SECRET` menghantar rahsia dalam permintaan HTTP. Perkhidmatan laman jauh atau CDN menerima data itu dan boleh merekod serta menyimpannya melalui log akses, pemantauan atau log aplikasi. Ertinya, rahsia dalam permintaan itu mungkin disimpan sebagai teks biasa. Sudah tentu, sama ada ia benar-benar disimpan bergantung pada pelaksanaan, tetapan dan dasar privasinya :))"
+              "Rakan-rakan dalam e-dagang rentas sempadan perlu log masuk ke akaun untuk kerja seperti mengurus akaun media dan rangkaian akaun sambil mempertimbangkan keselamatan. Membantu lebih ramai rakan dengan keperluan serupa serta orang yang baru mula menggunakan internet ialah titik permulaannya.\nBanyak alat dalam talian serupa, termasuk yang menjana kod melalui pautan terus. Tetapi jika anda belum tahu, membuka URL berahsia seperti `?secret=SECRET` menghantar rahsia dalam permintaan HTTP. Perkhidmatan laman jauh atau CDN menerima data itu dan boleh merekod serta menyimpannya melalui log akses, pemantauan atau log aplikasi. Ertinya, rahsia dalam permintaan itu mungkin disimpan sebagai teks biasa. Sudah tentu, sama ada ia benar-benar disimpan bergantung pada pelaksanaan, tetapan dan dasar privasinya :))"
             ]
           },
           {

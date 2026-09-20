@@ -127,7 +127,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Teman-teman di perdagangan elektronik lintas negara perlu masuk ke akun untuk pekerjaan seperti mengelola akun media, sambil mempertimbangkan keamanan. Membantu lebih banyak teman dengan kebutuhan serupa, serta orang yang baru mengenal internet, adalah titik awalnya.\nAda banyak alat daring serupa, termasuk yang menghasilkan kode melalui tautan langsung. Tetapi jika belum tahu, membuka URL berisi rahasia, seperti `?secret=SECRET`, mengirim rahasia dalam permintaan HTTP. Layanan situs jarak jauh atau CDN menerima data itu dan dapat mencatat serta menyimpannya melalui log akses, pemantauan, atau log aplikasi. Artinya, rahasia dalam permintaan tersebut mungkin disimpan sebagai teks biasa. Tentu saja, apakah benar disimpan bergantung pada implementasi, pengaturan, dan kebijakan privasinya :))"
+              "Teman-teman di perdagangan elektronik lintas negara perlu masuk ke akun untuk pekerjaan seperti mengelola akun media dan jaringan akun, sambil mempertimbangkan keamanan. Membantu lebih banyak teman dengan kebutuhan serupa, serta orang yang baru mengenal internet, adalah titik awalnya.\nAda banyak alat daring serupa, termasuk yang menghasilkan kode melalui tautan langsung. Tetapi jika belum tahu, membuka URL berisi rahasia, seperti `?secret=SECRET`, mengirim rahasia dalam permintaan HTTP. Layanan situs jarak jauh atau CDN menerima data itu dan dapat mencatat serta menyimpannya melalui log akses, pemantauan, atau log aplikasi. Artinya, rahasia dalam permintaan tersebut mungkin disimpan sebagai teks biasa. Tentu saja, apakah benar disimpan bergantung pada implementasi, pengaturan, dan kebijakan privasinya :))"
             ]
           },
           {
