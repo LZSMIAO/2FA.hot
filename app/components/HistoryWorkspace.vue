@@ -367,7 +367,7 @@ const date = (v: number) =>
         v-for="group in groups"
         :key="group.id"
         class="history-group"
-        :class="{ 'is-expanded': group.batch && batchExpanded(group.id) }"
+        :class="{ 'is-batch': group.batch, 'is-expanded': group.batch && batchExpanded(group.id) }"
       >
         <div
           v-if="group.batch"
@@ -735,8 +735,12 @@ const date = (v: number) =>
 /* An opened batch reads as one block through a neutral wash alone - a coloured
    edge competes with the green the selection already uses. */
 .history-group.is-expanded > .history-batch-heading {
-  /* The wash below already separates the block; a rule as well reads doubled. */
+  /* The wash below already separates the block; a rule as well reads doubled.
+     Fades with the collapse rather than snapping back on its first frame. */
   border-bottom-color: transparent;
+}
+.history-group.is-batch > .history-batch-heading {
+  transition: border-bottom-color 240ms var(--ore-enter-ease);
 }
 /* Same 0fr - 1fr reveal the result panel uses, so an opening batch grows into
    place instead of appearing all at once. */
@@ -761,7 +765,7 @@ const date = (v: number) =>
 }
 /* Only the rows that were revealed carry the wash - the row you opened is not
    part of the block it reveals. */
-.history-group.is-expanded > .history-group-rows > .history-group-rows-clip {
+.history-group.is-batch > .history-group-rows > .history-group-rows-clip {
   background: color-mix(in srgb, var(--ui-text-highlighted) 6%, transparent);
 }
 @media (prefers-reduced-motion: reduce) {
@@ -769,7 +773,7 @@ const date = (v: number) =>
     transition: none;
   }
 }
-.history-group.is-expanded .history-row {
+.history-group.is-batch .history-row {
   padding-inline-start: calc(var(--history-inset) + 20px + var(--control-gap) + 12px);
 }
 .history-batch-toggle[aria-expanded='true'] > .iconify {
@@ -1065,7 +1069,7 @@ const date = (v: number) =>
   .history-batch-toggle > .record-icon {
     display: none;
   }
-  .history-group.is-expanded .history-row {
+  .history-group.is-batch .history-row {
     padding-inline-start: calc(var(--history-inset) + 12px);
   }
   .history-surface {
