@@ -378,10 +378,6 @@ function pasteBatch(event: ClipboardEvent) {
     input.selectionStart === raw.value.length && raw.value
       ? reviewSource.value + '\n' + text
       : insertBatchText(raw.value, text, input.selectionStart, input.selectionEnd).text
-  if (!raw.value.trim() && analyzePaste(inserted.text).candidates.length === 1) {
-    emit('single', source)
-    return
-  }
   pastedSecrets = new Set(analysis.candidates.map((candidate) => candidate.config.secret))
   raw.value = inserted.text
   matchSource.value = source

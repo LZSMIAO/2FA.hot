@@ -1189,7 +1189,7 @@ html.size-transition .desert-art svg * {
  */
 @media (pointer: fine) {
   .secret-field:has(.secret-actions.has-content) #secret {
-    padding-inline-end: 7.5rem;
+    padding-inline-end: 6.5rem;
   }
 }
 .record-name {
