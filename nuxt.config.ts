@@ -1,6 +1,6 @@
-import { baselineCsp } from './shared/security-headers'
+import { baselineCsp, reportOnlyCsp } from './shared/security-headers'
 import { supportedLocales } from './shared/locales'
-import { siteUrl } from './shared/seo/routes'
+import { siteUrl, publicPages, localizedPath } from './shared/seo/routes'
 import { toolDescriptions, toolHeadings } from './shared/seo/copy'
 
 export default defineNuxtConfig({
@@ -24,7 +24,8 @@ export default defineNuxtConfig({
   experimental: { viewTransition: true },
   nitro: {
     cloudflare: { nodeCompat: true },
-    plugins: ['~~/server/plugins/security-headers']
+    plugins: ['~~/server/plugins/security-headers'],
+    prerender: { crawlLinks: false, failOnError: true, concurrency: 4 }
   },
   ui: { fonts: false },
   icon: {
@@ -53,6 +54,12 @@ export default defineNuxtConfig({
     }
   },
   routeRules: {
+    // Public HTML has no user secrets: render it once at build time, not per edge request.
+    ...Object.fromEntries(
+      supportedLocales.flatMap(({ code }) =>
+        publicPages.map((path) => [localizedPath(path, code), { prerender: true }])
+      )
+    ),
     ...Object.fromEntries(
       supportedLocales.flatMap(({ code }) => {
         const prefix = code === 'en' ? '' : `/${code}`
@@ -74,6 +81,7 @@ export default defineNuxtConfig({
         'Referrer-Policy': 'no-referrer',
         'X-Content-Type-Options': 'nosniff',
         'X-Frame-Options': 'DENY',
+        'Content-Security-Policy-Report-Only': reportOnlyCsp,
         'Content-Security-Policy': baselineCsp,
         'Permissions-Policy': 'camera=(self), microphone=(), geolocation=()'
       }

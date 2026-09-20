@@ -1,5 +1,5 @@
 import { getRequestProtocol, getRequestURL, type H3Event } from 'h3'
-import { baselineCsp, transportHeaders } from '../../shared/security-headers'
+import { baselineCsp, reportOnlyCsp, transportHeaders } from '../../shared/security-headers'
 
 // Never transmit CSP reports: document URLs may contain account secrets.
 export function applySecurityHeaders(event: H3Event) {
@@ -22,25 +22,5 @@ export function applySecurityHeaders(event: H3Event) {
     'Content-Security-Policy',
     existing.includes(baseline) ? existing : existing ? `${existing}, ${baseline}` : baseline
   )
-  setHeader(
-    event,
-    'Content-Security-Policy-Report-Only',
-    [
-      "default-src 'self'",
-      "script-src 'self'",
-      "script-src-attr 'none'",
-      // Vue UI components and theme tokens use inline styles.
-      "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data: blob:",
-      "font-src 'self'",
-      "connect-src 'self'",
-      "media-src 'self' blob:",
-      "worker-src 'self' blob:",
-      "frame-src 'none'",
-      "frame-ancestors 'none'",
-      "object-src 'none'",
-      "base-uri 'self'",
-      "form-action 'self'"
-    ].join('; ')
-  )
+  setHeader(event, 'Content-Security-Policy-Report-Only', reportOnlyCsp)
 }

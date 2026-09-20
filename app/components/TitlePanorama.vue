@@ -6,8 +6,11 @@ const selected = useCookie<string>('2fa-panorama', {
   maxAge: 31536000,
   sameSite: 'lax'
 })
+const hydrated = shallowRef(false)
 const scene = computed(() =>
-  scenes.includes(selected.value as (typeof scenes)[number]) ? selected.value : '1.20.1'
+  hydrated.value && scenes.includes(selected.value as (typeof scenes)[number])
+    ? selected.value
+    : '1.20.1'
 )
 function faceUrl(version: string, face: number) {
   return `/panorama/${version === '1.20.1' ? '' : `${version}/`}panorama_${face}.png`
@@ -49,7 +52,7 @@ const playbackPaused = useCookie<boolean>('2fa-panorama-paused', {
   maxAge: 31536000,
   sameSite: 'lax'
 })
-const paused = computed(() => playbackPaused.value !== false)
+const paused = computed(() => !hydrated.value || playbackPaused.value !== false)
 const mobileMotion = shallowRef(false)
 const cube = useTemplateRef<HTMLElement>('cube')
 let frame = 0
@@ -90,6 +93,7 @@ function updatePreference() {
   reduced.value = preference?.matches || false
 }
 onMounted(() => {
+  hydrated.value = true
   mobile = window.matchMedia('(max-width: 700px), (max-height: 500px) and (pointer: coarse)')
   updateMobile()
   mobile.addEventListener('change', updateMobile)

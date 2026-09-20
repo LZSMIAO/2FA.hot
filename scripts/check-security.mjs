@@ -32,7 +32,9 @@ for (const [path, status] of routes) {
     headers: { Accept: 'text/html', 'Accept-Language': path.startsWith('/ar') ? 'ar' : 'en' },
     signal: AbortSignal.timeout(15000)
   })
-  assert.equal(response.status, status, path)
+  // Cloudflare static assets normalize trailing slashes with 307; Nitro uses 301.
+  if (status === 301) assert.ok([301, 307].includes(response.status), path)
+  else assert.equal(response.status, status, path)
   const headers = response.headers
   assert.equal(headers.get('x-frame-options'), 'DENY', path)
   const enforced = headers.get('content-security-policy')

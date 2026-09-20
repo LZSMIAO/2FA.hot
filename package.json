@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nuxt dev --host localhost",
     "build": "nuxt build",
-    "build:cloudflare": "nuxt build --preset cloudflare-module",
+    "build:cloudflare": "nuxt build --preset cloudflare-module && node --experimental-strip-types scripts/check-prerender.ts",
     "deploy:check": "pnpm build:cloudflare && wrangler deploy --dry-run",
     "deploy": "pnpm build:cloudflare && wrangler deploy",
     "preview": "nuxt preview --host localhost",

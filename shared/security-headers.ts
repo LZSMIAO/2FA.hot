@@ -21,3 +21,21 @@ export function transportHeaders(pathname: string, protocol: string, vary = '') 
   }
   return headers
 }
+
+export const reportOnlyCsp = [
+  "default-src 'self'",
+  "script-src 'self'",
+  "script-src-attr 'none'",
+  // Vue UI components and theme tokens use inline styles.
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: blob:",
+  "font-src 'self'",
+  "connect-src 'self'",
+  "media-src 'self' blob:",
+  "worker-src 'self' blob:",
+  "frame-src 'none'",
+  "frame-ancestors 'none'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'"
+].join('; ')
