@@ -411,88 +411,94 @@ const date = (v: number) =>
           </button>
         </div>
         <div
-          v-for="row in group.rows"
-          v-show="!group.batch || batchExpanded(group.id)"
-          :key="row.id"
-          class="history-row"
-          :class="{ 'is-selected': selectedSet.has(row.id) }"
-          :data-selection-id="row.id"
+          class="history-group-rows"
+          :class="{ 'is-open': !group.batch || batchExpanded(group.id) }"
         >
-          <SelectionCheck
-            class="history-select-cell"
-            :checked="selectedSet.has(row.id)"
-            :label="tx('选择 {label}', { label: row.label || tx('未命名记录') })"
-            @pointerdown="startSelection($event, row.id)"
-            @click="clickSelection($event, row.id)"
-          />
-          <AppHint
-            :text="tx(secretCopied && copiedSecretId === row.id ? '密钥已复制' : '复制密钥')"
-          >
-            <button
-              type="button"
-              class="record-icon record-copy-secret"
-              :aria-label="tx('复制密钥')"
-              :disabled="copyingSecret || !vault.unlocked.value"
-              @click="copySecret(row.id)"
+          <div class="history-group-rows-clip">
+            <div
+              v-for="row in group.rows"
+              :key="row.id"
+              class="history-row"
+              :class="{ 'is-selected': selectedSet.has(row.id) }"
+              :data-selection-id="row.id"
             >
-              <UIcon
-                v-if="secretCopied && copiedSecretId === row.id"
-                name="i-mc-check"
-                class="text-primary"
+              <SelectionCheck
+                class="history-select-cell"
+                :checked="selectedSet.has(row.id)"
+                :label="tx('选择 {label}', { label: row.label || tx('未命名记录') })"
+                @pointerdown="startSelection($event, row.id)"
+                @click="clickSelection($event, row.id)"
               />
-              <img v-else src="/textures/trial-key.png" alt="" width="32" height="32" />
-            </button>
-          </AppHint>
-          <div class="record-name">
-            <div class="record-title">
-              <UPopover
-                mode="hover"
-                :open-delay="150"
-                :close-delay="150"
-                enable-touch
-                :content="{ side: 'bottom', align: 'start', collisionPadding: 12 }"
+              <AppHint
+                :text="tx(secretCopied && copiedSecretId === row.id ? '密钥已复制' : '复制密钥')"
               >
-                <button type="button" class="record-secret-trigger">
-                  <strong :class="{ 'record-placeholder': !row.label && !row.issuer }">{{
-                    row.label || row.issuer || tx('未命名记录')
-                  }}</strong>
+                <button
+                  type="button"
+                  class="record-icon record-copy-secret"
+                  :aria-label="tx('复制密钥')"
+                  :disabled="copyingSecret || !vault.unlocked.value"
+                  @click="copySecret(row.id)"
+                >
+                  <UIcon
+                    v-if="secretCopied && copiedSecretId === row.id"
+                    name="i-mc-check"
+                    class="text-primary"
+                  />
+                  <img v-else src="/textures/trial-key.png" alt="" width="32" height="32" />
                 </button>
-                <template #content>
-                  <pre class="record-secret-preview">{{ row.secret }}</pre>
-                </template>
-              </UPopover>
+              </AppHint>
+              <div class="record-name">
+                <div class="record-title">
+                  <UPopover
+                    mode="hover"
+                    :open-delay="150"
+                    :close-delay="150"
+                    enable-touch
+                    :content="{ side: 'bottom', align: 'start', collisionPadding: 12 }"
+                  >
+                    <button type="button" class="record-secret-trigger">
+                      <strong :class="{ 'record-placeholder': !row.label && !row.issuer }">{{
+                        row.label || row.issuer || tx('未命名记录')
+                      }}</strong>
+                    </button>
+                    <template #content>
+                      <pre class="record-secret-preview">{{ row.secret }}</pre>
+                    </template>
+                  </UPopover>
+                  <button
+                    type="button"
+                    class="record-edit"
+                    :aria-label="tx('编辑备注')"
+                    @click="edit(row)"
+                  >
+                    <UIcon name="i-lucide-pencil" />
+                  </button>
+                </div>
+                <div class="record-meta">
+                  <span>
+                    {{
+                      row.note ||
+                      tx('{algorithm} · {digits} 位 · {period} 秒', {
+                        algorithm: row.algorithm,
+                        digits: row.digits,
+                        period: row.period
+                      })
+                    }}
+                  </span>
+                  <time :datetime="new Date(row.usedAt).toISOString()">{{ date(row.usedAt) }}</time>
+                </div>
+              </div>
+              <HistoryCode :config="row" />
               <button
                 type="button"
-                class="record-edit"
-                :aria-label="tx('编辑备注')"
-                @click="edit(row)"
+                class="record-delete"
+                :aria-label="tx('删除记录')"
+                @click="removing = [row.id]"
               >
-                <UIcon name="i-lucide-pencil" />
+                <UIcon name="i-lucide-trash-2" />
               </button>
             </div>
-            <div class="record-meta">
-              <span>
-                {{
-                  row.note ||
-                  tx('{algorithm} · {digits} 位 · {period} 秒', {
-                    algorithm: row.algorithm,
-                    digits: row.digits,
-                    period: row.period
-                  })
-                }}
-              </span>
-              <time :datetime="new Date(row.usedAt).toISOString()">{{ date(row.usedAt) }}</time>
-            </div>
           </div>
-          <HistoryCode :config="row" />
-          <button
-            type="button"
-            class="record-delete"
-            :aria-label="tx('删除记录')"
-            @click="removing = [row.id]"
-          >
-            <UIcon name="i-lucide-trash-2" />
-          </button>
         </div>
       </div>
       <div class="history-danger">
@@ -726,16 +732,38 @@ const date = (v: number) =>
 .history-batch-heading.is-selected {
   background: color-mix(in srgb, var(--action) 5%, transparent);
 }
-/* An opened batch reads as one block: a quiet neutral wash behind it and a
-   thin accent down its edge, left clear of the green the selection uses. */
+/* An opened batch reads as one block through a neutral wash alone - a coloured
+   edge competes with the green the selection already uses. */
 .history-group.is-expanded {
-  background: color-mix(in srgb, var(--ui-text-highlighted) 4%, transparent);
-  box-shadow: inset 2px 0 0 color-mix(in srgb, var(--accent-ink) 45%, transparent);
+  background: color-mix(in srgb, var(--ui-text-highlighted) 6%, transparent);
 }
-.history-group.is-expanded > .history-batch-heading {
-  background: color-mix(in srgb, var(--ui-text-highlighted) 3%, transparent);
+/* Same 0fr - 1fr reveal the result panel uses, so an opening batch grows into
+   place instead of appearing all at once. */
+.history-group-rows {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition:
+    grid-template-rows 240ms var(--ore-enter-ease),
+    visibility 0s 240ms;
 }
-.history-group.is-expanded > .history-row {
+.history-group-rows.is-open {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition:
+    grid-template-rows 240ms var(--ore-enter-ease),
+    visibility 0s;
+}
+.history-group-rows-clip {
+  min-height: 0;
+  overflow: hidden;
+}
+@media (prefers-reduced-motion: reduce) {
+  .history-group-rows {
+    transition: none;
+  }
+}
+.history-group.is-expanded .history-row {
   padding-inline-start: calc(var(--history-inset) + 20px + var(--control-gap));
 }
 .history-batch-toggle[aria-expanded='true'] > .iconify {
@@ -1031,7 +1059,7 @@ const date = (v: number) =>
   .history-batch-toggle > .record-icon {
     display: none;
   }
-  .history-group.is-expanded > .history-row {
+  .history-group.is-expanded .history-row {
     padding-inline-start: calc(var(--history-inset) + 12px);
   }
   .history-surface {

@@ -3,17 +3,20 @@
   const key = '2fa-brand-splash-visit-v2'
   const lock = '2fa-brand-splash-open-page'
   const choices = [
-    'More blocks!',
-    'Never dig down!',
-    'Creeper?!',
-    'Got diamonds?',
-    'Stay blocky!',
-    'Respawn!',
-    'Time to mine!',
-    'Loot found!',
-    'Redstone!',
-    'Touch grass!',
-    'Level up!'
+    'Fresh OTPs!',
+    'Too hot to reuse!',
+    'OTP, not Oops!',
+    'Keep it secret!',
+    'Keys stay local!',
+    'Copy. Paste. Go!',
+    'Got your backup?',
+    'Check the clock!',
+    'Mind the timer!',
+    'New code, who dis?',
+    'Secret keeper!',
+    'Less typing!',
+    'Stay in sync!',
+    'Your keys, yours!'
   ]
   const valid = (value) =>
     value && (value.text === '.hot' || choices.includes(value.text)) && typeof value.id === 'string'
