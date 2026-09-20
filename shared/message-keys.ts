@@ -756,5 +756,6 @@ export const sourceKeys = new Map<string, string>([
   ['尚未选择文件', 'backupFileNone'],
   ['重命名分组', 'm5218cd8d059e'],
   ['分组名称只保存在本机，用来区分多次批量取码。', 'm23ecddbc0102'],
-  ['名称已保存。', 'mf122ec8de9c8']
+  ['名称已保存。', 'mf122ec8de9c8'],
+  ['自动保存', 'mf2db3712a685']
 ])

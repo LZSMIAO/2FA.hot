@@ -25,6 +25,9 @@ const {
 } = useHistoryProtection(vault, error, run)
 const editor = shallowRef<VaultRecord | null>(null),
   groupEditor = shallowRef(''),
+  // Closing has to leave the target in place: clearing it swaps the dialog
+  // back to the other form mid-exit, and it visibly grows as it fades.
+  editorOpen = shallowRef(false),
   label = shallowRef(''),
   remark = shallowRef(''),
   removing = shallowRef<string[] | null>(null),
@@ -154,6 +157,7 @@ watch(
 watch(
   () => vault.unlocked.value,
   () => {
+    editorOpen.value = false
     editor.value = null
     groupEditor.value = ''
     label.value = ''
@@ -194,28 +198,28 @@ async function unlock() {
   )
 }
 function edit(row: VaultRecord) {
+  groupEditor.value = ''
   editor.value = { ...row }
   label.value = row.label
   remark.value = row.note
+  editorOpen.value = true
 }
 function editGroup(group: { batchId: string; label: string }) {
+  editor.value = null
   groupEditor.value = group.batchId
   label.value = group.label
-}
-function closeEditor() {
-  editor.value = null
-  groupEditor.value = ''
+  editorOpen.value = true
 }
 async function saveEdit() {
   if (groupEditor.value)
     return run(async () => {
       await vault.editBatch(groupEditor.value, label.value.trim())
-      groupEditor.value = ''
+      editorOpen.value = false
     }, '名称已保存。')
   if (!editor.value) return
   await run(async () => {
     await vault.edit(editor.value!.id, label.value, remark.value)
-    editor.value = null
+    editorOpen.value = false
   }, '备注已保存。')
 }
 async function remove() {
@@ -327,16 +331,6 @@ const date = (v: number) =>
           size="xl"
         />
         <div class="history-actions">
-          <UButton
-            class="history-autosave"
-            color="neutral"
-            variant="outline"
-            :icon="vault.enabled.value ? 'i-lucide-save-off' : 'i-lucide-save'"
-            :aria-pressed="vault.enabled.value"
-            :disabled="vault.busy.value"
-            @click="run(vault.toggle)"
-            >{{ tx(vault.enabled.value ? '关闭自动保存' : '开启自动保存') }}</UButton
-          >
           <div class="history-action-buttons">
             <UButton
               color="neutral"
@@ -363,6 +357,20 @@ const date = (v: number) =>
               >{{ tx('导入') }}</UButton
             >
           </div>
+          <div class="history-autosave">
+            <span>{{ tx('自动保存') }}</span>
+            <button
+              type="button"
+              role="switch"
+              class="history-switch"
+              :aria-checked="vault.enabled.value"
+              :aria-label="tx(vault.enabled.value ? '关闭自动保存' : '开启自动保存')"
+              :disabled="!vault.ready.value || vault.busy.value"
+              @click="run(vault.toggle)"
+            >
+              <span class="history-switch-thumb" />
+            </button>
+          </div>
         </div>
       </div>
       <div class="history-status">
@@ -378,10 +386,12 @@ const date = (v: number) =>
             >{{ selected.length }} {{ tx('条已选') }}</span
           >
         </SelectionCheck>
-        <span
-          >{{ tx('记录：{count}', { count: vault.records.value.length }) }} ·
-          {{ tx(vault.enabled.value ? '自动保存已开启' : '自动保存已关闭') }}</span
-        >
+        <span class="history-count">{{
+          tx('记录：{count}', { count: vault.records.value.length })
+        }}</span>
+        <button class="text-action history-erase" @click="eraseOpen = true">
+          {{ tx('清空全部本地历史') }}
+        </button>
       </div>
       <div v-if="!rows.length" class="empty-state">
         <UIcon :name="search ? 'i-lucide-search-x' : 'i-lucide-history'" />
@@ -549,17 +559,10 @@ const date = (v: number) =>
           </div>
         </div>
       </div>
-      <div class="history-danger">
-        <UButton
-          v-if="selected.length"
-          color="error"
-          variant="soft"
-          size="sm"
-          @click="removing = [...selected]"
-          >{{ tx('删除所选：{count}', { count: selected.length }) }}</UButton
-        ><button class="text-action ms-auto" @click="eraseOpen = true">
-          {{ tx('清空全部本地历史') }}
-        </button>
+      <div v-if="selected.length" class="history-danger">
+        <UButton color="error" variant="soft" size="sm" @click="removing = [...selected]">{{
+          tx('删除所选：{count}', { count: selected.length })
+        }}</UButton>
       </div></template
     >
     <p v-if="error || vault.issue.value" class="inline-error history-feedback" role="alert">
@@ -568,7 +571,7 @@ const date = (v: number) =>
     <p v-if="note" class="inline-notice history-feedback" role="status">{{ tx(note) }}</p>
   </div>
   <UModal
-    :open="!!editor || !!groupEditor"
+    :open="editorOpen"
     :title="tx(groupEditor ? '重命名分组' : '编辑记录')"
     :description="
       tx(
@@ -577,7 +580,7 @@ const date = (v: number) =>
     "
     @update:open="
       (v) => {
-        if (!v) closeEditor()
+        if (!v) editorOpen = false
       }
     "
     ><template #body
@@ -891,7 +894,7 @@ const date = (v: number) =>
   gap: 1rem;
   flex-wrap: wrap;
 }
-.history-actions :deep(button) {
+.history-action-buttons :deep(button) {
   min-height: 44px;
   font-size: var(--text-label);
 }
@@ -909,6 +912,56 @@ const date = (v: number) =>
   flex-wrap: wrap;
   gap: 8px;
 }
+/* Same switch the code page uses, so autosave reads the same in both places. */
+.history-autosave {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  font-size: var(--text-label);
+  white-space: nowrap;
+}
+.history-switch {
+  position: relative;
+  flex: 0 0 3rem;
+  width: 3rem;
+  height: 1.625rem;
+  padding: 0;
+  border: 2px solid var(--ore-outline);
+  border-radius: 0;
+  background: var(--wash);
+  box-shadow:
+    var(--ore-inset),
+    0 2px 0 var(--ore-outline);
+  cursor: pointer;
+}
+.history-switch[aria-checked='true'] {
+  background: #3c8527;
+}
+.history-switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 1.125rem;
+  height: 1.125rem;
+  background: #c6c6c6;
+  box-shadow:
+    var(--ore-bevel),
+    1px 1px 0 var(--ore-outline);
+}
+.history-switch[aria-checked='true'] .history-switch-thumb {
+  left: calc(100% - 1.125rem - 2px);
+}
+.history-switch:hover:not(:disabled) .history-switch-thumb {
+  background: #eee;
+}
+.history-switch:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 4px;
+}
+.history-switch:disabled {
+  cursor: default;
+}
 .history-search {
   flex: 1 1 16rem;
   min-width: 0;
@@ -916,9 +969,8 @@ const date = (v: number) =>
 .history-status {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 20px;
+  gap: 8px 16px;
   align-items: center;
-  justify-content: space-between;
   color: var(--ui-text-muted);
   font-size: var(--text-label);
   padding: 1rem 0;
@@ -951,6 +1003,13 @@ const date = (v: number) =>
 }
 .selection-count {
   color: var(--accent-ink);
+}
+.history-count:not(:first-child)::before {
+  content: '·';
+  margin-inline-end: 16px;
+}
+.history-erase {
+  margin-inline-start: auto;
 }
 .history-select-cell {
   display: grid;
@@ -1124,6 +1183,10 @@ const date = (v: number) =>
 }
 .history-feedback {
   padding: 12px 0;
+}
+.history-group:last-child:not(.is-expanded) .history-batch-heading,
+.history-group:last-child .history-group-rows.is-open .history-row:last-child {
+  border-bottom: 0;
 }
 @media (max-width: 600px) {
   .history-batch-heading {
