@@ -1160,12 +1160,14 @@ html.size-transition .desert-art svg * {
   .workspace {
     grid-template-columns: 1fr;
   }
+  /* 24px each side was 48px of a 390px screen, which left the code slots
+     filling what remained edge to edge. */
   .input-panel,
   .batch-input {
-    padding: 1.5rem;
+    padding: 1rem;
   }
   .result-panel {
-    padding: 1.5rem;
+    padding: 1rem;
     border-left: 0;
     border-radius: var(--ui-radius);
   }
@@ -1208,10 +1210,10 @@ html.size-transition .desert-art svg * {
   }
   .input-panel,
   .batch-input {
-    padding: 1.25rem;
+    padding: 0.875rem;
   }
   .result-panel {
-    padding: 1.25rem;
+    padding: 0.875rem;
   }
   .option-grid {
     column-gap: 0.5rem;

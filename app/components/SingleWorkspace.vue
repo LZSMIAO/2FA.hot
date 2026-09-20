@@ -308,6 +308,13 @@ onMounted(() => {
   compactQuery = window.matchMedia('(max-width: 900px), (max-height: 500px) and (pointer: coarse)')
   updateCompactScreen()
   compactQuery.addEventListener('change', updateCompactScreen)
+  /*
+   * The four parameters are almost always the defaults, and on a phone they
+   * cost a third of the card to say so. Start folded there; the toggle beside
+   * them opens it, and a pasted link that carries non-default parameters still
+   * opens it on its own.
+   */
+  if (window.matchMedia('(max-width: 600px)').matches) advanced.value = false
 })
 onBeforeUnmount(() => compactQuery?.removeEventListener('change', updateCompactScreen))
 let pasteRevision = 0
@@ -1351,6 +1358,18 @@ onBeforeUnmount(() => {
   visibility: visible;
   opacity: 1;
   pointer-events: auto;
+}
+/*
+ * Hover reveals this on a desktop and focus reveals it everywhere, but a touch
+ * device has no hover, so the clear button vanished the moment the field lost
+ * focus - with a secret still in it and no way to get rid of it.
+ */
+@media (pointer: coarse) {
+  .secret-actions.has-content .secret-clear {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
 @media (hover: hover) and (pointer: fine) {
   .secret-field:hover .has-content .secret-clear {
