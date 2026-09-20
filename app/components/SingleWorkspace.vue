@@ -308,13 +308,6 @@ onMounted(() => {
   compactQuery = window.matchMedia('(max-width: 900px), (max-height: 500px) and (pointer: coarse)')
   updateCompactScreen()
   compactQuery.addEventListener('change', updateCompactScreen)
-  /*
-   * The four parameters are almost always the defaults, and on a phone they
-   * cost a third of the card to say so. Start folded there; the toggle beside
-   * them opens it, and a pasted link that carries non-default parameters still
-   * opens it on its own.
-   */
-  if (compactScreen.value) advanced.value = false
 })
 onBeforeUnmount(() => compactQuery?.removeEventListener('change', updateCompactScreen))
 let pasteRevision = 0
@@ -378,8 +371,7 @@ function clear() {
   raw.value = ''
   kind.value = 'totp'
   revealed.value = true
-  // Clearing should not re-open the folded parameters on a narrow screen.
-  advanced.value = !compactScreen.value
+  advanced.value = true
   field.value?.inputRef?.focus()
 }
 function clearWithSound() {
@@ -1428,10 +1420,6 @@ onBeforeUnmount(() => {
   min-width: 0;
 }
 @media (max-width: 480px) {
-  .option-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.75rem;
-  }
   .input-notices {
     min-height: 2.5rem;
   }

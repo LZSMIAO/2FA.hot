@@ -669,16 +669,36 @@ html[data-panorama-playing] .panorama-playback-icon > :last-child {
 }
 .option-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  /*
+   * Content-sized tracks: "TOTP" does not need the width that "30 Sekunden"
+   * does, and sharing the row evenly is what used to push long translations
+   * out of their button. Spare width is still split equally between them.
+   */
+  grid-template-columns: repeat(4, auto);
   gap: 0.5rem;
   margin: 0.75rem 0 0;
 }
-/* Below this the four cells are too narrow for their own labels. */
-@media (max-width: 940px) {
+/* A phone is too narrow to hold four cells side by side. */
+@media (max-width: 600px) {
   .option-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    row-gap: 0.75rem;
+    row-gap: 0.5rem;
   }
+}
+/* Touch keeps the 44px targets; the space around them is what gets trimmed. */
+@media (max-width: 900px), (max-height: 500px) and (pointer: coarse) {
+  .option-grid {
+    margin-top: 0.5rem;
+    column-gap: 0.375rem;
+  }
+  .option-grid .mc-select-button {
+    padding-inline: 0.375rem;
+  }
+}
+/* If one cell has to wrap, the others match it rather than leaving a step. */
+.option-grid .mc-select,
+.option-grid .mc-select-button {
+  height: 100%;
 }
 .option-grid label {
   display: block;
@@ -716,7 +736,8 @@ html[data-panorama-playing] .panorama-playback-icon > :last-child {
 }
 .option-grid .mc-select-button [data-slot='value'] {
   min-width: 0;
-  white-space: nowrap;
+  /* A long translation wraps inside the cell; nowrap used to spill it outside. */
+  white-space: normal;
   overflow: visible;
   overflow-wrap: anywhere;
   text-align: start;
@@ -1242,8 +1263,8 @@ html.size-transition .desert-art svg * {
     padding: 0.875rem;
   }
   .option-grid {
-    column-gap: 0.5rem;
-    row-gap: 1rem;
+    column-gap: 0.375rem;
+    row-gap: 0.5rem;
   }
   .option-grid .mc-select-button {
     padding-inline: 0.25rem;
@@ -1325,13 +1346,13 @@ html.size-transition .desert-art svg * {
  * blurred and focused again.
  */
 /*
- * This entry walks the reader through installing a browser extension, which
- * a touch browser has no page for. There is no API that reports whether a
- * browser can install one, so the device itself is the only signal: a
- * touch-first device cannot, however wide its screen is, and a narrow desktop
- * window still can.
+ * This entry walks the reader through installing a browser extension, which a
+ * touch browser has no page for. No API reports whether a browser can install
+ * one, so the device is the only signal: a touch-first pointer rules it out,
+ * and so does a tablet-sized window, where the rest of the page has already
+ * folded into its compact layout.
  */
-@media (pointer: coarse) {
+@media (pointer: coarse), (max-width: 1000px) {
   .input-tools [data-passkey-trigger] {
     display: none;
   }
