@@ -695,6 +695,17 @@ html[data-panorama-playing] .panorama-playback-icon > :last-child {
     padding-inline: 0.375rem;
   }
 }
+/*
+ * On a tablet the rule above the row belongs to the parameters themselves, so
+ * the row sits as far below that rule as the rule sits below the buttons over
+ * it. A phone hangs the rule off the whole details block instead, and keeps
+ * the tighter gap above.
+ */
+@media (min-width: 701px) and (max-width: 900px) and (min-height: 501px) {
+  .option-grid {
+    margin-top: 2.25rem;
+  }
+}
 /* If one cell has to wrap, the others match it rather than leaving a step. */
 .option-grid .mc-select,
 .option-grid .mc-select-button {

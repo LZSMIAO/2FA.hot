@@ -164,14 +164,22 @@ function leave(event: PointerEvent) {
   outline: 2px solid var(--accent-ink);
   outline-offset: 2px;
 }
-@media (max-width: 700px) {
+/*
+ * Closed, the scene should not hold the card open: on a tablet that reserve
+ * was most of the air between the parameter rule and the buttons under it.
+ */
+@media (max-width: 900px) {
   .desert-accent {
     height: 0;
     overflow: hidden;
   }
   .desert-accent.is-open {
-    height: 13rem;
     overflow: visible;
+  }
+}
+@media (max-width: 700px) {
+  .desert-accent.is-open {
+    height: 13rem;
   }
   .desert-scene {
     top: -0.5rem;
