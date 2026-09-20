@@ -32,12 +32,24 @@ async function toggleBatch(id: string, event: MouseEvent) {
   await nextTick()
   const child = parent?.nextElementSibling as HTMLElement | null
   const scroller = parent?.closest('.session-rows')
-  if (
-    child &&
-    scroller &&
-    child.getBoundingClientRect().bottom > scroller.getBoundingClientRect().bottom
-  )
-    child.scrollIntoView({ block: 'nearest', behavior: 'instant' })
+  if (!child || !scroller) return
+  /*
+   * The panel is still growing into its new height. Measuring against the old
+   * one makes the new rows look out of view, and scrolling for them drags the
+   * row that was just opened up and out - it then slides back down as the
+   * panel finishes. Wait for the height to settle before deciding.
+   */
+  const body = parent?.closest('.session-body')
+  let settled = false
+  const settle = () => {
+    if (settled) return
+    settled = true
+    if (child.getBoundingClientRect().bottom > scroller.getBoundingClientRect().bottom)
+      child.scrollIntoView({ block: 'nearest', behavior: 'instant' })
+  }
+  // A panel already at its maximum height never transitions, so cap the wait.
+  body?.addEventListener('transitionend', settle, { once: true })
+  setTimeout(settle, 260)
 }
 function selectEntry(config: OtpConfig) {
   emit('select')
