@@ -6,7 +6,7 @@ import { DEMO_SECRET } from '~/utils/otp'
 const localePath = useLocalePath()
 const { tx } = useMessages()
 
-const props = defineProps<{ code: string }>()
+const props = defineProps<{ code: string; compact?: boolean }>()
 const emit = defineEmits<{
   close: []
   switchMode: []
@@ -294,29 +294,37 @@ onBeforeUnmount(() => {
     <div v-if="!started" class="tutorial-intro">
       <h2>{{ tx('Authenticator 是什么？') }}</h2>
       <p>{{ tx('就是“验证器”。2fa.hot 和验证器 App 一样，用密钥生成一次性验证码。') }}</p>
-      <h3>{{ tx('为什么它能验证身份？') }}</h3>
-      <p>
-        {{
-          tx(
-            '验证器和原网站用同一份密钥与当前时间计算，通常每 30 秒换一组验证码。结果一致，就能完成双重验证。'
-          )
-        }}
-      </p>
-      <h3>{{ tx('演示里会看到什么？') }}</h3>
-      <p>
-        {{
-          tx(
-            '卡片里会出现一个虚构的“示例网站”，代表任何要求双重验证的服务：邮箱、游戏、交易所都一样。它先给出密钥，再要求你填验证码。'
-          )
-        }}
-      </p>
-      <p>
-        {{
-          tx(
-            '记住三件事就够了：密钥长期有效，要保密；验证码每 30 秒换一次，用完即弃；原网站只要验证码。'
-          )
-        }}
-      </p>
+      <details class="tutorial-question" :open="!props.compact">
+        <summary>
+          <h3>{{ tx('为什么它能验证身份？') }}</h3>
+        </summary>
+        <p>
+          {{
+            tx(
+              '验证器和原网站用同一份密钥与当前时间计算，通常每 30 秒换一组验证码。结果一致，就能完成双重验证。'
+            )
+          }}
+        </p>
+      </details>
+      <details class="tutorial-question" :open="!props.compact">
+        <summary>
+          <h3>{{ tx('演示里会看到什么？') }}</h3>
+        </summary>
+        <p>
+          {{
+            tx(
+              '卡片里会出现一个虚构的“示例网站”，代表任何要求双重验证的服务：邮箱、游戏、交易所都一样。它先给出密钥，再要求你填验证码。'
+            )
+          }}
+        </p>
+        <p>
+          {{
+            tx(
+              '记住三件事就够了：密钥长期有效，要保密；验证码每 30 秒换一次，用完即弃；原网站只要验证码。'
+            )
+          }}
+        </p>
+      </details>
       <p class="tutorial-muted">
         {{
           tx('接下来，模拟鼠标会直接在首页演示。只使用公开示例数据，你原来的输入会在结束后恢复。')
@@ -558,6 +566,39 @@ onBeforeUnmount(() => {
 }
 .tutorial-intro strong {
   font-weight: 500;
+}
+.tutorial-question summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  list-style: none;
+}
+.tutorial-question summary::-webkit-details-marker {
+  display: none;
+}
+.tutorial-question summary h3 {
+  margin: 0;
+}
+.tutorial-question summary::after {
+  content: '';
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-inline-start: auto;
+  border-inline-end: 2px solid currentColor;
+  border-block-end: 2px solid currentColor;
+  transform: rotate(45deg) translate(-2px, -2px);
+  color: var(--ui-text-muted);
+  transition: transform 150ms var(--ease-out);
+}
+.tutorial-question[open] summary::after {
+  transform: rotate(-135deg) translate(-2px, -2px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .tutorial-question summary::after {
+    transition: none;
+  }
 }
 .tutorial-intro .tutorial-muted {
   color: var(--ui-text-muted);

@@ -190,6 +190,7 @@ watch(
                 @close="closeGuide"
               />
               <UsageGuide
+                :compact="mobileGuide"
                 v-else
                 :code="guideCode"
                 @switch-mode="mode = 'batch'"
