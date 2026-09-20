@@ -5,7 +5,20 @@ import TitlePanorama from '~/components/TitlePanorama.vue'
 provide(vaultKey, createVault())
 const uiLocale = useInterfaceLocale()
 useSiteSeo()
-useHead({ script: [{ src: '/viewport-layout.js', tagPosition: 'head' }] })
+const colorMode = useColorMode()
+useHead(() => ({
+  script: [{ src: '/viewport-layout.js', tagPosition: 'head' }],
+  link: [
+    {
+      key: 'site-favicon',
+      rel: 'icon',
+      type: 'image/svg+xml',
+      href: colorMode.unknown
+        ? '/favicon.svg'
+        : `/favicon-${colorMode.value === 'dark' ? 'dark' : 'light'}.svg`
+    }
+  ]
+}))
 // Measure the native scrollbar independently of whether this page currently scrolls.
 // Keep content steady when a dialog locks scrolling while the background fills the viewport.
 function measureScrollbar() {

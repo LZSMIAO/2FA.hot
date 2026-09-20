@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="8 8 16 16">
+  <!-- Original Mojang textures; see public/textures/sun-source.txt. -->
+  <style>image { image-rendering: pixelated; }</style>
+  <defs>
+    <filter id="remove-black" color-interpolation-filters="sRGB">
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0.2126 0.7152 0.0722 0 0"/>
+    </filter>
+  </defs>
+  <g filter="url(#remove-black)">
+    <image class="sun" width="32" height="32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAcJJREFUWMPVl01OwzAQRsduchMkfjbsgTMgARfgaFwAkDgDsGcDReImaWw0ccfz2ZlUZeUSyfLYjfyeZ5I0cUQUaY/DOfrTEeN+5zlLYAm2r8QS3JovBGqAjF3+IUK8BInbZSWeg3GcBXDdEpygHMq4lKICxktyzEORsUQkngkgSMG0jeciuBcEa1yKCLgQsODeK3AeL9c4BJWoY0vCEFCI9x5i7blh1mRBhggU+xBCJWcIaJoVklo91nPwKIHYyjktkSmgsNXKZzjGaeyq6yCldhxL8DgGI8ZrAwR0Z7QFJpDAOcY5vV50RwwRidTXc2Gaw3LwGtM2MN0MSCBsvoglY1JLFEgNY53DssjtnEtQ7txR1/lZLL2dgUibTSj6OpZM5BKIgGSAJWpY16WY28/L1c4n4dH16wRMLRpSIWfAFOi6VQYyvO99hvP89/Ml0dm9Tf98oOObtwksEsOg8DQ/Lgtgurkp3OV+/SQC5xX9YxI4uUWBmCVECEuxUwDhfa9Z+Xq82Clwevee4cMwziT+j0CTEjS/CJvehk0fRE0fxc3/jA7m77j5C0nzV7KmL6XNX8sP4sOk+afZQXyctvg8/wWeuMZGas8GCwAAAABJRU5ErkJggg=="/>
+  </g>
+</svg>

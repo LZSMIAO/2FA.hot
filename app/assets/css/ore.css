@@ -684,6 +684,18 @@
       display: none;
     }
   }
+  /*
+   * Open, the cross says it on its own. "Close the walkthrough" needs two
+   * lines of a third of a phone screen in most languages, and the grid then
+   * stretched all three tabs to match.
+   */
+  .mode-tabs .guide-trigger-inline[aria-expanded='true'] > .iconify {
+    display: block;
+  }
+  /* The strip sits as far above the card as the card sits above the panel. */
+  .mode-tabs > [data-slot='content'] {
+    margin-top: calc(1rem + 1px);
+  }
   .workspace {
     min-height: 0;
   }

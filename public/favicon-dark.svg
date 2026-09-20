@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="8 8 16 16">
+  <!-- Original Mojang textures; see public/textures/sun-source.txt. -->
+  <style>image { image-rendering: pixelated; }</style>
+  <defs>
+    <filter id="remove-black" color-interpolation-filters="sRGB">
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0.2126 0.7152 0.0722 0 0"/>
+    </filter>
+  </defs>
+  <g filter="url(#remove-black)">
+    <image class="moon" width="128" height="64" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAABACAIAAABdtOgoAAAABGdBTUEAALGPC/xhBQAABC1JREFUeNrtm0ty00AQhi3L73cSOwkJBZQDmKosss0xWLFlBxdgRRV3oIoFJ2CdbQ6RC7DnHvDPtGcy0cMZhxZykT/V5ZIl+evM/OoeW+puNO75SyLsb/7Iv5eYNDfZ1v7Ij0HbDyfNFNZI8NoqNHtIzsk7I387fhbtuO1m2kmaxppp15vbg9e295RzQ34839FDtEDTVi9t91udQdq+Nfu2j0PO2V03ZQMgv4SfoRtVDdpyW51huztu9yZZ645xSDxZ2Y2bEh/kb+bfBlcqwkK6EN3pz7qDfWPDA2N2GzvvuGn1RGpAygZAfgnfyYswgVCOPvLo3mjeGy364yNveIud3g1OFh9W51YgMvkx/EBeBIundwd70FPQg+nJcHY6mBqzGyfixgq+533YlBeKTH4Mv5GIvCa4TF4bBvTD/vgY0NHes9H+8/HBCxg28BY7cQgnBD6G+LgNNCtyMADyN/AT52AtL9KWiSxLH0yeDGdPQZzMl5P52WTx0hg25kvsxCGcID5MrJl8txbZOUjIv4/v4stlN5F330bWsaOfTQ9fTw9Xs6M3MGzgLXaKD6vzAh9Zi2wz3Z2lhvxN/PUKs44vkRcLiM1rp0L/+eu3t6/ff+D17bsP7z9+Fh821pDv5iKyj7JwAJF8MM8vLk0IW9PlA14RX8gZeDQ/cGDiy8mLZQSJDKEEMWXer65vwpmCWZ2XNt+dBCIPygYQww+HocvPz5EWH1hckZnZj+Y7B/aXxdoBFMNS7oJrFU6QvH768s0KsHKBZkQWB4DYNJcdQCRfYksGo8svEkCHn7/2t+HnHQwPJL6woGNJQVKTeYeF0wTDIZyA0yTK8MGoAWzkhwLo8vPXqRa/8PKP5kc4kLzvr1MZDExrACFfpNUVQPjVCVAWAQ8VoCiEZd7FqkhBHl5RCvIXze6moA2LDKZb5kXMv9VaxDJ89UU45O/uIhzzNSucJsWvoSG/0q+JVfMf/jV0+x8aq+niVZU/ZB4Pn7cK6r4VwZtltfN5u7j229F8YFL3Axk+Mqz5kSQfmtf6UJ5lI7XzWThVd2EWSwdr57N4dif4LB/fLT4niP0B7A/gIsn+APYH8IcY+wPYH8CbcewPYH8AH8iwP4D9AXwoz/6AR9YfcH5xWWhahU1hMROwvgJMnQ84yFIod3V9UwUf/7YvolXrDygsfMROrdK+PFm3/yAkY/ZhUoeqy/dwX+qq1h9QLoBOcWshXLH4N4P1c6TI92SJgG34EeXXZQJolXcXwhX7D/ICIEXAFPk+c0r1+Db8XRVAsf8gn9wkRegK4JcWb2r9Af9fCnI5WjkFiT0wBe3UIqzbf5AXQDRQX4R9/4RrYFHqD/j3X0N1+w8K4TvDZ/0++wPYH8CbZewPYH8AH5iwP4D9AXxozv4A9gewcIr9AewPYPEs+wMeC/8P/KdOUa7fl/QAAAAASUVORK5CYII="/>
+  </g>
+</svg>

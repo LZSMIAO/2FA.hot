@@ -50,7 +50,7 @@ export default defineNuxtConfig({
           content: toolDescriptions.en
         }
       ],
-      link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }]
+      link: [{ key: 'site-favicon', rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }]
     }
   },
   routeRules: {

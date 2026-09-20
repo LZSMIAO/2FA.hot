@@ -92,18 +92,9 @@ function leave(event: PointerEvent) {
   padding: 0;
   border: 0;
   background: transparent;
-  /*
-   * The container fades, but the scene is drawn at full size from the first
-   * frame, so opening it read as a pop rather than an entrance. Let her rise
-   * into the panel as the panel makes room.
-   */
-  transform: translate(-50%, 1.75rem);
-  transition: transform 320ms var(--ease-out);
+  transform: translateX(-50%);
   pointer-events: none;
   cursor: default;
-}
-.is-open .desert-scene {
-  transform: translate(-50%, 0);
 }
 .desert-art {
   position: absolute;
@@ -193,13 +184,8 @@ function leave(event: PointerEvent) {
 @media (prefers-reduced-motion: reduce) {
   .desert-accent,
   .desert-accent.is-open,
-  .desert-scene,
   .desert-tip {
     transition: none;
-  }
-  .desert-scene,
-  .is-open .desert-scene {
-    transform: translate(-50%, 0);
   }
   .desert-tip {
     transform: none;

@@ -181,6 +181,18 @@ body {
     overscroll-behavior-y: none;
   }
 }
+/*
+ * Safari repositions a sticky bar once per frame unless the bar owns a
+ * compositing layer, which read as a shiver; the shadow covers the hairline
+ * of the page that rounding leaves above it.
+ */
+@media (pointer: coarse) {
+  .site-header {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    box-shadow: 0 -2px 0 var(--canvas);
+  }
+}
 /* A phone held sideways has no height to spend on a bar that never leaves. */
 @media (max-height: 500px) and (pointer: coarse) {
   .site-header {
@@ -565,6 +577,22 @@ html[data-panorama-playing] .panorama-playback-icon > :last-child {
   visibility: hidden;
   height: 0;
   overflow: hidden;
+}
+/*
+ * A phone tab is a third of the screen, and "close the walkthrough" needs two
+ * lines of it in most languages, which made the whole strip taller the moment
+ * the walkthrough opened. While it is open the cross carries the button, and
+ * the wording stays for anyone reading the page aloud.
+ */
+@media (max-width: 700px) {
+  .guide-trigger[aria-expanded='true'] .guide-trigger-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
 }
 .mode-tabs > [data-slot='list'] {
   border-bottom: 0;
