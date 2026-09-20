@@ -47,6 +47,14 @@ function measureScrollbar() {
  */
 let locked = false
 let measured = -1
+let viewportWidth = 0
+function onViewportResize() {
+  // Keyboard/address-bar animations change height, not scrollbar geometry.
+  const width = window.innerWidth
+  if (width === viewportWidth) return
+  viewportWidth = width
+  measureScrollbar()
+}
 let watcher: MutationObserver | undefined
 function syncScrollLock() {
   const nowLocked = document.body.style.overflow === 'hidden'
@@ -58,13 +66,14 @@ function syncScrollLock() {
   } else measureScrollbar()
 }
 onMounted(() => {
+  viewportWidth = window.innerWidth
   measureScrollbar()
-  window.addEventListener('resize', measureScrollbar, { passive: true })
+  window.addEventListener('resize', onViewportResize, { passive: true })
   watcher = new MutationObserver(syncScrollLock)
   watcher.observe(document.body, { attributes: true, attributeFilter: ['style'] })
 })
 onBeforeUnmount(() => {
-  window.removeEventListener('resize', measureScrollbar)
+  window.removeEventListener('resize', onViewportResize)
   watcher?.disconnect()
 })
 </script>

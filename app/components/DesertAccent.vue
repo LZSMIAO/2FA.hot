@@ -186,6 +186,13 @@ function leave(event: PointerEvent) {
     width: 52%;
   }
 }
+@media (max-width: 700px), (pointer: coarse) {
+  .desert-accent,
+  .desert-accent.is-open {
+    /* Resolve the panel height once; only opacity animates over the SVG. */
+    transition: opacity 180ms ease-out;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .desert-accent,
   .desert-accent.is-open,

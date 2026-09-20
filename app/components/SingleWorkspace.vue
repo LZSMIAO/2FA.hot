@@ -615,6 +615,7 @@ onBeforeUnmount(() => {
           :aria-invalid="!guiding && !!issue"
           :aria-describedby="!guiding && issue ? 'secret-help secret-error' : 'secret-help'"
           :ui="{
+            trailing: 'pointer-events-none',
             base: `font-mono text-base h-13 ${
               displayRaw ? 'pr-24' : 'pr-4'
             } ring-[var(--control-line)] focus-visible:ring-primary`
@@ -624,7 +625,6 @@ onBeforeUnmount(() => {
           @compositionstart="composing = true"
           @compositionend="finishComposition"
           @focus="handleSecretFocus"
-          @pointerdown="dismissInputNotices"
           @blur="handleSecretBlur"
         >
           <template #default>
@@ -1293,9 +1293,22 @@ onBeforeUnmount(() => {
   opacity: 1;
   transform: translateY(0);
 }
+@media (max-width: 700px), (pointer: coarse) {
+  .parameter-sun,
+  .parameter-moon,
+  .is-moon .parameter-sun,
+  .is-moon .parameter-moon {
+    /* Crossfade the rasterized textures without moving their masks. */
+    transform: none;
+    will-change: opacity;
+    transition: opacity 180ms ease-out;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .parameter-sun,
-  .parameter-moon {
+  .parameter-moon,
+  .is-moon .parameter-sun,
+  .is-moon .parameter-moon {
     transition: none;
   }
 }
@@ -1319,6 +1332,10 @@ onBeforeUnmount(() => {
 .secret-actions.has-content {
   visibility: visible;
   opacity: 1;
+  /* Only the actual buttons intercept taps; gaps must reach the input. */
+  pointer-events: none;
+}
+.secret-actions.has-content .secret-action {
   pointer-events: auto;
 }
 .secret-actions .secret-action,

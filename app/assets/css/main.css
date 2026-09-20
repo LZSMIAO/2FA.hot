@@ -181,24 +181,8 @@ body {
     overscroll-behavior-y: none;
   }
 }
-/*
- * Safari repositions a sticky bar once per frame unless the bar owns a
- * compositing layer, which read as a shiver; the shadow covers the hairline
- * of the page that rounding leaves above it.
- */
-@media (pointer: coarse) {
-  .site-header {
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    box-shadow: 0 -2px 0 var(--canvas);
-  }
-}
-/* A phone held sideways has no height to spend on a bar that never leaves. */
-@media (max-height: 500px) and (pointer: coarse) {
-  .site-header {
-    position: static;
-  }
-}
+/* Let native sticky positioning track scrolling; do not transform the header
+   into a separate fixed-containing layer during keyboard/toolbar animations. */
 button,
 a,
 input,
