@@ -95,7 +95,25 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Au départ, je voulais 2fa.mc, mais j’ai renoncé parce que je ne pouvais pas enregistrer **2FA®** pour le soumettre au registre des domaines de Monaco.\n...Et si j’écrivais ça sans sourciller ?\nPuis .HOT est arrivé. Bon, d’accord, j’avoue : c’est sexy. On y retourne."
+              "Au départ, je voulais 2fa.mc, mais j’ai renoncé parce que je ne pouvais pas enregistrer **2FA®** pour le soumettre au registre des domaines de Monaco."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "...Et si j’écrivais ça sans sourciller ?"
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Puis .HOT est arrivé. Bon, d’accord, j’avoue : c’est sexy. On y retourne."
             ]
           }
         ]

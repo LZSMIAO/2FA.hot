@@ -57,7 +57,9 @@ Finally, do not share them publicly or with anyone you do not trust. Forgotten l
 ## Domain drama
 
 I originally wanted 2fa.mc, but gave up because I couldn't register **2FA®** to submit to Monaco's domain registry.
+
 ...What if I kept a straight face while writing this?
+
 Then .HOT came along. Fine, fine, I'll admit it: that's sexy. We're going back.
 
 ## Why did I make this? Reinventing the wheel?

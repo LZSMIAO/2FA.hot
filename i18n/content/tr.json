@@ -95,7 +95,25 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Başta 2fa.mc istiyordum ama Monaco alan adı siciline sunmak üzere **2FA®** tescil ettiremediğim için vazgeçtim.\n...Bunları yazarken yüzüm hiç kıpırdamasaydı?\nSonra .HOT çıktı. Tamam tamam, kabul: seksi. Geri dönüyoruz."
+              "Başta 2fa.mc istiyordum ama Monaco alan adı siciline sunmak üzere **2FA®** tescil ettiremediğim için vazgeçtim."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "...Bunları yazarken yüzüm hiç kıpırdamasaydı?"
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Sonra .HOT çıktı. Tamam tamam, kabul: seksi. Geri dönüyoruz."
             ]
           }
         ]

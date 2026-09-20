@@ -95,7 +95,25 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Mwanzoni nilitaka 2fa.mc, lakini nikaachana nayo kwa sababu sikuweza kusajili **2FA®** kuiwasilisha kwa msajili wa vikoa wa Monaco.\n...Vipi kama ningekuwa na uso mkavu nikiandika haya?\nKisha .HOT ikaja. Sawa, sawa, nakubali: hiyo inavutia. Tunarudi."
+              "Mwanzoni nilitaka 2fa.mc, lakini nikaachana nayo kwa sababu sikuweza kusajili **2FA®** kuiwasilisha kwa msajili wa vikoa wa Monaco."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "...Vipi kama ningekuwa na uso mkavu nikiandika haya?"
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Kisha .HOT ikaja. Sawa, sawa, nakubali: hiyo inavutia. Tunarudi."
             ]
           }
         ]

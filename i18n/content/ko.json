@@ -95,7 +95,25 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "원래 2fa.mc를 원했지만 모나코 도메인 등록 기관에 제출할 **2FA®**를 등록할 수 없어 포기했다.\n...이걸 쓰면서 표정 하나 안 바뀌었다면?\n그런데 .HOT이 나타났다. 그래, 인정한다. 섹시하네. 돌아가자."
+              "원래 2fa.mc를 원했지만 모나코 도메인 등록 기관에 제출할 **2FA®**를 등록할 수 없어 포기했다."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "...이걸 쓰면서 표정 하나 안 바뀌었다면?"
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "그런데 .HOT이 나타났다. 그래, 인정한다. 섹시하네. 돌아가자."
             ]
           }
         ]

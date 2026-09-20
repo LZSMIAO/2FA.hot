@@ -95,7 +95,25 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "2fa.mc sana ang gusto ko, pero sumuko dahil hindi ko mairehistro ang **2FA®** para isumite sa domain registry ng Monaco.\n...Paano kung seryoso ang mukha ko habang sinusulat ito?\nTapos dumating ang .HOT. Sige na, aaminin ko: sexy iyon. Babalik tayo."
+              "2fa.mc sana ang gusto ko, pero sumuko dahil hindi ko mairehistro ang **2FA®** para isumite sa domain registry ng Monaco."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "...Paano kung seryoso ang mukha ko habang sinusulat ito?"
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Tapos dumating ang .HOT. Sige na, aaminin ko: sexy iyon. Babalik tayo."
             ]
           }
         ]

@@ -95,7 +95,25 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Ban đầu tôi muốn 2fa.mc, nhưng bỏ cuộc vì không đăng ký được **2FA®** để nộp cho cơ quan đăng ký tên miền Monaco.\n...Nếu tôi viết mấy dòng này với mặt tỉnh bơ thì sao?\nRồi .HOT xuất hiện. Được rồi, tôi thừa nhận: quyến rũ đấy. Quay lại thôi."
+              "Ban đầu tôi muốn 2fa.mc, nhưng bỏ cuộc vì không đăng ký được **2FA®** để nộp cho cơ quan đăng ký tên miền Monaco."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "...Nếu tôi viết mấy dòng này với mặt tỉnh bơ thì sao?"
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Rồi .HOT xuất hiện. Được rồi, tôi thừa nhận: quyến rũ đấy. Quay lại thôi."
             ]
           }
         ]
