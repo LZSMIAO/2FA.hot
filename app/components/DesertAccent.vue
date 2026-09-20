@@ -89,11 +89,14 @@ function leave(event: PointerEvent) {
 }
 .desert-scene {
   position: absolute;
-  /* High enough that the cactus crosses the rule above the panel. */
-  top: -2.5rem;
+  /*
+   * Anchored to the panel's foot and drawn taller than it, so the scene keeps
+   * its size while the cactus reaches well past the rule above the panel.
+   */
+  top: -4rem;
   left: 50%;
   width: 100%;
-  height: 18.5rem;
+  height: 20rem;
   padding: 0;
   border: 0;
   background: transparent;
