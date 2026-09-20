@@ -96,7 +96,7 @@ function updatePreference() {
 onMounted(() => {
   hydrated.value = true
   applyScene()
-  mobile = window.matchMedia('(max-width: 700px), (max-height: 500px) and (pointer: coarse)')
+  mobile = window.matchMedia('(max-width: 700px), (pointer: coarse)')
   updateMobile()
   mobile.addEventListener('change', updateMobile)
   ready.value = true
@@ -376,7 +376,12 @@ onBeforeUnmount(() => {
     display: none;
   }
 }
-@media (max-width: 700px), (max-height: 500px) and (pointer: coarse) {
+/*
+ * Every touch device, not only a phone: a tablet ran the desktop path, where
+ * the backdrop is a full-size 3D cube it cannot composite smoothly, and where
+ * a keyboard opening under a fixed viewport height shifts the whole scene.
+ */
+@media (max-width: 700px), (pointer: coarse) {
   .title-panorama {
     inset: 0 auto auto 0;
     width: 100%;

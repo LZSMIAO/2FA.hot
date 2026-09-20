@@ -170,6 +170,16 @@ body {
   /* Content reserves its own scrollbar width; scroll-lock padding would count it twice. */
   padding-right: 0 !important;
 }
+/*
+ * The backdrop is fixed and the page is not, so a rubber-band drag slides the
+ * header and footer over a scene that stays put. Touch devices get no bounce.
+ */
+@media (pointer: coarse) {
+  html,
+  body {
+    overscroll-behavior-y: none;
+  }
+}
 button,
 a,
 input,

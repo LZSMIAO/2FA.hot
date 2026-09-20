@@ -57,7 +57,7 @@ const { scenes, selected, playbackPaused } = usePanoramaPreference()
 const narrow = shallowRef(false)
 const onHome = computed(() => unlocalizedPath(route.path) === '/')
 onMounted(() => {
-  const query = window.matchMedia('(max-width: 700px)')
+  const query = window.matchMedia('(max-width: 700px), (pointer: coarse)')
   const update = () => (narrow.value = query.matches)
   update()
   query.addEventListener('change', update)
