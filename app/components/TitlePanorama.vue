@@ -88,8 +88,13 @@ const scene3d = useTemplateRef<HTMLElement>('backdrop')
  * layers are pinned to the layout viewport and stay behind, which is the jump
  * you see when the keyboard opens. Follow the visual viewport by hand.
  */
+let shifted = -1
 function syncVisualViewport() {
-  scene3d.value?.style.setProperty('--panorama-shift', `${window.visualViewport?.offsetTop ?? 0}px`)
+  // Safari fires this through every scroll; only a real move is worth a repaint.
+  const offset = Math.round(window.visualViewport?.offsetTop ?? 0)
+  if (offset === shifted) return
+  shifted = offset
+  scene3d.value?.style.setProperty('--panorama-shift', `${offset}px`)
 }
 let mobile: MediaQueryList | undefined
 function updateMobile() {

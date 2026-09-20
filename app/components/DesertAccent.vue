@@ -69,23 +69,28 @@ function leave(event: PointerEvent) {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
+  /*
+   * Only the fade. Animating the height meant a relayout on every frame for
+   * 320ms, which stuttered on a phone, while the scene itself was painted at
+   * full size from the first frame - so all that motion bought was the shake.
+   * The panel takes its size in one step and she fades over it.
+   */
   transition:
-    height 320ms var(--ease-out),
     opacity 200ms ease,
     visibility 0s 200ms;
 }
 .desert-accent.is-open {
-  height: 17.5rem;
+  height: 16rem;
   opacity: 1;
   visibility: visible;
   transition:
-    height 320ms var(--ease-out),
     opacity 240ms ease,
     visibility 0s;
 }
 .desert-scene {
   position: absolute;
-  top: -1rem;
+  /* High enough that the cactus crosses the rule above the panel. */
+  top: -2.5rem;
   left: 50%;
   width: 100%;
   height: 18.5rem;
@@ -162,18 +167,14 @@ function leave(event: PointerEvent) {
 @media (max-width: 900px) {
   .desert-accent {
     height: 0;
-    overflow: hidden;
-  }
-  .desert-accent.is-open {
-    overflow: visible;
   }
 }
 @media (max-width: 700px) {
   .desert-accent.is-open {
-    height: 13rem;
+    height: 10rem;
   }
   .desert-scene {
-    top: -0.5rem;
+    top: -3.5rem;
     height: 13.5rem;
   }
   .desert-tip {

@@ -29,6 +29,15 @@ function measureScrollbar() {
   document.body.append(probe)
   const width = probe.offsetWidth - probe.clientWidth
   probe.remove()
+  /*
+   * This variable lives on the root, so writing it restyles the whole page.
+   * Safari fires resize for every step of the address bar sliding away, and
+   * doing that work per frame made the pinned header shiver against the
+   * content. An overlay scrollbar measures the same 0 every time, so compare
+   * before writing and the scroll costs nothing.
+   */
+  if (width === measured) return
+  measured = width
   document.documentElement.style.setProperty('--page-scrollbar-width', `${width}px`)
 }
 /*
@@ -37,13 +46,16 @@ function measureScrollbar() {
  * scrollbar-wide gap down its right edge for as long as the menu is open.
  */
 let locked = false
+let measured = -1
 let watcher: MutationObserver | undefined
 function syncScrollLock() {
   const nowLocked = document.body.style.overflow === 'hidden'
   if (nowLocked === locked) return
   locked = nowLocked
-  if (locked) document.documentElement.style.setProperty('--page-scrollbar-width', '0px')
-  else measureScrollbar()
+  if (locked) {
+    measured = -1
+    document.documentElement.style.setProperty('--page-scrollbar-width', '0px')
+  } else measureScrollbar()
 }
 onMounted(() => {
   measureScrollbar()
