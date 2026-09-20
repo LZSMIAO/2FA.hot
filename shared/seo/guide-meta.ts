@@ -45,7 +45,7 @@ export const guideMetadata = {
         },
         {
           title: '2fa.hot project information and supported features',
-          url: 'https://github.com/LZSMIAO/2fa-hot'
+          url: 'https://github.com/LZSMIAO/2FA.hot'
         }
       ]
     }
@@ -95,7 +95,7 @@ export const guideMetadata = {
         },
         {
           title: '2fa.hot 项目介绍与支持功能',
-          url: 'https://github.com/LZSMIAO/2fa-hot'
+          url: 'https://github.com/LZSMIAO/2FA.hot'
         }
       ]
     }

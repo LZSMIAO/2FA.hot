@@ -1,4 +1,4 @@
-const repository = 'https://github.com/LZSMIAO/2fa-hot'
+const repository = 'https://github.com/LZSMIAO/2FA.hot'
 
 export const waitlistLinks = {
   submit: `${repository}/issues/new?template=feature-request.yml`,

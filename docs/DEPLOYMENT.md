@@ -43,7 +43,7 @@ OAuth/API 令牌保存在本机或 Cloudflare 构建环境，不写入仓库。�
 | 部署命令       | `pnpm exec wrangler deploy` |
 | 非生产分支构建 | 关闭，除非你明确需要预览    |
 
-项目原仓库 `LZSMIAO/2fa-hot` 已连接到 `2fa-hot` Worker，推送 `main` 会触发生产部署。Fork 不继承该连接，需要自行配置构建令牌与账户权限。不要将令牌复制进 Issue 或配置文件。
+项目原仓库 `LZSMIAO/2FA.hot` 已连接到 `2fa-hot` Worker，推送 `main` 会触发生产部署。Fork 不继承该连接，需要自行配置构建令牌与账户权限。不要将令牌复制进 Issue 或配置文件。
 
 ## 4. 日志与响应缓存
 

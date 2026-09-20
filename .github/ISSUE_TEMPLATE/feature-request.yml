@@ -9,11 +9,11 @@ body:
         Describe what you would like to change. Any language is welcome.
         说说你想改进什么，用你熟悉的语言填写就好。
 
-        [Feature list / 功能清单](https://github.com/LZSMIAO/2fa-hot/blob/main/docs/WAITLIST.md) · [Existing suggestions / 已有建议](https://github.com/LZSMIAO/2fa-hot/issues?q=is%3Aissue%20label%3Aenhancement)
+        [Feature list / 功能清单](https://github.com/LZSMIAO/2FA.hot/blob/main/docs/WAITLIST.md) · [Existing suggestions / 已有建议](https://github.com/LZSMIAO/2FA.hot/issues?q=is%3Aissue%20label%3Aenhancement)
 
         Posts are public. Do not include real secrets, passwords, account QR codes or backups.
         内容公开，请勿附上真实密钥、密码、账号二维码或备份文件。
-        For security issues, use a [private report / 私密报告](https://github.com/LZSMIAO/2fa-hot/security/advisories/new).
+        For security issues, use a [private report / 私密报告](https://github.com/LZSMIAO/2FA.hot/security/advisories/new).
   - type: textarea
     id: proposal
     attributes:

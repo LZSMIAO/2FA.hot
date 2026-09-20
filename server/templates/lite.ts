@@ -89,7 +89,7 @@ const template = `<!doctype html>
       <div class="footer">
         <span class="footer-links">
           <a id="help" href="/lite/help?lang=en">Usage guide</a>
-          <a href="https://github.com/LZSMIAO/2fa-hot" target="_blank" rel="noopener noreferrer" data-text="source">Source · AGPL-3.0</a>
+          <a href="https://github.com/LZSMIAO/2FA.hot" target="_blank" rel="noopener noreferrer" data-text="source">Source · AGPL-3.0</a>
         </span><span>2fa.hot Lite</span>
         <strong class="compatibility" data-text="compatibility">Supports Internet Explorer!</strong>
       </div>

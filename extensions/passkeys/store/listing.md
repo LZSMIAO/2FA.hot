@@ -5,7 +5,7 @@ Product: 2fa.hot Passkeys. UI language: Simplified Chinese.
 Category: Productivity / Tools (choose the closest category offered by each store).
 Homepage: https://2fa.hot/?passkeys=1
 Privacy policy: https://2fa.hot/passkeys-privacy.html
-Support: https://github.com/LZSMIAO/2fa-hot/issues
+Support: https://github.com/LZSMIAO/2FA.hot/issues
 
 Do not submit until the homepage and privacy URLs are publicly reachable. Do not promise certification, broad website compatibility, cloud sync, or universal passkey migration.
 

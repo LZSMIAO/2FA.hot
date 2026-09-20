@@ -101,7 +101,7 @@ export function useSiteSeo() {
           ],
           license: 'https://www.gnu.org/licenses/agpl-3.0.html',
           isFamilyFriendly: true,
-          sameAs: ['https://github.com/LZSMIAO/2fa-hot'],
+          sameAs: ['https://github.com/LZSMIAO/2FA.hot'],
           image
         })
       if (path !== '/') {

@@ -43,7 +43,7 @@
   "license": "AGPL-3.0-only",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LZSMIAO/2fa-hot.git"
+    "url": "git+https://github.com/LZSMIAO/2FA.hot.git"
   },
   "homepage": "https://2fa.hot",
   "engines": {

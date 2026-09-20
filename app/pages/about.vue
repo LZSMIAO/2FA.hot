@@ -38,7 +38,7 @@ const sections = computed(() => content.value?.about.sections ?? [])
       </template>
     </section>
     <p>
-      <a href="https://github.com/LZSMIAO/2fa-hot" target="_blank" rel="noopener noreferrer"
+      <a href="https://github.com/LZSMIAO/2FA.hot" target="_blank" rel="noopener noreferrer"
         >GitHub ↗</a
       >
       · <a href="mailto:admin@2fa.hot">admin@2fa.hot</a>

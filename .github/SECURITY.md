@@ -2,7 +2,7 @@
 
 ## Report a vulnerability
 
-Please submit a private report through [Security → Report a vulnerability](https://github.com/LZSMIAO/2fa-hot/security/advisories/new).
+Please submit a private report through [Security → Report a vulnerability](https://github.com/LZSMIAO/2FA.hot/security/advisories/new).
 
 Include the affected commit or version, reproduction steps and expected impact. Use public test secrets only; never include real account secrets, access tokens or user backups.
 

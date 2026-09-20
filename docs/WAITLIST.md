@@ -2,13 +2,13 @@
 
 想加什么功能，或哪里不好用？欢迎提建议。下面的功能还没做好，暂无上线时间。
 
-[网站功能页](https://2fa.hot/zh-CN/waitlist) · [提建议](https://github.com/LZSMIAO/2fa-hot/issues/new?template=feature-request.yml) · [查看已有建议](https://github.com/LZSMIAO/2fa-hot/issues?q=is%3Aissue%20label%3Aenhancement)
+[网站功能页](https://2fa.hot/zh-CN/waitlist) · [提建议](https://github.com/LZSMIAO/2FA.hot/issues/new?template=feature-request.yml) · [查看已有建议](https://github.com/LZSMIAO/2FA.hot/issues?q=is%3Aissue%20label%3Aenhancement)
 
 ## 怎么提交
 
 先看看有没有相同建议，有的话可以在原讨论里补充。新建议说清想做什么、哪里不好用就行。
 
-提交需要登录 GitHub，内容公开。请勿附上真实密钥、密码、账号二维码或备份文件。安全问题请用[私密报告](https://github.com/LZSMIAO/2fa-hot/security/advisories/new)。
+提交需要登录 GitHub，内容公开。请勿附上真实密钥、密码、账号二维码或备份文件。安全问题请用[私密报告](https://github.com/LZSMIAO/2FA.hot/security/advisories/new)。
 
 Suggestions are welcome in any language. Check for similar issues first, then describe the problem and what you would like to change. Posting requires a GitHub account. Posts are public; do not include secrets or private account data.
 

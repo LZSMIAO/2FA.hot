@@ -7,5 +7,5 @@ contact_links:
     url: https://2fa.hot/help
     about: Input formats, QR import, local history and common questions.
   - name: Private security report
-    url: https://github.com/LZSMIAO/2fa-hot/security/advisories/new
+    url: https://github.com/LZSMIAO/2FA.hot/security/advisories/new
     about: Report vulnerabilities privately. Never include real secrets.

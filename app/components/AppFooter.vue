@@ -24,7 +24,7 @@ const { tx } = useMessages()
           </a>
           <a
             class="footer-icon"
-            href="https://github.com/LZSMIAO/2fa-hot"
+            href="https://github.com/LZSMIAO/2FA.hot"
             target="_blank"
             rel="noopener noreferrer"
             :aria-label="tx('2fa.hot 的 GitHub 项目（新窗口）')"
