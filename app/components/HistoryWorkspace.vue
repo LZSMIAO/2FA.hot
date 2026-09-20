@@ -316,7 +316,11 @@ const date = (v: number) =>
       <p class="vault-note">
         {{ tx('无需网站账户') }}<br />{{ tx('清理浏览器数据会删除记录，请定期备份。') }}
       </p>
-      <button v-if="vault.exists.value" class="text-action" @click="eraseOpen = true">
+      <button
+        v-if="vault.exists.value"
+        class="text-action text-action-danger"
+        @click="eraseOpen = true"
+      >
         {{ tx('忘记口令？清除本地历史') }}
       </button>
     </div>
@@ -398,7 +402,7 @@ const date = (v: number) =>
           @click="removing = [...selected]"
           >{{ tx('删除所选：{count}', { count: selected.length }) }}</UButton
         >
-        <button class="text-action history-erase" @click="eraseOpen = true">
+        <button class="text-action text-action-danger history-erase" @click="eraseOpen = true">
           {{ tx('清空全部本地历史') }}
         </button>
       </div>
@@ -1014,6 +1018,12 @@ const date = (v: number) =>
 }
 .history-remove {
   margin-inline-start: 0.25rem;
+}
+/* Both of these open the erase dialog, so the shared hover green read as a
+   safe action on something that is not one. */
+.text-action-danger:hover,
+.text-action-danger:focus-visible {
+  color: var(--ui-error);
 }
 .history-erase {
   margin-inline-start: auto;
