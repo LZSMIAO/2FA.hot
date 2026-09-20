@@ -15,9 +15,7 @@ test('all three README files provide live website content without repository chr
     assert.equal(stories.length, 0)
     assert.ok(!JSON.stringify(result).includes('BOOM'))
     assert.ok(
-      JSON.stringify(parseAboutReadme(source.replace('HTTP', 'SYNC_TEST'))).includes(
-        'SYNC_TEST'
-      )
+      JSON.stringify(parseAboutReadme(source.replace('HTTP', 'SYNC_TEST'))).includes('SYNC_TEST')
     )
   }
 })
@@ -39,7 +37,10 @@ test('Markdown hard breaks stay within one paragraph while soft breaks remain te
     const result = parseAboutReadme(readFileSync(name, 'utf8'))
     const domain = result.sections[2]!
     assert.equal(domain.blocks.length, 1)
-    assert.equal(inlineTokens(domain.blocks[0]!.lines[0]!).filter(t => t.kind === 'break').length, 2)
+    assert.equal(
+      inlineTokens(domain.blocks[0]!.lines[0]!).filter((t) => t.kind === 'break').length,
+      2
+    )
     assert.ok(result.sections[0]!.blocks.at(-1)!.lines[0]!.includes('/waitlist'))
   }
 })

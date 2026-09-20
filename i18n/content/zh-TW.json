@@ -61,18 +61,14 @@
             "divider": false,
             "ordered": false,
             "list": false,
-            "lines": [
-              "最後，請勿公開分享或交給不信任的人。忘記本機紀錄口令後，網站無法幫你找回。"
-            ]
+            "lines": ["最後，請勿公開分享或交給不信任的人。忘記本機紀錄口令後，網站無法幫你找回。"]
           },
           {
             "spoiler": null,
             "divider": false,
             "ordered": false,
             "list": false,
-            "lines": [
-              "[隱私說明](https://2fa.hot/privacy)"
-            ]
+            "lines": ["[隱私說明](https://2fa.hot/privacy)"]
           }
         ]
       },

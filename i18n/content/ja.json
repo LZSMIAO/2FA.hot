@@ -80,9 +80,7 @@
             "divider": false,
             "ordered": false,
             "list": false,
-            "lines": [
-              "[プライバシー](https://2fa.hot/privacy)"
-            ]
+            "lines": ["[プライバシー](https://2fa.hot/privacy)"]
           }
         ]
       },

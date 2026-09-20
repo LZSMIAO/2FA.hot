@@ -61,18 +61,14 @@
             "divider": false,
             "ordered": false,
             "list": false,
-            "lines": [
-              "最后，请勿公开分享或交给不信任的人。忘记本地记录口令后，网站无法帮你找回。"
-            ]
+            "lines": ["最后，请勿公开分享或交给不信任的人。忘记本地记录口令后，网站无法帮你找回。"]
           },
           {
             "spoiler": null,
             "divider": false,
             "ordered": false,
             "list": false,
-            "lines": [
-              "[隐私说明](https://2fa.hot/privacy)"
-            ]
+            "lines": ["[隐私说明](https://2fa.hot/privacy)"]
           }
         ]
       },
