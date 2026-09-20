@@ -14,15 +14,6 @@
             "spoiler": null,
             "divider": false,
             "ordered": false,
-            "list": false,
-            "lines": [
-              "원하는 기능이 있나요? [위시리스트](https://2fa.hot/waitlist)을 살펴보고 GitHub에서 아이디어를 공유하세요."
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
             "list": true,
             "lines": [
               "[Lite](https://2fa.hot/lite?lang=en): 애니메이션, 소리, 메인 앱 프레임워크 없이 단일 비밀 키 코드, 복사, 프래그먼트 링크를 제공합니다. 30개 언어를 지원하며 IE11 호환을 목표로 합니다."
@@ -48,6 +39,15 @@
             "list": false,
             "lines": [
               "TOTP(SHA-1/SHA-256/SHA-512, 6/8자리)와 Steam Guard(5자, 30초)를 지원합니다. Steam은 shared_secret 또는 maFile JSON을 입력하세요. HOTP 코드는 생성하지 않지만 이전 파일의 HOTP/MD5 계정은 분석하고 내보낼 수 있습니다."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "원하는 기능이 있나요? [위시리스트](https://2fa.hot/waitlist)을 살펴보고 GitHub에서 아이디어를 공유하세요."
             ]
           }
         ]
@@ -95,25 +95,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "원래 2fa.mc를 원했지만 모나코 도메인 등록 기관에 제출할 **2FA®**를 등록할 수 없어 포기했다."
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": [
-              "...이걸 쓰면서 표정 하나 안 바뀌었다면?"
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": [
-              "그런데 .HOT이 나타났다. 그래, 인정한다. 섹시하네. 돌아가자."
+              "원래 2fa.mc를 원했지만 모나코 도메인 등록 기관에 제출할 **2FA®**를 등록할 수 없어 포기했다.  \n...이걸 쓰면서 표정 하나 안 바뀌었다면?  \n그런데 .HOT이 나타났다. 그래, 인정한다. 섹시하네. 돌아가자."
             ]
           }
         ]

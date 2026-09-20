@@ -14,15 +14,6 @@
             "spoiler": null,
             "divider": false,
             "ordered": false,
-            "list": false,
-            "lines": [
-              "欲しい機能はありますか？[ウィッシュリスト](https://2fa.hot/waitlist)を見て、GitHubでアイデアを共有してください。"
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
             "list": true,
             "lines": [
               "[Lite](https://2fa.hot/lite?lang=en)：アニメーション・音声・メインアプリのフレームワークなしで、単一シークレットのコード、コピー、フラグメントリンクを利用できます。30言語に対応し、IE11互換を目指しています。"
@@ -48,6 +39,15 @@
             "list": false,
             "lines": [
               "TOTP（SHA-1/SHA-256/SHA-512、6/8桁）とSteam Guard（5文字、30秒）に対応。Steamはshared_secretかmaFile JSONを入力してください。HOTPコードは生成できませんが、移行ファイル内のHOTP/MD5アカウントは解析・エクスポートできます。"
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "欲しい機能はありますか？[ウィッシュリスト](https://2fa.hot/waitlist)を見て、GitHubでアイデアを共有してください。"
             ]
           }
         ]
@@ -95,25 +95,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "最初は2fa.mcが欲しかった。でもモナコのドメイン登録機関に提出する**2FA®**を登録できなくて諦めた。"
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": [
-              "……これ、真顔で書いてたらどうする？"
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": [
-              "そこへ.HOTが来た。はいはい、認めますよ。セクシーです。戻ります。"
+              "最初は2fa.mcが欲しかった。でもモナコのドメイン登録機関に提出する**2FA®**を登録できなくて諦めた。  \n……これ、真顔で書いてたらどうする？  \nそこへ.HOTが来た。はいはい、認めますよ。セクシーです。戻ります。"
             ]
           }
         ]

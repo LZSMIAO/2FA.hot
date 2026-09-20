@@ -48,9 +48,10 @@ export function parseAboutReadme(source: string) {
 
 export function inlineTokens(text: string) {
   return text
-    .split(/(\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*|`[^`]+`)/g)
+    .split(/(\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*|`[^`]+`| {2,}\r?\n)/g)
     .filter(Boolean)
     .map((value) => {
+      if (/^ {2,}\r?\n$/.test(value)) return { kind: 'break', text: '' }
       const link = /^\[([^\]]+)\]\(([^)]+)\)$/.exec(value)
       if (link)
         return {

@@ -14,15 +14,6 @@
             "spoiler": null,
             "divider": false,
             "ordered": false,
-            "list": false,
-            "lines": [
-              "ایدهٔ قابلیتی دارید؟ [فهرست آرزوها](https://2fa.hot/waitlist) را ببینید و ایده‌ها را در GitHub بگویید."
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
             "list": true,
             "lines": [
               "[Lite](https://2fa.hot/lite?lang=en): کد تک‌کلیدی، کپی و لینک قطعه‌ای بدون پویانمایی، صدا یا چارچوب برنامهٔ اصلی. 30 زبان؛ با هدف سازگاری IE11."
@@ -48,6 +39,15 @@
             "list": false,
             "lines": [
               "پشتیبانی از TOTP ‏(SHA-1/SHA-256/SHA-512، ‏6/8 رقم) و Steam Guard ‏(5 نویسه، 30 ثانیه). برای Steam، ‏shared_secret یا محتوای maFile JSON را وارد کنید. تولید HOTP پشتیبانی نمی‌شود؛ حساب‌های HOTP/MD5 فایل انتقال خوانده و صادر می‌شوند."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "ایدهٔ قابلیتی دارید؟ [فهرست آرزوها](https://2fa.hot/waitlist) را ببینید و ایده‌ها را در GitHub بگویید."
             ]
           }
         ]
@@ -95,25 +95,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "اول 2fa.mc را می‌خواستم، ولی نتوانستم **2FA®** را ثبت کنم تا به ثبت دامنهٔ موناکو بدهم و بی‌خیال شدم."
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": [
-              "...اگر همهٔ این‌ها را کاملاً جدی نوشته باشم چه؟"
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": [
-              "بعد .HOT آمد. باشد، باشد، قبول: جذاب است. برگشتیم."
+              "اول 2fa.mc را می‌خواستم، ولی نتوانستم **2FA®** را ثبت کنم تا به ثبت دامنهٔ موناکو بدهم و بی‌خیال شدم.  \n...اگر همهٔ این‌ها را کاملاً جدی نوشته باشم چه؟  \nبعد .HOT آمد. باشد، باشد، قبول: جذاب است. برگشتیم."
             ]
           }
         ]

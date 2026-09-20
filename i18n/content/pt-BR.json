@@ -14,15 +14,6 @@
             "spoiler": null,
             "divider": false,
             "ordered": false,
-            "list": false,
-            "lines": [
-              "Tem um recurso em mente? Explore a [lista de desejos](https://2fa.hot/waitlist) e compartilhe suas ideias no GitHub."
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
             "list": true,
             "lines": [
               "[Lite](https://2fa.hot/lite?lang=en): códigos para um único segredo, cópia e links com fragmento sem animação, som ou o framework do app principal. 30 idiomas; compatibilidade com IE11 como objetivo."
@@ -48,6 +39,15 @@
             "list": false,
             "lines": [
               "Aceita TOTP (SHA-1/SHA-256/SHA-512, 6/8 dígitos) e Steam Guard (5 caracteres, 30 segundos). Para Steam, digite um shared_secret ou cole o conteúdo JSON de um maFile. A geração de códigos HOTP não é suportada; contas HOTP/MD5 em arquivos de migração podem ser interpretadas e exportadas."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Tem um recurso em mente? Explore a [lista de desejos](https://2fa.hot/waitlist) e compartilhe suas ideias no GitHub."
             ]
           }
         ]
@@ -95,25 +95,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Eu queria 2fa.mc originalmente, mas desisti porque não conseguia registrar **2FA®** para apresentar ao registro de domínios de Mônaco."
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": [
-              "...E se eu estivesse escrevendo isso com a maior cara séria?"
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": [
-              "Então apareceu .HOT. Tá bom, tá bom, eu admito: isso é sexy. Estamos voltando."
+              "Eu queria 2fa.mc originalmente, mas desisti porque não conseguia registrar **2FA®** para apresentar ao registro de domínios de Mônaco.  \n...E se eu estivesse escrevendo isso com a maior cara séria?  \nEntão apareceu .HOT. Tá bom, tá bom, eu admito: isso é sexy. Estamos voltando."
             ]
           }
         ]

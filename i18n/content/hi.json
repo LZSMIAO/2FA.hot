@@ -14,15 +14,6 @@
             "spoiler": null,
             "divider": false,
             "ordered": false,
-            "list": false,
-            "lines": [
-              "कोई सुविधा सूझी? [इच्छा-सूची](https://2fa.hot/waitlist) देखें और GitHub पर विचार साझा करें।"
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
             "list": true,
             "lines": [
               "[Lite](https://2fa.hot/lite?lang=en): एक सीक्रेट के कोड, कॉपी और फ़्रैगमेंट लिंक, बिना एनीमेशन, आवाज़ या मुख्य ऐप फ़्रेमवर्क। 30 भाषाएँ; IE11 संगतता लक्ष्य है।"
@@ -48,6 +39,15 @@
             "list": false,
             "lines": [
               "TOTP (SHA-1/SHA-256/SHA-512, 6/8 अंक) और Steam Guard (5 वर्ण, 30 सेकंड) समर्थित। Steam में shared_secret डालें या maFile JSON पेस्ट करें। HOTP कोड नहीं बनते; माइग्रेशन फ़ाइल के HOTP/MD5 खाते पढ़े और निर्यात किए जा सकते हैं।"
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "कोई सुविधा सूझी? [इच्छा-सूची](https://2fa.hot/waitlist) देखें और GitHub पर विचार साझा करें।"
             ]
           }
         ]
@@ -95,25 +95,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "पहले 2fa.mc चाहिए था, पर Monaco के डोमेन रजिस्ट्रार को देने के लिए **2FA®** रजिस्टर नहीं कर पाया, तो छोड़ दिया।"
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": [
-              "...अगर यह सब एकदम गंभीर चेहरे से लिखा हो तो?"
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": [
-              "फिर .HOT आया। ठीक है, ठीक है, मानता हूँ: यह सेक्सी है। हम लौट रहे हैं।"
+              "पहले 2fa.mc चाहिए था, पर Monaco के डोमेन रजिस्ट्रार को देने के लिए **2FA®** रजिस्टर नहीं कर पाया, तो छोड़ दिया।  \n...अगर यह सब एकदम गंभीर चेहरे से लिखा हो तो?  \nफिर .HOT आया। ठीक है, ठीक है, मानता हूँ: यह सेक्सी है। हम लौट रहे हैं।"
             ]
           }
         ]

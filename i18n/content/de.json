@@ -14,15 +14,6 @@
             "spoiler": null,
             "divider": false,
             "ordered": false,
-            "list": false,
-            "lines": [
-              "Hast du eine Funktion im Kopf? Schau dir die [Wunschliste](https://2fa.hot/waitlist) an und teile deine Ideen auf GitHub."
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
             "list": true,
             "lines": [
               "[Lite](https://2fa.hot/lite?lang=en): Codes für einen einzelnen Schlüssel, Kopieren und Fragmentlinks ohne Animationen, Ton oder das Framework der Hauptanwendung. 30 Sprachen; IE11-Kompatibilität wird angestrebt."
@@ -48,6 +39,15 @@
             "list": false,
             "lines": [
               "Unterstützt TOTP (SHA-1/SHA-256/SHA-512, 6/8 Ziffern) und Steam Guard (5 Zeichen, 30 Sekunden). Gib für Steam einen shared_secret ein oder füge maFile-JSON-Inhalt ein. HOTP-Codeerzeugung wird nicht unterstützt; HOTP-/MD5-Konten in Migrationsdateien können eingelesen und exportiert werden."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Hast du eine Funktion im Kopf? Schau dir die [Wunschliste](https://2fa.hot/waitlist) an und teile deine Ideen auf GitHub."
             ]
           }
         ]
@@ -95,25 +95,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Ursprünglich wollte ich 2fa.mc, habe aber aufgegeben, weil ich **2FA®** nicht registrieren konnte, um es bei Monacos Domainregister einzureichen."
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": [
-              "...Was, wenn ich das hier mit völlig ernster Miene schreibe?"
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": [
-              "Dann kam .HOT. Na gut, na gut, ich gebe es zu: Das ist sexy. Wir gehen zurück."
+              "Ursprünglich wollte ich 2fa.mc, habe aber aufgegeben, weil ich **2FA®** nicht registrieren konnte, um es bei Monacos Domainregister einzureichen.  \n...Was, wenn ich das hier mit völlig ernster Miene schreibe?  \nDann kam .HOT. Na gut, na gut, ich gebe es zu: Das ist sexy. Wir gehen zurück."
             ]
           }
         ]

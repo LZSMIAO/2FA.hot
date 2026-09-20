@@ -14,15 +14,6 @@
             "spoiler": null,
             "divider": false,
             "ordered": false,
-            "list": false,
-            "lines": [
-              "কোনো সুবিধার কথা ভাবছেন? [ইচ্ছেতালিকা](https://2fa.hot/waitlist) দেখুন ও GitHub-এ ভাবনা জানান।"
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
             "list": true,
             "lines": [
               "[Lite](https://2fa.hot/lite?lang=en): এক কী-র কোড, কপি ও ফ্র্যাগমেন্ট লিংক, অ্যানিমেশন, শব্দ বা মূল অ্যাপ ফ্রেমওয়ার্ক ছাড়া। 30 ভাষা; IE11 সামঞ্জস্য লক্ষ্য।"
@@ -48,6 +39,15 @@
             "list": false,
             "lines": [
               "TOTP (SHA-1/SHA-256/SHA-512, 6/8 অঙ্ক) ও Steam Guard (5 অক্ষর, 30 সেকেন্ড) সমর্থিত। Steam-এর জন্য shared_secret বা maFile JSON দিন। HOTP কোড তৈরি হয় না; স্থানান্তর ফাইলের HOTP/MD5 অ্যাকাউন্ট পড়া ও রপ্তানি যায়।"
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "কোনো সুবিধার কথা ভাবছেন? [ইচ্ছেতালিকা](https://2fa.hot/waitlist) দেখুন ও GitHub-এ ভাবনা জানান।"
             ]
           }
         ]
@@ -95,25 +95,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "প্রথমে 2fa.mc চেয়েছিলাম, কিন্তু মোনাকোর ডোমেইন রেজিস্ট্রিতে দিতে **2FA®** নিবন্ধন করতে না পেরে ছেড়ে দিলাম।"
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": [
-              "...যদি একদম গম্ভীর মুখে এটা লিখে থাকি?"
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": [
-              "তারপর .HOT এল। আচ্ছা, আচ্ছা, মানছি: সেক্সি তো। আমরা ফিরছি।"
+              "প্রথমে 2fa.mc চেয়েছিলাম, কিন্তু মোনাকোর ডোমেইন রেজিস্ট্রিতে দিতে **2FA®** নিবন্ধন করতে না পেরে ছেড়ে দিলাম।  \n...যদি একদম গম্ভীর মুখে এটা লিখে থাকি?  \nতারপর .HOT এল। আচ্ছা, আচ্ছা, মানছি: সেক্সি তো। আমরা ফিরছি।"
             ]
           }
         ]

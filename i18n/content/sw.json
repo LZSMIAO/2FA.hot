@@ -14,15 +14,6 @@
             "spoiler": null,
             "divider": false,
             "ordered": false,
-            "list": false,
-            "lines": [
-              "Una wazo la kipengele? Tazama [orodha ya matamanio](https://2fa.hot/waitlist) na ushiriki mawazo yako GitHub."
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
             "list": true,
             "lines": [
               "[Lite](https://2fa.hot/lite?lang=en): misimbo ya siri moja, kunakili na viungo vya vipande bila uhuishaji, sauti au mfumo wa programu kuu. Lugha 30; inalenga uoanifu na IE11."
@@ -48,6 +39,15 @@
             "list": false,
             "lines": [
               "Inakubali TOTP (SHA-1/SHA-256/SHA-512, tarakimu 6/8) na Steam Guard (herufi 5, sekunde 30). Kwa Steam, weka shared_secret au bandika JSON ya maFile. Utengenezaji wa HOTP haukubaliwi; akaunti za HOTP/MD5 katika faili za uhamishaji zinaweza kuchanganuliwa na kuhamishwa."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Una wazo la kipengele? Tazama [orodha ya matamanio](https://2fa.hot/waitlist) na ushiriki mawazo yako GitHub."
             ]
           }
         ]
@@ -95,25 +95,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Mwanzoni nilitaka 2fa.mc, lakini nikaachana nayo kwa sababu sikuweza kusajili **2FA®** kuiwasilisha kwa msajili wa vikoa wa Monaco."
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": [
-              "...Vipi kama ningekuwa na uso mkavu nikiandika haya?"
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": [
-              "Kisha .HOT ikaja. Sawa, sawa, nakubali: hiyo inavutia. Tunarudi."
+              "Mwanzoni nilitaka 2fa.mc, lakini nikaachana nayo kwa sababu sikuweza kusajili **2FA®** kuiwasilisha kwa msajili wa vikoa wa Monaco.  \n...Vipi kama ningekuwa na uso mkavu nikiandika haya?  \nKisha .HOT ikaja. Sawa, sawa, nakubali: hiyo inavutia. Tunarudi."
             ]
           }
         ]

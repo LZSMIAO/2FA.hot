@@ -12,15 +12,6 @@
             "spoiler": null,
             "divider": false,
             "ordered": false,
-            "list": false,
-            "lines": [
-              "有想要的功能？看看[願望單](https://2fa.hot/zh-TW/waitlist)，或在 GitHub 提出你的想法。"
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
             "list": true,
             "lines": [
               "單條／批次取碼：支援 Base32 密鑰、otpauth:// 設定連結；智能識別 Excel 表格、分組密鑰及混合文字。",
@@ -38,6 +29,15 @@
             "list": false,
             "lines": [
               "支援 TOTP（SHA-1／SHA-256／SHA-512、6／8 位）與 Steam Guard（5 位、30 秒）。Steam 可輸入 shared_secret 或貼上 maFile JSON 內容。HOTP 不參與取碼；遷移檔案中的 HOTP／MD5 帳號可解析匯出。"
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "有想要的功能？看看[願望單](https://2fa.hot/zh-TW/waitlist)，或在 GitHub 提出你的想法。"
             ]
           }
         ]
@@ -85,25 +85,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "原本想註冊2fa.mc 但由於無法註冊 **2FA®** 以提交摩納哥管局認證作罷。"
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": [
-              "...假如我寫這段話的時候繃住了呢。"
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": [
-              "於是.HOT 來了。好吧，好吧，我承認這是性感的，我們所以回去。"
+              "原本想註冊2fa.mc 但由於無法註冊 **2FA®** 以提交摩納哥管局認證作罷。  \n...假如我寫這段話的時候繃住了呢。  \n於是.HOT 來了。好吧，好吧，我承認這是性感的，我們所以回去。"
             ]
           }
         ]

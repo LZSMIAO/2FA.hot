@@ -14,15 +14,6 @@
             "spoiler": null,
             "divider": false,
             "ordered": false,
-            "list": false,
-            "lines": [
-              "ఏదైనా సదుపాయం ఆలోచన ఉందా? [కోరికల జాబితా](https://2fa.hot/waitlist) చూసి GitHubలో ఆలోచనలు పంచుకోండి."
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
             "list": true,
             "lines": [
               "[Lite](https://2fa.hot/lite?lang=en): ఒక్క రహస్య కోడ్‌లు, కాపీ, ఫ్రాగ్మెంట్ లింక్‌లు; యానిమేషన్, శబ్దం, ప్రధాన యాప్ ఫ్రేమ్‌వర్క్ లేకుండా. 30 భాషలు; IE11 అనుకూలత లక్ష్యం."
@@ -48,6 +39,15 @@
             "list": false,
             "lines": [
               "TOTP (SHA-1/SHA-256/SHA-512, 6/8 అంకెలు), Steam Guard (5 అక్షరాలు, 30 సెకన్లు) మద్దతు. Steamకి shared_secret లేదా maFile JSON ఇవ్వండి. HOTP తయారీ లేదు; బదిలీ ఫైళ్ల HOTP/MD5 ఖాతాలు చదివి ఎగుమతి చేయవచ్చు."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "ఏదైనా సదుపాయం ఆలోచన ఉందా? [కోరికల జాబితా](https://2fa.hot/waitlist) చూసి GitHubలో ఆలోచనలు పంచుకోండి."
             ]
           }
         ]
@@ -95,25 +95,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "మొదట 2fa.mc కావాలనుకున్నా, Monaco డొమైన్ రిజిస్ట్రీకి ఇవ్వడానికి **2FA®** నమోదు చేయలేక వదిలేశాను."
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": [
-              "...ఇదంతా ముఖంలో నవ్వే లేకుండా రాస్తే?"
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": [
-              "తర్వాత .HOT వచ్చింది. సరే, సరే, ఒప్పుకుంటా: సెక్సీగా ఉంది. మళ్లీ వెళ్తున్నాం."
+              "మొదట 2fa.mc కావాలనుకున్నా, Monaco డొమైన్ రిజిస్ట్రీకి ఇవ్వడానికి **2FA®** నమోదు చేయలేక వదిలేశాను.  \n...ఇదంతా ముఖంలో నవ్వే లేకుండా రాస్తే?  \nతర్వాత .HOT వచ్చింది. సరే, సరే, ఒప్పుకుంటా: సెక్సీగా ఉంది. మళ్లీ వెళ్తున్నాం."
             ]
           }
         ]

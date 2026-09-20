@@ -14,15 +14,6 @@
             "spoiler": null,
             "divider": false,
             "ordered": false,
-            "list": false,
-            "lines": [
-              "May feature kang naiisip? Tingnan ang [wishlist](https://2fa.hot/waitlist) at ibahagi ang ideya sa GitHub."
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
             "list": true,
             "lines": [
               "[Lite](https://2fa.hot/lite?lang=en): code mula sa iisang secret, pagkopya at fragment link nang walang animation, tunog o pangunahing app framework. 30 wika; layunin ang pagiging tugma sa IE11."
@@ -48,6 +39,15 @@
             "list": false,
             "lines": [
               "Suporta sa TOTP (SHA-1/SHA-256/SHA-512, 6/8 digit) at Steam Guard (5 character, 30 segundo). Para sa Steam, ilagay ang shared_secret o i-paste ang maFile JSON. Hindi suportado ang pagbuo ng HOTP code; maaaring i-parse at i-export ang HOTP/MD5 account sa migration file."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "May feature kang naiisip? Tingnan ang [wishlist](https://2fa.hot/waitlist) at ibahagi ang ideya sa GitHub."
             ]
           }
         ]
@@ -95,25 +95,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "2fa.mc sana ang gusto ko, pero sumuko dahil hindi ko mairehistro ang **2FA®** para isumite sa domain registry ng Monaco."
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": [
-              "...Paano kung seryoso ang mukha ko habang sinusulat ito?"
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": [
-              "Tapos dumating ang .HOT. Sige na, aaminin ko: sexy iyon. Babalik tayo."
+              "2fa.mc sana ang gusto ko, pero sumuko dahil hindi ko mairehistro ang **2FA®** para isumite sa domain registry ng Monaco.  \n...Paano kung seryoso ang mukha ko habang sinusulat ito?  \nTapos dumating ang .HOT. Sige na, aaminin ko: sexy iyon. Babalik tayo."
             ]
           }
         ]

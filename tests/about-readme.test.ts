@@ -27,3 +27,19 @@ test('inline formatting preserves safe links, never renders arbitrary HTML', () 
   assert.equal(inlineTokens('<script>bad</script>')[0]?.kind, 'text')
   assert.equal(inlineTokens('**2FA®**')[0]?.kind, 'strong')
 })
+
+test('Markdown hard breaks stay within one paragraph while soft breaks remain text', () => {
+  assert.deepEqual(inlineTokens('first  \nsecond'), [
+    { kind: 'text', text: 'first' },
+    { kind: 'break', text: '' },
+    { kind: 'text', text: 'second' }
+  ])
+  assert.deepEqual(inlineTokens('first\nsecond'), [{ kind: 'text', text: 'first\nsecond' }])
+  for (const name of ['README.md', 'docs/readme/README.zh-CN.md', 'docs/readme/README.en.md']) {
+    const result = parseAboutReadme(readFileSync(name, 'utf8'))
+    const domain = result.sections[2]!
+    assert.equal(domain.blocks.length, 1)
+    assert.equal(inlineTokens(domain.blocks[0]!.lines[0]!).filter(t => t.kind === 'break').length, 2)
+    assert.ok(result.sections[0]!.blocks.at(-1)!.lines[0]!.includes('/waitlist'))
+  }
+})

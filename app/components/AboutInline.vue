@@ -16,7 +16,8 @@ function link(href: string | undefined) {
 
 <template>
   <template v-for="(token, index) in tokens" :key="index">
-    <a v-if="token.kind === 'link'" :href="link(token.href)">{{ token.text }}</a>
+    <br v-if="token.kind === 'break'" />
+    <a v-else-if="token.kind === 'link'" :href="link(token.href)">{{ token.text }}</a>
     <strong v-else-if="token.kind === 'strong'">{{ token.text }}</strong>
     <code v-else-if="token.kind === 'code'">{{ token.text }}</code>
     <template v-else>{{ token.text }}</template>

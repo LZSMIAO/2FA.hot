@@ -14,15 +14,6 @@
             "spoiler": null,
             "divider": false,
             "ordered": false,
-            "list": false,
-            "lines": [
-              "יש לכם רעיון לתכונה? עיינו ב[רשימת משאלות](https://2fa.hot/waitlist) ושתפו רעיונות ב-GitHub."
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
             "list": true,
             "lines": [
               "[Lite](https://2fa.hot/lite?lang=en): קודים לסוד יחיד, העתקה וקישורי מקטע בלי אנימציה, צליל או מסגרת האפליקציה הראשית. 30 שפות; יעד תאימות ל-IE11."
@@ -48,6 +39,15 @@
             "list": false,
             "lines": [
               "תומך ב-TOTP ‏(SHA-1/SHA-256/SHA-512, ‏6/8 ספרות) וב-Steam Guard ‏(5 תווים, 30 שניות). ל-Steam הזינו shared_secret או תוכן maFile JSON. אין יצירת קודי HOTP; ניתן לנתח ולייצא חשבונות HOTP/MD5 בקובצי העברה."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "יש לכם רעיון לתכונה? עיינו ב[רשימת משאלות](https://2fa.hot/waitlist) ושתפו רעיונות ב-GitHub."
             ]
           }
         ]
@@ -95,25 +95,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "בהתחלה רציתי 2fa.mc, אבל ויתרתי כי לא יכולתי לרשום **2FA®** ולהגיש לרשם הדומיינים של מונקו."
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": [
-              "...ומה אם כתבתי את זה בפנים רציניות לגמרי?"
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": [
-              "ואז הגיע .HOT. בסדר, בסדר, מודה: זה סקסי. חוזרים לזה."
+              "בהתחלה רציתי 2fa.mc, אבל ויתרתי כי לא יכולתי לרשום **2FA®** ולהגיש לרשם הדומיינים של מונקו.  \n...ומה אם כתבתי את זה בפנים רציניות לגמרי?  \nואז הגיע .HOT. בסדר, בסדר, מודה: זה סקסי. חוזרים לזה."
             ]
           }
         ]

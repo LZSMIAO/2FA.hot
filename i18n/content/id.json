@@ -14,15 +14,6 @@
             "spoiler": null,
             "divider": false,
             "ordered": false,
-            "list": false,
-            "lines": [
-              "Punya ide fitur? Lihat [daftar keinginan](https://2fa.hot/waitlist) dan bagikan ide Anda di GitHub."
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
             "list": true,
             "lines": [
               "[Lite](https://2fa.hot/lite?lang=en): kode satu rahasia, penyalinan, dan tautan fragmen tanpa animasi, suara, atau kerangka aplikasi utama. 30 bahasa; menargetkan kompatibilitas IE11."
@@ -48,6 +39,15 @@
             "list": false,
             "lines": [
               "Mendukung TOTP (SHA-1/SHA-256/SHA-512, 6/8 digit) dan Steam Guard (5 karakter, 30 detik). Untuk Steam, masukkan shared_secret atau tempel isi JSON maFile. Pembuatan kode HOTP tidak didukung; akun HOTP/MD5 dalam berkas migrasi dapat diurai dan diekspor."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Punya ide fitur? Lihat [daftar keinginan](https://2fa.hot/waitlist) dan bagikan ide Anda di GitHub."
             ]
           }
         ]
@@ -95,25 +95,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Awalnya saya menginginkan 2fa.mc, tetapi menyerah karena tidak bisa mendaftarkan **2FA®** untuk diajukan ke registri domain Monako."
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": [
-              "...Bagaimana kalau saya menulis ini dengan wajah datar?"
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": [
-              "Lalu muncullah .HOT. Baiklah, baiklah, saya akui: itu seksi. Kita kembali."
+              "Awalnya saya menginginkan 2fa.mc, tetapi menyerah karena tidak bisa mendaftarkan **2FA®** untuk diajukan ke registri domain Monako.  \n...Bagaimana kalau saya menulis ini dengan wajah datar?  \nLalu muncullah .HOT. Baiklah, baiklah, saya akui: itu seksi. Kita kembali."
             ]
           }
         ]

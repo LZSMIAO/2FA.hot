@@ -32,8 +32,6 @@ More features are being integrated…
 
 ## What exactly can it do
 
-Have a feature in mind? Explore the [wishlist](https://2fa.hot/waitlist) and share your ideas on GitHub.
-
 - [Lite](https://2fa.hot/lite?lang=en): single-secret codes, copying and fragment links without animation, sound or the main app framework. 30 languages; targets IE11 compatibility.
 
 - Single and batch codes: supports Base32 secrets and otpauth:// configuration links. Smart recognition of Excel tables, grouped secrets and mixed text.
@@ -43,6 +41,8 @@ Have a feature in mind? Explore the [wishlist](https://2fa.hot/waitlist) and sha
 - 30 languages: mobile layouts and light/dark themes. Built-in mistake-prevention guides provide step-by-step, fully guided tutorials for your customers.
 
 Supports TOTP (SHA-1/SHA-256/SHA-512, 6/8 digits) and Steam Guard (5 characters, 30 seconds). For Steam, enter a shared_secret or paste maFile JSON content. HOTP code generation is not supported; HOTP/MD5 accounts in migration files can be parsed and exported.
+
+Have a feature in mind? Explore the [wishlist](https://2fa.hot/waitlist) and share your ideas on GitHub.
 
 ## Secret storage and access
 
@@ -56,10 +56,8 @@ Finally, do not share them publicly or with anyone you do not trust. Forgotten l
 
 ## Domain drama
 
-I originally wanted 2fa.mc, but gave up because I couldn't register **2FA®** to submit to Monaco's domain registry.
-
-...What if I kept a straight face while writing this?
-
+I originally wanted 2fa.mc, but gave up because I couldn't register **2FA®** to submit to Monaco's domain registry.  
+...What if I kept a straight face while writing this?  
 Then .HOT came along. Fine, fine, I'll admit it: that's sexy. We're going back.
 
 ## Why did I make this? Reinventing the wheel?

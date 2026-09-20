@@ -14,15 +14,6 @@
             "spoiler": null,
             "divider": false,
             "ordered": false,
-            "list": false,
-            "lines": [
-              "لديك فكرة لميزة؟ اطّلع على [قائمة الرغبات](https://2fa.hot/waitlist) وشارك أفكارك على GitHub."
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
             "list": true,
             "lines": [
               "[Lite](https://2fa.hot/lite?lang=en): رموز لمفتاح واحد ونسخ وروابط مقاطع، بلا حركة أو صوت أو إطار التطبيق الرئيسي. بـ30 لغة؛ تستهدف التوافق مع IE11."
@@ -48,6 +39,15 @@
             "list": false,
             "lines": [
               "تدعم TOTP ‏(SHA-1/SHA-256/SHA-512، ‏6/8 أرقام) وSteam Guard ‏(5 محارف، 30 ثانية). لـSteam أدخل shared_secret أو الصق محتوى maFile JSON. لا تدعم توليد HOTP؛ يمكن تحليل وتصدير حسابات HOTP/MD5 من ملفات النقل."
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "لديك فكرة لميزة؟ اطّلع على [قائمة الرغبات](https://2fa.hot/waitlist) وشارك أفكارك على GitHub."
             ]
           }
         ]
@@ -95,25 +95,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "أردت في البداية 2fa.mc، لكنني تراجعت لأنني لم أستطع تسجيل **2FA®** لتقديمها إلى سجل نطاقات موناكو."
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": [
-              "...ماذا لو كنت أكتب هذا بوجه جاد تمامًا؟"
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": [
-              "ثم ظهرت .HOT. حسنًا، حسنًا، أعترف: هذا مثير. عدنا من جديد."
+              "أردت في البداية 2fa.mc، لكنني تراجعت لأنني لم أستطع تسجيل **2FA®** لتقديمها إلى سجل نطاقات موناكو.  \n...ماذا لو كنت أكتب هذا بوجه جاد تمامًا؟  \nثم ظهرت .HOT. حسنًا، حسنًا، أعترف: هذا مثير. عدنا من جديد."
             ]
           }
         ]

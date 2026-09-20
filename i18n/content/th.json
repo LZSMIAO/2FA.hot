@@ -14,15 +14,6 @@
             "spoiler": null,
             "divider": false,
             "ordered": false,
-            "list": false,
-            "lines": [
-              "มีฟีเจอร์ในใจไหม? ดู[รายการความปรารถนา](https://2fa.hot/waitlist) แล้วแชร์ไอเดียบน GitHub"
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
             "list": true,
             "lines": [
               "[Lite](https://2fa.hot/lite?lang=en): รหัสสำหรับคีย์เดียว การคัดลอก และลิงก์ fragment โดยไม่มีภาพเคลื่อนไหว เสียง หรือเฟรมเวิร์กแอปหลัก รองรับ 30 ภาษา และตั้งเป้าความเข้ากันได้กับ IE11"
@@ -48,6 +39,15 @@
             "list": false,
             "lines": [
               "รองรับ TOTP (SHA-1/SHA-256/SHA-512, 6/8 หลัก) และ Steam Guard (5 ตัว, 30 วินาที) สำหรับ Steam ใส่ shared_secret หรือวางเนื้อหา JSON maFile ไม่รองรับสร้าง HOTP แต่บัญชี HOTP/MD5 ในไฟล์ย้ายสามารถอ่านและส่งออกได้"
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "มีฟีเจอร์ในใจไหม? ดู[รายการความปรารถนา](https://2fa.hot/waitlist) แล้วแชร์ไอเดียบน GitHub"
             ]
           }
         ]
@@ -95,25 +95,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "ตอนแรกอยากได้ 2fa.mc แต่ยอมแพ้เพราะจด **2FA®** เพื่อส่งให้หน่วยจดโดเมนโมนาโกไม่ได้"
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": [
-              "...ถ้าฉันเขียนนี่ด้วยหน้าตายล่ะ?"
-            ]
-          },
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": [
-              "แล้ว .HOT ก็มา เออ ๆ ยอมรับก็ได้ เซ็กซี่ดี กลับกันเถอะ"
+              "ตอนแรกอยากได้ 2fa.mc แต่ยอมแพ้เพราะจด **2FA®** เพื่อส่งให้หน่วยจดโดเมนโมนาโกไม่ได้  \n...ถ้าฉันเขียนนี่ด้วยหน้าตายล่ะ?  \nแล้ว .HOT ก็มา เออ ๆ ยอมรับก็ได้ เซ็กซี่ดี กลับกันเถอะ"
             ]
           }
         ]
