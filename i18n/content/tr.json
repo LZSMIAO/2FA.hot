@@ -16,7 +16,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Aklınızda bir özellik mi var? [Özellik istek listesine](https://2fa.hot/waitlist) bakın, fikirlerinizi GitHub'da paylaşın."
+              "Aklınızda bir özellik mi var? [istek listesi](https://2fa.hot/waitlist) bakın, fikirlerinizi GitHub'da paylaşın."
             ]
           },
           {
@@ -53,21 +53,6 @@
         ]
       },
       {
-        "title": "Nasıl kullanılır?",
-        "blocks": [
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": true,
-            "lines": [
-              "2FA anahtarınızı kopyalayıp 2fa.hot'a yapıştırın veya QR kodu içe aktarın.",
-              "Geri sayım bitmeden güncel kodu kopyalayıp kullanın."
-            ]
-          }
-        ]
-      },
-      {
         "title": "Anahtar depolama ve erişim",
         "blocks": [
           {
@@ -76,9 +61,9 @@
             "ordered": false,
             "list": true,
             "lines": [
-              "Ana sayfada kod üretimi ve QR tanıma tamamen tarayıcınızda gerçekleşir.",
+              "Bu sitedeki tüm hesaplamalar verileri yerel olarak tarayıcınızda okur ve işler.",
               "Yerel geçmişi açtığınızda kayıtlar tarayıcıda tutulur. Şifreleme için parola belirleyebilir veya boş bırakıp kayıtları doğrudan görebilirsiniz.",
-              "`/2fa#SECRET` kullanın: `#` sonrasındaki parça sayfa isteğinde gönderilmez, araç tarafından yerel okunur. `/2fa/SECRET` anahtarı yol içinde barındırma hizmetine gönderir. Sayfa uyarısı ilk isteği durduramaz; HTTPS yolu alıcısından gizlemez. Yol bağlantıları, parça bağlantısına geçiş eylemi ve açıklaması olan MC Tip gösterir. Yol bağlantısı kullandıysanız özgün hizmette yeni anahtar üretmeyi ve eskisinin geçersizliğini doğrulamayı düşünün. `#` kullanmak geçmiş istekleri geri alamaz. Tam bağlantılar tarayıcı geçmişinde kalabilir; asla herkese açık paylaşmayın."
+              "`/2fa#SECRET` kullanın: `#` sonrasındaki parça sayfa isteğinde gönderilmez, araç tarafından yerel okunur."
             ]
           },
           {
@@ -95,7 +80,9 @@
             "divider": false,
             "ordered": false,
             "list": false,
-            "lines": ["[Gizlilik](https://2fa.hot/privacy)"]
+            "lines": [
+              "[Gizlilik](https://2fa.hot/privacy)"
+            ]
           }
         ]
       },
@@ -122,7 +109,16 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Sınır ötesi e-ticarette çalışan arkadaşlarım, medya hesaplarını yönetmek gibi işler için hesaplara girerken güvenliği de düşünmek zorunda. Benzer ihtiyacı olan daha çok arkadaşa ve internete yeni başlayanlara yardım etmek başlangıç noktasıydı.\nDoğrudan bağlantıyla kod üretenler dahil birçok benzer çevrimiçi araç var. Ama bilmiyorsanız, `/2fa/SECRET` veya `?secret=SECRET` gibi anahtar içeren URL açıldığında anahtar HTTP isteğinde gönderilir. Uzak site hizmeti veya CDN bu veriyi alır, erişim günlüğü, izleme ya da uygulama günlükleriyle kaydedip saklayabilir. Yani bu isteklerdeki anahtarlar düz metin tutulabilir. Elbette gerçekten saklaması uygulamasına, ayarlarına ve gizlilik politikasına bağlı :))"
+              "Sınır ötesi e-ticarette çalışan arkadaşlarım, medya hesaplarını yönetmek gibi işler için hesaplara girerken güvenliği de düşünmek zorunda. Benzer ihtiyacı olan daha çok arkadaşa ve internete yeni başlayanlara yardım etmek başlangıç noktasıydı.\nDoğrudan bağlantıyla kod üretenler dahil birçok benzer çevrimiçi araç var. Ama bilmiyorsanız, `?secret=SECRET` gibi anahtar içeren URL açıldığında anahtar HTTP isteğinde gönderilir. Uzak site hizmeti veya CDN bu veriyi alır, erişim günlüğü, izleme ya da uygulama günlükleriyle kaydedip saklayabilir. Yani bu isteklerdeki anahtarlar düz metin tutulabilir. Elbette gerçekten saklaması uygulamasına, ayarlarına ve gizlilik politikasına bağlı :))"
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Bu, Vibe coding ile tamamladığım ilk proje; tekerleği yeniden icat etmek gibi. Bana ilham veren düşüncelerimi [profilimde ⓘ](https://github.com/LZSMIAO) okuyabilirsiniz."
             ]
           }
         ]

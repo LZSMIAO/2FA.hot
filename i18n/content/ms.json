@@ -16,7 +16,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Ada idea ciri? Terokai [senarai hajat ciri](https://2fa.hot/waitlist) dan kongsikan idea anda di GitHub."
+              "Ada idea ciri? Terokai [senarai hasrat](https://2fa.hot/waitlist) dan kongsikan idea anda di GitHub."
             ]
           },
           {
@@ -53,21 +53,6 @@
         ]
       },
       {
-        "title": "Cara menggunakannya",
-        "blocks": [
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": true,
-            "lines": [
-              "Salin rahsia 2FA dan tampal ke 2fa.hot, atau import kod QR.",
-              "Salin dan gunakan kod semasa sebelum kira detik tamat."
-            ]
-          }
-        ]
-      },
-      {
         "title": "Penyimpanan dan akses rahsia",
         "blocks": [
           {
@@ -76,9 +61,9 @@
             "ordered": false,
             "list": true,
             "lines": [
-              "Penjanaan kod halaman utama dan pengecaman QR berlaku sepenuhnya dalam pelayar anda.",
+              "Semua pengiraan laman ini membaca dan memproses data secara setempat dalam pelayar anda.",
               "Apabila sejarah setempat diaktifkan, rekod disimpan dalam pelayar. Anda boleh menetapkan kata laluan untuk penyulitan atau membiarkannya tanpa kata laluan dan melihat rekod secara terus.",
-              "Gunakan `/2fa#SECRET`: fragmen selepas `#` tidak dihantar bersama permintaan halaman dan dibaca secara setempat oleh alat ini. `/2fa/SECRET` menghantar rahsia dalam laluan kepada perkhidmatan pengehosan. Amaran halaman tidak boleh memintas permintaan awal; HTTPS tidak menyembunyikan laluan daripada penerimanya. Pautan laluan memaparkan MC Tip dengan tindakan pautan fragmen dan penjelasan. Jika anda pernah menggunakan pautan laluan, pertimbangkan menjana rahsia pengganti di perkhidmatan asal dan mengesahkan yang lama tidak lagi sah. Beralih kepada `#` tidak membatalkan permintaan terdahulu. Pautan penuh mungkin kekal dalam sejarah pelayar; jangan kongsikannya secara awam."
+              "Gunakan `/2fa#SECRET`: fragmen selepas `#` tidak dihantar bersama permintaan halaman dan dibaca secara setempat oleh alat ini."
             ]
           },
           {
@@ -95,7 +80,9 @@
             "divider": false,
             "ordered": false,
             "list": false,
-            "lines": ["[Privasi](https://2fa.hot/privacy)"]
+            "lines": [
+              "[Privasi](https://2fa.hot/privacy)"
+            ]
           }
         ]
       },
@@ -122,7 +109,16 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Rakan-rakan dalam e-dagang rentas sempadan perlu log masuk ke akaun untuk kerja seperti mengurus akaun media sambil mempertimbangkan keselamatan. Membantu lebih ramai rakan dengan keperluan serupa serta orang yang baru mula menggunakan internet ialah titik permulaannya.\nBanyak alat dalam talian serupa, termasuk yang menjana kod melalui pautan terus. Tetapi jika anda belum tahu, membuka URL berahsia seperti `/2fa/SECRET` atau `?secret=SECRET` menghantar rahsia dalam permintaan HTTP. Perkhidmatan laman jauh atau CDN menerima data itu dan boleh merekod serta menyimpannya melalui log akses, pemantauan atau log aplikasi. Ertinya, rahsia dalam permintaan itu mungkin disimpan sebagai teks biasa. Sudah tentu, sama ada ia benar-benar disimpan bergantung pada pelaksanaan, tetapan dan dasar privasinya :))"
+              "Rakan-rakan dalam e-dagang rentas sempadan perlu log masuk ke akaun untuk kerja seperti mengurus akaun media sambil mempertimbangkan keselamatan. Membantu lebih ramai rakan dengan keperluan serupa serta orang yang baru mula menggunakan internet ialah titik permulaannya.\nBanyak alat dalam talian serupa, termasuk yang menjana kod melalui pautan terus. Tetapi jika anda belum tahu, membuka URL berahsia seperti `?secret=SECRET` menghantar rahsia dalam permintaan HTTP. Perkhidmatan laman jauh atau CDN menerima data itu dan boleh merekod serta menyimpannya melalui log akses, pemantauan atau log aplikasi. Ertinya, rahsia dalam permintaan itu mungkin disimpan sebagai teks biasa. Sudah tentu, sama ada ia benar-benar disimpan bergantung pada pelaksanaan, tetapan dan dasar privasinya :))"
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Ini projek Vibe coding pertama yang saya siapkan, ibarat mencipta semula roda. Saya menulis beberapa renungan yang boleh dibaca di [profil saya ⓘ](https://github.com/LZSMIAO)."
             ]
           }
         ]

@@ -16,7 +16,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Una wazo la kipengele? Tazama [orodha ya matamanio ya vipengele](https://2fa.hot/waitlist) na ushiriki mawazo yako GitHub."
+              "Una wazo la kipengele? Tazama [orodha ya matamanio](https://2fa.hot/waitlist) na ushiriki mawazo yako GitHub."
             ]
           },
           {
@@ -53,21 +53,6 @@
         ]
       },
       {
-        "title": "Jinsi ya kuitumia",
-        "blocks": [
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": true,
-            "lines": [
-              "Nakili siri ya 2FA na ubandike katika 2fa.hot, au ingiza QR.",
-              "Nakili na utumie msimbo wa sasa kabla muda haujaisha."
-            ]
-          }
-        ]
-      },
-      {
         "title": "Uhifadhi na ufikiaji wa siri",
         "blocks": [
           {
@@ -76,9 +61,9 @@
             "ordered": false,
             "list": true,
             "lines": [
-              "Utengenezaji wa misimbo kwenye ukurasa mkuu na utambuzi wa QR hufanyika kabisa ndani ya kivinjari.",
+              "Hesabu zote za tovuti hii husoma na kuchakata data ndani ya kivinjari chako.",
               "Ukiwasha historia ya ndani, rekodi huhifadhiwa katika kivinjari chako. Unaweza kuweka nenosiri la usimbaji au kutoliweka na kuona rekodi moja kwa moja.",
-              "Tumia `/2fa#SECRET`: kipande baada ya `#` hakitumwi pamoja na ombi la ukurasa na husomwa ndani ya kifaa na zana hii. `/2fa/SECRET` hutuma siri kwenye njia kwa huduma ya upangishaji. Onyo la ukurasa haliwezi kuzuia ombi la kwanza; HTTPS haifichi njia kwa mpokeaji. Viungo vya njia huonyesha MC Tip yenye kitendo cha kiungo cha kipande na maelezo. Ukiwahi kutumia kiungo cha njia, fikiria kutengeneza siri mbadala katika huduma ya awali na kuthibitisha kuwa ya zamani imebatilika. Kuhamia `#` hakuondoi maombi ya zamani. Viungo kamili vinaweza kubaki katika historia ya kivinjari; usivishiriki hadharani."
+              "Tumia `/2fa#SECRET`: kipande baada ya `#` hakitumwi pamoja na ombi la ukurasa na husomwa ndani ya kifaa na zana hii."
             ]
           },
           {
@@ -95,7 +80,9 @@
             "divider": false,
             "ordered": false,
             "list": false,
-            "lines": ["[Faragha](https://2fa.hot/privacy)"]
+            "lines": [
+              "[Faragha](https://2fa.hot/privacy)"
+            ]
           }
         ]
       },
@@ -122,7 +109,16 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Marafiki wa biashara ya mtandaoni ya kuvuka mipaka wanahitaji kuingia akaunti kwa kazi kama kusimamia akaunti za vyombo vya habari, wakizingatia usalama pia. Kusaidia marafiki zaidi wenye mahitaji haya na wanaoanza kutumia mtandao ndiyo ilikuwa sababu ya kwanza.\nZana nyingi za mtandaoni zinafanana, zikiwemo zinazotengeneza misimbo kupitia viungo vya moja kwa moja. Lakini ikiwa hujui, kufungua URL yenye siri kama `/2fa/SECRET` au `?secret=SECRET` hutuma siri ndani ya ombi la HTTP. Huduma ya tovuti ya mbali au CDN hupokea data hiyo na inaweza kuiandika na kuihifadhi kupitia kumbukumbu za ufikiaji, ufuatiliaji au programu. Yaani siri katika maombi hayo zinaweza kuhifadhiwa bila usimbaji. Bila shaka, kama inazihifadhi kweli hutegemea utekelezaji, mipangilio na sera yake ya faragha :))"
+              "Marafiki wa biashara ya mtandaoni ya kuvuka mipaka wanahitaji kuingia akaunti kwa kazi kama kusimamia akaunti za vyombo vya habari, wakizingatia usalama pia. Kusaidia marafiki zaidi wenye mahitaji haya na wanaoanza kutumia mtandao ndiyo ilikuwa sababu ya kwanza.\nZana nyingi za mtandaoni zinafanana, zikiwemo zinazotengeneza misimbo kupitia viungo vya moja kwa moja. Lakini ikiwa hujui, kufungua URL yenye siri kama `?secret=SECRET` hutuma siri ndani ya ombi la HTTP. Huduma ya tovuti ya mbali au CDN hupokea data hiyo na inaweza kuiandika na kuihifadhi kupitia kumbukumbu za ufikiaji, ufuatiliaji au programu. Yaani siri katika maombi hayo zinaweza kuhifadhiwa bila usimbaji. Bila shaka, kama inazihifadhi kweli hutegemea utekelezaji, mipangilio na sera yake ya faragha :))"
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Huu ni mradi wangu wa kwanza niliokamilisha kwa Vibe coding, kama kubuni gurudumu upya. Niliandika mawazo machache; ukipenda, tembelea [wasifu wangu ⓘ](https://github.com/LZSMIAO)."
             ]
           }
         ]

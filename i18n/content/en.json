@@ -16,7 +16,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Have a feature in mind? Explore the [feature wish list](https://2fa.hot/waitlist) and share your ideas on GitHub."
+              "Have a feature in mind? Explore the [wishlist](https://2fa.hot/waitlist) and share your ideas on GitHub."
             ]
           },
           {
@@ -53,21 +53,6 @@
         ]
       },
       {
-        "title": "How to use it",
-        "blocks": [
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": true,
-            "lines": [
-              "Copy your 2FA secret and paste it into 2fa.hot, or import a QR code.",
-              "Copy and use the current code before the countdown ends."
-            ]
-          }
-        ]
-      },
-      {
         "title": "Secret storage and access",
         "blocks": [
           {
@@ -76,9 +61,9 @@
             "ordered": false,
             "list": true,
             "lines": [
-              "Homepage code generation and QR recognition happen entirely in your browser.",
+              "All calculations on this site read and process data locally in your browser.",
               "When you enable local history, records are stored in your browser. You can set a password for encryption, or leave it unset and view records directly.",
-              "Use `/2fa#SECRET`: the fragment after `#` is not sent with the page request and is read locally by this tool. `/2fa/SECRET` sends the secret in the path to the hosting service. A page warning cannot intercept the initial request; HTTPS does not hide the path from its recipient. Path links display an MC Tip with a fragment-link action and an explanation. If you used a path link, consider generating a replacement secret at the original service and confirming the previous one is invalid. Switching to `#` cannot undo earlier requests. Full links may remain in browser history; never share them publicly."
+              "Use `/2fa#SECRET`: the fragment after `#` is not sent with the page request. Full links may remain in browser history; never share them publicly."
             ]
           },
           {
@@ -95,7 +80,9 @@
             "divider": false,
             "ordered": false,
             "list": false,
-            "lines": ["[Privacy](https://2fa.hot/privacy)"]
+            "lines": [
+              "[Privacy](https://2fa.hot/privacy)"
+            ]
           }
         ]
       },
@@ -122,7 +109,16 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Friends working in cross-border e-commerce need to log into accounts for tasks such as managing media accounts, while also considering security. Helping more friends with similar needs, as well as people just getting started online, was the starting point.\nThere are many similar online tools, including ones that generate codes through direct links. But if you didn't know, opening a URL containing a secret, such as `/2fa/SECRET` or `?secret=SECRET`, sends the secret in an HTTP request. The remote website service or CDN receives that data and can record and retain it through access logs, monitoring or application logging. In other words, secrets in those requests may be stored in plain text. Of course, whether it actually retains them depends on its implementation, settings and privacy policy :))"
+              "Friends working in cross-border e-commerce need to log into accounts for tasks such as managing media accounts, while also considering security. Helping more friends with similar needs, as well as people just getting started online, was the starting point.\nThere are many similar online tools, including ones that generate codes through direct links. But if you didn't know, opening a URL containing a secret, such as `?secret=SECRET`, sends the secret in an HTTP request. The remote website service or CDN receives that data and can record and retain it through access logs, monitoring or application logging. In other words, secrets in those requests may be stored in plain text. Of course, whether it actually retains them depends on its implementation, settings and privacy policy :))"
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "This is the first Vibe coding project I have completed by reinventing a wheel. It inspired me to write a few thoughts; if you are interested, visit my [profile ⓘ](https://github.com/LZSMIAO)."
             ]
           }
         ]

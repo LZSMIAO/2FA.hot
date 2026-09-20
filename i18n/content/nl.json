@@ -16,7 +16,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Een functie in gedachten? Bekijk de [functiewensenlijst](https://2fa.hot/waitlist) en deel je ideeën op GitHub."
+              "Een functie in gedachten? Bekijk de [wensenlijst](https://2fa.hot/waitlist) en deel je ideeën op GitHub."
             ]
           },
           {
@@ -53,21 +53,6 @@
         ]
       },
       {
-        "title": "Hoe je het gebruikt",
-        "blocks": [
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": true,
-            "lines": [
-              "Kopieer je 2FA-geheim en plak het in 2fa.hot, of importeer een QR-code.",
-              "Kopieer en gebruik de huidige code voordat de afteller eindigt."
-            ]
-          }
-        ]
-      },
-      {
         "title": "Opslag en toegang tot geheimen",
         "blocks": [
           {
@@ -76,9 +61,9 @@
             "ordered": false,
             "list": true,
             "lines": [
-              "Codegeneratie op de startpagina en QR-herkenning gebeuren volledig in je browser.",
+              "Alle berekeningen op deze site lezen en verwerken gegevens lokaal in je browser.",
               "Als je lokale geschiedenis inschakelt, worden items in je browser opgeslagen. Je kunt een wachtwoord instellen voor versleuteling, of geen wachtwoord instellen en de items direct bekijken.",
-              "Gebruik `/2fa#SECRET`: het fragment na `#` wordt niet met het paginaverzoek meegestuurd en wordt lokaal door deze tool gelezen. `/2fa/SECRET` stuurt het geheim in het pad naar de hostingdienst. Een waarschuwing op de pagina kan het eerste verzoek niet onderscheppen; HTTPS verbergt het pad niet voor de ontvanger. Padlinks tonen een MC Tip met een actie voor een fragmentlink en uitleg. Heb je een padlink gebruikt, overweeg dan bij de oorspronkelijke dienst een vervangend geheim te maken en te bevestigen dat het vorige ongeldig is. Overstappen op `#` kan eerdere verzoeken niet ongedaan maken. Volledige links kunnen in de browsergeschiedenis blijven; deel ze nooit openbaar."
+              "Gebruik `/2fa#SECRET`: het fragment na `#` wordt niet met het paginaverzoek meegestuurd en wordt lokaal door deze tool gelezen."
             ]
           },
           {
@@ -95,7 +80,9 @@
             "divider": false,
             "ordered": false,
             "list": false,
-            "lines": ["[Privacy](https://2fa.hot/privacy)"]
+            "lines": [
+              "[Privacy](https://2fa.hot/privacy)"
+            ]
           }
         ]
       },
@@ -122,7 +109,16 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Vrienden in grensoverschrijdende e-commerce moeten op accounts inloggen voor taken zoals het beheren van media-accounts, en daarbij ook aan veiligheid denken. Meer vrienden met soortgelijke behoeften helpen, en mensen die net online beginnen, was het uitgangspunt.\nEr bestaan veel vergelijkbare online tools, waaronder tools die via directe links codes genereren. Maar mocht je het niet weten: een URL met een geheim openen, zoals `/2fa/SECRET` of `?secret=SECRET`, verstuurt het geheim in een HTTP-verzoek. De externe webdienst of CDN ontvangt die gegevens en kan ze via toegangslogs, monitoring of applicatielogs vastleggen en bewaren. Met andere woorden: geheimen in die verzoeken kunnen als platte tekst worden opgeslagen. Of ze werkelijk worden bewaard, hangt natuurlijk af van de implementatie, instellingen en het privacybeleid :))"
+              "Vrienden in grensoverschrijdende e-commerce moeten op accounts inloggen voor taken zoals het beheren van media-accounts, en daarbij ook aan veiligheid denken. Meer vrienden met soortgelijke behoeften helpen, en mensen die net online beginnen, was het uitgangspunt.\nEr bestaan veel vergelijkbare online tools, waaronder tools die via directe links codes genereren. Maar mocht je het niet weten: een URL met een geheim openen, zoals `?secret=SECRET`, verstuurt het geheim in een HTTP-verzoek. De externe webdienst of CDN ontvangt die gegevens en kan ze via toegangslogs, monitoring of applicatielogs vastleggen en bewaren. Met andere woorden: geheimen in die verzoeken kunnen als platte tekst worden opgeslagen. Of ze werkelijk worden bewaard, hangt natuurlijk af van de implementatie, instellingen en het privacybeleid :))"
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Dit is mijn eerste voltooide Vibe coding-project, een opnieuw uitgevonden wiel. Ik schreef er enkele gedachten over op mijn [profiel ⓘ](https://github.com/LZSMIAO)."
             ]
           }
         ]

@@ -16,7 +16,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Masz pomysł na funkcję? Zobacz [listę życzeń funkcji](https://2fa.hot/waitlist) i podziel się pomysłami na GitHubie."
+              "Masz pomysł na funkcję? Zobacz [lista życzeń](https://2fa.hot/waitlist) i podziel się pomysłami na GitHubie."
             ]
           },
           {
@@ -53,21 +53,6 @@
         ]
       },
       {
-        "title": "Jak używać",
-        "blocks": [
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": true,
-            "lines": [
-              "Skopiuj sekret 2FA i wklej go do 2fa.hot lub zaimportuj kod QR.",
-              "Skopiuj i użyj bieżącego kodu przed końcem odliczania."
-            ]
-          }
-        ]
-      },
-      {
         "title": "Przechowywanie sekretów i dostęp",
         "blocks": [
           {
@@ -76,9 +61,9 @@
             "ordered": false,
             "list": true,
             "lines": [
-              "Generowanie kodów na stronie głównej i rozpoznawanie QR odbywają się w całości w przeglądarce.",
+              "Wszystkie obliczenia tej witryny odczytują i przetwarzają dane lokalnie w Twojej przeglądarce.",
               "Po włączeniu lokalnej historii wpisy są przechowywane w przeglądarce. Możesz ustawić hasło szyfrowania albo go nie ustawiać i przeglądać wpisy bezpośrednio.",
-              "Używaj `/2fa#SECRET`: fragment po `#` nie jest wysyłany z żądaniem strony i jest odczytywany lokalnie przez narzędzie. `/2fa/SECRET` wysyła sekret w ścieżce do hostingu. Ostrzeżenie na stronie nie przechwyci początkowego żądania; HTTPS nie ukrywa ścieżki przed jej odbiorcą. Linki ze ścieżką wyświetlają MC Tip z działaniem przejścia na link z fragmentem i objaśnieniem. Jeśli użyto linku ze ścieżką, rozważ wygenerowanie nowego sekretu w pierwotnej usłudze i potwierdzenie, że poprzedni jest nieważny. Przejście na `#` nie cofnie wcześniejszych żądań. Pełne linki mogą zostać w historii przeglądarki; nigdy nie udostępniaj ich publicznie."
+              "Używaj `/2fa#SECRET`: fragment po `#` nie jest wysyłany z żądaniem strony i jest odczytywany lokalnie przez narzędzie."
             ]
           },
           {
@@ -95,7 +80,9 @@
             "divider": false,
             "ordered": false,
             "list": false,
-            "lines": ["[Prywatność](https://2fa.hot/privacy)"]
+            "lines": [
+              "[Prywatność](https://2fa.hot/privacy)"
+            ]
           }
         ]
       },
@@ -122,7 +109,16 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Znajomi pracujący w międzynarodowym e-commerce muszą logować się na konta, na przykład zarządzając kontami medialnymi, a przy tym dbać o bezpieczeństwo. Pomoc większej liczbie znajomych z podobnymi potrzebami i osobom stawiającym pierwsze kroki w internecie była punktem wyjścia.\nPodobnych narzędzi online jest wiele, także takich, które generują kody przez linki bezpośrednie. Ale jeśli nie wiesz: otwarcie URL zawierającego sekret, jak `/2fa/SECRET` lub `?secret=SECRET`, wysyła sekret w żądaniu HTTP. Zdalna usługa internetowa lub CDN otrzymuje te dane i może je rejestrować oraz przechowywać w logach dostępu, monitoringu czy logach aplikacji. Innymi słowy, sekrety z tych żądań mogą być zapisane jawnym tekstem. Oczywiście to, czy faktycznie je zachowuje, zależy od implementacji, ustawień i polityki prywatności :))"
+              "Znajomi pracujący w międzynarodowym e-commerce muszą logować się na konta, na przykład zarządzając kontami medialnymi, a przy tym dbać o bezpieczeństwo. Pomoc większej liczbie znajomych z podobnymi potrzebami i osobom stawiającym pierwsze kroki w internecie była punktem wyjścia.\nPodobnych narzędzi online jest wiele, także takich, które generują kody przez linki bezpośrednie. Ale jeśli nie wiesz: otwarcie URL zawierającego sekret, jak `?secret=SECRET`, wysyła sekret w żądaniu HTTP. Zdalna usługa internetowa lub CDN otrzymuje te dane i może je rejestrować oraz przechowywać w logach dostępu, monitoringu czy logach aplikacji. Innymi słowy, sekrety z tych żądań mogą być zapisane jawnym tekstem. Oczywiście to, czy faktycznie je zachowuje, zależy od implementacji, ustawień i polityki prywatności :))"
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "To mój pierwszy ukończony projekt Vibe coding, ponowne wynalezienie koła. Zainspirował mnie do zapisania kilku przemyśleń na moim [profilu ⓘ](https://github.com/LZSMIAO)."
             ]
           }
         ]

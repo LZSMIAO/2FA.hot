@@ -53,21 +53,6 @@
         ]
       },
       {
-        "title": "Cách sử dụng",
-        "blocks": [
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": true,
-            "lines": [
-              "Sao chép khóa 2FA rồi dán vào 2fa.hot, hoặc nhập QR.",
-              "Sao chép và dùng mã hiện tại trước khi đếm ngược kết thúc."
-            ]
-          }
-        ]
-      },
-      {
         "title": "Lưu trữ và truy cập khóa",
         "blocks": [
           {
@@ -76,9 +61,9 @@
             "ordered": false,
             "list": true,
             "lines": [
-              "Tạo mã tại trang chủ và nhận diện QR hoàn toàn diễn ra trong trình duyệt.",
+              "Mọi phép tính trên trang này đều đọc và xử lý dữ liệu cục bộ trong trình duyệt của bạn.",
               "Khi bật lịch sử cục bộ, bản ghi nằm trong trình duyệt. Bạn có thể đặt mật khẩu mã hóa hoặc để trống và xem trực tiếp.",
-              "Dùng `/2fa#SECRET`: fragment sau `#` không gửi cùng yêu cầu trang và được công cụ đọc cục bộ. `/2fa/SECRET` gửi khóa trong đường dẫn tới dịch vụ lưu trữ. Cảnh báo trên trang không chặn được yêu cầu ban đầu; HTTPS không giấu đường dẫn khỏi bên nhận. Liên kết đường dẫn hiện MC Tip với thao tác chuyển sang fragment và lời giải thích. Nếu đã dùng liên kết đường dẫn, cân nhắc tạo khóa thay thế tại dịch vụ gốc và xác nhận khóa cũ hết hiệu lực. Chuyển sang `#` không hoàn tác yêu cầu trước đó. Liên kết đầy đủ có thể còn trong lịch sử trình duyệt; đừng chia sẻ công khai."
+              "Dùng `/2fa#SECRET`: fragment sau `#` không gửi cùng yêu cầu trang và được công cụ đọc cục bộ."
             ]
           },
           {
@@ -95,7 +80,9 @@
             "divider": false,
             "ordered": false,
             "list": false,
-            "lines": ["[Quyền riêng tư](https://2fa.hot/privacy)"]
+            "lines": [
+              "[Quyền riêng tư](https://2fa.hot/privacy)"
+            ]
           }
         ]
       },
@@ -122,7 +109,16 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Bạn bè làm thương mại điện tử xuyên biên giới cần đăng nhập tài khoản để làm việc như quản lý tài khoản truyền thông, đồng thời phải tính đến bảo mật. Giúp thêm những người có nhu cầu tương tự và người mới bắt đầu lên mạng là điểm khởi đầu.\nCó nhiều công cụ trực tuyến tương tự, kể cả tạo mã bằng liên kết trực tiếp. Nhưng nếu chưa biết, mở URL chứa khóa như `/2fa/SECRET` hay `?secret=SECRET` sẽ gửi khóa qua yêu cầu HTTP. Dịch vụ trang web từ xa hoặc CDN nhận dữ liệu đó và có thể ghi, giữ bằng nhật ký truy cập, giám sát hay nhật ký ứng dụng. Nghĩa là khóa trong các yêu cầu đó có thể được lưu dạng rõ. Tất nhiên có thực sự lưu hay không phụ thuộc triển khai, cài đặt và chính sách riêng tư :))"
+              "Bạn bè làm thương mại điện tử xuyên biên giới cần đăng nhập tài khoản để làm việc như quản lý tài khoản truyền thông, đồng thời phải tính đến bảo mật. Giúp thêm những người có nhu cầu tương tự và người mới bắt đầu lên mạng là điểm khởi đầu.\nCó nhiều công cụ trực tuyến tương tự, kể cả tạo mã bằng liên kết trực tiếp. Nhưng nếu chưa biết, mở URL chứa khóa như `?secret=SECRET` sẽ gửi khóa qua yêu cầu HTTP. Dịch vụ trang web từ xa hoặc CDN nhận dữ liệu đó và có thể ghi, giữ bằng nhật ký truy cập, giám sát hay nhật ký ứng dụng. Nghĩa là khóa trong các yêu cầu đó có thể được lưu dạng rõ. Tất nhiên có thực sự lưu hay không phụ thuộc triển khai, cài đặt và chính sách riêng tư :))"
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Đây là dự án Vibe coding đầu tiên tôi hoàn thành, như phát minh lại bánh xe. Tôi đã viết vài suy nghĩ; nếu quan tâm, hãy ghé [trang cá nhân ⓘ](https://github.com/LZSMIAO)."
             ]
           }
         ]

@@ -63,7 +63,7 @@ test('all 30 locales include complete articles, guide anchors and original refer
     // Original Chinese READMEs have independently authored wording and list grouping.
     if (!code.startsWith('zh'))
       compare(english.about, content.about, `${code}.about`, code !== 'en')
-    assert.equal(content.about.sections.length, 5, code)
+    assert.equal(content.about.sections.length, 4, code)
   }
 })
 

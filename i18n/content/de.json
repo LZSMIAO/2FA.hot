@@ -16,7 +16,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Hast du eine Funktion im Kopf? Schau dir die [Funktionswunschliste](https://2fa.hot/waitlist) an und teile deine Ideen auf GitHub."
+              "Hast du eine Funktion im Kopf? Schau dir die [Wunschliste](https://2fa.hot/waitlist) an und teile deine Ideen auf GitHub."
             ]
           },
           {
@@ -53,21 +53,6 @@
         ]
       },
       {
-        "title": "So verwendest du es",
-        "blocks": [
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": true,
-            "lines": [
-              "Kopiere deinen 2FA-Schlüssel und füge ihn in 2fa.hot ein, oder importiere einen QR-Code.",
-              "Kopiere und verwende den aktuellen Code, bevor der Countdown abläuft."
-            ]
-          }
-        ]
-      },
-      {
         "title": "Schlüsselspeicherung und Zugriff",
         "blocks": [
           {
@@ -76,9 +61,9 @@
             "ordered": false,
             "list": true,
             "lines": [
-              "Die Codeerzeugung auf der Startseite und QR-Erkennung erfolgen vollständig in deinem Browser.",
+              "Alle Berechnungen dieser Website lesen und verarbeiten Daten lokal in deinem Browser.",
               "Wenn du den lokalen Verlauf aktivierst, werden Einträge in deinem Browser gespeichert. Du kannst ein Passwort zur Verschlüsselung festlegen oder es weglassen und die Einträge direkt ansehen.",
-              "Verwende `/2fa#SECRET`: Das Fragment nach `#` wird nicht mit der Seitenanfrage gesendet und vom Tool lokal gelesen. `/2fa/SECRET` sendet den Schlüssel im Pfad an den Hostingdienst. Eine Seitenwarnung kann die erste Anfrage nicht abfangen; HTTPS verbirgt den Pfad nicht vor dem Empfänger. Pfadlinks zeigen einen MC Tip mit einer Aktion für einen Fragmentlink und einer Erklärung. Hast du einen Pfadlink verwendet, erwäge beim ursprünglichen Dienst einen Ersatzschlüssel zu erzeugen und zu bestätigen, dass der alte ungültig ist. Der Wechsel zu `#` kann frühere Anfragen nicht rückgängig machen. Vollständige Links können im Browserverlauf bleiben; teile sie niemals öffentlich."
+              "Verwende `/2fa#SECRET`: Das Fragment nach `#` wird nicht mit der Seitenanfrage gesendet und vom Tool lokal gelesen."
             ]
           },
           {
@@ -95,7 +80,9 @@
             "divider": false,
             "ordered": false,
             "list": false,
-            "lines": ["[Datenschutz](https://2fa.hot/privacy)"]
+            "lines": [
+              "[Datenschutz](https://2fa.hot/privacy)"
+            ]
           }
         ]
       },
@@ -122,7 +109,16 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Freunde im grenzüberschreitenden E-Commerce müssen sich für Aufgaben wie die Verwaltung von Medienkonten bei Konten anmelden und dabei auch auf Sicherheit achten. Mehr Freunden mit ähnlichen Bedürfnissen und Internetneulingen zu helfen, war der Ausgangspunkt.\nEs gibt viele ähnliche Online-Tools, darunter solche, die Codes über Direktlinks erzeugen. Aber falls du es nicht wusstest: Das Öffnen einer URL mit einem Schlüssel, etwa `/2fa/SECRET` oder `?secret=SECRET`, sendet den Schlüssel in einer HTTP-Anfrage. Der entfernte Webdienst oder das CDN empfängt diese Daten und kann sie über Zugriffsprotokolle, Monitoring oder Anwendungslogs aufzeichnen und speichern. Mit anderen Worten: Schlüssel in solchen Anfragen können im Klartext gespeichert werden. Ob sie sie tatsächlich speichert, hängt natürlich von Umsetzung, Einstellungen und Datenschutzerklärung ab :))"
+              "Freunde im grenzüberschreitenden E-Commerce müssen sich für Aufgaben wie die Verwaltung von Medienkonten bei Konten anmelden und dabei auch auf Sicherheit achten. Mehr Freunden mit ähnlichen Bedürfnissen und Internetneulingen zu helfen, war der Ausgangspunkt.\nEs gibt viele ähnliche Online-Tools, darunter solche, die Codes über Direktlinks erzeugen. Aber falls du es nicht wusstest: Das Öffnen einer URL mit einem Schlüssel, etwa `?secret=SECRET`, sendet den Schlüssel in einer HTTP-Anfrage. Der entfernte Webdienst oder das CDN empfängt diese Daten und kann sie über Zugriffsprotokolle, Monitoring oder Anwendungslogs aufzeichnen und speichern. Mit anderen Worten: Schlüssel in solchen Anfragen können im Klartext gespeichert werden. Ob sie sie tatsächlich speichert, hängt natürlich von Umsetzung, Einstellungen und Datenschutzerklärung ab :))"
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Dies ist mein erstes abgeschlossenes Vibe coding-Projekt, ein neu erfundenes Rad. Dazu habe ich einige Gedanken auf meinem [Profil ⓘ](https://github.com/LZSMIAO) aufgeschrieben."
             ]
           }
         ]

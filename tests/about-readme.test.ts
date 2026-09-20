@@ -7,10 +7,10 @@ test('all three README files provide live website content without repository chr
   for (const name of ['README.md', 'docs/readme/README.zh-CN.md', 'docs/readme/README.en.md']) {
     const source = readFileSync(name, 'utf8')
     const result = parseAboutReadme(source)
-    assert.equal(result.sections.length, 5)
+    assert.equal(result.sections.length, 4)
     assert.ok(result.introduction[0]?.includes('Minecraft'))
     assert.ok(!JSON.stringify(result).includes('img.shields.io'))
-    assert.ok(!JSON.stringify(result).includes('Vibe Coding'))
+    assert.ok(JSON.stringify(result).includes('https://github.com/LZSMIAO'))
     const stories = result.sections.flatMap((section) => section.blocks).filter((b) => b.spoiler)
     assert.equal(stories.length, 0)
     assert.ok(!JSON.stringify(result).includes('BOOM'))

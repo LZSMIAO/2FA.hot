@@ -16,7 +16,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "May feature kang naiisip? Tingnan ang [listahan ng gustong feature](https://2fa.hot/waitlist) at ibahagi ang ideya sa GitHub."
+              "May feature kang naiisip? Tingnan ang [wishlist](https://2fa.hot/waitlist) at ibahagi ang ideya sa GitHub."
             ]
           },
           {
@@ -53,21 +53,6 @@
         ]
       },
       {
-        "title": "Paano gamitin",
-        "blocks": [
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": true,
-            "lines": [
-              "Kopyahin ang 2FA secret at i-paste sa 2fa.hot, o mag-import ng QR code.",
-              "Kopyahin at gamitin ang kasalukuyang code bago matapos ang countdown."
-            ]
-          }
-        ]
-      },
-      {
         "title": "Pag-iimbak at pag-access ng secret",
         "blocks": [
           {
@@ -76,9 +61,9 @@
             "ordered": false,
             "list": true,
             "lines": [
-              "Ganap na nasa browser ang homepage code generation at QR recognition.",
+              "Lahat ng pagkalkula sa site na ito ay nagbabasa at nagpoproseso ng data nang lokal sa iyong browser.",
               "Kapag pinagana ang lokal na history, nasa browser ang mga record. Maaari kang magtakda ng password para sa encryption, o walang password upang direktang matingnan ang mga record.",
-              "Gamitin ang `/2fa#SECRET`: hindi ipinapadala kasama ng page request ang fragment pagkatapos ng `#` at lokal itong binabasa ng tool. Ipinapadala ng `/2fa/SECRET` ang secret sa path sa hosting service. Hindi mapipigilan ng babala sa pahina ang unang request; hindi itinatago ng HTTPS ang path sa tumatanggap. Nagpapakita ang path link ng MC Tip na may aksyon para sa fragment link at paliwanag. Kung gumamit ka ng path link, isaalang-alang ang pagbuo ng kapalit na secret sa orihinal na serbisyo at tiyaking di-wasto na ang dati. Hindi mababawi ng paglipat sa `#` ang mga naunang request. Maaaring manatili sa browser history ang buong link; huwag itong ibahagi sa publiko."
+              "Gamitin ang `/2fa#SECRET`: hindi ipinapadala kasama ng page request ang fragment pagkatapos ng `#` at lokal itong binabasa ng tool."
             ]
           },
           {
@@ -95,7 +80,9 @@
             "divider": false,
             "ordered": false,
             "list": false,
-            "lines": ["[Privacy](https://2fa.hot/privacy)"]
+            "lines": [
+              "[Privacy](https://2fa.hot/privacy)"
+            ]
           }
         ]
       },
@@ -122,7 +109,16 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Kailangang mag-sign in ng mga kaibigan sa cross-border e-commerce para sa trabahong gaya ng pamamahala ng media account, habang iniisip ang seguridad. Nagsimula ito sa pagnanais tumulong sa mas maraming kaibigang may ganoong pangangailangan at sa mga nagsisimula pa lang sa internet.\nMaraming kaparehong online tool, kabilang ang gumagawa ng code mula sa direktang link. Pero kung hindi mo alam, ang pagbukas ng URL na may secret, gaya ng `/2fa/SECRET` o `?secret=SECRET`, ay nagpapadala ng secret sa HTTP request. Natatanggap ito ng remote website service o CDN at maaari nilang itala at itago sa access log, monitoring o application log. Ibig sabihin, maaaring itago bilang plaintext ang secret sa request. Siyempre, nakadepende sa implementasyon, settings at privacy policy kung talagang itinatago :))"
+              "Kailangang mag-sign in ng mga kaibigan sa cross-border e-commerce para sa trabahong gaya ng pamamahala ng media account, habang iniisip ang seguridad. Nagsimula ito sa pagnanais tumulong sa mas maraming kaibigang may ganoong pangangailangan at sa mga nagsisimula pa lang sa internet.\nMaraming kaparehong online tool, kabilang ang gumagawa ng code mula sa direktang link. Pero kung hindi mo alam, ang pagbukas ng URL na may secret, gaya ng `?secret=SECRET`, ay nagpapadala ng secret sa HTTP request. Natatanggap ito ng remote website service o CDN at maaari nilang itala at itago sa access log, monitoring o application log. Ibig sabihin, maaaring itago bilang plaintext ang secret sa request. Siyempre, nakadepende sa implementasyon, settings at privacy policy kung talagang itinatago :))"
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Ito ang una kong natapos na proyektong Vibe coding, parang muling pag-imbento ng gulong. Nagsulat ako ng ilang saloobin; kung interesado ka, bisitahin ang aking [profile ⓘ](https://github.com/LZSMIAO)."
             ]
           }
         ]

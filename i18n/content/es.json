@@ -16,7 +16,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "¿Tienes alguna función en mente? Explora la [lista de funciones deseadas](https://2fa.hot/waitlist) y comparte tus ideas en GitHub."
+              "¿Tienes alguna función en mente? Explora la [lista de deseos](https://2fa.hot/waitlist) y comparte tus ideas en GitHub."
             ]
           },
           {
@@ -53,21 +53,6 @@
         ]
       },
       {
-        "title": "Cómo usarlo",
-        "blocks": [
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": true,
-            "lines": [
-              "Copia tu secreto 2FA y pégalo en 2fa.hot, o importa un código QR.",
-              "Copia y usa el código actual antes de que termine la cuenta atrás."
-            ]
-          }
-        ]
-      },
-      {
         "title": "Almacenamiento y acceso a los secretos",
         "blocks": [
           {
@@ -76,9 +61,9 @@
             "ordered": false,
             "list": true,
             "lines": [
-              "La generación de códigos en la página de inicio y el reconocimiento QR se realizan íntegramente en tu navegador.",
+              "Todos los cálculos de este sitio leen y procesan los datos localmente en tu navegador.",
               "Al activar el historial local, los registros se guardan en tu navegador. Puedes establecer una contraseña para cifrarlos o no establecerla y ver los registros directamente.",
-              "Usa `/2fa#SECRET`: el fragmento situado después de `#` no se envía con la solicitud de la página y esta herramienta lo lee localmente. `/2fa/SECRET` envía el secreto en la ruta al servicio de alojamiento. Un aviso de la página no puede interceptar la solicitud inicial; HTTPS no oculta la ruta a quien la recibe. Los enlaces de ruta muestran un MC Tip con una acción para usar un enlace con fragmento y una explicación. Si has usado un enlace de ruta, considera generar un secreto nuevo en el servicio original y confirmar que el anterior ha dejado de ser válido. Cambiar a `#` no puede deshacer solicitudes anteriores. Los enlaces completos pueden permanecer en el historial del navegador; nunca los compartas públicamente."
+              "Usa `/2fa#SECRET`: el fragmento situado después de `#` no se envía con la solicitud de la página y esta herramienta lo lee localmente."
             ]
           },
           {
@@ -95,7 +80,9 @@
             "divider": false,
             "ordered": false,
             "list": false,
-            "lines": ["[Privacidad](https://2fa.hot/privacy)"]
+            "lines": [
+              "[Privacidad](https://2fa.hot/privacy)"
+            ]
           }
         ]
       },
@@ -122,7 +109,16 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Mis amigos que trabajan en comercio electrónico internacional necesitan iniciar sesión en cuentas para tareas como gestionar cuentas de medios, sin descuidar la seguridad. Ayudar a más amigos con necesidades similares, y a quienes apenas empiezan en Internet, fue el punto de partida.\nHay muchas herramientas en línea similares, incluidas las que generan códigos mediante enlaces directos. Pero, por si no lo sabías, abrir una URL que contiene un secreto, como `/2fa/SECRET` o `?secret=SECRET`, envía ese secreto en una solicitud HTTP. El servicio web remoto o la CDN recibe esos datos y puede registrarlos y conservarlos mediante registros de acceso, supervisión o registros de la aplicación. Es decir, los secretos de esas solicitudes podrían almacenarse en texto plano. Claro que si realmente los conserva depende de su implementación, configuración y política de privacidad :))"
+              "Mis amigos que trabajan en comercio electrónico internacional necesitan iniciar sesión en cuentas para tareas como gestionar cuentas de medios, sin descuidar la seguridad. Ayudar a más amigos con necesidades similares, y a quienes apenas empiezan en Internet, fue el punto de partida.\nHay muchas herramientas en línea similares, incluidas las que generan códigos mediante enlaces directos. Pero, por si no lo sabías, abrir una URL que contiene un secreto, como `?secret=SECRET`, envía ese secreto en una solicitud HTTP. El servicio web remoto o la CDN recibe esos datos y puede registrarlos y conservarlos mediante registros de acceso, supervisión o registros de la aplicación. Es decir, los secretos de esas solicitudes podrían almacenarse en texto plano. Claro que si realmente los conserva depende de su implementación, configuración y política de privacidad :))"
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "Este es mi primer proyecto terminado con Vibe coding, una rueda reinventada. Me inspiró a escribir unas reflexiones que puedes leer en mi [perfil ⓘ](https://github.com/LZSMIAO)."
             ]
           }
         ]

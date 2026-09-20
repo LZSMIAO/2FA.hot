@@ -53,21 +53,6 @@
         ]
       },
       {
-        "title": "Comment l’utiliser",
-        "blocks": [
-          {
-            "spoiler": null,
-            "divider": false,
-            "ordered": false,
-            "list": true,
-            "lines": [
-              "Copiez votre secret 2FA et collez-le dans 2fa.hot, ou importez un QR code.",
-              "Copiez et utilisez le code actuel avant la fin du compte à rebours."
-            ]
-          }
-        ]
-      },
-      {
         "title": "Stockage des secrets et accès",
         "blocks": [
           {
@@ -76,9 +61,9 @@
             "ordered": false,
             "list": true,
             "lines": [
-              "La génération de codes sur la page d’accueil et la reconnaissance QR se font entièrement dans votre navigateur.",
+              "Tous les calculs de ce site lisent et traitent les données localement dans votre navigateur.",
               "Lorsque vous activez l’historique local, les enregistrements sont stockés dans votre navigateur. Vous pouvez définir un mot de passe pour les chiffrer, ou ne pas en définir et consulter directement les enregistrements.",
-              "Utilisez `/2fa#SECRET` : le fragment après `#` n’est pas envoyé avec la requête de page et cet outil le lit localement. `/2fa/SECRET` envoie le secret dans le chemin à l’hébergeur. Un avertissement sur la page ne peut pas intercepter la requête initiale ; HTTPS ne cache pas le chemin à son destinataire. Les liens de chemin affichent un MC Tip avec une action de passage au lien à fragment et une explication. Si vous avez utilisé un lien de chemin, envisagez de générer un secret de remplacement auprès du service d’origine et de confirmer que l’ancien est invalide. Passer à `#` ne peut pas annuler les requêtes précédentes. Les liens complets peuvent rester dans l’historique du navigateur ; ne les partagez jamais publiquement."
+              "Utilisez `/2fa#SECRET` : le fragment après `#` n’est pas envoyé avec la requête de page et cet outil le lit localement."
             ]
           },
           {
@@ -95,7 +80,9 @@
             "divider": false,
             "ordered": false,
             "list": false,
-            "lines": ["[Confidentialité](https://2fa.hot/privacy)"]
+            "lines": [
+              "[Confidentialité](https://2fa.hot/privacy)"
+            ]
           }
         ]
       },
@@ -122,7 +109,16 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Des amis dans le commerce électronique international doivent se connecter à des comptes, notamment pour gérer des comptes de médias, tout en pensant à la sécurité. Aider davantage d’amis ayant les mêmes besoins, ainsi que les débutants sur Internet, voilà le point de départ.\nIl existe beaucoup d’outils en ligne similaires, dont certains génèrent des codes via des liens directs. Mais, si vous l’ignoriez, ouvrir une URL contenant un secret, comme `/2fa/SECRET` ou `?secret=SECRET`, envoie ce secret dans une requête HTTP. Le service web distant ou le CDN reçoit ces données et peut les enregistrer et les conserver via ses journaux d’accès, sa supervision ou ses journaux applicatifs. Autrement dit, les secrets de ces requêtes peuvent être stockés en clair. Bien sûr, leur conservation réelle dépend de sa mise en œuvre, de ses paramètres et de sa politique de confidentialité :))"
+              "Des amis dans le commerce électronique international doivent se connecter à des comptes, notamment pour gérer des comptes de médias, tout en pensant à la sécurité. Aider davantage d’amis ayant les mêmes besoins, ainsi que les débutants sur Internet, voilà le point de départ.\nIl existe beaucoup d’outils en ligne similaires, dont certains génèrent des codes via des liens directs. Mais, si vous l’ignoriez, ouvrir une URL contenant un secret, comme `?secret=SECRET`, envoie ce secret dans une requête HTTP. Le service web distant ou le CDN reçoit ces données et peut les enregistrer et les conserver via ses journaux d’accès, sa supervision ou ses journaux applicatifs. Autrement dit, les secrets de ces requêtes peuvent être stockés en clair. Bien sûr, leur conservation réelle dépend de sa mise en œuvre, de ses paramètres et de sa politique de confidentialité :))"
+            ]
+          },
+          {
+            "spoiler": null,
+            "divider": false,
+            "ordered": false,
+            "list": false,
+            "lines": [
+              "C’est mon premier projet terminé en Vibe coding, une roue réinventée. Il m’a inspiré quelques réflexions à lire sur mon [profil ⓘ](https://github.com/LZSMIAO)."
             ]
           }
         ]
