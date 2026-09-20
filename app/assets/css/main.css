@@ -1204,15 +1204,19 @@ html.size-transition .desert-art svg * {
    * Password managers dock their button at the end of the field's TEXT, so
    * this padding is what positions it. The icons stay against the right edge;
    * the reserve has to hold both them (68px) and the extension's button, which
-   * measures about 44px with its expand arrow, or the extension lands on top
-   * of the clear button. It has to be reserved from the start, not once the
-   * field has content: the extension measures the field when it decorates it
-   * and does not re-measure on a padding change, so a reserve that appears
-   * with the first keystroke leaves it parked over the icons until the field
-   * is blurred and focused again.
+   * button is right-aligned to that edge and grows leftward over the last
+   * characters, so widening this does not open a slot beside it - it just
+   * drags both the text and the button left and leaves dead space. Reserve
+   * only what clears the icons (68px plus their 12px inset, plus a gap).
+   *
+   * It has to be reserved from the start, not once the field has content: the
+   * extension measures the field when it decorates it and does not re-measure
+   * on a padding change, so a reserve that appears with the first keystroke
+   * leaves its button parked over the icons until the field is blurred and
+   * focused again.
    */
   .secret-field #secret {
-    padding-inline-end: 8rem;
+    padding-inline-end: 5.5rem;
   }
   /*
    * A secret longer than the field gets clipped at that reserve's edge, part
@@ -1225,7 +1229,7 @@ html.size-transition .desert-art svg * {
     content: '';
     position: absolute;
     inset-block: 2px;
-    inset-inline-end: 8rem;
+    inset-inline-end: 5.5rem;
     width: 1.5rem;
     background: linear-gradient(to left, var(--ore-input), transparent);
     pointer-events: none;
