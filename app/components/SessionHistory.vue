@@ -196,18 +196,24 @@ function time(value: number) {
                     class="session-row session-child"
                   >
                     <span class="session-record-icon" aria-hidden="true"
-                      ><img src="/textures/trial-key.png" alt="" width="20" height="20"
+                      ><img src="/textures/trial-key.png" alt="" width="32" height="32"
                     /></span>
                     <div class="session-name">
                       <button
-                        class="session-label"
+                        class="session-label session-child-label"
                         :class="{ 'record-placeholder': !entry.label && !entry.issuer }"
                         @click="selectEntry(entry)"
                       >
                         {{ entry.label || entry.issuer || tx('未命名记录') }}
                       </button>
                     </div>
-                    <code>{{ entry.secret.slice(0, 4) }}••••{{ entry.secret.slice(-4) }}</code>
+                    <code>{{
+                      tx('{algorithm} · {digits} 位 · {period} 秒', {
+                        algorithm: entry.algorithm,
+                        digits: entry.digits,
+                        period: entry.period
+                      })
+                    }}</code>
                     <button
                       class="session-open session-icon"
                       :aria-label="tx('取码')"
@@ -349,15 +355,20 @@ function time(value: number) {
 }
 .session-row.session-child {
   /* Shorter than a top-level row, which also carries a timestamp and an edit
-     action, but still tall enough for the name and the masked key. Keep
+     action, but still tall enough for the name over its parameters. Keep
      CHILD_ROW_RATIO above matched to this height / --session-row-height. */
   height: 3.5rem;
-  grid-template-columns: 1.75rem minmax(0, 1fr) auto 1.75rem;
+  grid-template-columns: 2.25rem minmax(0, 1fr) auto 1.75rem;
   margin-inline-start: 1.5rem;
   width: calc(100% - 1.5rem);
-  padding-inline-start: 0.75rem;
-  border-inline-start: 2px solid var(--ui-border);
   font-size: var(--text-label);
+}
+.session-child-label {
+  text-decoration: underline dotted;
+  text-underline-offset: 4px;
+}
+.session-row.session-child > code {
+  font-family: inherit;
 }
 .session-record-icon {
   display: grid;

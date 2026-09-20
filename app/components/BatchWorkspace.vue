@@ -502,7 +502,11 @@ onBeforeUnmount(() => {
           role="status"
           aria-live="polite"
         >
-          {{ tx(qrIssue && !qrOpen ? qrIssue : '最多 100 条 · 仅在当前页面保留') }}
+          <Transition name="issue-fade" mode="out-in">
+            <span :key="qrIssue && !qrOpen ? 'issue' : 'hint'">{{
+              tx(qrIssue && !qrOpen ? qrIssue : '最多 100 条 · 仅在当前页面保留')
+            }}</span>
+          </Transition>
         </p>
         <div class="batch-input-status" role="status">
           <span :class="{ 'has-valid': valid.length > 0 }">{{
@@ -810,6 +814,9 @@ onBeforeUnmount(() => {
 }
 .batch-input-error {
   color: var(--ui-error);
+}
+.batch-input-hint {
+  transition: color 160ms var(--ease-out);
 }
 .batch-input-status {
   display: flex;

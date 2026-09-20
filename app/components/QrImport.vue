@@ -438,12 +438,14 @@ onBeforeUnmount(() => {
         <p v-if="processing" role="status" aria-live="polite">
           {{ tx('正在识别图片：{done}/{total}', progress) }}
         </p>
-        <div v-if="fileIssues.length" class="qr-file-issues" role="status">
-          <p v-for="(failure, index) in fileIssues" :key="index">
-            <strong>{{ failure.name }}</strong
-            >：{{ tx(failure.message) }}
-          </p>
-        </div>
+        <Transition name="issue-fade">
+          <div v-if="fileIssues.length" class="qr-file-issues" role="status">
+            <p v-for="(failure, index) in fileIssues" :key="index">
+              <strong>{{ failure.name }}</strong
+              >：{{ tx(failure.message) }}
+            </p>
+          </div>
+        </Transition>
         <div v-if="choices.length" class="modal-stack">
           <p>{{ tx('识别到二维码：{count}，请选择配置。', { count: choices.length }) }}</p>
           <p v-if="duplicateCount" class="text-muted">
@@ -544,6 +546,7 @@ onBeforeUnmount(() => {
 }
 .qr-choice-list,
 .qr-file-issues {
+  color: var(--ui-error);
   display: grid;
   gap: 0.75rem;
   max-height: 220px;

@@ -857,6 +857,16 @@ html.size-transition .desert-art svg * {
   gap: 1.75rem;
   margin-top: 0.5rem;
 }
+/* One cross-fade shared by messages that swap in place, so a warning never
+   snaps into view. The blanket reduced-motion rule below already stills it. */
+.issue-fade-enter-active,
+.issue-fade-leave-active {
+  transition: opacity 160ms var(--ease-out);
+}
+.issue-fade-enter-from,
+.issue-fade-leave-to {
+  opacity: 0;
+}
 .inline-error {
   color: var(--ui-error);
   font-size: var(--text-label);
