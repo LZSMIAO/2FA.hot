@@ -9,6 +9,7 @@ useHead({ script: [{ src: '/viewport-layout.js', tagPosition: 'head' }] })
 // Measure the native scrollbar independently of whether this page currently scrolls.
 // Keep content steady when a dialog locks scrolling while the background fills the viewport.
 function measureScrollbar() {
+  if (document.body.style.overflow === 'hidden') return
   const probe = document.createElement('div')
   probe.style.cssText =
     'position:fixed;top:-9999px;width:100px;height:100px;overflow:scroll;visibility:hidden;pointer-events:none'
@@ -17,11 +18,30 @@ function measureScrollbar() {
   probe.remove()
   document.documentElement.style.setProperty('--page-scrollbar-width', `${width}px`)
 }
+/*
+ * A menu or dialog locks scrolling by setting overflow on the body, which takes
+ * the scrollbar away. The reservation has to go with it, or the page keeps a
+ * scrollbar-wide gap down its right edge for as long as the menu is open.
+ */
+let locked = false
+let watcher: MutationObserver | undefined
+function syncScrollLock() {
+  const nowLocked = document.body.style.overflow === 'hidden'
+  if (nowLocked === locked) return
+  locked = nowLocked
+  if (locked) document.documentElement.style.setProperty('--page-scrollbar-width', '0px')
+  else measureScrollbar()
+}
 onMounted(() => {
   measureScrollbar()
   window.addEventListener('resize', measureScrollbar, { passive: true })
+  watcher = new MutationObserver(syncScrollLock)
+  watcher.observe(document.body, { attributes: true, attributeFilter: ['style'] })
 })
-onBeforeUnmount(() => window.removeEventListener('resize', measureScrollbar))
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', measureScrollbar)
+  watcher?.disconnect()
+})
 </script>
 <template>
   <UApp :locale="uiLocale" :toaster="null">

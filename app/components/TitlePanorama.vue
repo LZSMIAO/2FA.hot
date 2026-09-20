@@ -105,6 +105,12 @@ onMounted(() => {
   updateVisibility()
   preference.addEventListener('change', updatePreference)
   document.addEventListener('visibilitychange', updateVisibility)
+  // Keep the pre-paint flag true once the page takes over the playback state.
+  watch(
+    paused,
+    (value) => document.documentElement.toggleAttribute('data-panorama-playing', !value),
+    { immediate: true }
+  )
 })
 watch(
   () => ready.value && mobileMotion.value && !paused.value && !hidden.value && !reduced.value,
@@ -150,7 +156,7 @@ onBeforeUnmount(() => {
     <div class="panorama-light" />
     <div class="panorama-shade" />
   </div>
-  <div v-if="ready" class="panorama-controls">
+  <div class="panorama-controls">
     <UDropdownMenu
       :items="sceneItems"
       :modal="false"
@@ -179,14 +185,16 @@ onBeforeUnmount(() => {
         />
       </template>
     </UDropdownMenu>
-    <AppHint v-if="!reduced" :text="tx(paused ? '继续' : '暂停')"
+    <AppHint :text="tx(paused ? '继续' : '暂停')"
       ><button
-        class="panorama-control"
+        class="panorama-control panorama-playback"
         :aria-label="tx(paused ? '继续' : '暂停')"
         :aria-pressed="!paused"
         @click="toggleAnimation"
       >
-        <UIcon :name="paused ? 'i-lucide-play' : 'i-lucide-pause'" /></button
+        <span class="panorama-playback-icon"
+          ><UIcon name="i-lucide-play" /><UIcon name="i-lucide-pause"
+        /></span></button
     ></AppHint>
   </div>
   <ActionHint
@@ -362,6 +370,11 @@ onBeforeUnmount(() => {
 .panorama-control:hover,
 .panorama-control:focus-visible {
   opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .panorama-playback {
+    display: none;
+  }
 }
 @media (max-width: 700px), (max-height: 500px) and (pointer: coarse) {
   .title-panorama {

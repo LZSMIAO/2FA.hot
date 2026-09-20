@@ -156,7 +156,9 @@ test('locking clears historical input and notices synchronously, preserving manu
       clearTimeout() {},
       validation: undefined,
       pasteRevision: 0,
-      field: shallowRef(null)
+      field: shallowRef(null),
+      // clear() folds the parameters back only on a narrow screen.
+      compactScreen: shallowRef(false)
     }
     for (const key of ['pasteIssue', 'issue', 'extracted', 'originalInput'])
       values[key] = shallowRef('sensitive input notice')

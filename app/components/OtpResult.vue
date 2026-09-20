@@ -385,8 +385,7 @@ async function expand() {
             ><UIcon
               :key="copyConfirmed ? 'copied' : 'copy'"
               :name="copyConfirmed ? 'i-mc-check' : 'i-lucide-copy'" /></Transition></span
-        >{{ tx(copyConfirmed ? '已复制' : '复制验证码')
-        }}<UKbd v-if="desktopShortcut" value="↵" class="copy-shortcut-key"
+        >{{ tx(copyConfirmed ? '已复制' : '复制验证码') }}<UKbd value="↵" class="copy-shortcut-key"
       /></UButton>
     </motion.div>
     <ActionHint
@@ -442,6 +441,18 @@ async function expand() {
 </template>
 
 <style scoped>
+/*
+ * Rendered for everyone: a keycap that hydration adds would appear after the
+ * first paint. Only the devices that can press the key show it.
+ */
+.copy-shortcut-key {
+  display: none;
+}
+@media (min-width: 701px) and (hover: hover) and (pointer: fine) {
+  .copy-shortcut-key {
+    display: inline-flex;
+  }
+}
 .result-head {
   /* The expand button is absolute and 44px wide, sitting 2px off the edge, so
      2rem of reserve let the countdown run under it. */

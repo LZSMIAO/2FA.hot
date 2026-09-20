@@ -3,6 +3,7 @@ import {
   type PasskeyOperation,
   type PasskeySummary
 } from '~~/shared/passkey-manager'
+import { passkeyBrowser } from '~/utils/passkey-platform'
 const namespace = '2fa.hot/passkeys/site/v1'
 interface Reply {
   ok: boolean
@@ -142,13 +143,11 @@ export function usePasskeyExtension() {
     void poll(requestToken, Date.now() + 5 * 60000)
   }
   onMounted(() => {
-    const agent = navigator.userAgent
-    if (
-      !/Android|iPhone|iPad|Mobile/i.test(agent) &&
-      !(navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
-    ) {
-      browser.value = /Edg\//.test(agent) ? 'edge' : /Chrome\//.test(agent) ? 'chrome' : 'other'
-    }
+    browser.value = passkeyBrowser(
+      navigator.userAgent,
+      navigator.platform,
+      navigator.maxTouchPoints
+    )
     window.addEventListener('message', receive)
     window.addEventListener('focus', check)
     window.addEventListener('pagehide', lock)

@@ -314,7 +314,7 @@ onMounted(() => {
    * them opens it, and a pasted link that carries non-default parameters still
    * opens it on its own.
    */
-  if (window.matchMedia('(max-width: 600px)').matches) advanced.value = false
+  if (compactScreen.value) advanced.value = false
 })
 onBeforeUnmount(() => compactQuery?.removeEventListener('change', updateCompactScreen))
 let pasteRevision = 0
@@ -378,7 +378,8 @@ function clear() {
   raw.value = ''
   kind.value = 'totp'
   revealed.value = true
-  advanced.value = true
+  // Clearing should not re-open the folded parameters on a narrow screen.
+  advanced.value = !compactScreen.value
   field.value?.inputRef?.focus()
 }
 function clearWithSound() {

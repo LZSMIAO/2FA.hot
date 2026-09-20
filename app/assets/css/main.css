@@ -487,6 +487,24 @@ code {
   color: var(--ui-text-muted);
   min-height: 2.75rem;
 }
+/* Set by the head script before the first paint, so the control never flashes. */
+html:not([data-passkey-host]) [data-passkey-trigger] {
+  display: none;
+}
+/*
+ * The page is prerendered, so its HTML cannot know the playback cookie. Both
+ * icons ship in the markup and the flag the head script sets picks one, which
+ * keeps the backdrop control the same shape from the first paint onwards.
+ */
+.panorama-playback-icon > :last-child {
+  display: none;
+}
+html[data-panorama-playing] .panorama-playback-icon > :first-child {
+  display: none;
+}
+html[data-panorama-playing] .panorama-playback-icon > :last-child {
+  display: inline-block;
+}
 .guide-trigger {
   display: inline-flex;
   align-items: center;

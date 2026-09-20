@@ -10,3 +10,21 @@
   )
   probe.remove()
 })()
+
+// The passkey extension exists only for desktop Chrome and Edge. Decide before
+// the first paint so the button never appears and then disappears.
+;(function () {
+  var agent = navigator.userAgent
+  var mobile =
+    /Android|iPhone|iPad|Mobile/i.test(agent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+  if (!mobile && (/Edg\//.test(agent) || /Chrome\//.test(agent)))
+    document.documentElement.setAttribute('data-passkey-host', '')
+})()
+
+// The prerendered page cannot read the playback cookie, so mark it here and let
+// CSS pick the icon; the control then never changes shape after the first paint.
+;(function () {
+  if (/(^|;\s*)2fa-panorama-paused=false(\s*;|$)/.test(document.cookie))
+    document.documentElement.setAttribute('data-panorama-playing', '')
+})()
