@@ -734,8 +734,9 @@ const date = (v: number) =>
 }
 /* An opened batch reads as one block through a neutral wash alone - a coloured
    edge competes with the green the selection already uses. */
-.history-group.is-expanded {
-  background: color-mix(in srgb, var(--ui-text-highlighted) 6%, transparent);
+.history-group.is-expanded > .history-batch-heading {
+  /* The wash below already separates the block; a rule as well reads doubled. */
+  border-bottom-color: transparent;
 }
 /* Same 0fr - 1fr reveal the result panel uses, so an opening batch grows into
    place instead of appearing all at once. */
@@ -758,13 +759,18 @@ const date = (v: number) =>
   min-height: 0;
   overflow: hidden;
 }
+/* Only the rows that were revealed carry the wash - the row you opened is not
+   part of the block it reveals. */
+.history-group.is-expanded > .history-group-rows > .history-group-rows-clip {
+  background: color-mix(in srgb, var(--ui-text-highlighted) 6%, transparent);
+}
 @media (prefers-reduced-motion: reduce) {
   .history-group-rows {
     transition: none;
   }
 }
 .history-group.is-expanded .history-row {
-  padding-inline-start: calc(var(--history-inset) + 20px + var(--control-gap));
+  padding-inline-start: calc(var(--history-inset) + 20px + var(--control-gap) + 12px);
 }
 .history-batch-toggle[aria-expanded='true'] > .iconify {
   color: var(--accent-ink);
