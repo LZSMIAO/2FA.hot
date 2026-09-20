@@ -2,7 +2,7 @@ import type { SupportedLocale } from '../locales'
 
 // Localize the product title and purpose; retain standard 2FA / TOTP terminology.
 export const toolHeadings: Record<SupportedLocale, string> = {
-  en: 'Online Multifunctional TOTP 2FA Authenticator Code Generator | Generate Secure OTP Codes | Made by Minecraft Fans',
+  en: 'Online TOTP 2FA Authenticator Code Generator — All-in-One | Generate Secure OTP Codes | Made by Minecraft Fans',
   'zh-CN': '在线多功能 TOTP 2FA验证码 Authenticator生成器｜生成安全OTP验证码｜Minecraft 爱好者制作',
   'zh-TW': '線上多功能 TOTP 2FA驗證碼 Authenticator產生器｜產生安全OTP驗證碼｜Minecraft 愛好者製作',
   es: 'Generador Authenticator multifunción de códigos TOTP 2FA en línea | Genera códigos OTP seguros | Creado por fans de Minecraft',
