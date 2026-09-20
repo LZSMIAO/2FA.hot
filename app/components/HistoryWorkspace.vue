@@ -735,14 +735,7 @@ const date = (v: number) =>
 }
 /* An opened batch reads as one block through a neutral wash alone - a coloured
    edge competes with the green the selection already uses. */
-.history-group.is-expanded > .history-batch-heading {
-  /* The wash below already separates the block; a rule as well reads doubled.
-     Fades with the collapse rather than snapping back on its first frame. */
-  border-bottom-color: transparent;
-}
-.history-group.is-batch > .history-batch-heading {
-  transition: border-bottom-color 240ms var(--ore-enter-ease);
-}
+
 /* Same 0fr - 1fr reveal the result panel uses, so an opening batch grows into
    place instead of appearing all at once. */
 .history-group-rows {
@@ -871,6 +864,8 @@ const date = (v: number) =>
   gap: var(--control-gap);
   padding-block: 0.5rem;
   border-bottom: 1px solid var(--ui-border);
+  content-visibility: auto;
+  contain-intrinsic-size: auto 4.5rem;
 }
 .history-select-all {
   position: relative;
