@@ -76,7 +76,9 @@ export const oreTheme = {
   popover: { slots: { content: 'ore-theme ore-popover' } },
   contextMenu: { slots: { content: 'ore-theme ore-popover' } },
   checkbox: {
-    slots: { root: 'ore-check-row', base: 'ore-checkbox rounded-none', indicator: 'rounded-none' }
+    slots: { root: 'ore-check-row', base: 'ore-checkbox rounded-none', indicator: 'rounded-none' },
+    // Match SelectionCheck's 20px box so both checkboxes read at one scale.
+    defaultVariants: { size: 'xl' }
   },
   kbd: { base: 'rounded-none' }
 }

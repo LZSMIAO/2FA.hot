@@ -767,7 +767,7 @@
 }
 .ore-checkbox {
   /* An explicit border survives the pixel inset overriding Nuxt UI's ring shadow. */
-  border: 2px solid var(--ui-border);
+  border: 2px solid var(--ui-text-muted);
   border-radius: 0;
   background-color: var(--ore-input);
   box-shadow: var(--ore-inset);
