@@ -3,12 +3,43 @@ export const oreTheme = {
   button: {
     slots: { base: 'ore-button font-medium cursor-pointer rounded-none' },
     variants: {
+      /*
+       * Nuxt UI's button size variant is a per-slot object carrying padding,
+       * gap, text size and icon size. Overriding it with a bare class string
+       * drops all of that, so mirror the upstream values and append the ore
+       * hook that ore.css keys its min-heights off.
+       */
       size: {
-        xs: 'ore-size-xs',
-        sm: 'ore-size-sm',
-        md: 'ore-size-md',
-        lg: 'ore-size-lg',
-        xl: 'ore-size-xl'
+        xs: {
+          base: 'px-2 py-1 text-xs gap-1 ore-size-xs',
+          leadingIcon: 'size-4',
+          leadingAvatarSize: '3xs',
+          trailingIcon: 'size-4'
+        },
+        sm: {
+          base: 'px-2.5 py-1.5 text-xs gap-1.5 ore-size-sm',
+          leadingIcon: 'size-4',
+          leadingAvatarSize: '3xs',
+          trailingIcon: 'size-4'
+        },
+        md: {
+          base: 'px-2.5 py-1.5 text-sm gap-1.5 ore-size-md',
+          leadingIcon: 'size-5',
+          leadingAvatarSize: '2xs',
+          trailingIcon: 'size-5'
+        },
+        lg: {
+          base: 'px-3 py-2 text-sm gap-2 ore-size-lg',
+          leadingIcon: 'size-5',
+          leadingAvatarSize: '2xs',
+          trailingIcon: 'size-5'
+        },
+        xl: {
+          base: 'px-3 py-2 text-base gap-2 ore-size-xl',
+          leadingIcon: 'size-6',
+          leadingAvatarSize: 'xs',
+          trailingIcon: 'size-6'
+        }
       },
       variant: {
         solid: 'ore-raised',
@@ -20,8 +51,8 @@ export const oreTheme = {
       }
     },
     compoundVariants: [
-      { color: 'primary', variant: 'solid', class: 'primary-button' },
-      { color: 'error', variant: ['soft', 'subtle', 'outline'], class: 'ore-danger' }
+      { color: 'primary', variant: 'solid', class: { base: 'primary-button' } },
+      { color: 'error', variant: ['soft', 'subtle', 'outline'], class: { base: 'ore-danger' } }
     ],
     defaultVariants: { size: 'lg' }
   },

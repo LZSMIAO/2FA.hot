@@ -960,6 +960,11 @@ onBeforeUnmount(() => {
   min-width: 0;
 }
 .input-notices {
+  /* The account-link button belongs beside the notice, not on its own line. */
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.5rem;
   min-height: 1.5rem;
   margin-block: 0.5rem 0.75rem;
 }

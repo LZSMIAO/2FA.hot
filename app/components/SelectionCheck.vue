@@ -17,11 +17,15 @@ defineProps<{ checked: boolean | 'mixed'; label: string }>()
 </template>
 <style scoped>
 .selection-check {
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  flex: 0 0 32px;
+  /* Icon-only uses stay square; the select-all use carries a label and must grow. */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-width: 32px;
+  min-height: 32px;
+  flex: 0 0 auto;
+  white-space: nowrap;
   padding: 0;
   border: 0;
   background: transparent;
@@ -59,9 +63,8 @@ defineProps<{ checked: boolean | 'mixed'; label: string }>()
 }
 @media (pointer: coarse) {
   .selection-check {
-    width: 44px;
-    height: 44px;
-    flex-basis: 44px;
+    min-width: 44px;
+    min-height: 44px;
   }
 }
 </style>

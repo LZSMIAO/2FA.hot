@@ -173,7 +173,7 @@ watch(open, (visible) => {
   cursor: pointer;
 }
 .history-switch[aria-checked='true'] {
-  background: var(--action);
+  background: #3c8527;
 }
 .history-switch-thumb {
   position: absolute;
@@ -181,7 +181,7 @@ watch(open, (visible) => {
   left: 2px;
   width: 1.125rem;
   height: 1.125rem;
-  background: var(--ore-control);
+  background: #c6c6c6;
   box-shadow:
     var(--ore-bevel),
     1px 1px 0 var(--ore-outline);
@@ -190,7 +190,7 @@ watch(open, (visible) => {
   left: calc(100% - 1.125rem - 2px);
 }
 .history-switch:hover:not(:disabled) .history-switch-thumb {
-  background: var(--ore-control-hover);
+  background: #eee;
 }
 .history-switch:focus-visible {
   outline: 2px solid var(--accent-ink);

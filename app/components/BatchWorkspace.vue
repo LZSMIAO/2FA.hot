@@ -701,8 +701,6 @@ onBeforeUnmount(() => {
   position: absolute;
   inset-block-start: 0.125rem;
   inset-inline-end: 0.125rem;
-  /* Matches the heading font so the icon renders at the single-mode size. */
-  font-size: 1.375rem;
   color: var(--ui-text-muted);
   flex-shrink: 0;
   border: 0;
@@ -720,11 +718,6 @@ onBeforeUnmount(() => {
 .batch-expand:focus-visible {
   outline: 2px solid var(--accent-ink);
   outline-offset: -4px;
-}
-@media (max-width: 700px) {
-  .batch-expand {
-    font-size: 1.25rem;
-  }
 }
 .demo-row {
   animation: batch-row-enter 180ms ease-out both;
