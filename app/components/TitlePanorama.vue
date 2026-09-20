@@ -44,7 +44,12 @@ const sceneItems = computed(() =>
     onSelect: () => changeScene(version)
   }))
 )
-const paused = shallowRef(true)
+const playbackPaused = useCookie<boolean>('2fa-panorama-paused', {
+  default: () => true,
+  maxAge: 31536000,
+  sameSite: 'lax'
+})
+const paused = computed(() => playbackPaused.value !== false)
 const mobileMotion = shallowRef(false)
 const cube = useTemplateRef<HTMLElement>('cube')
 let frame = 0
@@ -66,9 +71,9 @@ function rotateFrame(now: number) {
   }
   frame = requestAnimationFrame(rotateFrame)
 }
-// Every page load starts still, regardless of earlier playback preferences.
+// Persist explicit playback choices; visibility and reduced motion remain temporary overrides.
 function toggleAnimation() {
-  paused.value = !paused.value
+  playbackPaused.value = !paused.value
 }
 const hidden = shallowRef(false)
 const ready = shallowRef(false)

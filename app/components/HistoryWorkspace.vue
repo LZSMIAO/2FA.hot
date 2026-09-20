@@ -71,6 +71,10 @@ const rows = computed(() =>
     .sort((a, b) => b.usedAt - a.usedAt)
 )
 const expandedBatches = ref(new Set<string>())
+const collapsedSearchBatches = ref(new Set<string>())
+const batchExpanded = (id: string) =>
+  search.value ? !collapsedSearchBatches.value.has(id) : expandedBatches.value.has(id)
+watch(search, () => collapsedSearchBatches.value.clear())
 const groups = computed(() => {
   const grouped = new Map<string, { id: string; batch: boolean; rows: typeof rows.value }>()
   for (const row of rows.value) {
@@ -91,6 +95,11 @@ function toggleBatchSelection(ids: string[]) {
   selected.value = [...next]
 }
 async function toggleBatch(id: string, event: MouseEvent) {
+  if (search.value) {
+    if (collapsedSearchBatches.value.has(id)) collapsedSearchBatches.value.delete(id)
+    else collapsedSearchBatches.value.add(id)
+    return
+  }
   if (expandedBatches.value.has(id)) expandedBatches.value.delete(id)
   else {
     const heading = (event.currentTarget as HTMLElement).closest('.history-batch-heading')!
@@ -111,7 +120,12 @@ const {
   cancelSelection
 } = useHistorySelection(
   computed(() => rows.value.map((row) => row.id)),
-  selected
+  selected,
+  computed(() =>
+    groups.value.flatMap((group) =>
+      !group.batch || batchExpanded(group.id) ? group.rows.map((row) => row.id) : []
+    )
+  )
 )
 watch(
   importOpen,
@@ -171,7 +185,7 @@ async function saveEdit() {
   await run(async () => {
     await vault.edit(editor.value!.id, label.value, remark.value)
     editor.value = null
-  }, '备注已保存')
+  }, '备注已保存。')
 }
 async function remove() {
   if (!removing.value) return
@@ -179,7 +193,7 @@ async function remove() {
     await vault.remove(removing.value!)
     removing.value = null
     selected.value = []
-  }, '记录已删除')
+  }, '记录已删除。')
 }
 async function backup() {
   await run(async () => {
@@ -210,7 +224,7 @@ const date = (v: number) =>
 <template>
   <div ref="surface" class="history-surface ore-workspace-frame" @keydown="cancelSelection">
     <div v-if="!vault.ready.value" class="empty-state">
-      <UIcon name="i-lucide-loader-circle" />
+      <UIcon name="i-lucide-loader-circle" class="animate-spin" />
       <p>{{ tx('正在读取本地存储…') }}</p>
     </div>
     <div v-else-if="!vault.unlocked.value" class="vault-gate">
@@ -232,7 +246,7 @@ const date = (v: number) =>
         <p v-if="!vault.exists.value && !protect" class="field-hint">
           {{ tx('不设密码，记录将直接保存在此浏览器，打开即可查看。') }}
         </p>
-        <UFormField v-if="vault.exists.value || protect" :label="tx('本地解锁口令')"
+        <UFormField v-if="vault.exists.value || protect" :label="tx('本地解锁密码')"
           ><UInput
             v-model="password"
             type="password"
@@ -242,7 +256,7 @@ const date = (v: number) =>
             :placeholder="tx('至少 4 个字符')"
             :minlength="vault.exists.value ? undefined : 4"
             required /></UFormField
-        ><UFormField v-if="!vault.exists.value && protect" :label="tx('再次输入口令')"
+        ><UFormField v-if="!vault.exists.value && protect" :label="tx('再次输入密码')"
           ><UInput
             v-model="confirmation"
             type="password"
@@ -316,22 +330,18 @@ const date = (v: number) =>
         </div>
       </div>
       <div class="history-status">
-        <label v-if="rows.length" class="history-select-all">
-          <input
-            type="checkbox"
-            :checked="allSelected"
-            :indeterminate="selected.length > 0 && !allSelected"
-            @change="toggleAll"
-          />
-          <span class="history-check" aria-hidden="true">
-            <UIcon v-if="allSelected" name="i-mc-check" />
-            <UIcon v-else-if="selected.length" name="i-lucide-minus" />
-          </span>
+        <SelectionCheck
+          v-if="rows.length"
+          class="history-select-all"
+          :checked="allSelected ? true : selected.length ? 'mixed' : false"
+          :label="tx(allSelected ? '取消全选' : '全选')"
+          @click="toggleAll"
+        >
           <span>{{ tx(allSelected ? '取消全选' : '全选') }}</span>
           <span v-if="selected.length" class="selection-count" aria-live="polite"
             >{{ selected.length }} {{ tx('条已选') }}</span
           >
-        </label>
+        </SelectionCheck>
         <span
           >{{ tx('记录：{count}', { count: vault.records.value.length }) }} ·
           {{ tx(vault.enabled.value ? '自动保存已开启' : '自动保存已关闭') }}</span
@@ -357,7 +367,7 @@ const date = (v: number) =>
         v-for="group in groups"
         :key="group.id"
         class="history-group"
-        :class="{ 'is-expanded': group.batch && (!!search || expandedBatches.has(group.id)) }"
+        :class="{ 'is-expanded': group.batch && batchExpanded(group.id) }"
       >
         <div
           v-if="group.batch"
@@ -378,7 +388,7 @@ const date = (v: number) =>
           <button
             type="button"
             class="history-batch-toggle"
-            :aria-expanded="!!search || expandedBatches.has(group.id)"
+            :aria-expanded="batchExpanded(group.id)"
             @click="toggleBatch(group.id, $event)"
           >
             <span class="record-icon" aria-hidden="true"
@@ -394,35 +404,25 @@ const date = (v: number) =>
               </span>
             </span>
             <UIcon
-              :name="
-                search || expandedBatches.has(group.id)
-                  ? 'i-lucide-chevron-down'
-                  : 'i-lucide-chevron-right'
-              "
+              :name="batchExpanded(group.id) ? 'i-lucide-chevron-down' : 'i-lucide-chevron-right'"
             />
           </button>
         </div>
         <div
           v-for="row in group.rows"
-          v-show="!group.batch || !!search || expandedBatches.has(group.id)"
+          v-show="!group.batch || batchExpanded(group.id)"
           :key="row.id"
           class="history-row"
           :class="{ 'is-selected': selectedSet.has(row.id) }"
           :data-selection-id="row.id"
         >
-          <button
-            type="button"
-            role="checkbox"
+          <SelectionCheck
             class="history-select-cell"
-            :aria-checked="selectedSet.has(row.id)"
-            :aria-label="tx('选择 {label}', { label: row.label || tx('未命名记录') })"
+            :checked="selectedSet.has(row.id)"
+            :label="tx('选择 {label}', { label: row.label || tx('未命名记录') })"
             @pointerdown="startSelection($event, row.id)"
             @click="clickSelection($event, row.id)"
-          >
-            <span class="history-check" aria-hidden="true"
-              ><UIcon v-if="selectedSet.has(row.id)" name="i-mc-check"
-            /></span>
-          </button>
+          />
           <AppHint
             :text="tx(secretCopied && copiedSecretId === row.id ? '密钥已复制' : '复制密钥')"
           >
@@ -451,7 +451,9 @@ const date = (v: number) =>
                 :content="{ side: 'bottom', align: 'start', collisionPadding: 12 }"
               >
                 <button type="button" class="record-secret-trigger">
-                  <strong>{{ row.label || row.issuer || tx('未命名记录') }}</strong>
+                  <strong :class="{ 'record-placeholder': !row.label && !row.issuer }">{{
+                    row.label || row.issuer || tx('未命名记录')
+                  }}</strong>
                 </button>
                 <template #content>
                   <pre class="record-secret-preview">{{ row.secret }}</pre>
@@ -649,7 +651,7 @@ const date = (v: number) =>
           @click="changingPassword = true"
           >{{ tx('修改密码') }}</UButton
         >
-        <UFormField v-if="needsNewPassword" :label="tx('新密码')"
+        <UFormField v-if="needsNewPassword" :label="tx('本地解锁密码')"
           ><UInput
             v-model="newPassword"
             type="password"
@@ -658,7 +660,7 @@ const date = (v: number) =>
             required
             class="w-full"
         /></UFormField>
-        <UFormField v-if="needsNewPassword" :label="tx('再次输入口令')"
+        <UFormField v-if="needsNewPassword" :label="tx('再次输入密码')"
           ><UInput
             v-model="newConfirmation"
             type="password"
@@ -666,7 +668,7 @@ const date = (v: number) =>
             required
             class="w-full"
         /></UFormField>
-        <p v-if="error" role="alert">{{ tx(error) }}</p>
+        <p v-if="error" class="inline-error" role="alert">{{ tx(error) }}</p>
         <UButton type="submit" :loading="vault.busy.value" :disabled="!protectionChanged">{{
           tx('保存')
         }}</UButton>
@@ -695,14 +697,17 @@ const date = (v: number) =>
 }
 .history-batch-toggle {
   display: grid;
-  grid-template-columns: 44px minmax(0, 1fr) 20px;
+  grid-template-columns: 44px minmax(0, 1fr) 44px;
   gap: var(--control-gap);
   align-items: center;
   text-align: start;
   min-width: 0;
 }
+.history-batch-toggle > .iconify {
+  justify-self: center;
+}
 .history-batch-heading.is-selected {
-  background: var(--wash);
+  background: color-mix(in srgb, var(--action) 5%, transparent);
 }
 .history-group.is-expanded > .history-row {
   padding-inline-start: calc(var(--history-inset) + 20px + var(--control-gap));
@@ -805,20 +810,15 @@ const date = (v: number) =>
 .history-select-all {
   position: relative;
   display: inline-flex;
+  width: auto;
+  height: auto;
+  margin-inline-start: -12px;
+  padding-inline: 12px;
   align-items: center;
   gap: var(--control-gap);
   min-height: 44px;
   cursor: pointer;
   color: var(--ui-text);
-}
-.history-select-all input {
-  position: absolute;
-  opacity: 0;
-  inset-inline-start: 0;
-}
-.history-select-all input:focus-visible + .history-check {
-  outline: 2px solid var(--accent-ink);
-  outline-offset: 3px;
 }
 .selection-count {
   color: var(--accent-ink);
@@ -836,23 +836,6 @@ const date = (v: number) =>
   touch-action: none;
   user-select: none;
   cursor: pointer;
-}
-.history-check {
-  display: grid;
-  place-items: center;
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--ui-text-muted);
-  background: var(--ui-bg);
-  box-shadow: inset 2px 2px 0 rgb(0 0 0 / 18%);
-}
-.history-select-cell[aria-checked='true'] .history-check,
-.history-select-all input:checked + .history-check,
-.history-select-all input:indeterminate + .history-check {
-  background: var(--action);
-  border-color: var(--accent-ink);
-  color: #fff;
-  box-shadow: inset 2px 2px 0 rgb(255 255 255 / 18%);
 }
 .history-select-cell:focus-visible {
   outline: 2px solid var(--accent-ink);
@@ -959,8 +942,11 @@ const date = (v: number) =>
   font-size: 0.875rem;
   color: var(--ui-text);
 }
-.history-batch-heading > :deep(.selection-check) {
-  margin-inline-start: -6px;
+.history-batch-heading > :deep(.selection-check),
+.history-select-cell {
+  width: 44px;
+  height: 44px;
+  margin-inline-start: -12px;
 }
 .record-name {
   min-width: 0;
@@ -994,15 +980,9 @@ const date = (v: number) =>
 .history-feedback {
   padding: 12px 0;
 }
-input[type='checkbox'] {
-  accent-color: var(--action);
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-}
 @media (max-width: 600px) {
   .history-batch-toggle {
-    grid-template-columns: minmax(0, 1fr) 20px;
+    grid-template-columns: minmax(0, 1fr) 44px;
   }
   .history-batch-heading {
     grid-template-columns: 20px minmax(0, 1fr);

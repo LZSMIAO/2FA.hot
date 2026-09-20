@@ -15,7 +15,7 @@ const emit = defineEmits<{ returnHome: [] }>()
 <template>
   <main class="minecraft-error ore-theme" aria-labelledby="error-title">
     <div class="error-menu">
-      <div class="error-brand" role="img" aria-label="2FA.HOT">
+      <div class="error-brand" role="img" aria-label="2fa.hot">
         <GameTitle :splash="statusCode === 404 ? 'Creeper?!' : undefined" />
       </div>
 
@@ -34,7 +34,7 @@ const emit = defineEmits<{ returnHome: [] }>()
             <path fill="#569332" d="M6 0h2v1H6zM3 1h1v1H3zM0 7h2v1H0zM6 7h2v1H6z" />
             <path fill="#172413" d="M1 2h2v2H1zM5 2h2v2H5zM3 4h2v1h1v3H5V7H3v1H2V5h1z" />
           </svg>
-          <span>2FA.HOT</span>
+          <span>2fa.hot</span>
           <span class="error-titlebar-code">{{ statusCode }}</span>
         </div>
 
@@ -86,7 +86,7 @@ const emit = defineEmits<{ returnHome: [] }>()
   padding: 0.625rem 1rem;
   border-bottom: 2px solid var(--ore-outline);
   color: var(--ui-text-highlighted);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono), monospace;
   font-size: 0.8125rem;
   font-weight: 600;
 }
@@ -157,7 +157,7 @@ const emit = defineEmits<{ returnHome: [] }>()
 }
 
 .error-home:focus-visible {
-  outline: 3px solid var(--ui-text-highlighted);
+  outline: 2px solid var(--accent-ink);
   outline-offset: 4px;
 }
 

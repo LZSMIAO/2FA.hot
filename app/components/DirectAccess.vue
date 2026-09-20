@@ -318,7 +318,7 @@ useHead({ meta: [{ name: 'referrer', content: 'no-referrer' }] })
             enable-touch
             :content="{ side: 'top', align: 'start', sideOffset: 2 }"
             arrow
-            :ui="{ content: 'parameter-help-tooltip h-auto', arrow: 'parameter-help-arrow' }"
+            :ui="{ content: 'parameter-help-tooltip', arrow: 'parameter-help-arrow' }"
           >
             <button
               type="button"

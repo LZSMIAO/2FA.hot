@@ -88,7 +88,8 @@ async function handle(message, sender) {
     if (!sameCaller(r, sender) || r.token !== message.token)
       return { done: true, result: { error: '请求已失效。' } }
     if (action === 'cancel') {
-      await complete(r, { error: '请求已取消。' })
+      // The caller has cancelled and will not consume a result (including pagehide).
+      await chrome.storage.session.remove('request')
       if (r.windowId) chrome.windows.remove(r.windowId).catch(() => {})
       return {}
     }

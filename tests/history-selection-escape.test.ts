@@ -6,7 +6,7 @@ import ts from 'typescript'
 import { computed, effectScope, shallowRef, watch } from 'vue'
 import { selectionRange } from '../app/utils/selection-range.ts'
 
-function setup() {
+function setup(visible = ['a', 'b', 'c']) {
   const selected = shallowRef(['a', 'b'])
   const listeners = new Map<string, unknown>()
   let released = false
@@ -44,7 +44,9 @@ function setup() {
     ts.transpileModule(code, { compilerOptions: { target: ts.ScriptTarget.ES2022 } }).outputText,
     context
   )
-  const state = scope.run(() => context.useHistorySelection(shallowRef(['a', 'b', 'c']), selected))!
+  const state = scope.run(() =>
+    context.useHistorySelection(shallowRef(['a', 'b', 'c']), selected, shallowRef(visible))
+  )!
   const target = {
     focus() {},
     setPointerCapture() {},
@@ -174,6 +176,47 @@ test('dragging near a nested list edge scrolls that list instead of the page', (
   s.runFrame()
   assert.ok(delta > 0)
   assert.equal(s.pageScroll(), 0)
+  s.state.cancelSelection(escape())
+  s.scope.stop()
+})
+
+test('Shift range skips collapsed children while explicit select-all includes them', () => {
+  const s = setup(['a', 'c'])
+  s.selected.value = []
+  s.state.click({ detail: 0 }, 'a')
+  s.state.click({ detail: 0, shiftKey: true }, 'c')
+  assert.deepEqual(Array.from(s.selected.value), ['a', 'c'])
+  s.state.toggleAll()
+  assert.deepEqual(Array.from(s.selected.value), ['a', 'b', 'c'])
+  s.scope.stop()
+})
+
+test('dragging below the list resolves to its last visible record', () => {
+  const s = setup(['a', 'c'])
+  s.selected.value = []
+  s.state.surface.value = {
+    getBoundingClientRect: () => ({ left: 0, right: 300, top: 0, bottom: 200 }),
+    querySelectorAll: () =>
+      ['a', 'c', 'b'].map((id) => ({
+        dataset: { selectionId: id },
+        getClientRects: () => (id === 'b' ? [] : [{}]),
+        getBoundingClientRect: () => ({ bottom: id === 'a' ? 100 : 200 })
+      }))
+  }
+  s.state.start(
+    {
+      isPrimary: true,
+      button: 0,
+      pointerId: 1,
+      clientX: 100,
+      clientY: 300,
+      currentTarget: s.target,
+      preventDefault() {}
+    },
+    'a'
+  )
+  s.runFrame()
+  assert.deepEqual(Array.from(s.selected.value), ['a', 'c'])
   s.state.cancelSelection(escape())
   s.scope.stop()
 })

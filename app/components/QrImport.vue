@@ -370,7 +370,7 @@ onBeforeUnmount(() => {
           >
             <div
               ref="dropZone"
-              class="drop-zone"
+              class="drop-zone ore-drop-zone"
               :class="{ 'is-dragging': dragging }"
               :aria-busy="processing || dropLoading"
               @dragenter="highlightDropZone"
@@ -385,7 +385,7 @@ onBeforeUnmount(() => {
                 enable-touch
                 arrow
                 :content="{ side: 'top', align: 'end', sideOffset: 2 }"
-                :ui="{ content: 'parameter-help-tooltip h-auto', arrow: 'parameter-help-arrow' }"
+                :ui="{ content: 'parameter-help-tooltip', arrow: 'parameter-help-arrow' }"
               >
                 <button type="button" class="qr-import-info" :aria-label="tx('使用说明')">
                   <UIcon name="i-lucide-info" aria-hidden="true" />
@@ -578,10 +578,6 @@ onBeforeUnmount(() => {
   flex-direction: column;
   align-items: center;
   gap: 14px;
-  padding: 32px 20px;
-  border: 1px dashed var(--control-line);
-  border-radius: var(--ui-radius);
-  background: var(--wash);
 }
 .qr-import-info {
   position: absolute;
@@ -643,7 +639,7 @@ onBeforeUnmount(() => {
   margin-top: 0.25rem;
   padding-top: 0.875rem;
   border-top: 1px solid var(--control-line);
-  color: light-dark(#b42318, #ff8a80);
+  color: var(--ui-error);
   font-size: var(--text-caption);
   line-height: 1.6;
   text-align: start;

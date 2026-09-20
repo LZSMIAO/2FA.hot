@@ -57,7 +57,7 @@ function hoverGreet() {
   visibility: hidden;
   pointer-events: none;
   transition:
-    height 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    height 320ms var(--ease-out),
     opacity 200ms ease,
     visibility 0s 200ms;
 }
@@ -66,7 +66,7 @@ function hoverGreet() {
   opacity: 1;
   visibility: visible;
   transition:
-    height 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    height 320ms var(--ease-out),
     opacity 240ms ease,
     visibility 0s;
 }
@@ -115,7 +115,7 @@ function hoverGreet() {
   pointer-events: none;
 }
 .desert-scene:focus-visible {
-  outline: 2px solid var(--ui-text-highlighted);
+  outline: 2px solid var(--accent-ink);
   outline-offset: 2px;
 }
 @media (max-width: 700px) {

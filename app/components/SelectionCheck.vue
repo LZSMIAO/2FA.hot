@@ -9,9 +9,10 @@ defineProps<{ checked: boolean | 'mixed'; label: string }>()
     :aria-checked="checked"
     :aria-label="label"
   >
-    <span aria-hidden="true"
+    <span class="selection-box" aria-hidden="true"
       ><UIcon v-if="checked" :name="checked === 'mixed' ? 'i-mc-minus' : 'i-mc-check'"
     /></span>
+    <slot />
   </button>
 </template>
 <style scoped>
@@ -28,7 +29,7 @@ defineProps<{ checked: boolean | 'mixed'; label: string }>()
   touch-action: none;
   user-select: none;
 }
-.selection-check > span {
+.selection-check > .selection-box {
   display: grid;
   place-items: center;
   width: 20px;
@@ -37,8 +38,8 @@ defineProps<{ checked: boolean | 'mixed'; label: string }>()
   background: var(--ui-bg);
   box-shadow: inset 2px 2px 0 rgb(0 0 0 / 18%);
 }
-.selection-check[aria-checked='true'] > span,
-.selection-check[aria-checked='mixed'] > span {
+.selection-check[aria-checked='true'] > .selection-box,
+.selection-check[aria-checked='mixed'] > .selection-box {
   background: var(--action);
   border-color: var(--accent-ink);
   color: white;

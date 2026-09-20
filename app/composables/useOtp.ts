@@ -81,16 +81,21 @@ export function useOtp(config: Ref<OtpConfig | null>, initial?: OtpDisplaySnapsh
     unsubscribe?.()
   })
   async function current() {
-    const c = config.value,
-      id = generation
+    const c = config.value
     if (!c) throw new Error('请先输入有效密钥。')
-    const at = Date.now()
-    const result = await generateOtp(c, at)
-    if (!active || id !== generation || config.value !== c)
-      throw new Error('输入已变化，请重新复制。')
-    code.value = result
-    generatedAt.value = at
-    return result
+    for (;;) {
+      const at = Date.now()
+      const result = await generateOtp(c, at)
+      if (!active || config.value !== c) throw new Error('输入已变化，请重新复制。')
+      // If generation crossed a time step, copy the new code rather than an expired one.
+      if (Math.floor(at / (c.period * 1000)) !== Math.floor(Date.now() / (c.period * 1000)))
+        continue
+      if (at >= generatedAt.value) {
+        code.value = result
+        generatedAt.value = at
+      }
+      return result
+    }
   }
   return { code, error, remaining, progress, busy, current, generatedAt }
 }

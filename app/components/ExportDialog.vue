@@ -82,7 +82,7 @@ onBeforeUnmount(() => {
             enable-touch
             arrow
             :content="{ side: 'top', align: 'end', sideOffset: 2 }"
-            :ui="{ content: 'parameter-help-tooltip h-auto', arrow: 'parameter-help-arrow' }"
+            :ui="{ content: 'parameter-help-tooltip', arrow: 'parameter-help-arrow' }"
           >
             <button type="button" class="link-info" :aria-label="tx('为什么使用 #？')">
               <UIcon name="i-lucide-info" aria-hidden="true" />
@@ -159,7 +159,7 @@ onBeforeUnmount(() => {
   color: var(--ui-text-highlighted);
 }
 .link-info:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--accent-ink);
   outline-offset: 2px;
 }
 .link-info-content {

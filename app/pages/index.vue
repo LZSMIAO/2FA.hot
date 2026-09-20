@@ -1,4 +1,9 @@
 <script setup lang="ts">
+// Nuxt UI forwards attrs to TabsRoot; label the nested tablist itself.
+const labelTablist = (element: HTMLElement, binding: { value: string }) =>
+  element.querySelector('[role="tablist"]')?.setAttribute('aria-label', binding.value)
+const vTablistLabel = { mounted: labelTablist, updated: labelTablist }
+
 definePageMeta({ viewTransition: false })
 import BatchWorkspace from '~/components/BatchWorkspace.vue'
 import UsageGuide from '~/components/UsageGuide.vue'
@@ -166,6 +171,7 @@ watch(
       <div ref="workspace" class="guided-workspace">
         <UTabs
           v-model="mode"
+          v-tablist-label="tx('取码')"
           :items="tabItems"
           :unmount-on-hide="false"
           variant="link"
@@ -173,9 +179,6 @@ watch(
           size="lg"
           class="mode-tabs"
           :ui="{
-            list: 'w-fit gap-6 border-0 p-0',
-            trigger: 'px-0 pb-3 min-h-11',
-            indicator: 'hidden',
             content: 'mt-5 outline-none',
             root: 'gap-0'
           }"

@@ -61,7 +61,7 @@ const menu = computed(() => [
     <header class="site-header">
       <a class="skip-link" href="#main-content">{{ tx('跳转到主要内容') }}</a>
       <div class="header-inner">
-        <NuxtLink :to="localePath('/')" class="wordmark" :aria-label="tx('2FA hot 首页')"
+        <NuxtLink :to="localePath('/')" class="wordmark" :aria-label="tx('2fa.hot 首页')"
           ><span class="header-wordmark"
             >2fa<span class="brand-hot">.hot</span><span class="brand-beta">Beta</span></span
           ></NuxtLink

@@ -51,7 +51,12 @@ export function validateEnvelope(value: unknown): Envelope {
     e.data.length > 14_000_000
   )
     throw new Error('备份格式或版本不受支持。')
-  if (bytes(e.salt).length !== 16 || bytes(e.iv).length !== 12) throw new Error('备份格式不正确。')
+  try {
+    if (bytes(e.salt).length !== 16 || bytes(e.iv).length !== 12 || bytes(e.data).length < 16)
+      throw new Error()
+  } catch {
+    throw new Error('备份格式不正确。')
+  }
   return e
 }
 export async function encryptVault(

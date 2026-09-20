@@ -376,15 +376,6 @@ onBeforeUnmount(() => {
   box-shadow: var(--ore-window-shadow);
   overflow: hidden;
 }
-.tutorial-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  min-height: 3.5rem;
-  padding: 0.5rem 0.75rem 0.5rem 1.25rem;
-  border-bottom: 1px solid var(--ui-border);
-  font-size: var(--text-label);
-}
 .tutorial-title > span {
   display: inline-flex;
   align-items: center;
@@ -541,7 +532,6 @@ onBeforeUnmount(() => {
   gap: 0.25rem;
 }
 .tutorial-controls .tutorial-next {
-  min-height: 2.25rem;
   padding-block: 0.25rem;
 }
 .tutorial-controls > div {
@@ -606,10 +596,6 @@ onBeforeUnmount(() => {
   .tutorial-window.started {
     max-width: 32rem;
     margin: auto;
-  }
-  .tutorial-title {
-    min-height: 2.5rem;
-    padding-block: 0.125rem;
   }
   .tutorial-scene {
     min-height: 9rem;

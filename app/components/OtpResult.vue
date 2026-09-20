@@ -451,7 +451,7 @@ async function expand() {
   transform: none;
 }
 .result-head .expand-button:focus-visible {
-  outline: 2px solid var(--ui-primary);
+  outline: 2px solid var(--accent-ink);
   outline-offset: -4px;
 }
 
@@ -486,10 +486,13 @@ async function expand() {
 .export-reveal {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 240ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: grid-template-rows 240ms var(--ease-out);
 }
 .export-reveal.is-open {
   grid-template-rows: 1fr;
+}
+.export-reveal.is-open .result-link:focus-visible {
+  outline-offset: -3px;
 }
 .export-reveal-inner {
   min-height: 0;
@@ -497,7 +500,7 @@ async function expand() {
 }
 .export-reveal .result-links {
   transform: translateY(-8px);
-  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 240ms var(--ease-out);
 }
 .export-reveal.is-open .result-links {
   transform: translateY(0);
@@ -566,7 +569,7 @@ async function expand() {
 /* Only the numerals move; slot geometry and the current copy value stay stable. */
 .otp-ready-enter-active {
   transition:
-    transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 280ms var(--ease-out),
     opacity 220ms ease;
 }
 .otp-ready-leave-active {

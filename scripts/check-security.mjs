@@ -56,6 +56,27 @@ for (const [path, status] of routes) {
   }
   await response.arrayBuffer()
 }
+for (const localeHeaders of [
+  { 'Accept-Language': 'en' },
+  { 'Accept-Language': 'zh-CN' },
+  { 'Accept-Language': 'en', Cookie: 'i18n_redirected=ar' }
+]) {
+  const response = await fetch(origin + '/', { redirect: 'manual', headers: localeHeaders })
+  assert.ok([200, 302].includes(response.status))
+  assert.match(response.headers.get('cache-control'), /private.*no-store/)
+  const vary = response.headers.get('vary').toLowerCase()
+  assert.ok(vary.includes('accept-language') && vary.includes('cookie'))
+  await response.arrayBuffer()
+}
+if (new URL(origin).protocol === 'http:') {
+  const spoof = await fetch(origin + '/', {
+    headers: { 'X-Forwarded-Proto': 'https' },
+    redirect: 'manual'
+  })
+  assert.equal(spoof.headers.get('strict-transport-security'), null)
+  await spoof.arrayBuffer()
+}
+
 console.log(
   `Security HTTP checks passed: ${routes.length} public/private/locale/error/redirect responses; framing, CSP rollout and privacy headers.`
 )

@@ -1,8 +1,8 @@
-// Run before the first paint so refreshes never swap or hide the splash.
+// Keep one splash across all open tabs; a new browser visit alternates Hot and a message.
 ;(() => {
-  const key = '2fa-brand-splash-session'
+  const key = '2fa-brand-splash-visit-v2'
+  const lock = '2fa-brand-splash-open-page'
   const choices = [
-    '.hot',
     'More blocks!',
     'Never dig down!',
     'Creeper?!',
@@ -15,20 +15,73 @@
     'Touch grass!',
     'Level up!'
   ]
-  let text = '.hot'
-  try {
-    const current = sessionStorage.getItem(key)
-    if (current && choices.includes(current)) text = current
-    else {
-      if (localStorage.getItem('2fa-brand-visited'))
-        text = choices[Math.floor(Math.random() * choices.length)]
-      sessionStorage.setItem(key, text)
-      localStorage.setItem('2fa-brand-visited', '1')
+  const valid = (value) =>
+    value && (value.text === '.hot' || choices.includes(value.text)) && typeof value.id === 'string'
+  function read(name) {
+    try {
+      const value = JSON.parse(window[name].getItem(key))
+      return valid(value) ? value : null
+    } catch {
+      return null
     }
-  } catch {
-    /* Storage restrictions keep the default logo. */
   }
-  const root = document.documentElement
-  root.dataset.brandSplash = text === '.hot' ? 'hot' : 'message'
-  root.style.setProperty('--brand-splash-message', JSON.stringify(text))
+  function show(value) {
+    const text = value?.text || '.hot'
+    document.documentElement.dataset.brandSplash = text === '.hot' ? 'hot' : 'message'
+    document.documentElement.style.setProperty('--brand-splash-message', JSON.stringify(text))
+  }
+  // Restore synchronously on reload, before the first paint.
+  show(read('sessionStorage'))
+  if (!navigator.locks) return
+  let release
+  let leaving = false
+  async function join() {
+    leaving = false
+    await navigator.locks
+      .request(key, async () => {
+        if (leaving) return
+        const state = await navigator.locks.query()
+        if (leaving) return
+        const previous = read('localStorage')
+        const own = read('sessionStorage')
+        const active = state.held.some((entry) => entry.name === lock)
+        let visit = previous
+        if (!previous || (!active && own?.id !== previous.id)) {
+          visit = {
+            id: crypto.randomUUID(),
+            text:
+              !previous || previous.text !== '.hot'
+                ? '.hot'
+                : choices[Math.floor(Math.random() * choices.length)]
+          }
+        }
+        try {
+          localStorage.setItem(key, JSON.stringify(visit))
+          sessionStorage.setItem(key, JSON.stringify(visit))
+        } catch {
+          return
+        }
+        show(visit)
+        // Acquire before releasing the coordinator, so simultaneous tabs share the visit.
+        await new Promise((ready) => {
+          navigator.locks.request(lock, { mode: 'shared' }, () => {
+            ready()
+            return new Promise((resolve) => {
+              release = resolve
+              if (leaving) resolve()
+            })
+          })
+        })
+      })
+      .catch(() => {})
+  }
+  window.addEventListener('pagehide', () => {
+    leaving = true
+    release?.()
+    release = undefined
+  })
+  window.addEventListener('pageshow', (event) => {
+    if (event.persisted) join()
+  })
+  join()
 })()

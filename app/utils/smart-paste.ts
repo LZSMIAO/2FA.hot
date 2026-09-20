@@ -80,6 +80,19 @@ export function normalizeClipboardText(text: string): string {
   return lines.join('\n')
 }
 
+/** Field labels and list markers describe formatting, not account ownership. */
+function accountLabel(value: string): string {
+  const label = value.trim()
+  if (!/[\p{L}\p{N}]/u.test(label) || /^\d+[.)]$/.test(label)) return ''
+  if (
+    /^(?:secret|(?:setup[ -]?)?key|secret[ -]?key|code|totp|2fa|password|密钥|密鑰|金鑰|验证码|驗證碼|密码|密碼)$/i.test(
+      label
+    )
+  )
+    return ''
+  return label
+}
+
 /** Only complete tokens are candidates. Never remove prose and concatenate fragments. */
 export function analyzePaste(text: string): PasteAnalysis {
   const candidates: PasteCandidate[] = []
@@ -175,7 +188,7 @@ export function analyzePaste(text: string): PasteAnalysis {
       ) {
         const accountConfig = tryParse(accountKey[2]!)
         if (accountConfig && account.length <= 120) {
-          accountConfig.label = account
+          accountConfig.label = accountLabel(account)
           candidates.push({ config: accountConfig, line, source })
           continue
         }
@@ -213,7 +226,7 @@ export function analyzePaste(text: string): PasteAnalysis {
           ? tryParse(named[2]!)
           : null
       if (config) {
-        config.label ||= named[1]!.trim()
+        config.label ||= accountLabel(named[1]!)
         candidates.push({ config, line, source })
         continue
       }
@@ -293,6 +306,7 @@ export function pastedBatchText(configs: OtpConfig[]): string {
         config.period === defaults.period &&
         !config.issuer &&
         !config.label.includes('@') &&
+        (!config.label || accountLabel(config.label) === config.label) &&
         !/[\r\n\t]/.test(config.label)
       )
         return config.label ? `${config.label}\t${config.secret}` : config.secret

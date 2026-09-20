@@ -1,7 +1,11 @@
 import { computed, onBeforeUnmount, shallowRef, watch, type Ref } from 'vue'
 import { selectionRange } from '../utils/selection-range'
 
-export function useHistorySelection(ids: Ref<string[]>, selected: Ref<string[]>) {
+export function useHistorySelection(
+  ids: Ref<string[]>,
+  selected: Ref<string[]>,
+  rangeIds: Ref<string[]> = ids
+) {
   const surface = shallowRef<HTMLElement | null>(null)
   const selectedSet = computed(() => new Set(selected.value))
   const allSelected = computed(
@@ -40,12 +44,14 @@ export function useHistorySelection(ids: Ref<string[]>, selected: Ref<string[]>)
     if (!drag || !surface.value) return
     const bounds = surface.value.getBoundingClientRect()
     if (drag.x < bounds.left || drag.x > bounds.right) return
-    const elements = [...surface.value.querySelectorAll<HTMLElement>('[data-selection-id]')]
+    const elements = [...surface.value.querySelectorAll<HTMLElement>('[data-selection-id]')].filter(
+      (el) => el.getClientRects().length && rangeIds.value.includes(el.dataset.selectionId || '')
+    )
     const row =
       elements.find((el) => drag!.y <= el.getBoundingClientRect().bottom) ?? elements.at(-1)
     const id = row?.dataset.selectionId
     if (id && id !== lastEnd) {
-      selected.value = selectionRange(ids.value, drag.baseline, drag.start, id, drag.checked)
+      selected.value = selectionRange(rangeIds.value, drag.baseline, drag.start, id, drag.checked)
       lastEnd = id
     }
   }
@@ -91,7 +97,7 @@ export function useHistorySelection(ids: Ref<string[]>, selected: Ref<string[]>)
     }
     const target = event.currentTarget as HTMLElement
     target.focus({ preventScroll: true })
-    const from = event.shiftKey && ids.value.includes(anchor) ? anchor : id
+    const from = event.shiftKey && rangeIds.value.includes(anchor) ? anchor : id
     drag = {
       pointer: event.pointerId,
       start: from,
@@ -101,7 +107,7 @@ export function useHistorySelection(ids: Ref<string[]>, selected: Ref<string[]>)
       y: event.clientY,
       target
     }
-    selected.value = selectionRange(ids.value, drag.baseline, from, id, drag.checked)
+    selected.value = selectionRange(rangeIds.value, drag.baseline, from, id, drag.checked)
     lastEnd = id
     if (!event.shiftKey) anchor = id
     target.setPointerCapture(event.pointerId)
@@ -114,8 +120,14 @@ export function useHistorySelection(ids: Ref<string[]>, selected: Ref<string[]>)
   function click(event: MouseEvent, id: string) {
     // Pointer input was handled on press; detail=0 is keyboard/assistive activation.
     if (event.detail !== 0) return
-    const from = event.shiftKey && ids.value.includes(anchor) ? anchor : id
-    selected.value = selectionRange(ids.value, selected.value, from, id, !selectedSet.value.has(id))
+    const from = event.shiftKey && rangeIds.value.includes(anchor) ? anchor : id
+    selected.value = selectionRange(
+      rangeIds.value,
+      selected.value,
+      from,
+      id,
+      !selectedSet.value.has(id)
+    )
     if (!event.shiftKey) anchor = id
   }
   function toggleAll() {
@@ -134,6 +146,10 @@ export function useHistorySelection(ids: Ref<string[]>, selected: Ref<string[]>)
     lastEnd = ''
     selected.value = []
   }
+  watch(rangeIds, () => {
+    if (drag) stop()
+    if (!rangeIds.value.includes(anchor)) anchor = ''
+  })
   watch(ids, () => {
     if (drag) stop()
     selected.value = selected.value.filter((id) => ids.value.includes(id))

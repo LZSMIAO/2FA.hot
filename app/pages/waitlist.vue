@@ -65,13 +65,6 @@ const { tx } = useMessages()
   text-decoration: none;
   color: var(--ui-text-highlighted);
 }
-.waitlist-page .waitlist-submit {
-  color: white;
-  background: var(--action);
-}
-.waitlist-page .waitlist-submit:hover {
-  background: var(--action-hover);
-}
 .waitlist-page .waitlist-note {
   font-size: var(--text-label);
 }

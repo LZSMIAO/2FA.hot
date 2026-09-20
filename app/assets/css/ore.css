@@ -80,7 +80,6 @@
   margin-top: 1rem;
   gap: 0.625rem 1.5rem;
   align-items: center;
-  flex-wrap: wrap;
   padding: 0.875rem 2rem 0.75rem;
   border: 2px solid var(--ore-outline);
   box-shadow: var(--ore-window-shadow);
@@ -134,7 +133,7 @@
   color: var(--ui-text-highlighted);
 }
 .local-processing-help:focus-visible {
-  outline: 2px solid var(--ui-primary);
+  outline: 2px solid var(--accent-ink);
   outline-offset: 2px;
 }
 .workspace-summary-copy .local-processing-help .iconify {
@@ -237,7 +236,7 @@
   transition: none;
 }
 .ore-theme .option-grid .mc-select-button:focus-visible {
-  outline: 2px solid var(--ui-text-highlighted);
+  outline: 2px solid var(--accent-ink);
   outline-offset: 2px;
 }
 .ore-theme .option-grid .mc-select-button:not(:disabled) {
@@ -468,10 +467,10 @@
   filter: hue-rotate(-100deg) saturate(1.8);
 }
 [data-countdown-state='warning'] .countdown-meta {
-  color: light-dark(#805200, #ffd166);
+  color: var(--ui-warning);
 }
 [data-countdown-state='urgent'] .countdown-meta {
-  color: light-dark(#b42318, #ff8a80);
+  color: var(--ui-error);
 }
 .primary-button {
   font-weight: 600;
@@ -500,6 +499,15 @@
   border-radius: 0;
   background: var(--panel);
   box-shadow: var(--ore-window-shadow);
+}
+.tutorial-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 3.5rem;
+  padding: 0.5rem 0.75rem 0.5rem 1.25rem;
+  border-bottom: 1px solid var(--ui-border);
+  font-size: var(--text-label);
 }
 .ore-window-title,
 .tutorial-title {
@@ -557,12 +565,6 @@
 .ore-dialog-motion[data-state='closed'] {
   animation: ore-dialog-out var(--ore-dialog-exit-duration) var(--ore-exit-ease) both;
 }
-.ore-overlay-motion[data-state='open'] {
-  animation: ore-overlay-in var(--ore-dialog-enter-duration) ease-out both;
-}
-.ore-overlay-motion[data-state='closed'] {
-  animation: ore-overlay-out var(--ore-dialog-exit-duration) ease-in both;
-}
 @keyframes ore-dialog-in {
   from {
     transform: translateX(var(--ore-dialog-distance));
@@ -580,22 +582,6 @@
   }
   to {
     transform: translateX(var(--ore-dialog-distance));
-    opacity: 1;
-  }
-}
-@keyframes ore-overlay-in {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 1;
-  }
-}
-@keyframes ore-overlay-out {
-  from {
-    opacity: 1;
-  }
-  to {
     opacity: 1;
   }
 }
@@ -726,6 +712,8 @@
 
 /* Compact help bubbles, visually anchored to their triggers. */
 .parameter-help-tooltip {
+  height: auto;
+  min-height: 1.5rem;
   animation: none !important;
   border: 1px solid var(--ui-border-accented);
   border-radius: 4px;
@@ -829,4 +817,94 @@
 /* Keep checkbox text spacing independent of anonymous text and framework defaults. */
 .ore-check-row > [data-slot='wrapper'] {
   margin-inline-start: var(--control-gap, 0.5rem);
+}
+
+/* Shared controls preserve semantics across workspaces and teleported surfaces. */
+.ore-tooltip {
+  z-index: var(--layer-tooltip);
+}
+.ore-popover {
+  z-index: var(--layer-popover);
+}
+.ore-input:focus-visible,
+.input-panel input:focus-visible,
+.batch-input textarea:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: -2px;
+  border-color: var(--accent-ink);
+}
+.primary-button.ore-size-xs {
+  min-height: 1.75rem;
+}
+.primary-button.ore-size-sm {
+  min-height: 2rem;
+}
+.primary-button.ore-size-md {
+  min-height: 2.25rem;
+}
+.primary-button.ore-size-xl {
+  min-height: 3rem;
+}
+.ore-danger,
+.ore-danger:hover:not(:disabled) {
+  color: var(--ui-error);
+  background: color-mix(in srgb, var(--ui-error) 10%, var(--panel));
+}
+.small-label[data-countdown-state='warning'],
+.ore-theme .history-countdown[data-countdown-state='warning'] {
+  color: var(--ui-warning);
+}
+.small-label[data-countdown-state='urgent'],
+.ore-theme .history-countdown[data-countdown-state='urgent'] {
+  color: var(--ui-error);
+}
+.ore-theme .record-placeholder {
+  color: var(--ui-text-muted);
+  font-weight: 400;
+}
+.icon-action {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  flex-shrink: 0;
+  border: 0;
+  background: transparent;
+}
+.icon-action:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: -2px;
+}
+.ore-drop-zone {
+  padding: 1.5rem 1.25rem;
+  border: 1px dashed var(--control-line);
+  border-radius: var(--ui-radius);
+  background: var(--wash);
+  text-align: center;
+}
+@media (pointer: coarse) {
+  .ore-theme .icon-action,
+  .ore-theme .session-icon,
+  .ore-theme .batch-match-icon,
+  .ore-theme .candidate-port,
+  .ore-theme .link-port,
+  .ore-theme .review-info,
+  .ore-theme .steam-help,
+  .panorama-controls .panorama-control,
+  .footer-inner .footer-contacts a {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .ore-theme .local-processing-label {
+    padding-inline-end: 2.75rem;
+  }
+  .ore-theme .local-processing-help {
+    width: 44px;
+    height: 44px;
+    top: -0.625rem;
+  }
+  .ore-theme .candidate-key-line {
+    grid-template-columns: minmax(0, 1fr) 44px;
+  }
 }

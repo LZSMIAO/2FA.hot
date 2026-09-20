@@ -74,6 +74,17 @@ const periodItems = computed(() => [
 const extracted = shallowRef('')
 const originalInput = shallowRef('')
 const pendingPaste = shallowRef<{ source: string; analysis: PasteAnalysis } | null>(null)
+const accountAnalysis = computed(() => analyzePaste(originalInput.value))
+const hasAccountSuggestion = computed(
+  () =>
+    accountAnalysis.value.candidates.length === 1 &&
+    accountAnalysis.value.kind === 'review' &&
+    !!accountAnalysis.value.accounts?.length
+)
+function reviewAccount() {
+  pendingPaste.value = { source: originalInput.value, analysis: accountAnalysis.value }
+}
+
 const restoredDetails = shallowRef({ label: '', issuer: '' })
 const historyPreviewIdentity = shallowRef('')
 const historyPreview = computed(
@@ -370,9 +381,10 @@ watch(
 )
 async function paste() {
   const revision = ++pasteRevision
-  await clipboardHint.start()
-  if (revision !== pasteRevision || guiding.value) return
+  const hintToken = await clipboardHint.start()
+  let hintSuccess = false
   try {
+    if (revision !== pasteRevision || guiding.value) return
     let text = await navigator.clipboard.readText()
     if (revision !== pasteRevision || guiding.value) return
     if (!text.trim() && navigator.clipboard.read) {
@@ -386,17 +398,18 @@ async function paste() {
           const blob = await item.getType(type)
           if (revision !== pasteRevision || guiding.value) return
           await recognizeImages([new File([blob], 'clipboard-image', { type })], true)
-          clipboardHint.finish(true)
+          hintSuccess = true
           return
         }
       }
     }
-    clipboardHint.finish(true)
+    hintSuccess = true
     pasteText(text)
   } catch {
-    clipboardHint.finish(false)
     if (revision !== pasteRevision) return
     pasteIssue.value = '无法读取剪贴板，请使用系统粘贴。'
+  } finally {
+    clipboardHint.finish(hintSuccess, hintToken)
   }
 }
 async function recognizeImages(files: File[], fromPaste = false) {
@@ -480,8 +493,6 @@ function inspectPaste(source: string) {
   const analysis = analyzePaste(source)
   if (analysis.candidates.length > 1) transferPaste(source)
   else if (analysis.candidates.length === 1) acceptPaste(analysis.candidates[0]!.config, source)
-  else if (analysis.kind === 'review' || analysis.candidates.length > 1)
-    pendingPaste.value = { source, analysis }
   else {
     updateRaw(source)
     pendingPaste.value = null
@@ -516,14 +527,10 @@ function transferPaste(value: string) {
 }
 function importValue(value: string) {
   pendingPaste.value = null
-  extracted.value = ''
-  originalInput.value = ''
-
-  raw.value = value
   try {
-    kind.value = parseOtp(value).kind ?? 'totp'
+    acceptPaste(parseOtp(value), value)
   } catch {
-    kind.value = 'totp'
+    updateRaw(value)
   }
   qrOpen.value = false
 }
@@ -595,7 +602,9 @@ onBeforeUnmount(() => {
           :aria-invalid="!guiding && !!issue"
           :aria-describedby="!guiding && issue ? 'secret-help secret-error' : 'secret-help'"
           :ui="{
-            base: 'font-mono text-base h-13 pr-24 ring-[var(--control-line)] focus-visible:ring-primary'
+            base: `font-mono text-base h-13 ${
+              displayRaw ? 'pr-24' : 'pr-4'
+            } ring-[var(--control-line)] focus-visible:ring-primary`
           }"
           @keydown="navigateHistory"
           @paste="handlePaste"
@@ -659,6 +668,11 @@ onBeforeUnmount(() => {
           :key="pendingPaste.source"
           :source="pendingPaste.source"
           :analysis="pendingPaste.analysis"
+          :initial-associations="
+            pendingPaste.source === originalInput && restoredDetails.label
+              ? { 0: restoredDetails.label }
+              : undefined
+          "
           :masked="!revealed"
           @select="acceptPaste"
           @batch="transferPaste"
@@ -699,6 +713,26 @@ onBeforeUnmount(() => {
               :source="originalInput"
             />
           </Transition>
+          <AppHint
+            v-if="hasAccountSuggestion && !pendingPaste && !guiding"
+            :text="
+              tx(
+                restoredDetails.label
+                  ? '绿色：全部密钥已关联账号。点击前往关联账号，可查看或修改。'
+                  : '黄色：检测到待确认的账号，或仍有密钥未关联。点击前往关联账号，确认或补全对应关系。'
+              )
+            "
+          >
+            <button
+              type="button"
+              class="account-review-action icon-action"
+              :class="{ linked: !!restoredDetails.label }"
+              :aria-label="tx('前往关联账号')"
+              @click="reviewAccount"
+            >
+              <UIcon name="i-lucide-link" />
+            </button>
+          </AppHint>
           <p id="secret-help" class="sr-only">
             {{ tx('密钥：Base32 / otpauth:// / Steam') }}
           </p>
@@ -808,7 +842,7 @@ onBeforeUnmount(() => {
                     :delay-duration="0"
                     :content="{ side: 'top', align: 'start', sideOffset: 6 }"
                     :ui="{
-                      content: 'parameter-help-tooltip h-auto',
+                      content: 'parameter-help-tooltip',
                       arrow: 'parameter-help-arrow',
                       text: 'whitespace-normal break-words'
                     }"
@@ -886,6 +920,12 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+.account-review-action.linked {
+  color: var(--accent-ink);
+}
+.account-review-action {
+  color: var(--ui-warning);
+}
 .workspace :deep(.result-head) {
   font-size: 1.375rem;
   line-height: 1.4;
@@ -1191,7 +1231,7 @@ onBeforeUnmount(() => {
   pointer-events: none;
   transition:
     opacity 240ms ease-out,
-    transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+    transform 240ms var(--ease-out);
 }
 .parameter-moon {
   background-image: url('/textures/moon_phases.png');
@@ -1421,7 +1461,7 @@ onBeforeUnmount(() => {
   font-weight: 600;
 }
 .secret-field.is-text-dragging {
-  outline: 2px solid var(--ui-primary);
+  outline: 2px solid var(--accent-ink);
   outline-offset: 2px;
 }
 </style>

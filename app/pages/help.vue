@@ -184,8 +184,7 @@ const sections = [
 <style scoped>
 .help-page h1 {
   margin-block: 1.25rem 0.625rem;
-  font-size: clamp(1.75rem, 3vw, 2.25rem);
-  letter-spacing: -0.025em;
+  font-size: var(--text-title);
 }
 .help-page .article-lead {
   max-width: 48rem;

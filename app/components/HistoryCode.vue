@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { countdownState } from '~/utils/countdown-state'
 import { groupCode, type OtpConfig } from '~/utils/otp'
 const props = defineProps<{ config: OtpConfig }>()
 const { tx } = useMessages()
@@ -30,7 +31,9 @@ async function copyCode() {
       }}</span>
       <UIcon :name="copied ? 'i-mc-check' : 'i-lucide-copy'" />
     </button>
-    <small class="history-countdown" :class="{ expiring: code && remaining <= 5 }"
+    <small
+      class="history-countdown"
+      :data-countdown-state="countdownState(!!code, remaining, config.period)"
       >{{ code ? String(remaining).padStart(2, '0') : '—' }}s</small
     >
     <span v-if="copied" class="sr-only" role="status">{{ tx('验证码已复制') }}</span>
@@ -65,7 +68,7 @@ async function copyCode() {
   background: var(--ore-control);
 }
 .history-code-copy:focus-visible {
-  outline: 2px solid var(--ui-primary);
+  outline: 2px solid var(--accent-ink);
   outline-offset: 3px;
 }
 .history-code-copy :deep(.iconify) {
@@ -89,9 +92,6 @@ async function copyCode() {
   font-size: 0.875rem;
   font-variant-numeric: tabular-nums;
   color: var(--ui-text-muted);
-}
-.history-countdown.expiring {
-  color: var(--ui-warning);
 }
 .history-code-message {
   grid-column: 1 / -1;

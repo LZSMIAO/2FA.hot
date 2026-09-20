@@ -5,7 +5,7 @@ defineProps<{ copy: PasskeyCopy }>()
 
 <template>
   <section aria-labelledby="passkey-guide-heading">
-    <h2 id="passkey-guide-heading">{{ copy.instructions }}</h2>
+    <h2 class="workspace-title" id="passkey-guide-heading">{{ copy.instructions }}</h2>
     <dl class="passkey-flows">
       <div v-for="flow in copy.flows" :key="flow.title" class="passkey-flow">
         <dt>{{ flow.title }}</dt>
@@ -13,11 +13,11 @@ defineProps<{ copy: PasskeyCopy }>()
       </div>
     </dl>
     <p>{{ copy.migrationNote }}</p>
-    <h2>{{ copy.storage }}</h2>
+    <h2 class="workspace-title">{{ copy.storage }}</h2>
     <p>{{ copy.privacy }}</p>
-    <h2>{{ copy.protocol }}</h2>
+    <h2 class="workspace-title">{{ copy.protocol }}</h2>
     <p>{{ copy.protocolText }}</p>
-    <h2>{{ copy.limits }}</h2>
+    <h2 class="workspace-title">{{ copy.limits }}</h2>
     <p>{{ copy.limitation }}</p>
   </section>
 </template>

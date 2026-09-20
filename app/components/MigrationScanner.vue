@@ -138,7 +138,7 @@ onBeforeUnmount(() => {
 <template>
   <div class="migration-scan">
     <div
-      class="migration-drop"
+      class="migration-drop ore-drop-zone"
       @dragover.prevent
       @drop.prevent="images(Array.from($event.dataTransfer?.files || []))"
     >
@@ -162,7 +162,7 @@ onBeforeUnmount(() => {
           >{{ tx(scanning ? '关闭摄像头' : '使用摄像头扫描') }}</UButton
         >
       </div>
-      <span>{{ tx('PNG、JPEG、WebP · 最大 10MB') }}</span>
+      <span>{{ tx('PNG · JPEG · WebP') }} · {{ tx('支持多张图片，每张不超过 10MB。') }}</span>
       <input
         ref="file"
         type="file"
@@ -194,9 +194,7 @@ onBeforeUnmount(() => {
   display: grid;
   justify-items: center;
   gap: 0.75rem;
-  padding: 1.5rem 1rem;
-  border: 2px dashed var(--ui-border);
-  background: var(--wash);
+
   text-align: center;
 }
 .migration-drop p {

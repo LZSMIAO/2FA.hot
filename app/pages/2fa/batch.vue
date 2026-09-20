@@ -14,7 +14,7 @@ function load() {
   issue.value = ''
   try {
     if (route.hash.length > 300001) throw new Error('文本超过 100KB，请分批处理。')
-    const value = decodeURIComponent(route.hash.slice(1))
+    const value = route.hash.slice(1)
     const rows = parseSmartBatch(value)
     if (!rows.length || rows.some((row) => !row.config))
       throw new Error('密钥格式不正确，请检查是否包含多余字符。')
@@ -50,7 +50,7 @@ useHead({ meta: [{ name: 'referrer', content: 'no-referrer' }] })
       @collapse="navigateTo(localePath('/'))"
     />
     <section v-else class="batch-direct-empty">
-      <h1>{{ tx('批量获取验证码') }}</h1>
+      <h1 class="workspace-title">{{ tx('批量获取验证码') }}</h1>
       <p v-if="issue" class="inline-error" role="alert">{{ tx(issue) }}</p>
       <UButton :to="localePath('/')">{{ tx('返回工具首页') }}</UButton>
     </section>
@@ -66,6 +66,10 @@ useHead({ meta: [{ name: 'referrer', content: 'no-referrer' }] })
   display: grid;
   gap: 1rem;
   justify-items: start;
+  padding: clamp(1.25rem, 2.5vw, 2rem);
+  border-radius: var(--ui-radius);
+  background: var(--panel);
+  color: var(--ui-text);
 }
 @media (max-width: 600px) {
   .batch-direct-page {

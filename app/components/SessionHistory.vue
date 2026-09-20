@@ -153,6 +153,7 @@ function time(value: number) {
                   <div v-else class="session-name">
                     <button
                       class="session-label"
+                      :class="{ 'record-placeholder': !row.batch && !row.label && !row.issuer }"
                       :aria-expanded="row.batch ? expanded.has(row.id) : undefined"
                       @click="row.batch ? toggleBatch(row.id, $event) : select(row)"
                     >
@@ -178,7 +179,7 @@ function time(value: number) {
                   <code v-else>{{ row.secret.slice(0, 4) }}••••{{ row.secret.slice(-4) }}</code>
                   <button
                     class="session-open session-icon"
-                    :aria-label="tx('取码')"
+                    :aria-label="tx(row.batch ? '转到批量取码' : '取码')"
                     @click="select(row)"
                   >
                     <UIcon name="i-lucide-arrow-up-right" />
@@ -191,7 +192,11 @@ function time(value: number) {
                     class="session-row session-child"
                   >
                     <div class="session-name">
-                      <button class="session-label" @click="selectEntry(entry)">
+                      <button
+                        class="session-label"
+                        :class="{ 'record-placeholder': !entry.label && !entry.issuer }"
+                        @click="selectEntry(entry)"
+                      >
                         {{ entry.label || entry.issuer || tx('未命名记录') }}
                       </button>
                     </div>
@@ -305,7 +310,6 @@ function time(value: number) {
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  scrollbar-gutter: stable;
 }
 .session-row {
   display: grid;
@@ -321,7 +325,6 @@ function time(value: number) {
   border-bottom: 1px solid var(--ui-border);
   text-align: start;
   font-size: var(--text-body);
-  cursor: pointer;
 }
 .session-row.session-child {
   margin-inline-start: 1.5rem;
@@ -337,15 +340,10 @@ function time(value: number) {
 .session-batch .session-label[aria-expanded='true'] {
   color: var(--accent-ink);
 }
-.session-row:focus-visible {
-  outline: 2px solid var(--accent-ink);
-  outline-offset: -2px;
-}
 .session-row:hover {
   background: transparent;
 }
-.session-row:hover .session-label,
-.session-row:hover > .iconify {
+.session-label:hover {
   color: var(--accent-ink);
 }
 .session-row time {

@@ -27,7 +27,7 @@ const { tx } = useMessages()
             href="https://github.com/LZSMIAO/2fa-hot"
             target="_blank"
             rel="noopener noreferrer"
-            :aria-label="tx('2FA hot 的 GitHub 项目（新窗口）')"
+            :aria-label="tx('2fa.hot 的 GitHub 项目（新窗口）')"
             title="GitHub"
             ><UIcon name="i-lucide-github"
           /></a>

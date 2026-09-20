@@ -7,6 +7,7 @@ const emit = defineEmits<{
   switchMode: []
   demo: [value: { input: number; results: number; copied: string }]
 }>()
+const panel = useTemplateRef<HTMLElement>('panel')
 const step = shallowRef(0)
 const paused = shallowRef(false)
 const complete = shallowRef(false)
@@ -136,6 +137,7 @@ function start() {
   }, 50)
 }
 onMounted(() => {
+  panel.value?.focus({ preventScroll: true })
   window.addEventListener('resize', positionCursor)
   window.addEventListener('scroll', positionCursor, true)
 })
@@ -146,7 +148,7 @@ onBeforeUnmount(() => {
 })
 </script>
 <template>
-  <aside class="batch-guide" role="dialog" :aria-label="tx('批量取码')">
+  <aside ref="panel" tabindex="-1" class="batch-guide" role="dialog" :aria-label="tx('批量取码')">
     <header class="tutorial-title">
       <strong class="batch-guide-heading"
         >{{ tx('批量取码')
@@ -244,15 +246,6 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   gap: 8px;
-}
-.batch-guide header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 3.5rem;
-  padding: 0.5rem 0.75rem 0.5rem 1.25rem;
-  border-bottom: 1px solid var(--ui-border);
-  font-size: var(--text-label);
 }
 .batch-guide-body {
   padding: 1.25rem;

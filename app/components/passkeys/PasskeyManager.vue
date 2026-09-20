@@ -138,9 +138,11 @@ watch(
             />
             <div class="record-details">
               <strong dir="auto">{{ record.rpId }}</strong>
-              <span dir="auto">{{
-                record.userName || record.userDisplayName || copy.unnamed
-              }}</span>
+              <span
+                dir="auto"
+                :class="{ 'record-placeholder': !record.userName && !record.userDisplayName }"
+                >{{ record.userName || record.userDisplayName || copy.unnamed }}</span
+              >
               <small>{{ lastUsed(record.lastUsedAt) }}</small>
             </div>
           </li>

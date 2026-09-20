@@ -21,7 +21,7 @@ summary {
   cursor: pointer;
 }
 summary:focus-visible {
-  outline: 2px solid var(--ui-primary);
+  outline: 2px solid var(--accent-ink);
   outline-offset: 4px;
 }
 </style>

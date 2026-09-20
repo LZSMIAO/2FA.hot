@@ -1,3 +1,4 @@
+import { baselineCsp } from './shared/security-headers'
 import { supportedLocales } from './shared/locales'
 import { siteUrl } from './shared/seo/routes'
 import { toolDescriptions, toolHeadings } from './shared/seo/copy'
@@ -72,6 +73,8 @@ export default defineNuxtConfig({
       headers: {
         'Referrer-Policy': 'no-referrer',
         'X-Content-Type-Options': 'nosniff',
+        'X-Frame-Options': 'DENY',
+        'Content-Security-Policy': baselineCsp,
         'Permissions-Policy': 'camera=(self), microphone=(), geolocation=()'
       }
     }

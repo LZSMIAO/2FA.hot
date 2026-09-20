@@ -78,7 +78,10 @@ onMounted(() => {
   if (!panel.value || matchMedia('(prefers-reduced-motion: reduce)').matches) return
   animation = panel.value.animate(
     [{ height: '52px' }, { height: panel.value.offsetHeight + 'px' }],
-    { duration: 220, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' }
+    {
+      duration: 220,
+      easing: getComputedStyle(panel.value).getPropertyValue('--ease-out').trim() || 'ease-out'
+    }
   )
 })
 onBeforeUnmount(() => animation?.cancel())
@@ -212,7 +215,7 @@ function useSelected() {
           enable-touch
           arrow
           :content="{ side: 'top', align: 'end', sideOffset: 2 }"
-          :ui="{ content: 'parameter-help-tooltip h-auto', arrow: 'parameter-help-arrow' }"
+          :ui="{ content: 'parameter-help-tooltip', arrow: 'parameter-help-arrow' }"
         >
           <button type="button" class="review-info" :aria-label="tx('使用说明')">
             <UIcon name="i-lucide-info" aria-hidden="true" />
@@ -393,7 +396,6 @@ function useSelected() {
   padding: 0.5rem 0;
   align-items: start;
   border-bottom: 1px solid var(--ui-border);
-  cursor: pointer;
 }
 .paste-candidate:last-child {
   border-bottom: 0;

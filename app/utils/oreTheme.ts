@@ -3,6 +3,13 @@ export const oreTheme = {
   button: {
     slots: { base: 'ore-button font-medium cursor-pointer rounded-none' },
     variants: {
+      size: {
+        xs: 'ore-size-xs',
+        sm: 'ore-size-sm',
+        md: 'ore-size-md',
+        lg: 'ore-size-lg',
+        xl: 'ore-size-xl'
+      },
       variant: {
         solid: 'ore-raised',
         outline: 'ore-raised ore-secondary',
@@ -12,6 +19,10 @@ export const oreTheme = {
         link: 'ore-link'
       }
     },
+    compoundVariants: [
+      { color: 'primary', variant: 'solid', class: 'primary-button' },
+      { color: 'error', variant: ['soft', 'subtle', 'outline'], class: 'ore-danger' }
+    ],
     defaultVariants: { size: 'lg' }
   },
   input: { slots: { base: 'ore-input w-full rounded-none' } },
@@ -30,6 +41,9 @@ export const oreTheme = {
       item: 'rounded-none before:rounded-none'
     }
   },
+  tooltip: { slots: { content: 'ore-theme ore-tooltip' } },
+  popover: { slots: { content: 'ore-theme ore-popover' } },
+  contextMenu: { slots: { content: 'ore-theme ore-popover' } },
   checkbox: {
     slots: { root: 'ore-check-row', base: 'ore-checkbox rounded-none', indicator: 'rounded-none' }
   },

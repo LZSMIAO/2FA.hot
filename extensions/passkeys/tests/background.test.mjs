@@ -88,11 +88,13 @@ test('background rejects content-script management and trusts browser origin/doc
   assert.equal(records.records.length, 0)
   const cancelled = await send({ action: 'cancel', token: begin.token }, website)
   assert.equal(cancelled.ok, true)
-  assert.equal((await send(request(), website)).fallback, true, 'preserve unconsumed results')
+  const retry = await send(request(), website)
+  assert.ok(retry.token, 'cancel releases the request immediately')
   assert.equal(
     (await send({ action: 'poll', token: begin.token }, website)).result.error,
-    '请求已取消。'
+    '请求已失效。'
   )
+  await send({ action: 'cancel', token: retry.token }, website)
   assert.equal(JSON.stringify({ local, session }).includes('background-test-password'), false)
 })
 

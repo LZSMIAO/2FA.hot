@@ -7,6 +7,7 @@ import {
   removeBatchLines,
   insertBatchText
 } from '~/utils/smart-paste'
+import { countdownState } from '~/utils/countdown-state'
 import { generateOtp, groupCode, remainingSeconds, toOtpUri, type BatchEntry } from '~/utils/otp'
 import { codeOutput } from '~/utils/code-output'
 import { transferText } from '~/utils/transfer-text'
@@ -353,7 +354,7 @@ async function save() {
       valid.value.filter((r) => selected.value.includes(r.line)).map((r) => r.config!),
       batchSessionId.value
     )
-    note.value = ok ? '所选记录已保存' : '请先开启并解锁本地历史。'
+    note.value = ok ? '所选记录已保存。' : '请先开启并解锁本地历史。'
   } catch (e) {
     issue.value = (e as Error).message
   }
@@ -433,7 +434,7 @@ onBeforeUnmount(() => {
           <UButton
             color="neutral"
             variant="ghost"
-            class="batch-expand"
+            class="expand-button batch-expand"
             :disabled="guiding || !valid.length"
             :icon="standalone ? 'i-lucide-minimize-2' : 'i-lucide-maximize-2'"
             :aria-label="tx(standalone ? '返回工具首页' : '查看独立取码页')"
@@ -620,7 +621,15 @@ onBeforeUnmount(() => {
               ><span class="batch-code mono">{{
                 tx(codes[entry.line] ? groupCode(codes[entry.line]!) : '— — —')
               }}</span
-              ><span class="small-label mono"
+              ><span
+                class="small-label mono"
+                :data-countdown-state="
+                  countdownState(
+                    !!codes[entry.line],
+                    remainingSeconds(entry.config.period, now),
+                    entry.config.period
+                  )
+                "
                 >{{ tx(remainingSeconds(entry.config.period, now)) }}s</span
               ><UButton
                 color="neutral"
@@ -679,14 +688,43 @@ onBeforeUnmount(() => {
   />
 </template>
 <style scoped>
+.batch-input {
+  position: relative;
+}
 .batch-input .section-heading {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-inline-end: 2rem;
 }
 .batch-expand {
+  position: absolute;
+  inset-block-start: 0.125rem;
+  inset-inline-end: 0.125rem;
+  /* Matches the heading font so the icon renders at the single-mode size. */
+  font-size: 1.375rem;
   color: var(--ui-text-muted);
   flex-shrink: 0;
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+  transform: none;
+  transition: color 120ms ease;
+}
+.batch-expand:hover:not(:disabled) {
+  background: transparent;
+  box-shadow: none;
+  color: var(--ui-text-highlighted);
+  transform: none;
+}
+.batch-expand:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: -4px;
+}
+@media (max-width: 700px) {
+  .batch-expand {
+    font-size: 1.25rem;
+  }
 }
 .demo-row {
   animation: batch-row-enter 180ms ease-out both;
@@ -708,7 +746,7 @@ onBeforeUnmount(() => {
 .batch-reveal {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 240ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: grid-template-rows 240ms var(--ease-out);
 }
 .batch-reveal.is-open {
   grid-template-rows: 1fr;
@@ -719,7 +757,7 @@ onBeforeUnmount(() => {
 }
 .batch-reveal .batch-results {
   transform: translateY(-8px);
-  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 240ms var(--ease-out);
 }
 .batch-reveal.is-open .batch-results {
   transform: translateY(0);
@@ -733,7 +771,7 @@ onBeforeUnmount(() => {
 
 .demo-highlight {
   outline: 2px solid var(--accent-ink);
-  outline-offset: 3px;
+  outline-offset: -3px;
 }
 .batch-workspace {
   border-radius: var(--ui-radius);

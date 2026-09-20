@@ -1,8 +1,10 @@
 export function useClipboardHint() {
   const visible = shallowRef(false)
   const seen = useState('clipboard-permission-hint-seen-v3', () => false)
+  let revision = 0
   let timer: ReturnType<typeof setTimeout> | undefined
   async function start() {
+    const token = ++revision
     try {
       seen.value ||= localStorage.getItem('2fa-clipboard-hint-seen-v3') === '1'
     } catch {}
@@ -15,8 +17,10 @@ export function useClipboardHint() {
         requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
       )
     }
+    return token
   }
-  function finish(success: boolean) {
+  function finish(success: boolean, token = revision) {
+    if (token !== revision) return
     if (success) {
       seen.value = true
       try {

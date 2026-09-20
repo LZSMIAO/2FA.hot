@@ -75,7 +75,7 @@ watch(open, (visible) => {
         </NuxtLink></AppHint
       >
     </div>
-    <span v-if="error && !open" role="alert">{{ tx(error) }}</span>
+    <span v-if="error && !open" class="inline-error" role="alert">{{ tx(error) }}</span>
     <UModal
       v-model:open="open"
       :title="tx(vault.exists.value ? '解锁本地历史' : '开启本地历史')"
@@ -89,26 +89,16 @@ watch(open, (visible) => {
     >
       <template #body>
         <form class="history-enable-form" @submit.prevent="submit">
-          <div v-if="!vault.exists.value" class="history-controls">
-            <span>{{ tx('使用密码保护') }}</span>
-            <button
-              type="button"
-              role="switch"
-              class="history-switch"
-              :aria-label="tx('使用密码保护')"
-              :aria-checked="protect"
-              :disabled="vault.busy.value"
-              @click="protect = !protect"
-            >
-              <span class="history-switch-thumb" />
-            </button>
-          </div>
+          <UCheckbox
+            v-if="!vault.exists.value"
+            v-model="protect"
+            :label="tx('使用密码保护')"
+            :disabled="vault.busy.value"
+          />
           <p v-if="!vault.exists.value && !protect" class="field-hint">
             {{ tx('不设密码，记录将直接保存在此浏览器，打开即可查看。') }}
           </p>
-          <UFormField
-            v-if="vault.exists.value || protect"
-            :label="tx(vault.exists.value ? '原密码' : '本地解锁口令')"
+          <UFormField v-if="vault.exists.value || protect" :label="tx('本地解锁密码')"
             ><UInput
               v-model="password"
               type="password"
@@ -117,7 +107,7 @@ watch(open, (visible) => {
               :minlength="vault.exists.value ? undefined : 4"
               required
           /></UFormField>
-          <UFormField v-if="!vault.exists.value && protect" :label="tx('再次输入口令')"
+          <UFormField v-if="!vault.exists.value && protect" :label="tx('再次输入密码')"
             ><UInput
               v-model="confirmation"
               type="password"
@@ -126,7 +116,7 @@ watch(open, (visible) => {
               required
           /></UFormField>
           <p>{{ tx('开启并解锁后，有效输入会自动保存。关闭后停止新增，已有记录保留。') }}</p>
-          <p v-if="error" role="alert">{{ tx(error) }}</p>
+          <p v-if="error" class="inline-error" role="alert">{{ tx(error) }}</p>
           <UButton type="submit" :loading="vault.busy.value">{{
             tx(vault.exists.value ? '解锁历史' : '开启本地历史')
           }}</UButton>
@@ -183,7 +173,7 @@ watch(open, (visible) => {
   cursor: pointer;
 }
 .history-switch[aria-checked='true'] {
-  background: #3c8527;
+  background: var(--action);
 }
 .history-switch-thumb {
   position: absolute;
@@ -191,20 +181,19 @@ watch(open, (visible) => {
   left: 2px;
   width: 1.125rem;
   height: 1.125rem;
-  background: #c6c6c6;
+  background: var(--ore-control);
   box-shadow:
-    inset 2px 2px 0 #fff,
-    inset -2px -2px 0 #777,
-    1px 1px 0 #111;
+    var(--ore-bevel),
+    1px 1px 0 var(--ore-outline);
 }
 .history-switch[aria-checked='true'] .history-switch-thumb {
   left: calc(100% - 1.125rem - 2px);
 }
 .history-switch:hover:not(:disabled) .history-switch-thumb {
-  background: #eee;
+  background: var(--ore-control-hover);
 }
 .history-switch:focus-visible {
-  outline: 2px solid var(--ui-text-highlighted);
+  outline: 2px solid var(--accent-ink);
   outline-offset: 4px;
 }
 .history-switch:disabled {
