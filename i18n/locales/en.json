@@ -562,7 +562,7 @@
   "m6eadeddb7e70": "Guides",
   "mb8784c8dd563": "Retry",
   "accountLinkingOpen": "Go to account linking",
-  "accountLinkingLinkedHint": "Green: All keys are linked to accounts. Click to view or edit account links.",
-  "accountLinkingUncertainHint": "Yellow: Detected accounts need confirmation, or some keys are still unlinked. Click to confirm or complete account links.",
-  "accountLinkingUnlinkedHint": "Gray: No accounts are linked. Click to link keys to accounts manually."
+  "accountLinkingLinkedHint": "Every key has an account name. Click to view or edit them.",
+  "accountLinkingUncertainHint": "Account names were found in what you pasted, but not every key is matched yet. Click to confirm.",
+  "accountLinkingUnlinkedHint": "These keys have no account names yet. Click to add them manually."
 }

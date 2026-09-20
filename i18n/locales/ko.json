@@ -562,7 +562,7 @@
   "m8677d87b4c32": "2fa.hot 프로젝트 정보와 지원 기능",
   "mb8784c8dd563": "다시 시도",
   "accountLinkingOpen": "계정 연결로 이동",
-  "accountLinkingLinkedHint": "초록색: 모든 키가 계정에 연결되어 있습니다. 클릭하여 연결을 확인하거나 수정하세요.",
-  "accountLinkingUncertainHint": "노란색: 확인이 필요한 계정이나 연결되지 않은 키가 있습니다. 클릭하여 연결을 확인하거나 완료하세요.",
-  "accountLinkingUnlinkedHint": "회색: 연결된 계정이 없습니다. 클릭하여 키와 계정을 직접 연결하세요."
+  "accountLinkingLinkedHint": "모든 키에 계정 이름이 있습니다. 클릭하면 확인하거나 수정할 수 있습니다.",
+  "accountLinkingUncertainHint": "붙여넣은 내용에서 계정 이름을 찾았지만 아직 모든 키와 연결되지는 않았습니다. 클릭해 확인하세요.",
+  "accountLinkingUnlinkedHint": "이 키에는 아직 계정 이름이 없습니다. 클릭해 직접 입력하세요."
 }

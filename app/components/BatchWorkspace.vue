@@ -185,10 +185,10 @@ const associationState = computed(() => {
 })
 const associationHint = computed(() => {
   if (associationState.value === 'linked')
-    return tx('绿色：全部密钥已关联账号。点击前往关联账号，可查看或修改。')
+    return tx('每个密钥都有对应的账号名称。点击可查看或修改。')
   if (associationState.value === 'uncertain')
-    return tx('黄色：检测到待确认的账号，或仍有密钥未关联。点击前往关联账号，确认或补全对应关系。')
-  return tx('灰色：尚未关联账号。点击前往关联账号，手动设置对应关系。')
+    return tx('已从粘贴内容认出账号名称，但还没和密钥全部对应。点击确认。')
+  return tx('密钥还没有账号名称。点击可手动对应。')
 })
 const successfulKeys = computed(() =>
   guiding.value

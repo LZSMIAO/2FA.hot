@@ -9,9 +9,9 @@ const editing = shallowRef<string | null>(null)
 const label = shallowRef('')
 const error = shallowRef('')
 const expanded = ref(new Set<string>())
-// Batch children render at 0.6875x a top-level row's height (2.75rem vs 4rem,
-// see --session-child-height below) - keep this ratio in sync with the CSS.
-const CHILD_ROW_RATIO = 0.6875
+// Batch children render at 0.875x a top-level row's height (3.5rem vs 4rem,
+// see .session-child below) - keep this ratio in sync with the CSS.
+const CHILD_ROW_RATIO = 0.875
 const visibleCount = computed(() =>
   Math.min(
     6,
@@ -195,6 +195,9 @@ function time(value: number) {
                     :key="index"
                     class="session-row session-child"
                   >
+                    <span class="session-record-icon" aria-hidden="true"
+                      ><img src="/textures/trial-key.png" alt="" width="20" height="20"
+                    /></span>
                     <div class="session-name">
                       <button
                         class="session-label"
@@ -345,15 +348,33 @@ function time(value: number) {
   font-size: var(--text-body);
 }
 .session-row.session-child {
-  /* Shorter than a top-level row: it only carries a name and a masked key,
-     never a timestamp or edit action. Keep CHILD_ROW_RATIO above matched to
-     this height / --session-row-height. */
-  height: 2.75rem;
+  /* Shorter than a top-level row, which also carries a timestamp and an edit
+     action, but still tall enough for the name and the masked key. Keep
+     CHILD_ROW_RATIO above matched to this height / --session-row-height. */
+  height: 3.5rem;
+  grid-template-columns: 1.75rem minmax(0, 1fr) auto 1.75rem;
   margin-inline-start: 1.5rem;
   width: calc(100% - 1.5rem);
   padding-inline-start: 0.75rem;
   border-inline-start: 2px solid var(--ui-border);
   font-size: var(--text-label);
+}
+.session-record-icon {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  display: grid;
+  place-items: center;
+  opacity: 0.85;
+}
+.session-record-icon img {
+  image-rendering: pixelated;
+}
+.session-child > .session-name,
+.session-child > code {
+  grid-column: 2;
+}
+.session-child > .session-open {
+  grid-column: 4;
 }
 .session-row.session-child .session-icon {
   width: 1.375rem;

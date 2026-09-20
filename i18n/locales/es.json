@@ -562,7 +562,7 @@
   "m6eadeddb7e70": "Guías",
   "mb8784c8dd563": "Reintentar",
   "accountLinkingOpen": "Ir a vincular cuentas",
-  "accountLinkingLinkedHint": "Verde: Todas las claves están vinculadas a cuentas. Pulsa para ver o editar los vínculos.",
-  "accountLinkingUncertainHint": "Amarillo: Hay cuentas por confirmar o claves sin vincular. Pulsa para confirmar o completar los vínculos.",
-  "accountLinkingUnlinkedHint": "Gris: No hay cuentas vinculadas. Pulsa para vincular las claves manualmente."
+  "accountLinkingLinkedHint": "Todas las claves tienen un nombre de cuenta. Pulsa para verlas o editarlas.",
+  "accountLinkingUncertainHint": "Se encontraron nombres de cuenta en lo que pegaste, pero aún no todas las claves están emparejadas. Pulsa para confirmar.",
+  "accountLinkingUnlinkedHint": "Estas claves aún no tienen nombre de cuenta. Pulsa para añadirlos manualmente."
 }

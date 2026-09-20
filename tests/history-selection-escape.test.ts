@@ -3,7 +3,7 @@ import test from 'node:test'
 import { readFileSync } from 'node:fs'
 import vm from 'node:vm'
 import ts from 'typescript'
-import { computed, effectScope, shallowRef, watch } from 'vue'
+import { computed, effectScope, nextTick, shallowRef, watch } from 'vue'
 import { selectionRange } from '../app/utils/selection-range.ts'
 
 function setup(visible = ['a', 'b', 'c']) {
@@ -44,9 +44,9 @@ function setup(visible = ['a', 'b', 'c']) {
     ts.transpileModule(code, { compilerOptions: { target: ts.ScriptTarget.ES2022 } }).outputText,
     context
   )
-  const state = scope.run(() =>
-    context.useHistorySelection(shallowRef(['a', 'b', 'c']), selected, shallowRef(visible))
-  )!
+  const ids = shallowRef(['a', 'b', 'c'])
+  const rangeIds = shallowRef(visible)
+  const state = scope.run(() => context.useHistorySelection(ids, selected, rangeIds))!
   const target = {
     focus() {},
     setPointerCapture() {},
@@ -57,6 +57,8 @@ function setup(visible = ['a', 'b', 'c']) {
   }
   return {
     selected,
+    ids,
+    rangeIds,
     state,
     scope,
     listeners,
@@ -218,5 +220,111 @@ test('dragging below the list resolves to its last visible record', () => {
   s.runFrame()
   assert.deepEqual(Array.from(s.selected.value), ['a', 'c'])
   s.state.cancelSelection(escape())
+  s.scope.stop()
+})
+
+test('picking a visible row keeps rows selected inside a collapsed batch', () => {
+  // 'a' sits in a collapsed batch, so it is selected but out of range.
+  const s = setup(['b', 'c'])
+  s.selected.value = ['a']
+  s.state.click({ detail: 0 }, 'b')
+  assert.deepEqual(Array.from(s.selected.value), ['a', 'b'])
+  s.state.click({ detail: 0 }, 'c')
+  assert.deepEqual(Array.from(s.selected.value), ['a', 'b', 'c'])
+  s.state.click({ detail: 0 }, 'b')
+  assert.deepEqual(Array.from(s.selected.value), ['a', 'c'])
+  s.scope.stop()
+})
+
+test('a drag starting on a visible row leaves a collapsed batch selection intact', () => {
+  const s = setup(['b', 'c'])
+  s.selected.value = ['a']
+  s.state.start(
+    {
+      isPrimary: true,
+      button: 0,
+      pointerId: 1,
+      clientX: 10,
+      clientY: 10,
+      currentTarget: s.target,
+      preventDefault() {}
+    },
+    'b'
+  )
+  assert.deepEqual(Array.from(s.selected.value), ['a', 'b'])
+  s.state.cancelSelection(escape())
+  s.scope.stop()
+})
+
+test('dragging down the list keeps extending the selection', () => {
+  const bottoms: Record<string, number> = { a: 100, b: 200, c: 300 }
+  const s = setup(['a', 'b', 'c'])
+  s.selected.value = []
+  s.state.surface.value = {
+    getBoundingClientRect: () => ({ left: 0, right: 300, top: 0, bottom: 300 }),
+    querySelectorAll: () =>
+      ['a', 'b', 'c'].map((id) => ({
+        dataset: { selectionId: id },
+        getClientRects: () => [{}],
+        getBoundingClientRect: () => ({ bottom: bottoms[id] })
+      }))
+  }
+  s.state.start(
+    {
+      isPrimary: true,
+      button: 0,
+      pointerId: 1,
+      clientX: 100,
+      clientY: 50,
+      currentTarget: s.target,
+      preventDefault() {}
+    },
+    'a'
+  )
+  assert.deepEqual(Array.from(s.selected.value), ['a'])
+  const move = s.listeners.get('pointermove') as (event: unknown) => void
+  for (const [y, expected] of [
+    [150, ['a', 'b']],
+    [250, ['a', 'b', 'c']]
+  ] as const) {
+    move({
+      pointerId: 1,
+      pointerType: 'mouse',
+      buttons: 1,
+      clientX: 100,
+      clientY: y,
+      preventDefault() {}
+    })
+    assert.deepEqual(Array.from(s.selected.value), expected, `at y=${y}`)
+  }
+  s.state.cancelSelection(escape())
+  s.scope.stop()
+})
+
+test('a re-rendered list does not interrupt a drag that is still going', async () => {
+  const s = setup(['a', 'b', 'c'])
+  s.selected.value = []
+  s.state.start(
+    {
+      isPrimary: true,
+      button: 0,
+      pointerId: 1,
+      clientX: 10,
+      clientY: 10,
+      currentTarget: s.target,
+      preventDefault() {}
+    },
+    'a'
+  )
+  assert.ok(s.listeners.has('pointermove'))
+  // A computed hands back a fresh array with the same contents on every pass.
+  s.rangeIds.value = ['a', 'b', 'c']
+  s.ids.value = ['a', 'b', 'c']
+  await nextTick()
+  assert.ok(s.listeners.has('pointermove'), 'drag survives an identical list')
+  // Losing the row the drag started from does end it.
+  s.rangeIds.value = ['b', 'c']
+  await nextTick()
+  assert.equal(s.listeners.has('pointermove'), false)
   s.scope.stop()
 })

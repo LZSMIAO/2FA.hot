@@ -562,7 +562,7 @@
   "m8677d87b4c32": "Informacje o projekcie 2fa.hot i obsługiwanych funkcjach",
   "mb8784c8dd563": "Spróbuj ponownie",
   "accountLinkingOpen": "Przejdź do łączenia kont",
-  "accountLinkingLinkedHint": "Zielony: Wszystkie klucze są powiązane z kontami. Kliknij, aby zobaczyć lub zmienić powiązania.",
-  "accountLinkingUncertainHint": "Żółty: Konta wymagają potwierdzenia lub część kluczy nie jest powiązana. Kliknij, aby potwierdzić lub uzupełnić powiązania.",
-  "accountLinkingUnlinkedHint": "Szary: Brak powiązanych kont. Kliknij, aby ręcznie powiązać klucze z kontami."
+  "accountLinkingLinkedHint": "Każdy klucz ma nazwę konta. Kliknij, aby zobaczyć lub zmienić.",
+  "accountLinkingUncertainHint": "We wklejonym tekście znaleziono nazwy kont, ale nie każdy klucz jest jeszcze dopasowany. Kliknij, aby potwierdzić.",
+  "accountLinkingUnlinkedHint": "Te klucze nie mają jeszcze nazw kont. Kliknij, aby dodać je ręcznie."
 }

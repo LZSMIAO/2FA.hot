@@ -562,7 +562,7 @@
   "m6eadeddb7e70": "Panduan",
   "mb8784c8dd563": "Coba lagi",
   "accountLinkingOpen": "Buka penautan akun",
-  "accountLinkingLinkedHint": "Hijau: Semua kunci sudah ditautkan ke akun. Klik untuk melihat atau mengubah tautan.",
-  "accountLinkingUncertainHint": "Kuning: Ada akun yang perlu dikonfirmasi atau kunci yang belum ditautkan. Klik untuk mengonfirmasi atau melengkapi tautan.",
-  "accountLinkingUnlinkedHint": "Abu-abu: Belum ada akun tertaut. Klik untuk menautkan kunci ke akun secara manual."
+  "accountLinkingLinkedHint": "Setiap kunci punya nama akun. Klik untuk melihat atau mengubahnya.",
+  "accountLinkingUncertainHint": "Nama akun ditemukan di teks yang Anda tempel, tetapi belum semua kunci dicocokkan. Klik untuk mengonfirmasi.",
+  "accountLinkingUnlinkedHint": "Kunci ini belum punya nama akun. Klik untuk menambahkannya sendiri."
 }

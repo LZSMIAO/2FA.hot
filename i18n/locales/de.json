@@ -562,7 +562,7 @@
   "m6eadeddb7e70": "Anleitungen",
   "mb8784c8dd563": "Erneut versuchen",
   "accountLinkingOpen": "Zur Kontoverknüpfung",
-  "accountLinkingLinkedHint": "Grün: Alle Schlüssel sind Konten zugeordnet. Klicken, um Zuordnungen anzusehen oder zu ändern.",
-  "accountLinkingUncertainHint": "Gelb: Konten müssen bestätigt werden oder Schlüssel sind noch nicht zugeordnet. Klicken, um Zuordnungen zu bestätigen oder zu ergänzen.",
-  "accountLinkingUnlinkedHint": "Grau: Keine Konten zugeordnet. Klicken, um Schlüssel manuell Konten zuzuordnen."
+  "accountLinkingLinkedHint": "Jeder Schlüssel hat einen Kontonamen. Zum Ansehen oder Bearbeiten klicken.",
+  "accountLinkingUncertainHint": "Im eingefügten Text wurden Kontonamen gefunden, aber noch nicht jeder Schlüssel ist zugeordnet. Zum Bestätigen klicken.",
+  "accountLinkingUnlinkedHint": "Diese Schlüssel haben noch keine Kontonamen. Zum manuellen Hinzufügen klicken."
 }

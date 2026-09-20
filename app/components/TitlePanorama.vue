@@ -305,7 +305,13 @@ onBeforeUnmount(() => {
 }
 .panorama-controls {
   position: fixed;
-  right: 1rem;
+  /*
+   * Fixed positioning resolves against the viewport minus the scrollbar, so a
+   * dialog's scroll lock - which hides the scrollbar and pads the body instead
+   * - would slide these controls sideways by the scrollbar's width. Add that
+   * width back only once the scrollbar is gone so they stay put.
+   */
+  right: max(1rem, calc(1rem + 100% - 100vw + var(--page-scrollbar-width, 0px)));
   bottom: 1rem;
   z-index: 10;
   display: flex;

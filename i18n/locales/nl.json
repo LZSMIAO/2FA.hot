@@ -562,7 +562,7 @@
   "m8677d87b4c32": "Projectinformatie en ondersteunde functies van 2fa.hot",
   "mb8784c8dd563": "Opnieuw proberen",
   "accountLinkingOpen": "Ga naar accounts koppelen",
-  "accountLinkingLinkedHint": "Groen: Alle sleutels zijn aan accounts gekoppeld. Klik om koppelingen te bekijken of te wijzigen.",
-  "accountLinkingUncertainHint": "Geel: Accounts moeten worden bevestigd of sommige sleutels zijn nog niet gekoppeld. Klik om koppelingen te bevestigen of aan te vullen.",
-  "accountLinkingUnlinkedHint": "Grijs: Geen accounts gekoppeld. Klik om sleutels handmatig aan accounts te koppelen."
+  "accountLinkingLinkedHint": "Elke sleutel heeft een accountnaam. Klik om te bekijken of te bewerken.",
+  "accountLinkingUncertainHint": "In wat je plakte zijn accountnamen gevonden, maar nog niet elke sleutel is gekoppeld. Klik om te bevestigen.",
+  "accountLinkingUnlinkedHint": "Deze sleutels hebben nog geen accountnaam. Klik om ze zelf toe te voegen."
 }

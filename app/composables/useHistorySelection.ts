@@ -25,6 +25,18 @@ export function useHistorySelection(
   let lastEnd = ''
   let scrollContainer: HTMLElement | null = null
 
+  /**
+   * A range only ever walks the rows currently on screen, but rows hidden in a
+   * collapsed batch can already be selected. Fold those back in so picking one
+   * row never silently clears another group's selection.
+   */
+  function applyRange(baseline: readonly string[], from: string, to: string, checked: boolean) {
+    const ranged = selectionRange(rangeIds.value, baseline, from, to, checked)
+    const kept = new Set(ranged)
+    for (const id of baseline) if (!rangeIds.value.includes(id)) kept.add(id)
+    return ids.value.filter((id) => kept.has(id))
+  }
+
   function stop() {
     const previous = drag
     drag = null
@@ -51,7 +63,7 @@ export function useHistorySelection(
       elements.find((el) => drag!.y <= el.getBoundingClientRect().bottom) ?? elements.at(-1)
     const id = row?.dataset.selectionId
     if (id && id !== lastEnd) {
-      selected.value = selectionRange(rangeIds.value, drag.baseline, drag.start, id, drag.checked)
+      selected.value = applyRange(drag.baseline, drag.start, id, drag.checked)
       lastEnd = id
     }
   }
@@ -107,7 +119,7 @@ export function useHistorySelection(
       y: event.clientY,
       target
     }
-    selected.value = selectionRange(rangeIds.value, drag.baseline, from, id, drag.checked)
+    selected.value = applyRange(drag.baseline, from, id, drag.checked)
     lastEnd = id
     if (!event.shiftKey) anchor = id
     target.setPointerCapture(event.pointerId)
@@ -121,13 +133,7 @@ export function useHistorySelection(
     // Pointer input was handled on press; detail=0 is keyboard/assistive activation.
     if (event.detail !== 0) return
     const from = event.shiftKey && rangeIds.value.includes(anchor) ? anchor : id
-    selected.value = selectionRange(
-      rangeIds.value,
-      selected.value,
-      from,
-      id,
-      !selectedSet.value.has(id)
-    )
+    selected.value = applyRange(selected.value, from, id, !selectedSet.value.has(id))
     if (!event.shiftKey) anchor = id
   }
   function toggleAll() {
@@ -146,14 +152,22 @@ export function useHistorySelection(
     lastEnd = ''
     selected.value = []
   }
-  watch(rangeIds, () => {
-    if (drag) stop()
-    if (!rangeIds.value.includes(anchor)) anchor = ''
+  // These lists are computed, so they hand back a fresh array on every
+  // re-evaluation. Compare contents: an identical list must not interrupt a
+  // drag that is still in progress, and only a drag whose anchor row actually
+  // disappeared has lost its reference point.
+  const same = (a: readonly string[], b: readonly string[] | undefined) =>
+    !!b && a.length === b.length && a.every((id, index) => id === b[index])
+  watch(rangeIds, (next, previous) => {
+    if (same(next, previous)) return
+    if (drag && !next.includes(drag.start)) stop()
+    if (!next.includes(anchor)) anchor = ''
   })
-  watch(ids, () => {
-    if (drag) stop()
-    selected.value = selected.value.filter((id) => ids.value.includes(id))
-    if (!ids.value.includes(anchor)) anchor = ''
+  watch(ids, (next, previous) => {
+    if (same(next, previous)) return
+    if (drag && !next.includes(drag.start)) stop()
+    selected.value = selected.value.filter((id) => next.includes(id))
+    if (!next.includes(anchor)) anchor = ''
   })
   onBeforeUnmount(() => {
     if (drag) stop()

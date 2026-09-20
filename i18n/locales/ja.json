@@ -562,7 +562,7 @@
   "m8677d87b4c32": "2fa.hotのプロジェクト情報と対応機能",
   "mb8784c8dd563": "再試行",
   "accountLinkingOpen": "アカウントの関連付けへ",
-  "accountLinkingLinkedHint": "緑：すべてのキーがアカウントに関連付けられています。クリックして確認・変更できます。",
-  "accountLinkingUncertainHint": "黄：確認待ちのアカウント、または未関連付けのキーがあります。クリックして関連付けを確認・追加できます。",
-  "accountLinkingUnlinkedHint": "灰：アカウントはまだ関連付けられていません。クリックして手動で関連付けられます。"
+  "accountLinkingLinkedHint": "すべての鍵にアカウント名が設定されています。クリックすると確認・変更できます。",
+  "accountLinkingUncertainHint": "貼り付けた内容からアカウント名が見つかりましたが、まだすべての鍵とは対応していません。クリックして確認してください。",
+  "accountLinkingUnlinkedHint": "これらの鍵にはまだアカウント名がありません。クリックすると手動で設定できます。"
 }

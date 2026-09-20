@@ -562,7 +562,7 @@
   "m6eadeddb7e70": "Guides",
   "mb8784c8dd563": "Réessayer",
   "accountLinkingOpen": "Associer des comptes",
-  "accountLinkingLinkedHint": "Vert : toutes les clés sont liées à des comptes. Cliquez pour consulter ou modifier les liens.",
-  "accountLinkingUncertainHint": "Jaune : des comptes restent à confirmer ou des clés ne sont pas liées. Cliquez pour confirmer ou compléter les liens.",
-  "accountLinkingUnlinkedHint": "Gris : aucun compte lié. Cliquez pour associer manuellement les clés aux comptes."
+  "accountLinkingLinkedHint": "Chaque clé a un nom de compte. Cliquez pour les consulter ou les modifier.",
+  "accountLinkingUncertainHint": "Des noms de compte ont été trouvés dans ce que vous avez collé, mais toutes les clés ne sont pas encore associées. Cliquez pour confirmer.",
+  "accountLinkingUnlinkedHint": "Ces clés n'ont pas encore de nom de compte. Cliquez pour les ajouter manuellement."
 }

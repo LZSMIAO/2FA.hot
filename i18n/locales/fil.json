@@ -562,7 +562,7 @@
   "m6eadeddb7e70": "Mga gabay",
   "mb8784c8dd563": "Subukan muli",
   "accountLinkingOpen": "Pumunta sa pag-link ng account",
-  "accountLinkingLinkedHint": "Berde: Nakaugnay na sa mga account ang lahat ng key. I-click para tingnan o baguhin ang mga ugnayan.",
-  "accountLinkingUncertainHint": "Dilaw: May mga account na kailangang kumpirmahin o key na hindi pa nakaugnay. I-click para kumpirmahin o kumpletuhin ang mga ugnayan.",
-  "accountLinkingUnlinkedHint": "Abo: Walang nakaugnay na account. I-click para manu-manong iugnay ang mga key sa account."
+  "accountLinkingLinkedHint": "May pangalan ng account ang bawat susi. I-click para tingnan o baguhin.",
+  "accountLinkingUncertainHint": "May nakitang pangalan ng account sa idinikit mo, pero hindi pa lahat ng susi ay naitugma. I-click para kumpirmahin.",
+  "accountLinkingUnlinkedHint": "Wala pang pangalan ng account ang mga susing ito. I-click para idagdag mismo."
 }

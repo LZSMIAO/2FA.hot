@@ -562,7 +562,7 @@
   "m6eadeddb7e70": "Miongozo",
   "mb8784c8dd563": "Jaribu tena",
   "accountLinkingOpen": "Nenda kuunganisha akaunti",
-  "accountLinkingLinkedHint": "Kijani: Funguo zote zimeunganishwa na akaunti. Bofya kuona au kubadilisha miunganisho.",
-  "accountLinkingUncertainHint": "Njano: Kuna akaunti zinazohitaji uthibitisho au funguo ambazo hazijaunganishwa. Bofya kuthibitisha au kukamilisha miunganisho.",
-  "accountLinkingUnlinkedHint": "Kijivu: Hakuna akaunti zilizounganishwa. Bofya kuunganisha funguo na akaunti mwenyewe."
+  "accountLinkingLinkedHint": "Kila ufunguo una jina la akaunti. Bofya ili kuyaona au kuyahariri.",
+  "accountLinkingUncertainHint": "Majina ya akaunti yamepatikana katika ulichobandika, lakini bado si kila ufunguo umelinganishwa. Bofya ili kuthibitisha.",
+  "accountLinkingUnlinkedHint": "Funguo hizi bado hazina majina ya akaunti. Bofya ili kuyaongeza mwenyewe."
 }

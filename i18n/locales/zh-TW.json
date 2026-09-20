@@ -562,7 +562,7 @@
   "m6eadeddb7e70": "指南",
   "mb8784c8dd563": "重試",
   "accountLinkingOpen": "前往關聯帳號",
-  "accountLinkingLinkedHint": "綠色：所有密鑰已關聯帳號。點擊前往關聯帳號，可查看或修改。",
-  "accountLinkingUncertainHint": "黃色：偵測到待確認的帳號，或仍有密鑰未關聯。點擊前往關聯帳號，確認或補全對應關係。",
-  "accountLinkingUnlinkedHint": "灰色：尚未關聯帳號。點擊前往關聯帳號，手動設定對應關係。"
+  "accountLinkingLinkedHint": "每個密鑰都有對應的帳號名稱。點擊可查看或修改。",
+  "accountLinkingUncertainHint": "已從貼上的內容認出帳號名稱，但還沒和密鑰全部對應。點擊確認。",
+  "accountLinkingUnlinkedHint": "密鑰還沒有帳號名稱。點擊可手動對應。"
 }

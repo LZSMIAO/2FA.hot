@@ -562,7 +562,7 @@
   "m8677d87b4c32": "Informazioni sul progetto 2fa.hot e funzionalità supportate",
   "mb8784c8dd563": "Riprova",
   "accountLinkingOpen": "Vai al collegamento account",
-  "accountLinkingLinkedHint": "Verde: tutte le chiavi sono associate ad account. Fai clic per vedere o modificare le associazioni.",
-  "accountLinkingUncertainHint": "Giallo: alcuni account richiedono conferma o alcune chiavi non sono associate. Fai clic per confermare o completare le associazioni.",
-  "accountLinkingUnlinkedHint": "Grigio: nessun account associato. Fai clic per associare manualmente le chiavi agli account."
+  "accountLinkingLinkedHint": "Ogni chiave ha un nome account. Fai clic per vederli o modificarli.",
+  "accountLinkingUncertainHint": "Sono stati trovati nomi account in ciò che hai incollato, ma non tutte le chiavi sono abbinate. Fai clic per confermare.",
+  "accountLinkingUnlinkedHint": "Queste chiavi non hanno ancora un nome account. Fai clic per aggiungerli manualmente."
 }
