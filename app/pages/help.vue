@@ -2,7 +2,6 @@
 const localePath = useLocalePath()
 definePageMeta({ viewTransition: false })
 const { tx } = useMessages()
-const route = useRoute()
 const sections = [
   { id: 'start', label: '开始取码', icon: 'i-lucide-scan-line' },
   { id: 'steam', label: 'Steam Guard', icon: 'i-lucide-gamepad-2' },
@@ -21,17 +20,9 @@ const sections = [
     <p class="article-lead">
       {{ tx('从导入密钥到获取验证码，了解 TOTP 与 Steam Guard 的用法。') }}
     </p>
-    <nav class="article-nav help-nav" :aria-label="tx('本页目录')">
-      <NuxtLink
-        v-for="section in sections"
-        :key="section.id"
-        :to="{ path: route.path, hash: `#${section.id}` }"
-        :aria-current="route.hash === `#${section.id}` ? 'location' : undefined"
-      >
-        <UIcon :name="section.icon" aria-hidden="true" />
-        <span>{{ tx(section.label) }}</span>
-      </NuxtLink>
-    </nav>
+    <ArticleNavigation
+      :items="sections.map((section) => ({ ...section, label: tx(section.label) }))"
+    />
     <h2 id="start">{{ tx('如何获取验证码') }}</h2>
     <ol>
       <li>
@@ -190,60 +181,5 @@ const sections = [
   max-width: 48rem;
   margin-block: 0 1.75rem;
   line-height: 1.7;
-}
-.help-page .help-nav {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.375rem 1rem;
-  padding: 0.75rem 0;
-  border: 0;
-  border-block: 1px solid var(--ui-border);
-  background: transparent;
-  box-shadow: none;
-}
-.help-page .help-nav a {
-  gap: 0.625rem;
-  min-height: 44px;
-  padding: 0.625rem 0.75rem;
-  border: 0;
-  border-inline-start: 2px solid transparent;
-  box-shadow: none;
-  color: var(--ui-text-muted);
-  text-decoration: none;
-  font-size: 0.875rem;
-  line-height: 1.5;
-}
-.help-nav a .iconify {
-  flex-shrink: 0;
-  width: 1rem;
-  height: 1rem;
-}
-.help-page .help-nav a:hover,
-.help-page .help-nav a:focus-visible {
-  background: var(--wash);
-  color: var(--ui-text-highlighted);
-  box-shadow: none;
-}
-.help-page .help-nav a[aria-current='location'] {
-  background: var(--wash);
-  border-inline-start-color: var(--accent-ink);
-  color: var(--accent-ink);
-}
-.help-page .help-nav a:focus-visible {
-  outline: 2px solid var(--accent-ink);
-  outline-offset: 2px;
-}
-.help-page .help-nav + h2 {
-  margin-top: 2rem;
-}
-@media (max-width: 600px) {
-  .help-page .help-nav {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: 0.5rem;
-  }
-  .help-page .help-nav a {
-    padding-inline: 0.5rem;
-    overflow-wrap: anywhere;
-  }
 }
 </style>

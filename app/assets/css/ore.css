@@ -529,35 +529,6 @@
   border: 2px solid var(--ore-outline);
   box-shadow: var(--ore-button-shadow);
 }
-.article-nav {
-  justify-content: center;
-  padding: 0.5rem;
-  gap: 0.25rem;
-  background: var(--ore-control);
-  border: 2px solid var(--ore-outline);
-  box-shadow: var(--ore-window-shadow);
-}
-.content-page .article-nav a {
-  padding: 0.5rem 0.75rem;
-  color: var(--ui-text);
-  text-decoration: none;
-  border: 2px solid transparent;
-  line-height: 1.4;
-}
-.content-page .article-nav a:hover,
-.content-page .article-nav a:focus-visible {
-  background: var(--ore-control-hover);
-  border-color: var(--ore-outline);
-  box-shadow: var(--ore-bevel);
-  color: var(--accent-ink);
-}
-.content-page .article-nav a:focus-visible {
-  outline: 2px solid var(--accent-ink);
-  outline-offset: 2px;
-}
-.content-page .article-nav a:active {
-  box-shadow: var(--ore-inset);
-}
 /* Keep the dialog's centering translate separate from its horizontal entrance. */
 .ore-dialog-motion[data-state='open'] {
   animation: ore-dialog-in var(--ore-dialog-enter-duration) var(--ore-enter-ease) both;

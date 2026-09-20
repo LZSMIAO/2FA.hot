@@ -22,11 +22,9 @@ const related = computed(() => entries.value.filter((item) => item.slug !== guid
     <p class="guide-byline">
       {{ tx('作者：') }}<NuxtLink :to="localePath('/about')">2fa.hot</NuxtLink>
     </p>
-    <nav class="article-nav" :aria-label="tx('本页目录')">
-      <a v-for="section in guide.sections" :key="section.id" :href="`#${section.id}`">{{
-        section.title
-      }}</a>
-    </nav>
+    <ArticleNavigation
+      :items="guide.sections.map((section) => ({ id: section.id, label: section.title }))"
+    />
     <section v-for="section in guide.sections" :key="section.id">
       <h2 :id="section.id">{{ section.title }}</h2>
       <p v-for="paragraph in section.paragraphs" :key="paragraph">{{ paragraph }}</p>
