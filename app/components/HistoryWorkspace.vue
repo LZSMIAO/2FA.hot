@@ -85,6 +85,11 @@ const groups = computed(() => {
   }
   return [...grouped.values()]
 })
+/*
+ * Past this many rows the reveal fills the screen anyway, and sliding that
+ * many live codes open costs more than the motion adds.
+ */
+const ANIMATED_BATCH_ROWS = 10
 const selectionUnits = computed(() =>
   groups.value.flatMap((group) => {
     const rowUnits = group.rows.map((row) => ({ id: row.id, members: [row.id] }))
@@ -413,7 +418,10 @@ const date = (v: number) =>
         </div>
         <div
           class="history-group-rows"
-          :class="{ 'is-open': !group.batch || batchExpanded(group.id) }"
+          :class="{
+            'is-open': !group.batch || batchExpanded(group.id),
+            'is-instant': group.rows.length > ANIMATED_BATCH_ROWS
+          }"
         >
           <div class="history-group-rows-clip">
             <div
@@ -752,6 +760,10 @@ const date = (v: number) =>
   transition:
     grid-template-rows 240ms var(--ore-enter-ease),
     visibility 0s;
+}
+.history-group-rows.is-instant,
+.history-group-rows.is-instant.is-open {
+  transition: none;
 }
 .history-group-rows-clip {
   min-height: 0;
