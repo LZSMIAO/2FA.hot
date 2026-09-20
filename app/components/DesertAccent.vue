@@ -67,25 +67,26 @@ function leave(event: PointerEvent) {
   height: 7rem;
   align-self: start;
   opacity: 0;
-  visibility: hidden;
   pointer-events: none;
   /*
-   * Only the fade. Animating the height meant a relayout on every frame for
-   * 320ms, which stuttered on a phone, while the scene itself was painted at
-   * full size from the first frame - so all that motion bought was the shake.
-   * The panel takes its size in one step and she fades over it.
+   * The drawing is large and intricate. Hiding it with visibility let the
+   * browser throw its raster away, so opening the panel had to paint the
+   * whole scene again on the main thread, which is the hitch you feel in the
+   * panel and in the sun swapping for the moon beside it. Held on its own
+   * layer it is painted once and the panel only fades it in. It is inert and
+   * cannot be reached while it is transparent.
    */
+  will-change: opacity;
   transition:
-    opacity 200ms ease,
-    visibility 0s 200ms;
+    height 320ms var(--ease-out),
+    opacity 200ms ease;
 }
 .desert-accent.is-open {
   height: 16rem;
   opacity: 1;
-  visibility: visible;
   transition:
-    opacity 240ms ease,
-    visibility 0s;
+    height 320ms var(--ease-out),
+    opacity 240ms ease;
 }
 .desert-scene {
   position: absolute;

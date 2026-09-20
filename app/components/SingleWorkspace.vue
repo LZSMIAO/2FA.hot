@@ -1271,6 +1271,9 @@ onBeforeUnmount(() => {
   background-blend-mode: screen;
   mask-image: radial-gradient(circle at center, #000 20%, rgb(0 0 0 / 80%) 35%, transparent 68%);
   pointer-events: none;
+  /* The mask and the blend mode make each frame expensive to draw; on its own
+     layer the pair is drawn once and the swap runs on the compositor. */
+  will-change: transform, opacity;
   transition:
     opacity 240ms ease-out,
     transform 240ms var(--ease-out);
