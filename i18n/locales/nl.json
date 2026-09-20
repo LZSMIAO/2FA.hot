@@ -364,7 +364,7 @@
   "m19053de1db8c": "Voer een sleutel in om hier recent gebruikte records te zien.",
   "m7bdedd1e966e": "Demo voor één code",
   "mae594705e66d": "Demo voor meerdere codes",
-  "me749735e9d7b": "Plak de eerste sleutel, druk op Enter en plak de volgende.\nEén sleutel per regel; configuratielinks werken ook.",
+  "me749735e9d7b": "Eén sleutel per regel, plak er zoveel je nodig hebt.\notpauth://-links werken ook.",
   "m5ec17779caa2": "Schakel in en ontgrendel om geldige invoer automatisch op te slaan. Uitschakelen stopt nieuwe opslag en behoudt bestaande records.",
   "m5bd189433038": "{count} mogelijke sleutels gevonden",
   "md1c305493aa9": "Selecteer de gewenste sleutels. Open de batchmodus door meerdere sleutels te selecteren.",
@@ -564,5 +564,7 @@
   "accountLinkingOpen": "Ga naar accounts koppelen",
   "accountLinkingLinkedHint": "Elke sleutel heeft een accountnaam. Klik om te bekijken of te bewerken.",
   "accountLinkingUncertainHint": "In wat je plakte zijn accountnamen gevonden, maar nog niet elke sleutel is gekoppeld. Klik om te bevestigen.",
-  "accountLinkingUnlinkedHint": "Deze sleutels hebben nog geen accountnaam. Klik om ze zelf toe te voegen."
+  "accountLinkingUnlinkedHint": "Deze sleutels hebben nog geen accountnaam. Klik om ze zelf toe te voegen.",
+  "backupFileChoose": "Back-upbestand kiezen",
+  "backupFileNone": "Geen bestand gekozen"
 }

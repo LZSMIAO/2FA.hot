@@ -364,7 +364,7 @@
   "m19053de1db8c": "Nhập khóa để xem các mục vừa sử dụng tại đây.",
   "m7bdedd1e966e": "Trình diễn mã đơn",
   "mae594705e66d": "Trình diễn mã hàng loạt",
-  "me749735e9d7b": "Dán khóa đầu tiên, nhấn Enter rồi dán khóa tiếp theo.\nMỗi dòng một khóa; cũng hỗ trợ liên kết thiết lập ứng dụng xác thực.",
+  "me749735e9d7b": "Mỗi dòng một khóa, dán bao nhiêu tùy bạn.\nLiên kết otpauth:// cũng được hỗ trợ.",
   "m5ec17779caa2": "Bật và mở khóa để tự lưu dữ liệu hợp lệ. Tắt sẽ ngừng lưu mới nhưng vẫn giữ các mục hiện có.",
   "m5bd189433038": "Phát hiện {count} khóa có thể dùng",
   "md1c305493aa9": "Chọn khóa muốn dùng. Chọn nhiều khóa để mở chế độ hàng loạt.",
@@ -564,5 +564,7 @@
   "accountLinkingOpen": "Đi đến liên kết tài khoản",
   "accountLinkingLinkedHint": "Mọi khóa đều có tên tài khoản. Nhấp để xem hoặc chỉnh sửa.",
   "accountLinkingUncertainHint": "Đã tìm thấy tên tài khoản trong nội dung bạn dán, nhưng chưa khớp hết với các khóa. Nhấp để xác nhận.",
-  "accountLinkingUnlinkedHint": "Các khóa này chưa có tên tài khoản. Nhấp để tự thêm."
+  "accountLinkingUnlinkedHint": "Các khóa này chưa có tên tài khoản. Nhấp để tự thêm.",
+  "backupFileChoose": "Chọn tệp sao lưu",
+  "backupFileNone": "Chưa chọn tệp"
 }

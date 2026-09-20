@@ -364,7 +364,7 @@
   "m19053de1db8c": "Ingiza ufunguo ili kuona rekodi zilizotumiwa hivi karibuni hapa.",
   "m7bdedd1e966e": "Onyesho la msimbo mmoja",
   "mae594705e66d": "Onyesho la misimbo mingi",
-  "me749735e9d7b": "Bandika ufunguo wa kwanza, bonyeza Enter kisha ubandike unaofuata.\nUfunguo mmoja kila mstari; viungo vya usanidi wa uthibitishaji vinakubalika pia.",
+  "me749735e9d7b": "Ufunguo mmoja kwa kila mstari; bandika kadri unavyohitaji.\nViungo vya otpauth:// pia hufanya kazi.",
   "m5ec17779caa2": "Washa na ufungue ili kuhifadhi maingizo halali kiotomatiki. Kuzima husimamisha hifadhi mpya lakini huacha rekodi zilizopo.",
   "m5bd189433038": "Funguo {count} zinazowezekana zimepatikana",
   "md1c305493aa9": "Chagua funguo za kutumia. Chagua zaidi ya moja ili kufungua hali ya kundi.",
@@ -564,5 +564,7 @@
   "accountLinkingOpen": "Nenda kuunganisha akaunti",
   "accountLinkingLinkedHint": "Kila ufunguo una jina la akaunti. Bofya ili kuyaona au kuyahariri.",
   "accountLinkingUncertainHint": "Majina ya akaunti yamepatikana katika ulichobandika, lakini bado si kila ufunguo umelinganishwa. Bofya ili kuthibitisha.",
-  "accountLinkingUnlinkedHint": "Funguo hizi bado hazina majina ya akaunti. Bofya ili kuyaongeza mwenyewe."
+  "accountLinkingUnlinkedHint": "Funguo hizi bado hazina majina ya akaunti. Bofya ili kuyaongeza mwenyewe.",
+  "backupFileChoose": "Chagua faili la nakala rudufu",
+  "backupFileNone": "Hakuna faili lililochaguliwa"
 }

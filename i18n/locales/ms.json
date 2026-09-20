@@ -364,7 +364,7 @@
   "m19053de1db8c": "Masukkan kunci untuk melihat rekod yang digunakan baru-baru ini.",
   "m7bdedd1e966e": "Demo kod tunggal",
   "mae594705e66d": "Demo kod pukal",
-  "me749735e9d7b": "Tampal kunci pertama, tekan Enter, kemudian tampal yang seterusnya.\nSatu kunci setiap baris; pautan persediaan pengesah juga disokong.",
+  "me749735e9d7b": "Satu kunci setiap baris, tampal seberapa banyak yang anda perlukan.\nPautan otpauth:// turut disokong.",
   "m5ec17779caa2": "Aktifkan dan buka kunci untuk menyimpan input sah secara automatik. Mematikan menghentikan simpanan baharu tetapi mengekalkan rekod sedia ada.",
   "m5bd189433038": "{count} calon kunci dikesan",
   "md1c305493aa9": "Pilih kunci untuk digunakan. Pilih beberapa kunci untuk membuka mod kelompok.",
@@ -564,5 +564,7 @@
   "accountLinkingOpen": "Pergi ke pemautan akaun",
   "accountLinkingLinkedHint": "Setiap kunci mempunyai nama akaun. Klik untuk melihat atau mengubahnya.",
   "accountLinkingUncertainHint": "Nama akaun ditemui dalam teks yang anda tampal, tetapi belum semua kunci dipadankan. Klik untuk mengesahkan.",
-  "accountLinkingUnlinkedHint": "Kunci ini belum mempunyai nama akaun. Klik untuk menambahnya sendiri."
+  "accountLinkingUnlinkedHint": "Kunci ini belum mempunyai nama akaun. Klik untuk menambahnya sendiri.",
+  "backupFileChoose": "Pilih fail sandaran",
+  "backupFileNone": "Tiada fail dipilih"
 }

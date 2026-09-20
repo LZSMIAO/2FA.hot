@@ -204,8 +204,12 @@ async function backup() {
     )
   }, '备份已导出，请妥善保管。')
 }
+const backupFile = useTemplateRef<HTMLInputElement>('backupFile')
+const backupFileName = shallowRef('')
 function file(event: Event) {
-  return backupImport.read((event.target as HTMLInputElement).files?.[0])
+  const chosen = (event.target as HTMLInputElement).files?.[0]
+  backupFileName.value = chosen?.name ?? ''
+  return backupImport.read(chosen)
 }
 async function merge() {
   if (await backupImport.merge()) {
@@ -593,12 +597,27 @@ const date = (v: number) =>
     :description="tx('重复记录保留现有版本。')"
     ><template #body
       ><div class="modal-stack">
-        <input
-          type="file"
-          accept=".2fahot,application/json"
-          :aria-label="tx('导入备份')"
-          @change="file"
-        /><template v-if="!imported"
+        <div class="backup-file">
+          <input
+            ref="backupFile"
+            type="file"
+            accept=".2fahot,application/json"
+            class="sr-only"
+            :aria-label="tx('导入备份')"
+            @change="file"
+          />
+          <UButton
+            color="neutral"
+            variant="outline"
+            icon="i-lucide-file-up"
+            @click="backupFile?.click()"
+            >{{ tx('选择备份文件') }}</UButton
+          >
+          <span class="backup-file-name" :class="{ 'is-empty': !backupFileName }">{{
+            backupFileName || tx('尚未选择文件')
+          }}</span>
+        </div>
+        <template v-if="!imported"
           ><UFormField :label="tx('备份的解锁口令')"
             ><UInput
               v-model="backupPassword"
@@ -947,6 +966,20 @@ const date = (v: number) =>
   width: 44px;
   height: 44px;
   margin-inline-start: -12px;
+}
+.backup-file {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--control-gap);
+}
+.backup-file-name {
+  min-width: 0;
+  font-size: var(--text-label);
+  overflow-wrap: anywhere;
+}
+.backup-file-name.is-empty {
+  color: var(--ui-text-muted);
 }
 .record-name {
   min-width: 0;

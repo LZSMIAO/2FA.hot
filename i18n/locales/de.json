@@ -364,7 +364,7 @@
   "m19053de1db8c": "Nach der Eingabe eines Schlüssels erscheinen hier zuletzt verwendete Einträge.",
   "m7bdedd1e966e": "Einzelcode-Demo",
   "mae594705e66d": "Stapelcode-Demo",
-  "me749735e9d7b": "Ersten Schlüssel einfügen, Enter drücken und den nächsten einfügen.\nEin Schlüssel pro Zeile; Einrichtungslinks werden ebenfalls unterstützt.",
+  "me749735e9d7b": "Ein Schlüssel pro Zeile – fügen Sie beliebig viele ein.\notpauth://-Links funktionieren ebenfalls.",
   "m5ec17779caa2": "Nach Aktivierung und Entsperrung werden gültige Eingaben automatisch gespeichert. Deaktivieren stoppt neue Einträge; vorhandene bleiben erhalten.",
   "m5bd189433038": "{count} mögliche Schlüssel erkannt",
   "md1c305493aa9": "Wähle die gewünschten Schlüssel. Mehrere Schlüssel lassen sich im Stapelmodus öffnen.",
@@ -564,5 +564,7 @@
   "accountLinkingOpen": "Zur Kontoverknüpfung",
   "accountLinkingLinkedHint": "Jeder Schlüssel hat einen Kontonamen. Zum Ansehen oder Bearbeiten klicken.",
   "accountLinkingUncertainHint": "Im eingefügten Text wurden Kontonamen gefunden, aber noch nicht jeder Schlüssel ist zugeordnet. Zum Bestätigen klicken.",
-  "accountLinkingUnlinkedHint": "Diese Schlüssel haben noch keine Kontonamen. Zum manuellen Hinzufügen klicken."
+  "accountLinkingUnlinkedHint": "Diese Schlüssel haben noch keine Kontonamen. Zum manuellen Hinzufügen klicken.",
+  "backupFileChoose": "Sicherungsdatei wählen",
+  "backupFileNone": "Keine Datei gewählt"
 }

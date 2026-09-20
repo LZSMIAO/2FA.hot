@@ -125,6 +125,7 @@ test('size transition completes without animation frames, settles scroll before 
     CustomEvent: class {},
     reducedMotion: shallowRef(false),
     document: {
+      documentElement: { classList: { add() {}, remove() {} } },
       startViewTransition: (update: () => Promise<void>) => {
         const ready = update().then(() => {
           events.push('ready')
@@ -226,7 +227,7 @@ test('lock closes exports and cancels an expansion waiting for route preloading'
     preloadRouteComponents: () => loading,
     navigateTo: (path: string) => destinations.push(path),
     nextTick: async () => {},
-    document: {},
+    document: { documentElement: { classList: { add() {}, remove() {} } } },
     reducedMotion: shallowRef(true)
   }
   const text = source('OtpResult')

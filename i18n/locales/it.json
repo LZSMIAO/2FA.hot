@@ -364,7 +364,7 @@
   "m19053de1db8c": "Inserisci una chiave per vedere qui i record usati di recente.",
   "m7bdedd1e966e": "Demo codice singolo",
   "mae594705e66d": "Demo codici multipli",
-  "me749735e9d7b": "Incolla la prima chiave, premi Invio e incolla la successiva.\nUna chiave per riga; sono accettati anche i link di configurazione.",
+  "me749735e9d7b": "Una chiave per riga: incollane quante ne servono.\nFunzionano anche i link otpauth://.",
   "m5ec17779caa2": "Attiva e sblocca per salvare automaticamente gli inserimenti validi. Disattivando interrompi i nuovi salvataggi ma conservi quelli esistenti.",
   "m5bd189433038": "Rilevate {count} possibili chiavi",
   "md1c305493aa9": "Seleziona le chiavi da usare. Puoi aprire la modalità multipla selezionando più chiavi.",
@@ -564,5 +564,7 @@
   "accountLinkingOpen": "Vai al collegamento account",
   "accountLinkingLinkedHint": "Ogni chiave ha un nome account. Fai clic per vederli o modificarli.",
   "accountLinkingUncertainHint": "Sono stati trovati nomi account in ciò che hai incollato, ma non tutte le chiavi sono abbinate. Fai clic per confermare.",
-  "accountLinkingUnlinkedHint": "Queste chiavi non hanno ancora un nome account. Fai clic per aggiungerli manualmente."
+  "accountLinkingUnlinkedHint": "Queste chiavi non hanno ancora un nome account. Fai clic per aggiungerli manualmente.",
+  "backupFileChoose": "Scegli file di backup",
+  "backupFileNone": "Nessun file scelto"
 }

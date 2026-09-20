@@ -364,7 +364,7 @@
   "m19053de1db8c": "Wpisz klucz, aby zobaczyć ostatnio używane wpisy.",
   "m7bdedd1e966e": "Pokaz pojedynczego kodu",
   "mae594705e66d": "Pokaz wielu kodów",
-  "me749735e9d7b": "Wklej pierwszy klucz, naciśnij Enter i wklej kolejny.\nJeden klucz na wiersz; obsługiwane są też linki konfiguracji.",
+  "me749735e9d7b": "Jeden klucz w wierszu — wklej ich tyle, ile potrzebujesz.\nLinki otpauth:// też działają.",
   "m5ec17779caa2": "Włącz i odblokuj, aby automatycznie zapisywać prawidłowe dane. Wyłączenie zatrzymuje nowe zapisy i zachowuje istniejące.",
   "m5bd189433038": "Wykryto {count} możliwych kluczy",
   "md1c305493aa9": "Wybierz klucze do użycia. Zaznacz kilka kluczy, aby otworzyć tryb zbiorczy.",
@@ -564,5 +564,7 @@
   "accountLinkingOpen": "Przejdź do łączenia kont",
   "accountLinkingLinkedHint": "Każdy klucz ma nazwę konta. Kliknij, aby zobaczyć lub zmienić.",
   "accountLinkingUncertainHint": "We wklejonym tekście znaleziono nazwy kont, ale nie każdy klucz jest jeszcze dopasowany. Kliknij, aby potwierdzić.",
-  "accountLinkingUnlinkedHint": "Te klucze nie mają jeszcze nazw kont. Kliknij, aby dodać je ręcznie."
+  "accountLinkingUnlinkedHint": "Te klucze nie mają jeszcze nazw kont. Kliknij, aby dodać je ręcznie.",
+  "backupFileChoose": "Wybierz plik kopii",
+  "backupFileNone": "Nie wybrano pliku"
 }

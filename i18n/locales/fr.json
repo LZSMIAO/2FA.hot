@@ -364,7 +364,7 @@
   "m19053de1db8c": "Saisissez une clé pour voir ici les entrées récemment utilisées.",
   "m7bdedd1e966e": "Démo d’un seul code",
   "mae594705e66d": "Démo de codes en lot",
-  "me749735e9d7b": "Collez la première clé, appuyez sur Entrée, puis collez la suivante.\nUne clé par ligne ; les liens de configuration sont aussi acceptés.",
+  "me749735e9d7b": "Une clé par ligne, collez-en autant que nécessaire.\nLes liens otpauth:// fonctionnent aussi.",
   "m5ec17779caa2": "Activez et déverrouillez pour enregistrer automatiquement les saisies valides. Désactiver arrête les nouveaux enregistrements sans supprimer les anciens.",
   "m5bd189433038": "{count} clés possibles détectées",
   "md1c305493aa9": "Sélectionnez les clés à utiliser. Plusieurs clés peuvent être ouvertes en mode par lots.",
@@ -564,5 +564,7 @@
   "accountLinkingOpen": "Associer des comptes",
   "accountLinkingLinkedHint": "Chaque clé a un nom de compte. Cliquez pour les consulter ou les modifier.",
   "accountLinkingUncertainHint": "Des noms de compte ont été trouvés dans ce que vous avez collé, mais toutes les clés ne sont pas encore associées. Cliquez pour confirmer.",
-  "accountLinkingUnlinkedHint": "Ces clés n'ont pas encore de nom de compte. Cliquez pour les ajouter manuellement."
+  "accountLinkingUnlinkedHint": "Ces clés n'ont pas encore de nom de compte. Cliquez pour les ajouter manuellement.",
+  "backupFileChoose": "Choisir un fichier de sauvegarde",
+  "backupFileNone": "Aucun fichier choisi"
 }

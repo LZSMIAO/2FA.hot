@@ -364,7 +364,7 @@
   "m19053de1db8c": "輸入密鑰後，最近使用的記錄會出現在這裡。",
   "m7bdedd1e966e": "單條取碼演示",
   "mae594705e66d": "批量取碼演示",
-  "me749735e9d7b": "貼上第一個密鑰，按 Enter 換行，再貼上下一個。\n一行一個密鑰，也支援驗證器設定連結。",
+  "me749735e9d7b": "每行一個密鑰，可以連續貼上多條。\n也支援 otpauth:// 設定連結。",
   "m5ec17779caa2": "開啟並解鎖後，有效輸入會自動儲存。關閉後停止新增，已有記錄保留。",
   "m5bd189433038": "偵測到 {count} 條候選密鑰",
   "md1c305493aa9": "請選擇要使用的密鑰；多選後可轉到批量取碼。",
@@ -564,5 +564,7 @@
   "accountLinkingOpen": "前往關聯帳號",
   "accountLinkingLinkedHint": "每個密鑰都有對應的帳號名稱。點擊可查看或修改。",
   "accountLinkingUncertainHint": "已從貼上的內容認出帳號名稱，但還沒和密鑰全部對應。點擊確認。",
-  "accountLinkingUnlinkedHint": "密鑰還沒有帳號名稱。點擊可手動對應。"
+  "accountLinkingUnlinkedHint": "密鑰還沒有帳號名稱。點擊可手動對應。",
+  "backupFileChoose": "選擇備份檔案",
+  "backupFileNone": "尚未選擇檔案"
 }

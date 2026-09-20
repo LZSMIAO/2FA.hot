@@ -455,10 +455,7 @@ export const sourceKeys = new Map<string, string>([
   ['输入密钥后，最近使用的记录会出现在这里。', 'm19053de1db8c'],
   ['单条取码演示', 'm7bdedd1e966e'],
   ['批量取码演示', 'mae594705e66d'],
-  [
-    '粘贴第一个密钥，按回车换行，再粘贴下一个。\n一行一个密钥，也支持验证器配置链接。',
-    'me749735e9d7b'
-  ],
+  ['每行一个密钥，可以连续粘贴多条。\n也支持 otpauth:// 配置链接。', 'me749735e9d7b'],
   ['开启并解锁后，有效输入会自动保存。关闭后停止新增，已有记录保留。', 'm5ec17779caa2'],
   ['检测到 {count} 条候选密钥', 'm5bd189433038'],
   ['请选择要使用的密钥；多选后可转到批量取码。', 'md1c305493aa9'],
@@ -754,5 +751,7 @@ export const sourceKeys = new Map<string, string>([
   ['前往关联账号', 'accountLinkingOpen'],
   ['每个密钥都有对应的账号名称。点击可查看或修改。', 'accountLinkingLinkedHint'],
   ['已从粘贴内容认出账号名称，但还没和密钥全部对应。点击确认。', 'accountLinkingUncertainHint'],
-  ['密钥还没有账号名称。点击可手动对应。', 'accountLinkingUnlinkedHint']
+  ['密钥还没有账号名称。点击可手动对应。', 'accountLinkingUnlinkedHint'],
+  ['选择备份文件', 'backupFileChoose'],
+  ['尚未选择文件', 'backupFileNone']
 ])

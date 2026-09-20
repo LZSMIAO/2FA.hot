@@ -364,7 +364,7 @@
   "m19053de1db8c": "Insira uma chave para ver aqui os registros usados recentemente.",
   "m7bdedd1e966e": "Demo de código individual",
   "mae594705e66d": "Demo de códigos em lote",
-  "me749735e9d7b": "Cole a primeira chave, pressione Enter e cole a próxima.\nUma chave por linha; links de configuração também são aceitos.",
+  "me749735e9d7b": "Uma chave por linha: cole quantas precisar.\nLinks otpauth:// também funcionam.",
   "m5ec17779caa2": "Ative e desbloqueie para salvar entradas válidas automaticamente. Desativar interrompe novos registros e mantém os existentes.",
   "m5bd189433038": "{count} possíveis chaves detectadas",
   "md1c305493aa9": "Selecione as chaves que deseja usar. Várias chaves podem ser abertas no modo em lote.",
@@ -564,5 +564,7 @@
   "accountLinkingOpen": "Ir para vinculação de contas",
   "accountLinkingLinkedHint": "Cada chave tem um nome de conta. Clique para ver ou editar.",
   "accountLinkingUncertainHint": "Encontramos nomes de conta no que você colou, mas nem todas as chaves foram associadas. Clique para confirmar.",
-  "accountLinkingUnlinkedHint": "Estas chaves ainda não têm nome de conta. Clique para adicionar manualmente."
+  "accountLinkingUnlinkedHint": "Estas chaves ainda não têm nome de conta. Clique para adicionar manualmente.",
+  "backupFileChoose": "Escolher arquivo de backup",
+  "backupFileNone": "Nenhum arquivo escolhido"
 }

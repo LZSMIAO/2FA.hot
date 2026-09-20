@@ -364,7 +364,7 @@
   "m19053de1db8c": "Enter a secret to see recently used records here.",
   "m7bdedd1e966e": "Single-code demo",
   "mae594705e66d": "Batch-code demo",
-  "me749735e9d7b": "Paste the first secret, press Enter, then paste the next.\nOne secret per line; authenticator setup links also work.",
+  "me749735e9d7b": "One key per line — paste as many as you need.\notpauth:// setup links work too.",
   "m5ec17779caa2": "Enable and unlock to save valid input automatically. Turning this off stops new saves and keeps existing records.",
   "m5bd189433038": "Detected {count} candidate keys",
   "md1c305493aa9": "Select the keys to use. Select multiple keys to open batch mode.",
@@ -564,5 +564,7 @@
   "accountLinkingOpen": "Go to account linking",
   "accountLinkingLinkedHint": "Every key has an account name. Click to view or edit them.",
   "accountLinkingUncertainHint": "Account names were found in what you pasted, but not every key is matched yet. Click to confirm.",
-  "accountLinkingUnlinkedHint": "These keys have no account names yet. Click to add them manually."
+  "accountLinkingUnlinkedHint": "These keys have no account names yet. Click to add them manually.",
+  "backupFileChoose": "Choose backup file",
+  "backupFileNone": "No file chosen"
 }

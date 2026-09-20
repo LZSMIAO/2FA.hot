@@ -364,7 +364,7 @@
   "m19053de1db8c": "Masukkan kunci untuk melihat catatan yang baru digunakan di sini.",
   "m7bdedd1e966e": "Demo kode tunggal",
   "mae594705e66d": "Demo kode massal",
-  "me749735e9d7b": "Tempel kunci pertama, tekan Enter, lalu tempel berikutnya.\nSatu kunci per baris; tautan penyiapan autentikator juga didukung.",
+  "me749735e9d7b": "Satu kunci per baris, tempel sebanyak yang Anda perlukan.\nTautan otpauth:// juga didukung.",
   "m5ec17779caa2": "Aktifkan dan buka kunci untuk menyimpan input valid secara otomatis. Menonaktifkan menghentikan penyimpanan baru, tetapi mempertahankan catatan lama.",
   "m5bd189433038": "Terdeteksi {count} calon kunci",
   "md1c305493aa9": "Pilih kunci yang ingin digunakan. Pilih beberapa kunci untuk membuka mode massal.",
@@ -564,5 +564,7 @@
   "accountLinkingOpen": "Buka penautan akun",
   "accountLinkingLinkedHint": "Setiap kunci punya nama akun. Klik untuk melihat atau mengubahnya.",
   "accountLinkingUncertainHint": "Nama akun ditemukan di teks yang Anda tempel, tetapi belum semua kunci dicocokkan. Klik untuk mengonfirmasi.",
-  "accountLinkingUnlinkedHint": "Kunci ini belum punya nama akun. Klik untuk menambahkannya sendiri."
+  "accountLinkingUnlinkedHint": "Kunci ini belum punya nama akun. Klik untuk menambahkannya sendiri.",
+  "backupFileChoose": "Pilih berkas cadangan",
+  "backupFileNone": "Belum ada berkas dipilih"
 }

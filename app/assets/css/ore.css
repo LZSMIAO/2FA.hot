@@ -534,7 +534,30 @@
   animation: ore-dialog-in var(--ore-dialog-enter-duration) var(--ore-enter-ease) both;
 }
 .ore-dialog-motion[data-state='closed'] {
-  animation: ore-dialog-out var(--ore-dialog-exit-duration) var(--ore-exit-ease) both;
+  animation: ore-dialog-out var(--ore-dialog-exit-duration) var(--ore-dialog-exit-ease) both;
+}
+/* The backdrop has to travel with the panel rather than blink out under it. */
+.ore-overlay-motion[data-state='open'] {
+  animation: ore-overlay-in var(--ore-dialog-enter-duration) var(--ore-enter-ease) both;
+}
+.ore-overlay-motion[data-state='closed'] {
+  animation: ore-overlay-out var(--ore-dialog-exit-duration) var(--ore-dialog-exit-ease) both;
+}
+@keyframes ore-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes ore-overlay-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 @keyframes ore-dialog-in {
   from {
@@ -553,7 +576,7 @@
   }
   to {
     transform: translateX(var(--ore-dialog-distance));
-    opacity: 1;
+    opacity: 0;
   }
 }
 @media (prefers-reduced-motion: reduce) {

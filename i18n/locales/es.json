@@ -364,7 +364,7 @@
   "m19053de1db8c": "Introduce una clave para ver aquí los registros usados recientemente.",
   "m7bdedd1e966e": "Demo de código individual",
   "mae594705e66d": "Demo de códigos por lotes",
-  "me749735e9d7b": "Pega la primera clave, pulsa Intro y pega la siguiente.\nUna clave por línea; también se admiten enlaces de configuración.",
+  "me749735e9d7b": "Una clave por línea: pega todas las que necesites.\nTambién admite enlaces otpauth://.",
   "m5ec17779caa2": "Activa y desbloquea para guardar automáticamente las entradas válidas. Desactivar detiene los nuevos registros y conserva los anteriores.",
   "m5bd189433038": "Se detectaron {count} claves posibles",
   "md1c305493aa9": "Selecciona las claves que quieras usar. Puedes abrir el modo por lotes con varias claves.",
@@ -564,5 +564,7 @@
   "accountLinkingOpen": "Ir a vincular cuentas",
   "accountLinkingLinkedHint": "Todas las claves tienen un nombre de cuenta. Pulsa para verlas o editarlas.",
   "accountLinkingUncertainHint": "Se encontraron nombres de cuenta en lo que pegaste, pero aún no todas las claves están emparejadas. Pulsa para confirmar.",
-  "accountLinkingUnlinkedHint": "Estas claves aún no tienen nombre de cuenta. Pulsa para añadirlos manualmente."
+  "accountLinkingUnlinkedHint": "Estas claves aún no tienen nombre de cuenta. Pulsa para añadirlos manualmente.",
+  "backupFileChoose": "Elegir archivo de copia",
+  "backupFileNone": "Ningún archivo elegido"
 }

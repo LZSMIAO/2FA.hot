@@ -378,31 +378,33 @@ onBeforeUnmount(() => {
               @dragleave="leaveDropZone"
               @drop="clearDropHighlight"
             >
-              <UPopover
-                mode="hover"
-                :open-delay="0"
-                :close-delay="100"
-                enable-touch
-                arrow
-                :content="{ side: 'top', align: 'end', sideOffset: 2 }"
-                :ui="{ content: 'parameter-help-tooltip', arrow: 'parameter-help-arrow' }"
-              >
-                <button type="button" class="qr-import-info" :aria-label="tx('使用说明')">
-                  <UIcon name="i-lucide-info" aria-hidden="true" />
-                </button>
-                <template #content>
-                  <div class="qr-import-tips">
-                    <p>PNG · JPEG · WebP</p>
-                    <p>{{ tx('支持多张图片，每张不超过 10MB。') }}</p>
-                    <p>{{ tx('每次最多选择 20 张图片，请分批导入。') }}</p>
-                    <p>{{ tx('识别在此设备完成，图片不会上传。') }}</p>
-                  </div>
-                </template>
-              </UPopover>
               <UIcon name="i-lucide-scan-line" class="text-3xl text-muted" />
-              <p class="qr-drop-instruction" :class="{ 'is-active': dragging }" role="status">
-                {{ tx(dragging ? '松开鼠标，识别二维码' : '将二维码图片拖到这里') }}
-              </p>
+              <div class="qr-drop-line">
+                <p class="qr-drop-instruction" :class="{ 'is-active': dragging }" role="status">
+                  {{ tx(dragging ? '松开鼠标，识别二维码' : '将二维码图片拖到这里') }}
+                </p>
+                <UPopover
+                  mode="hover"
+                  :open-delay="0"
+                  :close-delay="100"
+                  enable-touch
+                  arrow
+                  :content="{ side: 'top', align: 'center', sideOffset: 2 }"
+                  :ui="{ content: 'parameter-help-tooltip', arrow: 'parameter-help-arrow' }"
+                >
+                  <button type="button" class="qr-import-info" :aria-label="tx('使用说明')">
+                    <UIcon name="i-lucide-info" aria-hidden="true" />
+                  </button>
+                  <template #content>
+                    <div class="qr-import-tips">
+                      <p>PNG · JPEG · WebP</p>
+                      <p>{{ tx('支持多张图片，每张不超过 10MB。') }}</p>
+                      <p>{{ tx('每次最多选择 20 张图片，请分批导入。') }}</p>
+                      <p>{{ tx('识别在此设备完成，图片不会上传。') }}</p>
+                    </div>
+                  </template>
+                </UPopover>
+              </div>
               <div class="qr-image-actions">
                 <UButton
                   variant="outline"
@@ -429,10 +431,7 @@ onBeforeUnmount(() => {
                 :aria-label="tx('选择二维码图片')"
                 @change="images(Array.from(($event.target as HTMLInputElement).files || []))"
               />
-              <div v-if="issue" class="qr-error" role="alert">
-                <UIcon name="i-lucide-circle-alert" class="qr-error-icon" />
-                <p>{{ tx(issue) }}</p>
-              </div>
+              <p v-if="issue" class="qr-error" role="alert">{{ tx(issue) }}</p>
             </div>
           </UContextMenu>
         </div>
@@ -579,14 +578,17 @@ onBeforeUnmount(() => {
   align-items: center;
   gap: 14px;
 }
+.qr-drop-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+}
 .qr-import-info {
-  position: absolute;
-  inset-block-start: 0.25rem;
-  inset-inline-end: 0.25rem;
   display: grid;
   place-items: center;
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 1.75rem;
+  height: 1.75rem;
   padding: 0;
   border: 0;
   background: transparent;
@@ -632,9 +634,6 @@ onBeforeUnmount(() => {
   line-height: 1.25rem;
 }
 .qr-error {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.5rem;
   width: 100%;
   margin-top: 0.25rem;
   padding-top: 0.875rem;
@@ -645,15 +644,8 @@ onBeforeUnmount(() => {
   text-align: start;
   overflow-wrap: anywhere;
 }
-.qr-error p {
-  margin: 0;
-  color: inherit;
-}
-.qr-error-icon {
-  flex-shrink: 0;
-  width: 1.125rem;
-  height: 1.125rem;
-  margin-top: 0.15rem;
+.qr-error {
+  margin-block: 0.25rem 0;
 }
 .qr-image-actions {
   display: flex;

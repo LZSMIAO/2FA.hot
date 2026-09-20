@@ -108,8 +108,9 @@ function closeQr() {
 }
 function receivePaste(value: string) {
   const analysis = analyzePaste(value)
+  const hadRows = !!raw.value.trim()
   clear()
-  if (analysis.candidates.length === 1) emit('single', value)
+  if (!hadRows && analysis.candidates.length === 1) emit('single', value)
   else importBatchSource(value)
 }
 let imageRevision = 0
@@ -377,7 +378,7 @@ function pasteBatch(event: ClipboardEvent) {
     input.selectionStart === raw.value.length && raw.value
       ? reviewSource.value + '\n' + text
       : insertBatchText(raw.value, text, input.selectionStart, input.selectionEnd).text
-  if (analyzePaste(inserted.text).candidates.length === 1) {
+  if (!raw.value.trim() && analyzePaste(inserted.text).candidates.length === 1) {
     emit('single', source)
     return
   }
@@ -472,9 +473,7 @@ onBeforeUnmount(() => {
         :rows="5"
         class="w-full secret-field"
         size="xl"
-        :placeholder="
-          tx('粘贴第一个密钥，按回车换行，再粘贴下一个。\n一行一个密钥，也支持验证器配置链接。')
-        "
+        :placeholder="tx('每行一个密钥，可以连续粘贴多条。\n也支持 otpauth:// 配置链接。')"
         :aria-label="tx('批量密钥')"
         aria-describedby="batch-input-hint"
         :ui="{ base: 'font-mono text-base leading-6 px-3 py-3 ring-[var(--control-line)]' }"

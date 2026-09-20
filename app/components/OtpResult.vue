@@ -237,6 +237,9 @@ async function expand() {
     return
   const revision = navigationRevision
   sizeTransitionActive.value = true
+  // A view transition snapshots the page, so a panorama still turning behind
+  // the card leaves the captured and live frames disagreeing for a frame.
+  document.documentElement.classList.add('size-transition')
   try {
     const sound = props.standalone ? 'parameters' : 'expand'
     const playSizeSound = () =>
@@ -272,6 +275,7 @@ async function expand() {
       playSizeSound()
     }
   } finally {
+    document.documentElement.classList.remove('size-transition')
     sizeTransitionActive.value = false
   }
 }

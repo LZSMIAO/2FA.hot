@@ -44,7 +44,9 @@
   --ore-enter-ease: cubic-bezier(0.16, 1, 0.3, 1);
   --ore-exit-ease: cubic-bezier(0.4, 0, 1, 1);
   --ore-dialog-enter-duration: 180ms;
-  --ore-dialog-exit-duration: 120ms;
+  --ore-dialog-exit-duration: 180ms;
+  /* Eases out instead of accelerating into nothing, which read as a snap. */
+  --ore-dialog-exit-ease: cubic-bezier(0.4, 0, 0.6, 1);
   --ore-dialog-distance: 20px;
   --layer-skip: 50;
 }
@@ -661,6 +663,12 @@ html.light .workspace .parameter-moon {
   justify-content: center;
   border-radius: var(--ui-radius);
   color: var(--ui-text-muted);
+}
+/* Hold the background still while a view transition captures the page. */
+html.size-transition .panorama-cube,
+html.size-transition .panorama-light,
+html.size-transition .desert-art svg * {
+  animation-play-state: paused;
 }
 /* One card snapshot keeps its contents together instead of resizing five layers. */
 ::view-transition-group(otp-result) {

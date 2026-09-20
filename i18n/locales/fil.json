@@ -364,7 +364,7 @@
   "m19053de1db8c": "Maglagay ng key upang makita rito ang mga kamakailang ginamit na tala.",
   "m7bdedd1e966e": "Demo ng isang code",
   "mae594705e66d": "Demo ng maramihang code",
-  "me749735e9d7b": "I-paste ang unang key, pindutin ang Enter, at i-paste ang kasunod.\nIsang key bawat linya; puwede rin ang mga link sa pag-set up ng authenticator.",
+  "me749735e9d7b": "Isang susi kada linya — idikit ang kailangan mo.\nGumagana rin ang mga otpauth:// link.",
   "m5ec17779caa2": "I-enable at i-unlock upang awtomatikong i-save ang wastong input. Ang pag-off ay hihinto sa bagong pag-save ngunit pananatilihin ang mga dating tala.",
   "m5bd189433038": "May {count} posibleng key na nakita",
   "md1c305493aa9": "Piliin ang mga key na gagamitin. Pumili ng marami para buksan ang batch mode.",
@@ -564,5 +564,7 @@
   "accountLinkingOpen": "Pumunta sa pag-link ng account",
   "accountLinkingLinkedHint": "May pangalan ng account ang bawat susi. I-click para tingnan o baguhin.",
   "accountLinkingUncertainHint": "May nakitang pangalan ng account sa idinikit mo, pero hindi pa lahat ng susi ay naitugma. I-click para kumpirmahin.",
-  "accountLinkingUnlinkedHint": "Wala pang pangalan ng account ang mga susing ito. I-click para idagdag mismo."
+  "accountLinkingUnlinkedHint": "Wala pang pangalan ng account ang mga susing ito. I-click para idagdag mismo.",
+  "backupFileChoose": "Pumili ng backup file",
+  "backupFileNone": "Walang napiling file"
 }

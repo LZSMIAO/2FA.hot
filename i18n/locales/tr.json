@@ -364,7 +364,7 @@
   "m19053de1db8c": "Son kullanılan kayıtları görmek için bir anahtar girin.",
   "m7bdedd1e966e": "Tek kod demosu",
   "mae594705e66d": "Toplu kod demosu",
-  "me749735e9d7b": "İlk anahtarı yapıştırın, Enter tuşuna basıp sonrakini yapıştırın.\nHer satıra bir anahtar; kurulum bağlantıları da desteklenir.",
+  "me749735e9d7b": "Her satıra bir anahtar, istediğiniz kadar yapıştırın.\notpauth:// bağlantıları da çalışır.",
   "m5ec17779caa2": "Geçerli girdileri otomatik kaydetmek için etkinleştirip kilidi açın. Kapatmak yeni kayıtları durdurur, mevcut kayıtları korur.",
   "m5bd189433038": "{count} olası anahtar bulundu",
   "md1c305493aa9": "Kullanılacak anahtarları seçin. Birden fazla anahtarla toplu moda geçebilirsiniz.",
@@ -564,5 +564,7 @@
   "accountLinkingOpen": "Hesap bağlamaya git",
   "accountLinkingLinkedHint": "Her anahtarın bir hesap adı var. Görüntülemek veya düzenlemek için tıklayın.",
   "accountLinkingUncertainHint": "Yapıştırdığınız metinde hesap adları bulundu, ancak henüz her anahtar eşleşmedi. Onaylamak için tıklayın.",
-  "accountLinkingUnlinkedHint": "Bu anahtarların henüz hesap adı yok. Kendiniz eklemek için tıklayın."
+  "accountLinkingUnlinkedHint": "Bu anahtarların henüz hesap adı yok. Kendiniz eklemek için tıklayın.",
+  "backupFileChoose": "Yedek dosyası seç",
+  "backupFileNone": "Dosya seçilmedi"
 }
