@@ -106,10 +106,12 @@ async function toggleBatch(id: string, event: MouseEvent) {
   }
   if (expandedBatches.value.has(id)) expandedBatches.value.delete(id)
   else {
-    const heading = (event.currentTarget as HTMLElement).closest('.history-batch-heading')!
+    const group = (event.currentTarget as HTMLElement).closest('.history-group')
     expandedBatches.value.add(id)
     await nextTick()
-    const firstRow = heading.nextElementSibling as HTMLElement | null
+    // The rows sit inside a wrapper now: scrolling that into view would drag a
+    // whole batch's height through the screen. Aim at the first row instead.
+    const firstRow = group?.querySelector<HTMLElement>('.history-row') ?? null
     if (firstRow && firstRow.getBoundingClientRect().bottom > window.innerHeight)
       firstRow.scrollIntoView({ block: 'nearest', behavior: 'instant' })
   }
