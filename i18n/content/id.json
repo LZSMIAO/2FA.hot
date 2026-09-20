@@ -34,11 +34,11 @@
             "ordered": false,
             "list": true,
             "lines": [
-              "Kode tunggal dan massal: mendukung rahasia Base32 dan tautan konfigurasi otpauth://.",
+              "Kode tunggal dan massal: mendukung rahasia Base32 dan tautan konfigurasi otpauth://. Pengenalan cerdas tabel Excel, kunci berkelompok dan teks campuran.",
               "Impor QR: gambar, seret-lepas, atau kamera; mendukung ekspor Google Authenticator, banyak akun, dan ekspor beberapa bagian. Kumpulkan semua bagian lalu pilih akun yang dibutuhkan.",
               "Tautan langsung: mendukung tautan fragmen yang menampilkan kode saat ini, penyalinan sekali klik, dan pembuatan tautan massal.",
               "Riwayat lokal: nonaktif secara bawaan, penyimpanan atas pilihan pengguna, enkripsi opsional, pencadangan, dan pemulihan.",
-              "30 bahasa: tata letak seluler dan tema terang/gelap. Perlu bantuan? Ikuti pedang berlian dalam tutorial."
+              "30 bahasa, tata letak seluler dan tema terang/gelap; panduan pencegahan kesalahan bawaan mengajari pelanggan Anda langkah demi langkah."
             ]
           },
           {
@@ -118,7 +118,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Ini proyek Vibe coding pertama yang saya selesaikan, seperti menciptakan ulang roda. Saya menulis beberapa pemikiran yang bisa dibaca di [profil saya ⓘ](https://github.com/LZSMIAO)."
+              "Ini proyek Vibe coding pertama yang saya publikasikan, seperti menciptakan ulang roda. Saya menulis beberapa pemikiran yang bisa dibaca di [profil saya](https://github.com/LZSMIAO)."
             ]
           }
         ]

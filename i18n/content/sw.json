@@ -34,11 +34,11 @@
             "ordered": false,
             "list": true,
             "lines": [
-              "Misimbo moja na mingi: inakubali siri za Base32 na viungo vya usanidi otpauth://.",
+              "Misimbo moja na mingi: inakubali siri za Base32 na viungo vya usanidi otpauth://. Utambuzi mahiri wa jedwali za Excel, funguo zilizopangwa kwa makundi na maandishi mchanganyiko.",
               "Ingiza QR: picha, kuvuta na kuachia au kamera; inakubali uhamishaji wa Google Authenticator, akaunti nyingi na sehemu nyingi. Kusanya sehemu zote, kisha chagua akaunti unazohitaji.",
               "Viungo vya moja kwa moja: viungo vya vipande vinavyoonyesha msimbo wa sasa, kunakili kwa mbofyo mmoja na kutengeneza viungo vingi.",
               "Historia ya ndani: imezimwa kwa chaguomsingi, uhifadhi wa hiari, usimbaji wa hiari, nakala rudufu na urejeshaji.",
-              "Lugha 30: mipangilio ya simu na mandhari mepesi/meusi. Unahitaji msaada? Fuata upanga wa almasi kwenye mafunzo."
+              "Lugha 30, mpangilio wa simu na mandhari angavu/nyeusi; mwongozo uliojengewa ndani wa kuzuia makosa huwafundisha wateja wako hatua kwa hatua."
             ]
           },
           {
@@ -118,7 +118,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Huu ni mradi wangu wa kwanza niliokamilisha kwa Vibe coding, kama kubuni gurudumu upya. Niliandika mawazo machache; ukipenda, tembelea [wasifu wangu ⓘ](https://github.com/LZSMIAO)."
+              "Huu ni mradi wangu wa kwanza niliouweka hadharani kwa Vibe coding, kama kubuni gurudumu upya. Niliandika mawazo machache; ukipenda, tembelea [wasifu wangu](https://github.com/LZSMIAO)."
             ]
           }
         ]

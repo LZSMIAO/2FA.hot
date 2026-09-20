@@ -34,11 +34,11 @@
             "ordered": false,
             "list": true,
             "lines": [
-              "Codici singoli e in blocco: supporta segreti Base32 e link di configurazione otpauth://.",
+              "Codici singoli e in blocco: supporta segreti Base32 e link di configurazione otpauth://. Riconoscimento intelligente di tabelle Excel, chiavi raggruppate e testo misto.",
               "Importazione QR: immagini, trascinamento o fotocamera; supporta esportazioni Google Authenticator, più account ed esportazioni in più parti. Raccogli tutte le parti, poi seleziona gli account necessari.",
               "Link diretti: supporta link con frammento che mostrano il codice corrente, copia con un clic e generazione di link in blocco.",
               "Cronologia locale: disattivata per impostazione predefinita, con archiviazione volontaria, crittografia facoltativa, backup e ripristino.",
-              "30 lingue: layout per dispositivi mobili e temi chiaro/scuro. Serve aiuto? Segui la spada di diamante nel tutorial."
+              "30 lingue, layout mobili e temi chiaro/scuro; guida integrata per prevenire errori e accompagnare i tuoi clienti passo dopo passo."
             ]
           },
           {
@@ -118,7 +118,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Questo è il mio primo progetto completato con Vibe coding, una ruota reinventata. Mi ha ispirato alcune riflessioni che puoi leggere sul mio [profilo ⓘ](https://github.com/LZSMIAO)."
+              "Questo è il mio primo progetto reso pubblico con Vibe coding, una ruota reinventata. Mi ha ispirato alcune riflessioni che puoi leggere sul mio [profilo](https://github.com/LZSMIAO)."
             ]
           }
         ]

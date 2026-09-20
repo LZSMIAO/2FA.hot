@@ -34,11 +34,11 @@
             "ordered": false,
             "list": true,
             "lines": [
-              "Códigos individuais e em lote: aceita segredos Base32 e links de configuração otpauth://.",
+              "Códigos individuais e em lote: aceita segredos Base32 e links de configuração otpauth://. Reconhecimento inteligente de tabelas do Excel, chaves agrupadas e texto misto.",
               "Importação QR: imagens, arrastar e soltar ou câmera; aceita exportações do Google Authenticator, várias contas e exportações divididas em partes. Reúna todas as partes e selecione as contas necessárias.",
               "Links diretos: aceita links com fragmento que exibem o código atual, cópia com um clique e geração de links em lote.",
               "Histórico local: desativado por padrão, com armazenamento opcional, criptografia opcional, backup e restauração.",
-              "30 idiomas: layouts para celular e temas claro/escuro. Precisa de ajuda? Siga a espada de diamante pelo tutorial."
+              "30 idiomas, layouts móveis e temas claro/escuro; guia integrado para evitar erros e ensinar seus clientes passo a passo."
             ]
           },
           {
@@ -118,7 +118,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Este é meu primeiro projeto concluído com Vibe coding, uma roda reinventada. Ele me inspirou a escrever algumas reflexões no meu [perfil ⓘ](https://github.com/LZSMIAO)."
+              "Este é meu primeiro projeto publicado com Vibe coding, uma roda reinventada. Ele me inspirou a escrever algumas reflexões no meu [perfil](https://github.com/LZSMIAO)."
             ]
           }
         ]

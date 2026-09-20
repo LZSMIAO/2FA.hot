@@ -34,11 +34,11 @@
             "ordered": false,
             "list": true,
             "lines": [
-              "Einzel- und Sammelcodes: unterstützt Base32-Schlüssel und otpauth://-Konfigurationslinks.",
+              "Einzel- und Sammelcodes: unterstützt Base32-Schlüssel und otpauth://-Konfigurationslinks. Intelligente Erkennung von Excel-Tabellen, gruppierten Schlüsseln und gemischtem Text.",
               "QR-Import: Bilder, Drag-and-drop oder Kamera; unterstützt Google-Authenticator-Exporte, mehrere Konten und mehrteilige Exporte. Sammle alle Teile und wähle dann die benötigten Konten.",
               "Direktlinks: unterstützt Fragmentlinks mit dem aktuellen Code, Kopieren per Klick und die Erzeugung mehrerer Links auf einmal.",
               "Lokaler Verlauf: standardmäßig aus, mit freiwilliger Speicherung, optionaler Verschlüsselung, Sicherung und Wiederherstellung.",
-              "30 Sprachen: mobile Layouts und helle/dunkle Designs. Brauchst du Hilfe? Folge dem Diamantschwert durch das Tutorial."
+              "30 Sprachen, mobile Layouts und helle/dunkle Designs; integrierte Hilfen zur Fehlervermeidung führen Ihre Kunden Schritt für Schritt durch die Bedienung."
             ]
           },
           {
@@ -118,7 +118,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Dies ist mein erstes abgeschlossenes Vibe coding-Projekt, ein neu erfundenes Rad. Dazu habe ich einige Gedanken auf meinem [Profil ⓘ](https://github.com/LZSMIAO) aufgeschrieben."
+              "Dies ist mein erstes veröffentlichtes Vibe coding-Projekt, ein neu erfundenes Rad. Dazu habe ich einige Gedanken auf meinem [Profil](https://github.com/LZSMIAO) aufgeschrieben."
             ]
           }
         ]

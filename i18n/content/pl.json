@@ -34,11 +34,11 @@
             "ordered": false,
             "list": true,
             "lines": [
-              "Kody pojedyncze i zbiorcze: obsługuje sekrety Base32 i linki konfiguracji otpauth://.",
+              "Kody pojedyncze i zbiorcze: obsługuje sekrety Base32 i linki konfiguracji otpauth://. Inteligentne rozpoznawanie tabel Excel, pogrupowanych kluczy i mieszanego tekstu.",
               "Import QR: obrazy, przeciąganie lub aparat; obsługuje eksporty Google Authenticator, wiele kont i eksporty wieloczęściowe. Zbierz wszystkie części, a następnie wybierz potrzebne konta.",
               "Linki bezpośrednie: obsługuje linki z fragmentem pokazujące bieżący kod, kopiowanie jednym kliknięciem i zbiorcze generowanie linków.",
               "Lokalna historia: domyślnie wyłączona, z dobrowolnym zapisem, opcjonalnym szyfrowaniem, kopią zapasową i przywracaniem.",
-              "30 języków: układy mobilne oraz jasne i ciemne motywy. Potrzebujesz pomocy? Podążaj za diamentowym mieczem w samouczku."
+              "30 języków, układy mobilne i jasne/ciemne motywy; wbudowany poradnik zapobiegający błędom prowadzi klientów krok po kroku."
             ]
           },
           {
@@ -118,7 +118,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "To mój pierwszy ukończony projekt Vibe coding, ponowne wynalezienie koła. Zainspirował mnie do zapisania kilku przemyśleń na moim [profilu ⓘ](https://github.com/LZSMIAO)."
+              "To mój pierwszy opublikowany projekt Vibe coding, ponowne wynalezienie koła. Zainspirował mnie do zapisania kilku przemyśleń na moim [profilu](https://github.com/LZSMIAO)."
             ]
           }
         ]

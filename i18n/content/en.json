@@ -34,11 +34,11 @@
             "ordered": false,
             "list": true,
             "lines": [
-              "Single and batch codes: supports Base32 secrets and otpauth:// configuration links.",
+              "Single and batch codes: supports Base32 secrets and otpauth:// configuration links. Smart recognition of Excel tables, grouped secrets and mixed text.",
               "QR import: images, drag and drop, or camera; supports Google Authenticator exports, multiple accounts and multi-part exports. Collect all parts, then select the accounts you need.",
               "Direct links: supports fragment links that display the current code, with one-click copying and batch link generation.",
               "Local history: off by default, with opt-in storage, optional encryption, backup and restore.",
-              "30 languages: mobile layouts and light/dark themes. Need help? Follow the diamond sword through the tutorial."
+              "30 languages: mobile layouts and light/dark themes. Built-in mistake-prevention guides provide step-by-step, fully guided tutorials for your customers."
             ]
           },
           {
@@ -118,7 +118,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "This is the first Vibe coding project I have completed by reinventing a wheel. It inspired me to write a few thoughts; if you are interested, visit my [profile ⓘ](https://github.com/LZSMIAO)."
+              "This is the first Vibe coding project I have made public by reinventing a wheel. It inspired me to write a few thoughts; if you are interested, visit my [profile](https://github.com/LZSMIAO)."
             ]
           }
         ]

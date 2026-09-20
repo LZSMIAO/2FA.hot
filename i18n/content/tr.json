@@ -34,11 +34,11 @@
             "ordered": false,
             "list": true,
             "lines": [
-              "Tekli ve toplu kodlar: Base32 anahtarlarını ve otpauth:// yapılandırma bağlantılarını destekler.",
+              "Tekli ve toplu kodlar: Base32 anahtarlarını ve otpauth:// yapılandırma bağlantılarını destekler. Excel tablolarını, gruplandırılmış anahtarları ve karışık metni akıllıca tanır.",
               "QR içe aktarma: görseller, sürükleyip bırakma veya kamera; Google Authenticator dışa aktarımları, çoklu hesaplar ve çok parçalı aktarımlar desteklenir. Tüm parçaları toplayıp gereken hesapları seçin.",
               "Doğrudan bağlantılar: güncel kodu gösteren parça bağlantıları, tek tıkla kopyalama ve toplu bağlantı üretimi.",
               "Yerel geçmiş: varsayılan kapalı; isteğe bağlı depolama ve şifreleme, yedekleme ve geri yükleme.",
-              "30 dil: mobil düzenler ve açık/koyu temalar. Yardım mı lazım? Eğitim boyunca elmas kılıcı izleyin."
+              "30 dil, mobil düzenler ve açık/koyu temalar; yerleşik hata önleme kılavuzu müşterilerinize adım adım rehberlik eder."
             ]
           },
           {
@@ -118,7 +118,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Bu, Vibe coding ile tamamladığım ilk proje; tekerleği yeniden icat etmek gibi. Bana ilham veren düşüncelerimi [profilimde ⓘ](https://github.com/LZSMIAO) okuyabilirsiniz."
+              "Bu, Vibe coding ile kamuya açtığım ilk proje; tekerleği yeniden icat etmek gibi. Bana ilham veren düşüncelerimi [profilimde](https://github.com/LZSMIAO) okuyabilirsiniz."
             ]
           }
         ]

@@ -36,11 +36,11 @@ Have a feature in mind? Explore the [wishlist](https://2fa.hot/waitlist) and sha
 
 - [Lite](https://2fa.hot/lite?lang=en): single-secret codes, copying and fragment links without animation, sound or the main app framework. 30 languages; targets IE11 compatibility.
 
-- Single and batch codes: supports Base32 secrets and otpauth:// configuration links.
+- Single and batch codes: supports Base32 secrets and otpauth:// configuration links. Smart recognition of Excel tables, grouped secrets and mixed text.
 - QR import: images, drag and drop, or camera; supports Google Authenticator exports, multiple accounts and multi-part exports. Collect all parts, then select the accounts you need.
 - Direct links: supports fragment links that display the current code, with one-click copying and batch link generation.
 - Local history: off by default, with opt-in storage, optional encryption, backup and restore.
-- 30 languages: mobile layouts and light/dark themes. Need help? Follow the diamond sword through the tutorial.
+- 30 languages: mobile layouts and light/dark themes. Built-in mistake-prevention guides provide step-by-step, fully guided tutorials for your customers.
 
 Supports TOTP (SHA-1/SHA-256/SHA-512, 6/8 digits) and Steam Guard (5 characters, 30 seconds). For Steam, enter a shared_secret or paste maFile JSON content. HOTP code generation is not supported; HOTP/MD5 accounts in migration files can be parsed and exported.
 
@@ -65,7 +65,7 @@ Then .HOT came along. Fine, fine, I'll admit it: that's sexy. We're going back.
 Friends working in cross-border e-commerce need to log into accounts for tasks such as managing media accounts, while also considering security. Helping more friends with similar needs, as well as people just getting started online, was the starting point.
 There are many similar online tools, including ones that generate codes through direct links. But if you didn't know, opening a URL containing a secret, such as `?secret=SECRET`, sends the secret in an HTTP request. The remote website service or CDN receives that data and can record and retain it through access logs, monitoring or application logging. In other words, secrets in those requests may be stored in plain text. Of course, whether it actually retains them depends on its implementation, settings and privacy policy :))
 
-This is the first Vibe coding project I have completed by reinventing a wheel. It inspired me to write a few thoughts; if you are interested, visit my [profile ⓘ](https://github.com/LZSMIAO).
+This is the first Vibe coding project I have made public by reinventing a wheel. It inspired me to write a few thoughts; if you are interested, visit my [profile](https://github.com/LZSMIAO).
 
 <!-- website:body:end -->
 

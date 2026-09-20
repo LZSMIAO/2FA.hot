@@ -34,11 +34,11 @@
             "ordered": false,
             "list": true,
             "lines": [
-              "Isahan at maramihang code: suporta sa Base32 secret at otpauth:// configuration link.",
+              "Isahan at maramihang code: suporta sa Base32 secret at otpauth:// configuration link. Matalinong pagkilala sa Excel tables, nakapangkat na key at halo-halong teksto.",
               "QR import: larawan, drag-and-drop o camera; suporta sa Google Authenticator export, maraming account at export na maraming bahagi. Kumpletuhin ang lahat ng bahagi, saka piliin ang mga kailangan mong account.",
               "Direktang link: suporta sa fragment link na nagpapakita ng kasalukuyang code, one-click na pagkopya at maramihang pagbuo ng link.",
               "Lokal na history: naka-off bilang default, opsyonal na pag-iimbak at encryption, backup at restore.",
-              "30 wika: mobile layout at maliwanag/madilim na tema. Kailangan ng tulong? Sundan ang diamond sword sa tutorial."
+              "30 wika, mobile layout at light/dark theme; may gabay para makaiwas sa pagkakamali at maturuan ang iyong mga customer nang hakbang-hakbang."
             ]
           },
           {
@@ -118,7 +118,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Ito ang una kong natapos na proyektong Vibe coding, parang muling pag-imbento ng gulong. Nagsulat ako ng ilang saloobin; kung interesado ka, bisitahin ang aking [profile ⓘ](https://github.com/LZSMIAO)."
+              "Ito ang una kong isinapubliko na proyektong Vibe coding, parang muling pag-imbento ng gulong. Nagsulat ako ng ilang saloobin; kung interesado ka, bisitahin ang aking [profile](https://github.com/LZSMIAO)."
             ]
           }
         ]

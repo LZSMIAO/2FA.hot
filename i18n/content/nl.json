@@ -34,11 +34,11 @@
             "ordered": false,
             "list": true,
             "lines": [
-              "Afzonderlijke codes en bulkcodes: ondersteunt Base32-geheimen en otpauth://-configuratielinks.",
+              "Afzonderlijke codes en bulkcodes: ondersteunt Base32-geheimen en otpauth://-configuratielinks. Slimme herkenning van Excel-tabellen, gegroepeerde sleutels en gemengde tekst.",
               "QR-import: afbeeldingen, slepen en neerzetten of camera; ondersteunt Google Authenticator-exports, meerdere accounts en meerdelige exports. Verzamel alle delen en selecteer daarna de benodigde accounts.",
               "Directe links: ondersteunt fragmentlinks met de huidige code, kopiëren met één klik en links in bulk genereren.",
               "Lokale geschiedenis: standaard uit, met vrijwillige opslag, optionele versleuteling, back-up en herstel.",
-              "30 talen: mobiele indelingen en lichte/donkere thema’s. Hulp nodig? Volg het diamanten zwaard door de tutorial."
+              "30 talen, mobiele lay-outs en lichte/donkere thema’s; ingebouwde hulp om fouten te voorkomen begeleidt uw klanten stap voor stap."
             ]
           },
           {
@@ -118,7 +118,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Dit is mijn eerste voltooide Vibe coding-project, een opnieuw uitgevonden wiel. Ik schreef er enkele gedachten over op mijn [profiel ⓘ](https://github.com/LZSMIAO)."
+              "Dit is mijn eerste openbaar gemaakte Vibe coding-project, een opnieuw uitgevonden wiel. Ik schreef er enkele gedachten over op mijn [profiel](https://github.com/LZSMIAO)."
             ]
           }
         ]

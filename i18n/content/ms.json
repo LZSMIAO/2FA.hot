@@ -34,11 +34,11 @@
             "ordered": false,
             "list": true,
             "lines": [
-              "Kod tunggal dan kelompok: menyokong rahsia Base32 dan pautan konfigurasi otpauth://.",
+              "Kod tunggal dan kelompok: menyokong rahsia Base32 dan pautan konfigurasi otpauth://. Pengecaman pintar jadual Excel, kunci berkumpulan dan teks bercampur.",
               "Import QR: imej, seret dan lepas atau kamera; menyokong eksport Google Authenticator, berbilang akaun dan eksport berbahagian. Kumpulkan semua bahagian, kemudian pilih akaun diperlukan.",
               "Pautan terus: menyokong pautan fragmen yang memaparkan kod semasa, penyalinan satu klik dan penjanaan pautan kelompok.",
               "Sejarah setempat: dimatikan secara lalai, penyimpanan atas pilihan pengguna, penyulitan pilihan, sandaran dan pemulihan.",
-              "30 bahasa: susun atur mudah alih dan tema cerah/gelap. Perlukan bantuan? Ikuti pedang berlian sepanjang tutorial."
+              "30 bahasa, susun atur mudah alih dan tema cerah/gelap; panduan pencegahan kesilapan terbina dalam mengajar pelanggan anda langkah demi langkah."
             ]
           },
           {
@@ -118,7 +118,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Ini projek Vibe coding pertama yang saya siapkan, ibarat mencipta semula roda. Saya menulis beberapa renungan yang boleh dibaca di [profil saya ⓘ](https://github.com/LZSMIAO)."
+              "Ini projek Vibe coding pertama yang saya terbitkan, ibarat mencipta semula roda. Saya menulis beberapa renungan yang boleh dibaca di [profil saya](https://github.com/LZSMIAO)."
             ]
           }
         ]
