@@ -389,6 +389,15 @@ const date = (v: number) =>
         <span class="history-count">{{
           tx('记录：{count}', { count: vault.records.value.length })
         }}</span>
+        <UButton
+          v-if="selected.length"
+          class="history-remove"
+          color="error"
+          variant="soft"
+          size="sm"
+          @click="removing = [...selected]"
+          >{{ tx('删除所选：{count}', { count: selected.length }) }}</UButton
+        >
         <button class="text-action history-erase" @click="eraseOpen = true">
           {{ tx('清空全部本地历史') }}
         </button>
@@ -559,12 +568,7 @@ const date = (v: number) =>
           </div>
         </div>
       </div>
-      <div v-if="selected.length" class="history-danger">
-        <UButton color="error" variant="soft" size="sm" @click="removing = [...selected]">{{
-          tx('删除所选：{count}', { count: selected.length })
-        }}</UButton>
-      </div></template
-    >
+    </template>
     <p v-if="error || vault.issue.value" class="inline-error history-feedback" role="alert">
       {{ tx(error || vault.issue.value) }}
     </p>
@@ -1008,6 +1012,9 @@ const date = (v: number) =>
   content: '·';
   margin-inline-end: 16px;
 }
+.history-remove {
+  margin-inline-start: 0.25rem;
+}
 .history-erase {
   margin-inline-start: auto;
 }
@@ -1175,11 +1182,6 @@ const date = (v: number) =>
   white-space: nowrap;
   font-size: var(--text-caption);
   color: var(--ui-text-muted);
-}
-.history-danger {
-  display: flex;
-  align-items: center;
-  margin-top: 14px;
 }
 .history-feedback {
   padding: 12px 0;

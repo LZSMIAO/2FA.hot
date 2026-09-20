@@ -24,18 +24,20 @@ const { tx } = useMessages()
   </div>
 </template>
 <style scoped>
-/*
- * The card lines up with the home page's mode tabs, so this intro reserves the
- * same height the tool wordmark and guide button take there.
- */
 @media (min-width: 701px) {
   .history-page .page-intro {
     min-height: 7.5rem;
-    align-items: flex-start;
+  }
+  .history-page .page-intro h1 {
+    /* Match the 2FA SVG's 13.5rem width and 86:39 aspect ratio. */
+    min-height: calc(13.5rem * 39 / 86);
+    display: flex;
+    align-items: flex-end;
   }
 }
 .history-page .page-intro h1 {
   font-size: calc(var(--text-title) * 1.15);
+  font-weight: 800;
 }
 .history-page .page-intro p {
   display: flex;
@@ -47,7 +49,8 @@ const { tx } = useMessages()
   place-items: center;
   width: 1.5rem;
   height: 1.5rem;
-  color: var(--ui-text-muted);
+  /* This sits on the panorama, where muted grey washes out in light mode. */
+  color: var(--ui-text);
 }
 .history-intro-help:hover,
 .history-intro-help:focus-visible {
