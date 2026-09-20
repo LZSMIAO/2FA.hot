@@ -1200,17 +1200,15 @@ html.size-transition .desert-art svg * {
  * devices seldom run these extensions and need the width for the secret.
  */
 @media (pointer: fine) {
-  .secret-field:has(.secret-actions.has-content) #secret {
-    padding-inline-end: 6.5rem;
-  }
   /*
-   * The reserve above is text padding, which the extension ignores - it docks
-   * against the field's box, where our own icons already sit. Move ours into
-   * the gap the reserve opens so the last 2rem is free for it. The visible
-   * length of the secret is unchanged.
+   * Password managers dock their button at the end of the field's TEXT, so
+   * this padding is what positions it. The icons stay against the right edge;
+   * the reserve has to hold both them (68px) and the extension's button, which
+   * measures about 44px with its expand arrow, or the extension lands on top
+   * of the clear button.
    */
-  .secret-field .secret-actions.has-content {
-    margin-inline-end: 1.25rem;
+  .secret-field:has(.secret-actions.has-content) #secret {
+    padding-inline-end: 8rem;
   }
 }
 .record-name {
