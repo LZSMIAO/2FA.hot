@@ -198,7 +198,10 @@
 .ore-ghost {
   border: 2px solid transparent;
 }
-.ore-ghost:hover:not(:disabled) {
+/* Nuxt UI's hover:bg-elevated matches this rule's specificity and wins on
+   document order, which left the bevel showing with no border - a ghost
+   button that reads as pressed rather than raised. Outweigh it. */
+.ore-button.ore-ghost:hover:not(:disabled) {
   border-color: var(--ui-border);
   background: var(--ore-control);
   box-shadow: var(--ore-bevel);
