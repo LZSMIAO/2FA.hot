@@ -36,14 +36,12 @@ const tips = [
   {
     icon: 'i-lucide-keyboard',
     title: '键盘更快',
-    detail:
-      '电脑上按回车直接复制当前验证码；在密钥框按上下方向键，可以翻出本地历史里保存过的密钥。'
+    detail: '电脑上按回车直接复制当前验证码；在密钥框按上下方向键，可以翻出本地历史里保存过的密钥。'
   },
   {
     icon: 'i-lucide-maximize-2',
     title: '批量独立页',
-    detail:
-      '批量结果右上角的展开图标，会把验证码放到独立页面，一屏显示全部，适合一边核对一边输入。'
+    detail: '批量结果右上角的展开图标，会把验证码放到独立页面，一屏显示全部，适合一边核对一边输入。'
   },
   {
     icon: 'i-lucide-gamepad-2',
@@ -54,8 +52,7 @@ const tips = [
   {
     icon: 'i-lucide-feather',
     title: 'Lite 轻量版',
-    detail:
-      '设备老旧或网络受限时可以用 Lite 版，不加载前端框架，兼容到 IE11，同样只在本地取码。',
+    detail: '设备老旧或网络受限时可以用 Lite 版，不加载前端框架，兼容到 IE11，同样只在本地取码。',
     link: '/lite'
   },
   {
@@ -83,9 +80,7 @@ onMounted(() => panel.value?.focus({ preventScroll: true }))
     <div class="tutorial-title">
       <span
         ><UIcon name="i-lucide-lightbulb" />{{ tx('网站小技巧')
-        }}<GuideVoiceButton
-          :enabled="narration.enabled.value"
-          @toggle="narration.toggle()" /></span
+        }}<GuideVoiceButton :enabled="narration.enabled.value" @toggle="narration.toggle()" /></span
       ><UButton
         icon="i-lucide-x"
         color="neutral"
