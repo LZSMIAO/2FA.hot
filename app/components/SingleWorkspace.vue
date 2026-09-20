@@ -492,8 +492,15 @@ function inspectPaste(source: string) {
   }
   const analysis = analyzePaste(source)
   if (analysis.candidates.length > 1) transferPaste(source)
-  else if (analysis.candidates.length === 1) acceptPaste(analysis.candidates[0]!.config, source)
-  else {
+  else if (analysis.candidates.length === 1) {
+    // One key beside exactly one account is the case smart paste exists to
+    // recognise, so carry that account through as the record's name.
+    const { config, suggestedAccount } = analysis.candidates[0]!
+    acceptPaste(
+      suggestedAccount && !config.label ? { ...config, label: suggestedAccount } : config,
+      source
+    )
+  } else {
     updateRaw(source)
     pendingPaste.value = null
     pasteIssue.value = analysis.issue || ''

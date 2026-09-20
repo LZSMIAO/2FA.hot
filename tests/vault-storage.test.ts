@@ -253,3 +253,33 @@ test('saved batches retain grouping through backup without absorbing single reco
     stop()
   }
 })
+
+test('an account recognised after the first save fills in the still-empty name', async () => {
+  const { vault, stop } = mount()
+  try {
+    await waitFor(() => vault.ready.value)
+    const base = {
+      secret: 'JBSWY3DPEHPK3PXP',
+      algorithm: 'SHA-1' as const,
+      digits: 6 as const,
+      period: 30,
+      label: '',
+      issuer: ''
+    }
+    // Smart paste records the key first and only learns the account once the
+    // user links it, so the empty name has to yield to the one that arrives.
+    vault.remember([base])
+    assert.equal(vault.recent.value[0]!.label, '')
+    vault.remember([{ ...base, label: 'alice@example.com' }])
+    assert.equal(vault.recent.value[0]!.label, 'alice@example.com')
+    await vault.enable()
+    await vault.save([base])
+    assert.equal(vault.records.value[0]!.label, 'alice@example.com')
+    // A name the user typed still wins over anything recognised later.
+    await vault.editRecent(vault.recent.value[0]!.id, 'Mine')
+    vault.remember([{ ...base, label: 'bob@example.com' }])
+    assert.equal(vault.recent.value[0]!.label, 'Mine')
+  } finally {
+    stop()
+  }
+})

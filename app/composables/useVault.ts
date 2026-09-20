@@ -68,7 +68,7 @@ export function createVault() {
       const previous = index >= 0 ? next.splice(index, 1)[0] : undefined
       next.unshift({
         ...config,
-        label: previous?.label ?? config.label,
+        label: previous?.label || config.label,
         id: previous?.id ?? crypto.randomUUID(),
         note: previous?.note ?? '',
         usedAt: Date.now()
@@ -255,7 +255,7 @@ export function createVault() {
         )
         const c = {
           ...config,
-          label: batchId ? config.label : (sessionRecord?.label ?? config.label)
+          label: batchId ? config.label : sessionRecord?.label || config.label
         }
         const index = next.findIndex((r) => identity(r) === identity(c) && r.batchId === batchId)
         if (index >= 0)
