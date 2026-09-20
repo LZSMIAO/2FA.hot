@@ -14,6 +14,7 @@ const props = defineProps<{
   initialIssue?: string
   externalDrop?: boolean
   externalLoading?: boolean
+  demo?: boolean
 }>()
 const emit = defineEmits<{
   close: []
@@ -352,6 +353,8 @@ onBeforeUnmount(() => {
     @after:leave="finishClose"
     :title="tx('导入二维码')"
     :description="tx('识别在此设备完成，图片不会上传。')"
+    :overlay="!demo"
+    :modal="!demo"
     ><template #body
       ><div class="modal-stack" @keydown="cancelSelection">
         <div class="qr-import-region">

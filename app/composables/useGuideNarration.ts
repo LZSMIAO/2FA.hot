@@ -102,7 +102,8 @@ export function useGuideNarration(text: () => string, paused: () => boolean) {
     }
     next()
   }
-  function toggle() {
+  /** Before a walkthrough starts the control is only a preference, so it stays silent. */
+  function toggle(speak = true) {
     if (!supported.value) return
     if (!('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) {
       issue.value = true
@@ -110,7 +111,8 @@ export function useGuideNarration(text: () => string, paused: () => boolean) {
     }
     enabled.value = !enabled.value
     issue.value = false
-    restart()
+    if (speak) restart()
+    else stop()
   }
   watch(
     [text, locale],

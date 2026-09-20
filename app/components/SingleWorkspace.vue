@@ -40,9 +40,15 @@ import {
   type OtpConfig,
   type OtpKind
 } from '~/utils/otp'
-const props = defineProps<{ guideStep?: number }>()
+const props = defineProps<{ guideStep?: number; guideStage?: number }>()
 const emit = defineEmits<{ batch: [value: string]; guideCode: [value: string] }>()
 const guiding = computed(() => props.guideStep !== undefined)
+/** The walkthrough invites a real QR import on its own step, so leave it usable. */
+const qrInvited = computed(() => guiding.value && props.guideStage === 2)
+watch(qrInvited, (invited) => {
+  qrOpen.value = invited
+  if (!invited) qrOpenedByDrag.value = false
+})
 const raw = shallowRef(''),
   revealed = shallowRef(true),
   advanced = shallowRef(true),
@@ -299,7 +305,7 @@ watch([config, raw], () => {
   else if (!raw.value.trim() && !guiding.value) resultExpanded.value = false
 })
 onMounted(() => {
-  compactQuery = window.matchMedia('(max-width: 700px)')
+  compactQuery = window.matchMedia('(max-width: 900px), (max-height: 500px) and (pointer: coarse)')
   updateCompactScreen()
   compactQuery.addEventListener('change', updateCompactScreen)
 })
@@ -698,10 +704,12 @@ onBeforeUnmount(() => {
             >{{ tx('粘贴') }}</UButton
           >
           <UButton
+            id="tutorial-qr"
             color="neutral"
             variant="outline"
             icon="i-lucide-scan-line"
-            :disabled="guiding"
+            :class="{ 'is-demo-target': qrInvited }"
+            :disabled="guiding && !qrInvited"
             @click="qrOpen = true"
             >{{ tx('导入二维码') }}</UButton
           >
@@ -904,6 +912,7 @@ onBeforeUnmount(() => {
     :initial-issue="qrInitialIssue"
     :external-drop="qrOpenedByDrag"
     :external-loading="imageDropLoading"
+    :demo="qrInvited"
     @pasted="confirmPaste"
     @migration="migrationSource = $event"
     @close="qrOpen = false"
@@ -959,7 +968,28 @@ onBeforeUnmount(() => {
   padding-inline: 0.375rem;
   background: var(--panel);
 }
-.secret-entry .input-tools {
+.secret-entry /* The one control the walkthrough hands back to the reader. */
+.input-tools .is-demo-target {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 3px;
+  animation: demo-target-pulse 1600ms var(--ease-out) infinite;
+}
+@keyframes demo-target-pulse {
+  0%,
+  60%,
+  100% {
+    outline-color: var(--accent-ink);
+  }
+  30% {
+    outline-color: transparent;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .input-tools .is-demo-target {
+    animation: none;
+  }
+}
+.input-tools {
   margin: 0 0 0.25rem;
   flex-wrap: wrap;
 }
@@ -1002,7 +1032,7 @@ onBeforeUnmount(() => {
 .workspace :deep(.result-copy) {
   margin-top: 0;
 }
-@media (min-width: 701px) and (min-height: 501px), (min-width: 701px) and (pointer: fine) {
+@media (min-width: 901px) and (min-height: 501px), (min-width: 901px) and (pointer: fine) {
   .workspace {
     grid-template-rows: auto auto auto 1fr;
     row-gap: 0.75rem;

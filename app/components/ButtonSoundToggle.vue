@@ -6,18 +6,29 @@ const player = useTemplateRef<HTMLAudioElement>('player')
 const selection = useTemplateRef<HTMLAudioElement>('selection')
 const parameters = useTemplateRef<HTMLAudioElement>('parameters')
 const character = useTemplateRef<HTMLAudioElement>('character')
+const ciallo = useTemplateRef<HTMLAudioElement>('ciallo')
 const expand = useTemplateRef<HTMLAudioElement>('expand')
 const demo = useTemplateRef<HTMLAudioElement>('demo')
 const toast = useTemplateRef<HTMLAudioElement>('toast')
 const experience = useTemplateRef<HTMLAudioElement>('experience')
 const preferenceKey = '2fa-hot:button-sound'
 type SoundSample =
-  'click' | 'select' | 'parameters' | 'character' | 'expand' | 'demo' | 'experience' | 'toast'
+  | 'click'
+  | 'select'
+  | 'parameters'
+  | 'character'
+  | 'ciallo'
+  | 'expand'
+  | 'demo'
+  | 'experience'
+  | 'toast'
 type Sound =
   | 'click'
   | 'select'
   | 'parameters'
   | 'character'
+  | 'character-angry'
+  | 'ciallo'
   | 'expand'
   | 'demo'
   | 'success'
@@ -30,6 +41,7 @@ const samples: Record<SoundSample, string> = {
   select: '/audio/minecraft-select.ogg',
   parameters: '/audio/minecraft-parameters.ogg',
   character: '/audio/minecraft-character.ogg',
+  ciallo: '/audio/ciallo.mp3',
   expand: '/audio/minecraft-expand.ogg',
   demo: '/audio/minecraft-demo.ogg',
   experience: '/audio/minecraft-experience.ogg',
@@ -40,6 +52,8 @@ const profiles: Record<Sound, { sample: SoundSample; rate: number; gain: number 
   select: { sample: 'select', rate: 1, gain: 0.7 },
   parameters: { sample: 'parameters', rate: 1, gain: 0.9 },
   character: { sample: 'character', rate: 1, gain: 0.65 },
+  'character-angry': { sample: 'character', rate: 0.8, gain: 0.65 },
+  ciallo: { sample: 'ciallo', rate: 1, gain: 1.1 },
   expand: { sample: 'expand', rate: 1, gain: 0.65 },
   demo: { sample: 'demo', rate: 1, gain: 0.5 },
   success: { sample: 'experience', rate: 1, gain: 0.25 },
@@ -52,6 +66,7 @@ let context: AudioContext | undefined
 let gain: GainNode | undefined
 const buffers = new Map<SoundSample, AudioBuffer>()
 const voices = new Set<AudioBufferSourceNode>()
+let characterVoice: AudioBufferSourceNode | undefined
 const loading = new AbortController()
 let prepared = false
 let disposed = false
@@ -94,21 +109,34 @@ function stop() {
     voice.disconnect()
   }
   voices.clear()
+  characterVoice = undefined
   player.value?.pause()
   selection.value?.pause()
   parameters.value?.pause()
   character.value?.pause()
+  ciallo.value?.pause()
   expand.value?.pause()
   demo.value?.pause()
   experience.value?.pause()
   toast.value?.pause()
 }
+function stopCharacter() {
+  if (characterVoice) {
+    voices.delete(characterVoice)
+    characterVoice.stop()
+    characterVoice = undefined
+  }
+  character.value?.pause()
+  ciallo.value?.pause()
+}
 function play(kind: Sound = 'click') {
   if (!enabled.value || disposed) return
   unlock()
   const profile = profiles[kind]
+  const isCharacter = profile.sample === 'character' || profile.sample === 'ciallo'
+  if (isCharacter) stopCharacter()
   const buffer = buffers.get(profile.sample)
-  if (context && gain && buffer && context.state !== 'closed') {
+  if (context && gain && buffer && context.state === 'running') {
     // A fresh source avoids media-element seek latency and supports rapid taps.
     if (voices.size >= 4) {
       const oldest = voices.values().next().value
@@ -124,10 +152,12 @@ function play(kind: Sound = 'click') {
     voiceGain.connect(gain)
     voice.onended = () => {
       voices.delete(voice)
+      if (characterVoice === voice) characterVoice = undefined
       voice.disconnect()
       voiceGain.disconnect()
     }
     voices.add(voice)
+    if (isCharacter) characterVoice = voice
     voice.start()
     return
   }
@@ -136,6 +166,7 @@ function play(kind: Sound = 'click') {
     select: selection.value,
     parameters: parameters.value,
     character: character.value,
+    ciallo: ciallo.value,
     expand: expand.value,
     demo: demo.value,
     experience: experience.value,
@@ -163,6 +194,7 @@ function toggle() {
     prepare()
     play('stone-on')
   } else {
+    stop()
     play('stone-off')
     enabled.value = false
   }
@@ -341,6 +373,12 @@ onBeforeUnmount(() => {
   <audio
     ref="character"
     src="/audio/minecraft-character.ogg"
+    :preload="ready && enabled ? 'auto' : 'none'"
+    aria-hidden="true"
+  />
+  <audio
+    ref="ciallo"
+    src="/audio/ciallo.mp3"
     :preload="ready && enabled ? 'auto' : 'none'"
     aria-hidden="true"
   />

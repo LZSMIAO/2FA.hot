@@ -151,6 +151,38 @@
 .workspace-summary-links a {
   white-space: nowrap;
 }
+/* Same seam as main.css: stacked layout and the collapsing result start at tablet. */
+@media (max-width: 900px), (max-height: 500px) and (pointer: coarse) {
+  .workspace {
+    min-height: 0;
+  }
+  .result-reveal {
+    display: grid;
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    overflow-anchor: none;
+    transition:
+      grid-template-rows 240ms var(--ore-enter-ease),
+      visibility 0s 240ms;
+  }
+  .result-reveal.is-expanded {
+    grid-template-rows: 1fr;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+  .result-reveal-clip {
+    min-height: 0;
+    overflow: hidden;
+    height: auto;
+  }
+  .result-reveal .result-panel {
+    height: auto;
+  }
+  .result-panel {
+    border-inline-start: 0;
+    border-top: 2px solid var(--ore-outline);
+  }
+}
 @media (max-width: 700px), (max-height: 500px) and (pointer: coarse) {
   .workspace-summary {
     padding: 0.875rem 1.25rem;
@@ -737,6 +769,11 @@
 }
 .workspace-summary .workspace-summary-links .history-toggle-control .history-view-link {
   order: -1;
+  /* Match the switch's anchor height so both hints share the same top edge. */
+  height: 1.625rem;
+  min-height: 1.625rem;
+  padding-block: 0;
+  margin-block: 0;
 }
 @media (max-width: 700px) {
   .workspace-summary {
@@ -891,9 +928,18 @@
   .ore-theme .link-port,
   .ore-theme .review-info,
   .ore-theme .steam-help,
+  .ore-theme .qr-import-info,
+  .ore-theme .history-intro-help,
+  .ore-theme .tutorial-tip-toggle,
   .panorama-controls .panorama-control,
   .footer-inner .footer-contacts a {
     min-width: 44px;
+    min-height: 44px;
+  }
+  /* These two set an explicit height, so a minimum alone would not lift them. */
+  .ore-theme .workspace-summary-links .history-toggle-control .history-view-link,
+  .ore-theme .history-switch {
+    height: 44px;
     min-height: 44px;
   }
   .ore-theme .local-processing-label {

@@ -38,7 +38,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
-      script: [{ src: '/brand-splash.js' }],
+      script: [{ src: '/panorama-preference.js' }, { src: '/brand-splash.js' }],
       title: toolHeadings.en,
       meta: [
         {

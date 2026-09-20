@@ -312,7 +312,11 @@ async function expand() {
       /></AppHint>
     </div>
   </div>
-  <div class="result-code" :class="{ 'is-compact': compactLayout }">
+  <div
+    :id="standalone ? undefined : 'tutorial-code'"
+    class="result-code"
+    :class="{ 'is-compact': compactLayout }"
+  >
     <OtpCountdownMeta
       v-if="!compactLayout && !standalone"
       :active="!!config && !!code && !error && !calculationError"
@@ -321,6 +325,7 @@ async function expand() {
     />
     <div
       ref="codeElement"
+      :id="standalone ? undefined : 'tutorial-digits'"
       class="otp-digits"
       :class="{ empty: !code, eight: digitCount === 8 }"
       data-testid="otp-code"
@@ -341,6 +346,7 @@ async function expand() {
       </span>
     </div>
     <div
+      :id="standalone ? undefined : 'tutorial-countdown'"
       class="result-progress"
       :data-countdown-state="
         countdownState(

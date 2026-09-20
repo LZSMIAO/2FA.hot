@@ -30,6 +30,6 @@ export function focusAnchor(element: HTMLElement) {
       element.classList.remove('anchor-arrival-active')
       arrivalTimers.delete(element)
       if (activeAnchor === element) activeAnchor = undefined
-    }, 2200)
+    }, 2550)
   )
 }

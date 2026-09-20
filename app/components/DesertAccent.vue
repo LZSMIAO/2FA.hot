@@ -2,28 +2,31 @@
 import scene from '~/assets/art/desert-interactive.svg?raw'
 const props = defineProps<{ open: boolean }>()
 const { tx } = useMessages()
-const active = shallowRef(false)
-watch(
+// Nuxt state survives component/route changes, but is recreated on a full page refresh.
+// Deliberately not stored in localStorage/sessionStorage.
+const annoyed = useState<boolean>('desert-annoyed', () => false)
+const { active, playing, reaction, tip, motionDuration, greet, hover, dismiss } = useDesertGreeting(
   () => props.open,
-  () => {
-    active.value = false
+  {
+    annoyed,
+    reducedMotion: () => matchMedia('(prefers-reduced-motion: reduce)').matches
   }
 )
-const month = shallowRef(0)
-const line = computed(() => {
-  if (month.value >= 3 && month.value <= 5) return '啊，天气好热啊，明明是春天。'
-  if (month.value >= 6 && month.value <= 8) return '啊，天气好热啊，果然是夏天。'
-  if (month.value >= 9 && month.value <= 11) return '啊，天气好热啊，明明是秋天。'
-  return '啊，天气好热啊，明明是冬天。'
+watch(reaction, () => {
+  if (active.value)
+    window.dispatchEvent(new CustomEvent('2fa-ui-sound', { detail: tip.value.sound }))
 })
-function greet() {
-  month.value = new Date().getMonth() + 1
-  active.value = true
+function focusGreet(event: FocusEvent) {
+  // Pointer focus is followed by click; don't consume two tips for a single tap.
+  if ((event.currentTarget as HTMLElement).matches(':focus-visible') && !active.value) greet()
 }
-function hoverGreet() {
-  if (active.value || !matchMedia('(hover: hover) and (pointer: fine)').matches) return
-  greet()
-  window.dispatchEvent(new CustomEvent('2fa-ui-sound', { detail: 'character' }))
+function hoverGreet(event: PointerEvent) {
+  if (event.pointerType !== 'mouse' || active.value || !matchMedia('(hover: hover)').matches) return
+  hover()
+}
+function leave(event: PointerEvent) {
+  // Touch emits pointerleave on release: keep its newly opened bubble readable.
+  if (event.pointerType === 'mouse') dismiss()
 }
 </script>
 <template>
@@ -31,20 +34,30 @@ function hoverGreet() {
     <button
       type="button"
       class="desert-scene"
-      :class="{ active }"
+      :class="{ active, 'is-reacting': playing }"
+      :data-motion="tip.motion"
+      :style="{ '--desert-motion-duration': `${motionDuration}ms` }"
+      data-sound-custom
+      :disabled="!open"
       :aria-label="tx('和丛雨打招呼')"
-      @focus="greet"
-      @blur="active = false"
+      @focus="focusGreet"
+      @blur="dismiss"
       @click="greet"
-      @keydown.esc="active = false"
+      @keydown.esc.stop="dismiss"
     >
+      <span class="desert-art" @pointerenter="hoverGreet" @pointerleave="leave" v-html="scene" />
       <span
-        class="desert-art"
-        @pointerover="hoverGreet"
-        @pointerleave="active = false"
-        v-html="scene"
-      />
-      <span v-if="active" class="desert-tip" role="status">{{ tx(line) }}</span>
+        class="desert-tip"
+        :class="{ 'is-visible': active }"
+        :aria-hidden="!active"
+        role="status"
+        aria-atomic="true"
+      >
+        <template v-if="tip.motion === 'ciallo'">
+          <span>Ciallo～</span><wbr /><span class="desert-emoticon">(∠・ω&lt; )⌒☆</span>
+        </template>
+        <template v-else>{{ tx(tip.text) }}</template>
+      </span>
     </button>
   </div>
 </template>
@@ -62,7 +75,7 @@ function hoverGreet() {
     visibility 0s 200ms;
 }
 .desert-accent.is-open {
-  height: 14.5rem;
+  height: 17.5rem;
   opacity: 1;
   visibility: visible;
   transition:
@@ -72,10 +85,10 @@ function hoverGreet() {
 }
 .desert-scene {
   position: absolute;
-  top: -2.25rem;
+  top: -1rem;
   left: 50%;
   width: 100%;
-  height: 17rem;
+  height: 18.5rem;
   padding: 0;
   border: 0;
   background: transparent;
@@ -95,24 +108,48 @@ function hoverGreet() {
 }
 .desert-art :deep(.desert-hit polygon) {
   fill: transparent;
+  pointer-events: none;
+}
+.is-open .desert-art :deep(.desert-hit polygon) {
   pointer-events: all;
-  cursor: default;
+  cursor: pointer;
 }
 .desert-tip {
   position: absolute;
-  bottom: 48%;
+  /* Anchor the top, so longer translations grow down without moving the bubble. */
+  top: 2rem;
   right: 0;
-  width: 43%;
-  max-width: 12rem;
+  width: 48%;
+  max-width: 13rem;
   text-align: start;
-  padding: 0.375rem 0.625rem;
-  border: 2px solid var(--ore-outline);
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--ui-border);
   background: var(--panel);
   color: var(--ui-text-highlighted);
-  box-shadow: var(--ore-window-shadow);
-  font-size: 0.75rem;
+  box-shadow:
+    inset 1px 1px 0 var(--ore-highlight),
+    0 2px 0 var(--ore-shade);
+  font-size: 0.8125rem;
   line-height: 1.6;
+  overflow-wrap: anywhere;
   pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(3px);
+  transition:
+    opacity 140ms ease-out,
+    transform 140ms ease-out,
+    visibility 0s 140ms;
+}
+.desert-tip.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition-delay: 0s;
+}
+.desert-emoticon {
+  display: inline-block;
+  white-space: nowrap;
 }
 .desert-scene:focus-visible {
   outline: 2px solid var(--accent-ink);
@@ -124,18 +161,26 @@ function hoverGreet() {
     overflow: hidden;
   }
   .desert-accent.is-open {
-    height: 11rem;
+    height: 13rem;
     overflow: visible;
   }
   .desert-scene {
-    top: -1.5rem;
-    height: 12.5rem;
+    top: -0.5rem;
+    height: 13.5rem;
+  }
+  .desert-tip {
+    top: 0;
+    width: 52%;
   }
 }
 @media (prefers-reduced-motion: reduce) {
   .desert-accent,
-  .desert-accent.is-open {
+  .desert-accent.is-open,
+  .desert-tip {
     transition: none;
+  }
+  .desert-tip {
+    transform: none;
   }
 }
 </style>

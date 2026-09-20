@@ -1,5 +1,23 @@
 # Button sound source
 
+## Ciallo character greeting
+
+- Local file: `public/audio/ciallo.mp3`
+- Download source: [soyobat/callio — cialloMp3.mp3](https://github.com/soyobat/callio/blob/main/cialloMp3.mp3)
+- Download URL: https://raw.githubusercontent.com/soyobat/callio/main/cialloMp3.mp3
+- Upstream Git blob: `37712ddbffc062abb05dc03ea6b01a66a1ce6e18`
+- SHA-256: `ec592031726e4e9dfc28373f73dc5b95bf0fa0a85df11c70b5d817bf9d1eb40f`
+- Downloaded 2026-09-20; 20,589 bytes, MP3, 48 kHz stereo, 1.272 seconds. Unmodified.
+- The upstream repository's MIT notice is retained in `CIALLO-REPOSITORY-LICENSE.txt`.
+  The clip is third-party media, not original project code. The repository's software
+  license is not independent confirmation of rights in the underlying voice recording;
+  no claim is made that the project code license covers it.
+
+Served from the same origin, only with sounds enabled. Ciallo and other character
+sounds replace each other instead of overlapping. Muting stops ongoing playback.
+
+## Button click
+
 - Local file: `public/audio/minecraft-click.ogg`
 - Original asset: `minecraft/sounds/random/click_stereo.ogg`
 - Sound event: `ui.button.click` → `random/click_stereo`
@@ -64,7 +82,11 @@ The unmodified loom result sound plays when a single or batch demonstration star
 - SHA-1: `a1e833dec61595dc79d0c672fcd7838579ca4b14` (verified after download)
 - Size: 6087 bytes
 
-The unmodified note-block bell plays once when a fine pointer enters the interactive desert character. Moving between parts of the character does not retrigger it, and touch input does not play a hover sound.
+The unmodified note-block bell accompanies ordinary desert-character greetings.
+The angry reaction uses the same sample at 0.8x speed, with replay throttled to once
+per 1.2 seconds. Moving between parts of the character does not count as another
+hover entry, and touch input does not play a hover sound. Ciallo uses the dedicated
+voice clip above instead of the bell.
 
 ## Successful code generation
 

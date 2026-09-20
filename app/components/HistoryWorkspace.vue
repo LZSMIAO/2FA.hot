@@ -386,13 +386,20 @@ const date = (v: number) =>
           @click="toggleAll"
         >
           <span>{{ tx(allSelected ? '取消全选' : '全选') }}</span>
-          <span v-if="selected.length" class="selection-count" aria-live="polite"
-            >{{ selected.length }} {{ tx('条已选') }}</span
-          >
         </SelectionCheck>
-        <span class="history-count">{{
-          tx('记录：{count}', { count: vault.records.value.length })
-        }}</span>
+        <span
+          class="history-count"
+          :class="{ 'is-selecting': selected.length }"
+          aria-live="polite"
+          >{{
+            selected.length
+              ? tx('已选 {count} / {total}', {
+                  count: selected.length,
+                  total: vault.records.value.length
+                })
+              : tx('记录：{count}', { count: vault.records.value.length })
+          }}</span
+        >
         <UButton
           v-if="selected.length"
           class="history-remove"
@@ -862,7 +869,8 @@ const date = (v: number) =>
   --history-inset: 32px;
   border-radius: var(--ui-radius);
   background: var(--panel);
-  padding: 28px var(--history-inset);
+  /* The last row already ends with its own spacing; the panel only needs an edge. */
+  padding: 28px var(--history-inset) 12px;
 }
 .vault-gate {
   max-width: 380px;
@@ -1009,12 +1017,16 @@ const date = (v: number) =>
   cursor: pointer;
   color: var(--ui-text);
 }
-.selection-count {
+.history-count.is-selecting {
   color: var(--accent-ink);
+}
+/* The dot sits evenly between the two labels, not a row gap away from each. */
+.history-count:not(:first-child) {
+  margin-inline-start: -8px;
 }
 .history-count:not(:first-child)::before {
   content: '·';
-  margin-inline-end: 16px;
+  margin-inline-end: 8px;
 }
 .history-remove {
   margin-inline-start: 0.25rem;
@@ -1213,7 +1225,7 @@ const date = (v: number) =>
   }
   .history-surface {
     --history-inset: 20px;
-    padding: 24px var(--history-inset);
+    padding: 24px var(--history-inset) 10px;
   }
   .history-row {
     display: grid;

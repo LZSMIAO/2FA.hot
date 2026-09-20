@@ -34,24 +34,33 @@ function alignGuide() {
   if (!guideOpen.value) return
   const work = workspace.value
   const drawer = document.getElementById('usage-guide')
+  let drawerLeft = Infinity
   if (work && drawer && window.innerWidth > 1000) {
+    const width = drawer.offsetWidth
     const gap =
-      document.documentElement.clientWidth -
-      24 -
-      drawer.offsetWidth -
-      work.getBoundingClientRect().right
-    guideRight.value = `${24 + Math.max(0, gap) / 2}px`
+      document.documentElement.clientWidth - 24 - width - work.getBoundingClientRect().right
+    const right = 24 + Math.max(0, gap) / 2
+    guideRight.value = `${right}px`
+    drawerLeft = document.documentElement.clientWidth - right - width
   }
   const trigger = guideTrigger.value
-  if (trigger) guideTop.value = `${Math.max(16, trigger.getBoundingClientRect().top)}px`
+  if (!trigger) return
+  const rect = trigger.getBoundingClientRect()
+  // The card is anchored to the trigger. Where it would reach across the
+  // button, start below it instead so the button stays visible and clickable.
+  guideTop.value = `${Math.max(16, drawerLeft < rect.right + 12 ? rect.bottom + 12 : rect.top)}px`
 }
 let guideReturnFocus: HTMLButtonElement | null = null
+const guideView = shallowRef<'tutorial' | 'tips'>('tutorial')
 const guideStep = shallowRef<number | undefined>()
+const guideStage = shallowRef<number | undefined>()
 const guideCode = shallowRef('')
 const batchDemo = shallowRef({ input: 0, results: 0, copied: '' })
 function openGuide() {
   batchDemo.value = { input: 0, results: 0, copied: '' }
+  guideView.value = 'tutorial'
   guideStep.value = 0
+  guideStage.value = undefined
   guideOpen.value = true
   alignGuide()
   nextTick(() => {
@@ -70,7 +79,9 @@ function toggleGuide(event: MouseEvent) {
 function closeGuide(restoreFocus = true) {
   if (!guideOpen.value) return
   guideOpen.value = false
+  guideView.value = 'tutorial'
   guideStep.value = undefined
+  guideStage.value = undefined
   guideCode.value = ''
   if (restoreFocus)
     nextTick(() => (guideReturnFocus || guideTrigger.value)?.focus({ preventScroll: true }))
@@ -82,7 +93,7 @@ function handleGuideEscape(event: KeyboardEvent) {
   }
 }
 onMounted(() => {
-  mobileQuery = window.matchMedia('(max-width: 700px), (max-height: 500px) and (pointer: coarse)')
+  mobileQuery = window.matchMedia('(max-width: 1000px), (max-height: 820px)')
   updateMobileGuide()
   mobileQuery.addEventListener('change', updateMobileGuide)
   window.addEventListener('keydown', handleGuideEscape)
@@ -95,6 +106,19 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', alignGuide)
   window.removeEventListener('scroll', alignGuide)
 })
+function showGuideTips() {
+  guideView.value = 'tips'
+  guideStep.value = undefined
+  guideStage.value = undefined
+  guideCode.value = ''
+  batchDemo.value = { input: 0, results: 0, copied: '' }
+  nextTick(alignGuide)
+}
+function showGuideTutorial() {
+  guideView.value = 'tutorial'
+  guideStep.value = 0
+  nextTick(alignGuide)
+}
 const tabItems = computed(() => [
   { label: tx('单条取码'), value: 'single', slot: 'single' },
   { label: tx('批量取码'), value: 'batch', slot: 'batch' }
@@ -104,7 +128,9 @@ watch(
   () => {
     if (!guideOpen.value) return
     batchDemo.value = { input: 0, results: 0, copied: '' }
+    guideView.value = 'tutorial'
     guideStep.value = 0
+    guideStage.value = undefined
     guideCode.value = ''
     nextTick(() => {
       if (mobileGuide.value)
@@ -150,11 +176,17 @@ watch(
         >
           <Transition name="guide-drawer">
             <div v-if="guideOpen" id="usage-guide" class="guide-drawer ore-theme">
+              <SiteTipsGuide
+                v-if="guideView === 'tips'"
+                @back="showGuideTutorial"
+                @close="closeGuide"
+              />
               <BatchUsageGuide
-                v-if="mode === 'batch'"
+                v-else-if="mode === 'batch'"
                 @switch-mode="mode = 'single'"
                 @demo="batchDemo = $event"
                 @step="guideStep = $event"
+                @tips="showGuideTips"
                 @close="closeGuide"
               />
               <UsageGuide
@@ -162,6 +194,8 @@ watch(
                 :code="guideCode"
                 @switch-mode="mode = 'batch'"
                 @step="guideOpen && (guideStep = $event)"
+                @stage="guideOpen && (guideStage = $event)"
+                @tips="showGuideTips"
                 @close="closeGuide"
               />
             </div>
@@ -192,13 +226,17 @@ watch(
               @click="toggleGuide"
             >
               <UIcon :name="guideOpen ? 'i-lucide-x' : 'i-lucide-accessibility'" />
-              {{ tx(guideOpen ? '关闭教学' : '不会用？') }}
+              <span class="guide-trigger-label"
+                ><span :class="{ 'is-spare': guideOpen }">{{ tx('不会用？') }}</span
+                ><span :class="{ 'is-spare': !guideOpen }">{{ tx('关闭教学') }}</span></span
+              >
             </button>
           </template>
           <template #single
             ><SingleWorkspace
               ref="singleWorkspace"
               :guide-step="mode === 'single' ? guideStep : undefined"
+              :guide-stage="mode === 'single' ? guideStage : undefined"
               @batch="importBatch"
               @guide-code="guideCode = $event"
           /></template>

@@ -82,22 +82,55 @@ html {
 .anchor-arrival-active::before {
   content: '';
   position: absolute;
-  inset-inline-start: -2.5rem;
+  inset-inline-start: -3rem;
   top: calc(0.75em - 10px);
-  width: 20px;
+  width: 36px;
   height: 20px;
   background: #fff;
-  clip-path: polygon(0 45%, 75% 45%, 45% 15%, 52% 8%, 94% 50%, 52% 92%, 45% 85%, 75% 55%, 0 55%);
+  clip-path: polygon(
+    24px 0,
+    27px 0,
+    27px 3px,
+    30px 3px,
+    30px 6px,
+    33px 6px,
+    33px 9px,
+    36px 9px,
+    36px 11px,
+    33px 11px,
+    33px 14px,
+    30px 14px,
+    30px 17px,
+    27px 17px,
+    27px 20px,
+    24px 20px,
+    24px 18px,
+    25px 18px,
+    25px 15px,
+    28px 15px,
+    28px 12px,
+    31px 12px,
+    31px 11px,
+    0 11px,
+    0 9px,
+    31px 9px,
+    31px 8px,
+    28px 8px,
+    28px 5px,
+    25px 5px,
+    25px 2px,
+    24px 2px
+  );
   pointer-events: none;
-  animation: anchor-pointer-arrive 2.2s ease-out both;
+  animation: anchor-pointer-arrive 2.2s ease-out 350ms both;
 }
 @keyframes anchor-pointer-arrive {
   0% {
-    opacity: 1;
-    transform: translateX(-4px);
+    opacity: 0;
+    transform: translateX(-18px);
   }
-  10%,
-  90% {
+  20%,
+  82% {
     opacity: 1;
     transform: translateX(0);
   }
@@ -111,7 +144,7 @@ html {
 }
 @media (max-width: 700px) {
   .anchor-arrival-active::before {
-    inset-inline-start: -1.5rem;
+    inset-inline-start: -2.75rem;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -227,7 +260,7 @@ code {
 .header-wordmark {
   position: relative;
   font-family: 'VT323', monospace;
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 400;
   letter-spacing: 0;
   line-height: 1;
@@ -241,8 +274,8 @@ code {
   font-family: var(--font-sans);
   position: absolute;
   right: 0;
-  bottom: calc(100% - 0.4rem);
-  font-size: 0.5625rem;
+  bottom: calc(100% - 0.45rem);
+  font-size: 0.625rem;
   line-height: 1;
   letter-spacing: 0.06em;
   font-weight: 650;
@@ -325,8 +358,11 @@ code {
 .external-arrow {
   opacity: 0.55;
 }
+.header-inner,
 .home {
   max-width: 69rem;
+}
+.home {
   margin: 0 auto;
   padding: 2.75rem 2.5rem 0;
 }
@@ -352,6 +388,31 @@ code {
   z-index: 30;
   border-radius: var(--ui-radius);
 }
+/* Inline placement is driven by a class, so the rules do not need a breakpoint of
+   their own; the script decides when the card belongs in the page flow. */
+.guide-layer.guide-inline {
+  position: static;
+  inset: auto;
+  overflow: visible;
+  contain: none;
+}
+.guide-inline .guide-drawer {
+  position: static;
+  width: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0 0 1rem;
+  overflow: visible;
+  scroll-margin-top: 0.75rem;
+}
+.guide-inline .guide-drawer-enter-active,
+.guide-inline .guide-drawer-leave-active {
+  transition: none;
+}
+.guide-inline .guide-drawer-enter-from,
+.guide-inline .guide-drawer-leave-to {
+  transform: none;
+}
 .guide-drawer-enter-active {
   transition: transform var(--ore-enter-duration) var(--ore-enter-ease);
 }
@@ -375,7 +436,8 @@ code {
   opacity: 0.5;
   cursor: default;
 }
-@media (max-width: 1000px) {
+/* A short viewport cannot give the side drawer enough height for the card. */
+@media (max-width: 1000px), (max-height: 820px) {
   .guide-drawer-enter-from,
   .guide-drawer-leave-to {
     transform: translateY(calc(100% + 0.75rem));
@@ -446,6 +508,18 @@ code {
 .guide-trigger > span {
   font-size: 1.125rem;
 }
+/* Both labels share one cell, so the button keeps one width in every language. */
+.guide-trigger > .guide-trigger-label {
+  display: grid;
+  font-size: inherit;
+  text-align: center;
+}
+.guide-trigger-label > span {
+  grid-area: 1 / 1;
+}
+.guide-trigger-label > .is-spare {
+  visibility: hidden;
+}
 .mode-tabs > [data-slot='list'] {
   border-bottom: 0;
   align-self: flex-start;
@@ -509,7 +583,7 @@ code {
   font-size: 1.375rem;
   line-height: 1.4;
 }
-@media (min-width: 701px) and (min-height: 501px), (min-width: 701px) and (pointer: fine) {
+@media (min-width: 901px) and (min-height: 501px), (min-width: 901px) and (pointer: fine) {
   .batch-workspace .batch-input {
     padding-top: 2.5rem;
   }
@@ -918,7 +992,7 @@ html.size-transition .desert-art svg * {
   font-size: var(--text-title);
   line-height: 1.3;
   margin: 1.5rem 0 1rem;
-  font-weight: 600;
+  font-weight: 800;
 }
 .content-page h2 {
   font-size: var(--text-section);
@@ -1037,6 +1111,17 @@ html.size-transition .desert-art svg * {
   }
   .otp-digits.eight {
     font-size: 2.25rem;
+  }
+}
+/* Tablet portrait is too narrow for two columns, so the result stacks under the
+   input and stays collapsed until there is a code to show. */
+@media (max-width: 900px), (max-height: 500px) and (pointer: coarse) {
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+  .result-panel {
+    border-left: 0;
+    border-radius: var(--ui-radius);
   }
 }
 @media (max-width: 700px), (max-height: 500px) and (pointer: coarse) {

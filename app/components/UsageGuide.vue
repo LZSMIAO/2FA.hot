@@ -7,13 +7,20 @@ const localePath = useLocalePath()
 const { tx } = useMessages()
 
 const props = defineProps<{ code: string }>()
-const emit = defineEmits<{ close: []; switchMode: []; step: [value: number] }>()
+const emit = defineEmits<{
+  close: []
+  switchMode: []
+  tips: []
+  step: [value: number]
+  stage: [value: number]
+}>()
 const elapsed = shallowRef(0)
 const started = shallowRef(false)
 const paused = shallowRef(false)
 const reducedMotion = shallowRef(false)
-const copiedCode = shallowRef('')
 const cursor = shallowRef({ x: 0, y: 0, visible: false })
+const shortcut = shallowRef({ x: 0, y: 0, visible: false })
+const modifierKey = shallowRef('Ctrl')
 const panel = useTemplateRef<HTMLElement>('panel')
 const duration = singleGuideTimeline.duration
 const complete = computed(() => elapsed.value >= duration)
@@ -30,42 +37,102 @@ const steps = [
   },
   {
     at: singleGuideTimeline.steps[1],
-    title: tx('在首页取码'),
+    title: tx('粘贴到 2fa.hot'),
     detail:
-      '回到 2fa.hot，把刚才那串密钥粘贴到左侧“密钥”框。右侧会生成通常为 6 位的验证码。原网站要的是这个验证码，不是那串密钥。'
+      '不用先点输入框，在页面任何位置按 Ctrl/⌘ + V 就能粘贴；整段文字里混着说明也没关系，网站会自己挑出密钥。'
   },
   {
     at: singleGuideTimeline.steps[2],
-    title: tx('填回原网站'),
-    detail:
-      '点击“复制验证码”，切回原网站，粘贴到它的验证码框，再点击确认。若倒计时已结束，请复制新生成的验证码，不要继续使用旧码。'
+    title: tx('也可以导入二维码'),
+    detail: '原网站一般也会给二维码。可以直接点“导入二维码”，用截图或摄像头识别，不用手抄密钥。'
   },
   {
     at: singleGuideTimeline.steps[3],
+    title: tx('查看验证码'),
+    detail:
+      '密钥填好后，右侧立刻出现验证码。多数网站是 6 位，少数用 8 位，导入配置链接时会自动跟着设置。'
+  },
+  {
+    at: singleGuideTimeline.steps[4],
+    title: tx('看剩余时间'),
+    detail: '验证码下面这条是剩余时间，像经验条一样一格格减少。走完就换一组新的，旧的立刻作废。'
+  },
+  {
+    at: singleGuideTimeline.steps[5],
+    title: tx('复制验证码'),
+    detail: '原网站现在要验证码了。点“复制验证码”，把当前这一组复制下来。',
+    tip: '电脑上按回车可以直接复制验证码。倒计时只剩几秒时，等下一组再复制更保险。'
+  },
+  {
+    at: singleGuideTimeline.steps[6],
+    title: tx('粘贴验证码'),
+    detail:
+      '切回原网站，粘贴到它的验证码框。如果这时倒计时刚好走完，验证码会换成新的一组，要复制最新的再填。'
+  },
+  {
+    at: singleGuideTimeline.steps[7],
+    title: tx('确认登录'),
+    detail: '点原网站的确认按钮提交。整个过程密钥都没有离开你的浏览器。'
+  },
+  {
+    at: singleGuideTimeline.steps[8],
     title: tx('验证成功'),
     detail:
-      '原网站用相同的密钥和当前时间核对验证码，匹配后通过验证。以后需要验证码时，用同一份密钥重新取码；密钥请自己保管，不要发给别人。'
+      '原网站用相同的密钥和当前时间核对验证码，匹配后通过验证。以后需要验证码时，用同一份密钥重新取码；密钥请自己保管，不要发给别人。',
+    tip: '同一份密钥可以一直用。开启本地历史后，它会加密保存在这台设备，下次点记录就能取码。'
   }
-]
+] as { at: number; title: string; detail: string; tip?: string }[]
+// Caption, narration and cursor all read the same step boundaries.
 const activeStep = computed(() =>
-  phase.value >= 5
-    ? 3
-    : elapsed.value >= singleGuideTimeline.verificationAt
-      ? 2
-      : phase.value >= 2
-        ? 1
-        : 0
+  started.value
+    ? Math.max(0, singleGuideTimeline.steps.filter((at) => elapsed.value >= at).length - 1)
+    : 0
 )
+/** The demo shows whatever code the page shows now, so a rollover changes both. */
+const copiedCode = computed(() => (phase.value >= 3 ? props.code : ''))
+const tipOpen = shallowRef<boolean | undefined>()
+watch(activeStep, () => (tipOpen.value = undefined))
+const tipVisible = computed({
+  get: () =>
+    steps[activeStep.value]!.tip
+      ? (tipOpen.value ?? elapsed.value - steps[activeStep.value]!.at > 1200)
+      : false,
+  set: (open: boolean) => {
+    tipOpen.value = open
+  }
+})
+let shortcutSound: ReturnType<typeof setTimeout> | undefined
+const cue = (detail: string) => window.dispatchEvent(new CustomEvent('2fa-ui-sound', { detail }))
+/** Matches the drop keyframes: the blocks land, then the keys go down. */
+function playShortcutSounds(kind: string) {
+  clearTimeout(shortcutSound)
+  shortcutSound = setTimeout(() => {
+    cue('stone-on')
+    shortcutSound = setTimeout(() => cue(kind === 'qr' ? 'select' : 'click'), 660)
+  }, 620)
+}
+const pasteStep = computed(() => started.value && activeStep.value === 1 && phase.value < 3)
+const qrStep = computed(() => started.value && activeStep.value === 2)
+/** Which block drops onto the field for the step being narrated. */
+const dropKind = computed(() => (pasteStep.value ? 'keys' : qrStep.value ? 'qr' : ''))
+watch(dropKind, (kind) => {
+  clearTimeout(shortcutSound)
+  if (kind && !reducedMotion.value) playShortcutSounds(kind)
+})
 const narration = useGuideNarration(
-  () =>
-    started.value
-      ? `${steps[activeStep.value]!.title}。${tx(steps[activeStep.value]!.detail)}`
-      : tx('就是“验证器”。2fa.hot 和验证器 App 一样，用密钥生成一次性验证码。'),
+  () => {
+    if (!started.value)
+      return tx('就是“验证器”。2fa.hot 和验证器 App 一样，用密钥生成一次性验证码。')
+    const step = steps[activeStep.value]!
+    const body = tx(step.detail)
+    // Some translations open the body with the title; do not read it twice.
+    return `${body.startsWith(step.title) ? '' : step.title + '。'}${body} ${tx(step.tip ?? '')}`
+  },
   () => paused.value
 )
 function toggleNarration() {
   if (!narration.enabled.value) paused.value = false
-  narration.toggle()
+  narration.toggle(started.value)
 }
 const movements = singleGuideTimeline.movements
 const targetId = computed(
@@ -86,23 +153,13 @@ let timer: ReturnType<typeof setInterval> | undefined
 let preference: MediaQueryList | undefined
 let lastTarget = ''
 
-watch(
-  phase,
-  (value) => {
-    if (value === 3 || value === 4) copiedCode.value ||= props.code
-    emit('step', value)
-  },
-  { immediate: true }
-)
-watch(
-  () => props.code,
-  (value) => {
-    if (phase.value >= 3 && !copiedCode.value) copiedCode.value = value
-  }
-)
+watch(phase, (value) => emit('step', value), { immediate: true })
+// The workspace needs the step itself, not the phase, to open up the QR control.
+watch(activeStep, (value) => emit('stage', value), { immediate: true })
 function positionCursor() {
   if (!started.value || complete.value || reducedMotion.value) {
     cursor.value = { ...cursor.value, visible: false }
+    shortcut.value = { ...shortcut.value, visible: false }
     return
   }
   const target = document.getElementById(targetId.value)
@@ -136,6 +193,14 @@ function positionCursor() {
     y: rect.top + rect.height * 0.58,
     visible: true
   }
+  const anchor = dropKind.value === 'qr' ? 'tutorial-qr' : 'secret'
+  const field = dropKind.value ? document.getElementById(anchor) : undefined
+  if (!field) {
+    shortcut.value = { ...shortcut.value, visible: false }
+    return
+  }
+  const box = field.getBoundingClientRect()
+  shortcut.value = { x: Math.max(16, box.right - 108), y: box.top - 48, visible: true }
 }
 function start() {
   window.dispatchEvent(new CustomEvent('2fa-ui-sound', { detail: 'demo' }))
@@ -143,7 +208,6 @@ function start() {
   clicking.value = false
   started.value = true
   elapsed.value = 0
-  copiedCode.value = ''
   paused.value = reducedMotion.value
   lastTarget = ''
   lastTick = performance.now()
@@ -152,7 +216,6 @@ function start() {
 }
 function chooseStep(index: number) {
   started.value = true
-  copiedCode.value ||= props.code
   elapsed.value = steps[index]!.at
   paused.value = true
   lastTarget = ''
@@ -171,6 +234,7 @@ function visibilityChanged() {
 }
 onMounted(() => {
   panel.value?.focus({ preventScroll: true })
+  if (/mac|iphone|ipad/i.test(navigator.platform || navigator.userAgent)) modifierKey.value = '⌘'
   preference = window.matchMedia('(prefers-reduced-motion: reduce)')
   updatePreference()
   preference.addEventListener('change', updatePreference)
@@ -197,6 +261,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   clearInterval(timer)
   clearTimeout(clickTimer)
+  clearTimeout(shortcutSound)
   preference?.removeEventListener('change', updatePreference)
   document.removeEventListener('visibilitychange', visibilityChanged)
 })
@@ -213,7 +278,7 @@ onBeforeUnmount(() => {
   >
     <div class="tutorial-title">
       <span
-        ><UIcon name="i-lucide-user-round" />{{ tx('示例社交账号')
+        ><UIcon name="i-lucide-monitor-play" />{{ tx('演示：登录示例网站')
         }}<GuideVoiceButton :enabled="narration.enabled.value" @toggle="toggleNarration" /></span
       ><UButton
         icon="i-lucide-x"
@@ -237,6 +302,21 @@ onBeforeUnmount(() => {
           )
         }}
       </p>
+      <h3>{{ tx('演示里会看到什么？') }}</h3>
+      <p>
+        {{
+          tx(
+            '卡片里会出现一个虚构的“示例网站”，代表任何要求双重验证的服务：邮箱、游戏、交易所都一样。它先给出密钥，再要求你填验证码。'
+          )
+        }}
+      </p>
+      <p>
+        {{
+          tx(
+            '记住三件事就够了：密钥长期有效，要保密；验证码每 30 秒换一次，用完即弃；原网站只要验证码。'
+          )
+        }}
+      </p>
       <p class="tutorial-muted">
         {{
           tx('接下来，模拟鼠标会直接在首页演示。只使用公开示例数据，你原来的输入会在结束后恢复。')
@@ -249,51 +329,102 @@ onBeforeUnmount(() => {
         @click="start"
         >{{ tx('开始演示') }}</UButton
       >
+      <UButton
+        class="tutorial-tips-entry"
+        variant="ghost"
+        color="neutral"
+        block
+        icon="i-lucide-lightbulb"
+        @click="emit('tips')"
+        >{{ tx('网站小技巧') }}</UButton
+      >
     </div>
     <template v-else>
-      <div class="tutorial-scene" aria-hidden="true">
-        <Transition name="guide-screen" mode="out-in">
-          <div v-if="phase < 5" key="form" class="tutorial-form">
-            <div class="social-avatar">
-              <img src="/textures/trial-key.png" alt="" width="32" height="32" />
+      <div class="tutorial-stage" aria-hidden="true">
+        <div class="tutorial-chrome">
+          <span class="tutorial-chrome-dots"><i /><i /><i /></span>
+          <span class="tutorial-chrome-url" dir="ltr">example-social.com</span>
+          <span class="tutorial-chrome-badge">{{ tx('模拟画面') }}</span>
+        </div>
+        <p class="tutorial-stage-note">
+          {{
+            tx(
+              elapsed < singleGuideTimeline.verificationAt
+                ? '这是原网站的两步验证设置页'
+                : '这是原网站的登录验证页'
+            )
+          }}
+        </p>
+        <div class="tutorial-scene">
+          <Transition name="guide-screen" mode="out-in">
+            <div v-if="phase < 5" key="form" class="tutorial-form">
+              <div class="social-avatar">
+                <img src="/textures/trial-key.png" alt="" width="32" height="32" />
+              </div>
+              <h2>
+                {{ tx(elapsed < singleGuideTimeline.verificationAt ? '密钥' : '验证你的登录') }}
+              </h2>
+              <template v-if="elapsed < singleGuideTimeline.verificationAt">
+                <p>{{ tx('将这份密钥添加到验证器') }}</p>
+                <div class="tutorial-secret mono">{{ tx(DEMO_SECRET) }}</div>
+                <div
+                  id="tutorial-copy-secret"
+                  class="simulated-button"
+                  :class="{ copied: phase >= 1 }"
+                >
+                  <UIcon :name="phase >= 1 ? 'i-mc-check' : 'i-lucide-copy'" />{{
+                    tx(phase >= 1 ? '密钥已复制' : '复制密钥')
+                  }}
+                </div>
+              </template>
+              <template v-else>
+                <p>{{ tx('请输入验证器中的六位验证码') }}</p>
+                <div id="tutorial-login-code" class="tutorial-code-input">
+                  <span v-for="index in 6" :key="index" :class="{ filled: phase >= 4 }">{{
+                    tx(phase >= 4 ? copiedCode[index - 1] : '')
+                  }}</span>
+                </div>
+                <div id="tutorial-submit" class="simulated-button">
+                  {{ tx('验证并登录') }}<UIcon name="i-lucide-arrow-right" />
+                </div>
+              </template>
             </div>
-            <h2>
-              {{ tx(elapsed < singleGuideTimeline.verificationAt ? '密钥' : '验证你的登录') }}
-            </h2>
-            <template v-if="elapsed < singleGuideTimeline.verificationAt">
-              <p>{{ tx('将这份密钥添加到验证器') }}</p>
-              <div class="tutorial-secret mono">{{ tx(DEMO_SECRET) }}</div>
-              <div
-                id="tutorial-copy-secret"
-                class="simulated-button"
-                :class="{ copied: phase >= 1 }"
-              >
-                <UIcon :name="phase >= 1 ? 'i-mc-check' : 'i-lucide-copy'" />{{
-                  tx(phase >= 1 ? '密钥已复制' : '复制密钥')
-                }}
-              </div>
-            </template>
-            <template v-else>
-              <p>{{ tx('请输入验证器中的六位验证码') }}</p>
-              <div id="tutorial-login-code" class="tutorial-code-input">
-                <span v-for="index in 6" :key="index" :class="{ filled: phase >= 4 }">{{
-                  tx(phase >= 4 ? copiedCode[index - 1] : '')
-                }}</span>
-              </div>
-              <div id="tutorial-submit" class="simulated-button">
-                {{ tx('验证并登录') }}<UIcon name="i-lucide-arrow-right" />
-              </div>
-            </template>
-          </div>
-          <div v-else key="success" class="tutorial-success">
-            <span><UIcon name="i-mc-check" /></span>
-            <h2>{{ tx('验证成功') }}</h2>
-            <p>{{ tx('示例账号已登录') }}</p>
-          </div>
-        </Transition>
+            <div v-else key="success" class="tutorial-success">
+              <span><UIcon name="i-mc-check" /></span>
+              <h2>{{ tx('验证成功') }}</h2>
+              <p>{{ tx('示例账号已登录') }}</p>
+            </div>
+          </Transition>
+        </div>
       </div>
       <div class="tutorial-caption" aria-live="polite">
-        <span>{{ tx(activeStep + 1) }} / 4</span><strong>{{ tx(steps[activeStep]!.title) }}</strong>
+        <div class="tutorial-step-head">
+          <span>{{ tx(activeStep + 1) }} / {{ steps.length }}</span>
+          <strong>{{ tx(steps[activeStep]!.title) }}</strong>
+          <UPopover
+            v-if="steps[activeStep]!.tip"
+            v-model:open="tipVisible"
+            :content="{ side: 'top', align: 'center', collisionPadding: 12 }"
+            :portal="false"
+          >
+            <button
+              type="button"
+              class="tutorial-tip-toggle"
+              :class="{ 'is-open': tipVisible }"
+              :aria-label="tx('小提示')"
+            >
+              <UIcon name="i-lucide-info" />
+            </button>
+            <template #content>
+              <p class="tutorial-step-tip">
+                <UIcon name="i-lucide-lightbulb" aria-hidden="true" /><span
+                  ><strong>{{ tx('小提示') }}</strong
+                  >{{ tx(steps[activeStep]!.tip) }}</span
+                >
+              </p>
+            </template>
+          </UPopover>
+        </div>
         <p>{{ tx(steps[activeStep]!.detail) }}</p>
       </div>
       <p class="tutorial-link-tip">
@@ -323,11 +454,8 @@ onBeforeUnmount(() => {
           /></AppHint>
         </div>
         <div class="tutorial-actions">
-          <UButton v-if="finished" variant="outline" color="neutral" @click="emit('switchMode')">{{
-            tx('批量取码演示')
-          }}</UButton>
           <UButton
-            v-if="activeStep < 3"
+            v-if="activeStep < steps.length - 1"
             class="primary-button tutorial-next"
             @click="chooseStep(activeStep + 1)"
             >{{ tx('下一步') }}</UButton
@@ -336,8 +464,38 @@ onBeforeUnmount(() => {
           }}</UButton>
         </div>
       </div>
+      <div v-if="finished" class="tutorial-more">
+        <UButton
+          variant="outline"
+          color="neutral"
+          icon="i-lucide-lightbulb"
+          @click="emit('tips')"
+          >{{ tx('网站小技巧') }}</UButton
+        >
+        <UButton variant="outline" color="neutral" @click="emit('switchMode')">{{
+          tx('批量取码演示')
+        }}</UButton>
+      </div>
     </template>
   </aside>
+  <Teleport to="body"
+    ><div
+      v-if="shortcut.visible && !reducedMotion"
+      class="tutorial-shortcut ore-theme"
+      :style="{ transform: `translate3d(${shortcut.x}px, ${shortcut.y}px, 0)` }"
+      aria-hidden="true"
+    >
+      <span class="tutorial-shortcut-keys"
+        ><template v-if="dropKind === 'qr'"
+          ><kbd class="is-glyph"><UIcon name="i-lucide-qr-code" /></kbd><i>→</i
+          ><kbd class="is-glyph"><UIcon name="i-lucide-text-cursor-input" /></kbd></template
+        ><template v-else
+          ><kbd>{{ modifierKey }}</kbd
+          ><i>+</i><kbd>V</kbd></template
+        ></span
+      >
+    </div></Teleport
+  >
   <Teleport to="body"
     ><div
       v-if="cursor.visible && !reducedMotion && phase < 5"
@@ -406,11 +564,73 @@ onBeforeUnmount(() => {
   font-size: var(--text-caption);
   margin: 1.25rem 0;
 }
+.tutorial-tips-entry {
+  margin-top: 0.5rem;
+  justify-content: center;
+}
+/* A framed pane makes it obvious the demo is a stand-in for the original website. */
+.tutorial-stage {
+  padding: 1rem;
+  background: var(--wash);
+}
+.tutorial-chrome {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.625rem;
+  border: 1px solid var(--ui-border);
+  border-bottom: 0;
+  border-radius: var(--ui-radius) var(--ui-radius) 0 0;
+  background: var(--panel);
+}
+.tutorial-chrome-dots {
+  display: flex;
+  flex-shrink: 0;
+  gap: 0.25rem;
+}
+.tutorial-chrome-dots i {
+  width: 0.5rem;
+  height: 0.5rem;
+  background: var(--ui-border);
+}
+.tutorial-chrome-url {
+  flex: 1;
+  min-width: 0;
+  padding: 0.125rem 0.5rem;
+  border-radius: var(--ui-radius);
+  background: var(--wash);
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  color: var(--ui-text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tutorial-chrome-badge {
+  flex-shrink: 0;
+  padding: 0.125rem 0.375rem;
+  border: 1px solid var(--accent-ink);
+  color: var(--accent-ink);
+  font-size: var(--text-caption);
+  white-space: nowrap;
+}
+.tutorial-stage-note {
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  border-inline: 1px solid var(--ui-border);
+  background: var(--panel);
+  font-size: var(--text-caption);
+  color: var(--ui-text-muted);
+  text-align: center;
+}
 .tutorial-scene {
   position: relative;
-  min-height: 19rem;
-  padding: 1.5rem;
-  background: var(--wash);
+  min-height: 16rem;
+  padding: 0.75rem 1.25rem 1.25rem;
+  border: 1px solid var(--ui-border);
+  border-top: 0;
+  border-radius: 0 0 var(--ui-radius) var(--ui-radius);
+  background: var(--panel);
 }
 .tutorial-form {
   text-align: center;
@@ -424,7 +644,7 @@ onBeforeUnmount(() => {
   width: 2.5rem;
   height: 2.5rem;
   border-radius: var(--ui-radius);
-  background: var(--panel);
+  background: var(--wash);
   margin: 0 auto 0.75rem;
   font-size: 1.125rem;
   color: var(--ui-text-muted);
@@ -445,7 +665,7 @@ onBeforeUnmount(() => {
   padding: 0.75rem;
   border: 1px solid var(--ui-border);
   border-radius: var(--ui-radius);
-  background: var(--panel);
+  background: var(--wash);
   font-size: var(--text-caption);
   overflow-wrap: anywhere;
   text-align: start;
@@ -477,7 +697,7 @@ onBeforeUnmount(() => {
   height: 3rem;
   border: 1px solid var(--ui-border);
   border-radius: var(--ui-radius);
-  background: var(--panel);
+  background: var(--wash);
   font-family: var(--font-mono);
   font-size: 1.25rem;
 }
@@ -507,11 +727,21 @@ onBeforeUnmount(() => {
   padding: 1rem 1.25rem 0;
   min-height: 10rem;
 }
-.tutorial-caption > span {
+.tutorial-step-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+/* The title has to give, or a long one pushes the circle out of the drawer. */
+.tutorial-step-head > strong {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.tutorial-step-head > span {
   font-family: var(--font-mono);
   font-size: var(--text-caption);
   color: var(--accent-ink);
-  margin-inline-end: 0.5rem;
 }
 .tutorial-caption strong {
   font-size: var(--text-label);
@@ -522,6 +752,41 @@ onBeforeUnmount(() => {
   font-size: var(--text-label);
   line-height: 1.8;
   margin-top: 0.5rem;
+}
+.tutorial-tip-toggle {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 1.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-inline-start: -0.125rem;
+  color: var(--ui-text-muted);
+}
+.tutorial-tip-toggle:hover,
+.tutorial-tip-toggle.is-open {
+  color: var(--accent-ink);
+}
+.tutorial-step-tip {
+  max-width: min(17rem, calc(100vw - 2rem));
+  display: flex;
+  align-items: start;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.625rem 0.75rem;
+  color: var(--ui-text);
+  font-size: var(--text-caption);
+  line-height: 1.7;
+}
+.tutorial-step-tip > :deep(.iconify) {
+  flex-shrink: 0;
+  /* Centres the glyph on the first line box rather than its top edge. */
+  margin-top: 0.35em;
+  color: var(--accent-ink);
+}
+.tutorial-step-tip strong {
+  color: var(--ui-text);
+  font-weight: 600;
+  margin-inline-end: 0.375rem;
 }
 .tutorial-controls {
   flex-wrap: wrap;
@@ -534,6 +799,19 @@ onBeforeUnmount(() => {
 .tutorial-controls .tutorial-next {
   padding-block: 0.25rem;
 }
+.tutorial-more {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0 0.75rem 0.75rem;
+}
+.tutorial-more > :deep(button) {
+  flex: 1;
+  justify-content: center;
+  min-height: 2.5rem;
+  padding-inline: 0.5rem;
+  font-size: var(--text-caption);
+  white-space: nowrap;
+}
 .tutorial-controls > div {
   display: flex;
 }
@@ -543,14 +821,115 @@ onBeforeUnmount(() => {
   gap: 0.5rem;
 }
 .tutorial-actions > :deep(button) {
-  min-height: 3rem;
+  min-height: 2.75rem;
   padding-block: 0.5rem;
+  white-space: nowrap;
 }
 .tutorial-footnote {
   font-size: var(--text-caption);
   color: var(--ui-text-muted);
   padding: 0 1.25rem 1rem;
   margin: 0;
+}
+/* Pixel keycaps drop in from above like a placed block, then press. */
+.tutorial-shortcut {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  pointer-events: none;
+  transition: transform 400ms var(--ease-out);
+}
+.tutorial-shortcut-keys {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  animation: tutorial-key-drop 2100ms var(--ease-out) infinite;
+}
+.tutorial-shortcut i {
+  font-style: normal;
+  font-size: var(--text-caption);
+  color: var(--scene-text-muted);
+  text-shadow: 2px 2px 0 #0009;
+}
+.tutorial-shortcut kbd {
+  display: grid;
+  place-items: center;
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  padding: 0.25rem 0.5rem;
+  border: 2px solid var(--ore-outline);
+  border-radius: 0;
+  background: var(--ore-control);
+  box-shadow:
+    var(--ore-button-shadow),
+    0 4px 0 #0006;
+  color: var(--ui-text-highlighted);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  line-height: 1;
+  animation: tutorial-key-press 2100ms var(--ease-out) infinite;
+}
+.tutorial-shortcut kbd:last-of-type {
+  animation-delay: 70ms;
+}
+.tutorial-shortcut kbd.is-glyph {
+  font-size: 1.125rem;
+}
+@keyframes tutorial-key-drop {
+  0% {
+    transform: translateY(-240%);
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  26% {
+    transform: translateY(0);
+  }
+  31% {
+    transform: translateY(-14%);
+  }
+  36% {
+    transform: translateY(0);
+  }
+  39% {
+    transform: translateY(-5%);
+  }
+  42%,
+  92% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+}
+@keyframes tutorial-key-press {
+  0%,
+  58%,
+  76%,
+  100% {
+    transform: translateY(0);
+    background: var(--ore-control);
+    color: var(--ui-text-highlighted);
+  }
+  63%,
+  71% {
+    transform: translateY(3px);
+    background: var(--action);
+    color: #fff;
+    box-shadow: var(--ore-bevel);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tutorial-shortcut,
+  .tutorial-shortcut-keys,
+  .tutorial-shortcut kbd {
+    transition: none;
+    animation: none;
+  }
 }
 .tutorial-cursor {
   position: fixed;
@@ -596,6 +975,12 @@ onBeforeUnmount(() => {
   .tutorial-window.started {
     max-width: 32rem;
     margin: auto;
+  }
+  .tutorial-stage {
+    padding: 0.5rem;
+  }
+  .tutorial-stage-note {
+    padding: 0.375rem 0.5rem;
   }
   .tutorial-scene {
     min-height: 9rem;
@@ -676,10 +1061,11 @@ onBeforeUnmount(() => {
 <style scoped>
 .tutorial-link-tip {
   margin: 0;
-  padding: 1rem 1.25rem;
+  padding: 0.75rem 1.25rem;
   border-top: 1px solid var(--ui-border);
-  font-size: var(--text-label);
-  line-height: 1.8;
+  font-size: var(--text-caption);
+  line-height: 1.7;
+  color: var(--ui-text-muted);
 }
 .tutorial-link-tip code {
   display: block;

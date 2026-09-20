@@ -5,6 +5,7 @@ const emit = defineEmits<{
   step: [value: number]
   close: []
   switchMode: []
+  tips: []
   demo: [value: { input: number; results: number; copied: string }]
 }>()
 const panel = useTemplateRef<HTMLElement>('panel')
@@ -13,6 +14,8 @@ const paused = shallowRef(false)
 const complete = shallowRef(false)
 const cursor = shallowRef({ x: 0, y: 0, visible: false })
 const clicking = shallowRef(false)
+const tipOpen = shallowRef(false)
+watch(step, () => (tipOpen.value = false))
 let targetId = ''
 let elapsed = 0
 let eventIndex = 0
@@ -34,13 +37,26 @@ const messages = [
   '只登录一个账号时，点击对应行最右侧的复制图标。现在点击第一行，演示只复制这一条验证码。',
   '需要所有结果时，再点击「复制全部有效验证码」。它会一起复制每条记录的名称和验证码。演示不会改动你的剪贴板。'
 ]
+const tips = [
+  '右上角的展开图标可以把结果放到独立页面，一屏显示全部验证码，适合一边核对一边输入。',
+  '也可以跳过这一步：直接在页面任何位置粘贴整段表格，网站会自动分行，连同名称一起识别。',
+  '想给每行取名，就写成“名称 [Tab] 密钥”。从 Excel 整列复制过来时通常已经是这个格式。',
+  '粘贴内容里带邮箱时，可以点“关联账号”把邮箱和密钥一一对上，避免复制时认错账号。',
+  '每行左侧有勾选框。勾选后可以只把这几条保存到本地历史，或只删除这几行。',
+  '最多 100 条，结果只留在当前页面。刷新或离开后不会自动保存，需要留存请先保存到本地历史。'
+]
 const narration = useGuideNarration(
-  () => `${tx(titles[step.value])}。${tx(messages[step.value])}`,
+  () => {
+    const title = tx(titles[step.value]!)
+    const body = tx(messages[step.value]!)
+    // Some translations open the body with the title; do not read it twice.
+    return `${body.startsWith(title) ? '' : title + '。'}${body} ${tx(tips[step.value]!)}`
+  },
   () => paused.value
 )
 function toggleNarration() {
   if (!narration.enabled.value) paused.value = false
-  narration.toggle()
+  narration.toggle(step.value > 0)
 }
 function positionCursor() {
   const target = document.getElementById(targetId)
@@ -82,15 +98,7 @@ const events: [number, () => void][] = [
   [3800, () => click({ input: 2, results: 2 })],
   [4250, () => click({ input: 3, results: 3 })],
   [4700, () => click({ input: 4, results: 4 })],
-  [
-    5700,
-    () => {
-      step.value = 3
-      emit('step', 3)
-      targetId = ''
-      cursor.value = { ...cursor.value, visible: false }
-    }
-  ],
+  [5700, () => move('batch-demo-results', 3)],
   [10200, () => move('batch-demo-copy-1', 4)],
   [10900, () => click({ copied: 'single' })],
   [13900, () => move('batch-demo-copy', 5)],
@@ -165,19 +173,41 @@ onBeforeUnmount(() => {
       {{ tx('当前浏览器无法播放语音，请继续查看文字教学。') }}
     </p>
     <div class="batch-guide-body">
-      <h2>
-        {{ tx(titles[step]) }}
-      </h2>
+      <div class="batch-guide-head">
+        <h2>{{ tx(titles[step]) }}</h2>
+        <UPopover
+          v-model:open="tipOpen"
+          :content="{ side: 'top', align: 'center', collisionPadding: 12 }"
+          :portal="false"
+        >
+          <button
+            type="button"
+            class="tutorial-tip-toggle"
+            :class="{ 'is-open': tipOpen }"
+            :aria-label="tx('小提示')"
+          >
+            <UIcon name="i-lucide-info" />
+          </button>
+          <template #content>
+            <p class="batch-guide-tip">
+              <UIcon name="i-lucide-lightbulb" aria-hidden="true" /><span
+                ><strong>{{ tx('小提示') }}</strong
+                >{{ tx(tips[step]) }}</span
+              >
+            </p>
+          </template>
+        </UPopover>
+      </div>
       <p>{{ tx(messages[step]) }}</p>
       <p class="batch-guide-progress">{{ step ? `${step} / 5` : '' }}</p>
-      <UButton
-        v-if="!step"
-        class="primary-button"
-        icon="i-lucide-play"
-        data-sound-custom
-        @click="start"
-        >{{ tx('开始演示') }}</UButton
-      >
+      <div v-if="!step" class="batch-guide-start">
+        <UButton class="primary-button" icon="i-lucide-play" data-sound-custom @click="start">{{
+          tx('开始演示')
+        }}</UButton>
+        <UButton variant="ghost" color="neutral" icon="i-lucide-lightbulb" @click="emit('tips')">{{
+          tx('网站小技巧')
+        }}</UButton>
+      </div>
       <div v-else class="batch-guide-controls">
         <div class="batch-playback-controls">
           <AppHint v-if="!complete" :text="tx(paused ? '继续' : '暂停')"
@@ -199,13 +229,22 @@ onBeforeUnmount(() => {
           /></AppHint>
         </div>
         <div class="batch-guide-actions">
-          <UButton v-if="complete" variant="outline" color="neutral" @click="emit('switchMode')">{{
-            tx('单条取码演示')
-          }}</UButton>
           <UButton class="primary-button" @click="emit('close')">{{
             tx(complete ? '我会用了' : '关闭教学')
           }}</UButton>
         </div>
+      </div>
+      <div v-if="complete" class="batch-guide-more">
+        <UButton
+          variant="outline"
+          color="neutral"
+          icon="i-lucide-lightbulb"
+          @click="emit('tips')"
+          >{{ tx('网站小技巧') }}</UButton
+        >
+        <UButton variant="outline" color="neutral" @click="emit('switchMode')">{{
+          tx('单条取码演示')
+        }}</UButton>
       </div>
     </div>
   </aside>
@@ -253,6 +292,69 @@ onBeforeUnmount(() => {
   display: grid;
   grid-template-rows: auto 1fr 2rem auto;
 }
+.batch-guide-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+.batch-guide-head h2 {
+  min-width: 0;
+  margin: 0;
+}
+.tutorial-tip-toggle {
+  display: inline-grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+  color: var(--ui-text-muted);
+}
+.tutorial-tip-toggle:hover,
+.tutorial-tip-toggle.is-open {
+  color: var(--accent-ink);
+}
+.batch-guide-more {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+.batch-guide-more > :deep(button) {
+  flex: 1;
+  justify-content: center;
+  min-height: 2.5rem;
+  padding-inline: 0.5rem;
+  font-size: var(--text-caption);
+  white-space: nowrap;
+}
+.batch-guide-tip {
+  display: flex;
+  align-items: start;
+  gap: 0.5rem;
+  max-width: min(17rem, calc(100vw - 3rem));
+  margin: 0;
+  padding: 0.75rem;
+  color: var(--ui-text-muted);
+  font-size: var(--text-caption);
+  line-height: 1.7;
+}
+.batch-guide-tip > :deep(.iconify) {
+  flex-shrink: 0;
+  /* Centres the glyph on the first line box rather than its top edge. */
+  margin-top: 0.35em;
+  color: var(--accent-ink);
+}
+.batch-guide-tip strong {
+  color: var(--ui-text);
+  font-weight: 600;
+  margin-inline-end: 0.375rem;
+}
+.batch-guide-start {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
 .batch-guide-body h2 {
   font-size: var(--text-section);
   margin: 0 0 1rem;
@@ -281,8 +383,9 @@ onBeforeUnmount(() => {
   gap: 0.5rem;
 }
 .batch-guide-actions > :deep(button) {
-  min-height: 3rem;
+  min-height: 2.75rem;
   padding-block: 0.5rem;
+  white-space: nowrap;
 }
 .batch-guide-cursor {
   position: fixed;

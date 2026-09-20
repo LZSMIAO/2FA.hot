@@ -15,6 +15,17 @@ const scene = computed(() =>
 function faceUrl(version: string, face: number) {
   return `/panorama/${version === '1.20.1' ? '' : `${version}/`}panorama_${face}.png`
 }
+function applyScene() {
+  for (let face = 0; face < 6; face++) {
+    document.documentElement.style.setProperty(
+      `--panorama-face-${face}`,
+      `url(${faceUrl(scene.value, face)})`
+    )
+  }
+}
+watch(scene, () => {
+  if (hydrated.value) applyScene()
+})
 const loading = shallowRef(false)
 const loadError = shallowRef(false)
 let disposed = false
@@ -94,6 +105,7 @@ function updatePreference() {
 }
 onMounted(() => {
   hydrated.value = true
+  applyScene()
   mobile = window.matchMedia('(max-width: 700px), (max-height: 500px) and (pointer: coarse)')
   updateMobile()
   mobile.addEventListener('change', updateMobile)
@@ -139,7 +151,9 @@ onBeforeUnmount(() => {
           :key="face"
           class="panorama-face"
           :class="`face-${face - 1}`"
-          :style="{ backgroundImage: `url(${faceUrl(scene, face - 1)})` }"
+          :style="{
+            backgroundImage: `var(--panorama-face-${face - 1}, url(${faceUrl('1.20.1', face - 1)}))`
+          }"
         />
       </div>
     </div>
