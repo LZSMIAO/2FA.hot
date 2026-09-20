@@ -85,15 +85,14 @@ const groups = computed(() => {
   }
   return [...grouped.values()]
 })
-function toggleBatchSelection(ids: string[]) {
-  const next = new Set(selected.value)
-  const remove = ids.every((id) => next.has(id))
-  for (const id of ids) {
-    if (remove) next.delete(id)
-    else next.add(id)
-  }
-  selected.value = [...next]
-}
+const selectionUnits = computed(() =>
+  groups.value.flatMap((group) => {
+    const rowUnits = group.rows.map((row) => ({ id: row.id, members: [row.id] }))
+    if (!group.batch) return rowUnits
+    const heading = { id: group.id, members: group.rows.map((row) => row.id) }
+    return batchExpanded(group.id) ? [heading, ...rowUnits] : [heading]
+  })
+)
 async function toggleBatch(id: string, event: MouseEvent) {
   if (search.value) {
     if (collapsedSearchBatches.value.has(id)) collapsedSearchBatches.value.delete(id)
@@ -121,11 +120,8 @@ const {
 } = useHistorySelection(
   computed(() => rows.value.map((row) => row.id)),
   selected,
-  computed(() =>
-    groups.value.flatMap((group) =>
-      !group.batch || batchExpanded(group.id) ? group.rows.map((row) => row.id) : []
-    )
-  )
+  computed(() => selectionUnits.value.map((unit) => unit.id)),
+  (unit) => selectionUnits.value.find((entry) => entry.id === unit)?.members ?? [unit]
 )
 watch(
   importOpen,
@@ -377,6 +373,7 @@ const date = (v: number) =>
           v-if="group.batch"
           class="history-batch-heading"
           :class="{ 'is-selected': group.rows.some((row) => selectedSet.has(row.id)) }"
+          :data-selection-id="group.id"
         >
           <SelectionCheck
             :checked="
@@ -387,7 +384,8 @@ const date = (v: number) =>
                   : false
             "
             :label="tx('选择 {label}', { label: tx('批量取码') })"
-            @click="toggleBatchSelection(group.rows.map((row) => row.id))"
+            @pointerdown="startSelection($event, group.id)"
+            @click="clickSelection($event, group.id)"
           />
           <button
             type="button"
@@ -727,6 +725,15 @@ const date = (v: number) =>
 }
 .history-batch-heading.is-selected {
   background: color-mix(in srgb, var(--action) 5%, transparent);
+}
+/* An opened batch reads as one block: a quiet neutral wash behind it and a
+   thin accent down its edge, left clear of the green the selection uses. */
+.history-group.is-expanded {
+  background: color-mix(in srgb, var(--ui-text-highlighted) 4%, transparent);
+  box-shadow: inset 2px 0 0 color-mix(in srgb, var(--accent-ink) 45%, transparent);
+}
+.history-group.is-expanded > .history-batch-heading {
+  background: color-mix(in srgb, var(--ui-text-highlighted) 3%, transparent);
 }
 .history-group.is-expanded > .history-row {
   padding-inline-start: calc(var(--history-inset) + 20px + var(--control-gap));

@@ -4,7 +4,13 @@ import { selectionRange } from '../utils/selection-range'
 export function useHistorySelection(
   ids: Ref<string[]>,
   selected: Ref<string[]>,
-  rangeIds: Ref<string[]> = ids
+  rangeIds: Ref<string[]> = ids,
+  /**
+   * A collapsed batch occupies one row while standing in for every record it
+   * holds, so a range drawn over the rows on screen has to expand back out to
+   * the records those rows represent.
+   */
+  expand: (unit: string) => string[] = (unit) => [unit]
 ) {
   const surface = shallowRef<HTMLElement | null>(null)
   const selectedSet = computed(() => new Set(selected.value))
@@ -31,11 +37,13 @@ export function useHistorySelection(
    * row never silently clears another group's selection.
    */
   function applyRange(baseline: readonly string[], from: string, to: string, checked: boolean) {
-    const ranged = selectionRange(rangeIds.value, baseline, from, to, checked)
-    const kept = new Set(ranged)
-    for (const id of baseline) if (!rangeIds.value.includes(id)) kept.add(id)
-    return ids.value.filter((id) => kept.has(id))
+    const units = selectionRange(rangeIds.value, [], from, to, true)
+    const next = new Set(baseline)
+    for (const unit of units)
+      for (const id of expand(unit)) checked ? next.add(id) : next.delete(id)
+    return ids.value.filter((id) => next.has(id))
   }
+  const unitSelected = (unit: string) => expand(unit).every((id) => selectedSet.value.has(id))
 
   function stop() {
     const previous = drag
@@ -114,7 +122,7 @@ export function useHistorySelection(
       pointer: event.pointerId,
       start: from,
       baseline: [...selected.value],
-      checked: !selectedSet.value.has(id),
+      checked: !unitSelected(id),
       x: event.clientX,
       y: event.clientY,
       target
@@ -133,7 +141,7 @@ export function useHistorySelection(
     // Pointer input was handled on press; detail=0 is keyboard/assistive activation.
     if (event.detail !== 0) return
     const from = event.shiftKey && rangeIds.value.includes(anchor) ? anchor : id
-    selected.value = applyRange(selected.value, from, id, !selectedSet.value.has(id))
+    selected.value = applyRange(selected.value, from, id, !unitSelected(id))
     if (!event.shiftKey) anchor = id
   }
   function toggleAll() {

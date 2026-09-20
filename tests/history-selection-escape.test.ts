@@ -6,7 +6,7 @@ import ts from 'typescript'
 import { computed, effectScope, nextTick, shallowRef, watch } from 'vue'
 import { selectionRange } from '../app/utils/selection-range.ts'
 
-function setup(visible = ['a', 'b', 'c']) {
+function setup(visible = ['a', 'b', 'c'], expand?: (unit: string) => string[]) {
   const selected = shallowRef(['a', 'b'])
   const listeners = new Map<string, unknown>()
   let released = false
@@ -46,7 +46,7 @@ function setup(visible = ['a', 'b', 'c']) {
   )
   const ids = shallowRef(['a', 'b', 'c'])
   const rangeIds = shallowRef(visible)
-  const state = scope.run(() => context.useHistorySelection(ids, selected, rangeIds))!
+  const state = scope.run(() => context.useHistorySelection(ids, selected, rangeIds, expand))!
   const target = {
     focus() {},
     setPointerCapture() {},
@@ -326,5 +326,60 @@ test('a re-rendered list does not interrupt a drag that is still going', async (
   s.rangeIds.value = ['b', 'c']
   await nextTick()
   assert.equal(s.listeners.has('pointermove'), false)
+  s.scope.stop()
+})
+
+test('a range over a collapsed batch takes in every record it stands for', () => {
+  // 'g' is one row standing in for records a and b; 'c' is an ordinary row.
+  const s = setup(['g', 'c'], (unit) => (unit === 'g' ? ['a', 'b'] : [unit]))
+  s.ids.value = ['a', 'b', 'c']
+  s.selected.value = []
+  s.state.click({ detail: 0 }, 'g')
+  assert.deepEqual(Array.from(s.selected.value), ['a', 'b'])
+  s.state.click({ detail: 0, shiftKey: true }, 'c')
+  assert.deepEqual(Array.from(s.selected.value), ['a', 'b', 'c'])
+  // Picking the batch again clears only the records it holds.
+  s.state.click({ detail: 0 }, 'g')
+  assert.deepEqual(Array.from(s.selected.value), ['c'])
+  s.scope.stop()
+})
+
+test('a drag beginning on a collapsed batch selects through to the row it ends on', () => {
+  const s = setup(['g', 'c'], (unit) => (unit === 'g' ? ['a', 'b'] : [unit]))
+  s.ids.value = ['a', 'b', 'c']
+  s.selected.value = []
+  s.state.surface.value = {
+    getBoundingClientRect: () => ({ left: 0, right: 300, top: 0, bottom: 200 }),
+    querySelectorAll: () =>
+      ['g', 'c'].map((id) => ({
+        dataset: { selectionId: id },
+        getClientRects: () => [{}],
+        getBoundingClientRect: () => ({ bottom: id === 'g' ? 100 : 200 })
+      }))
+  }
+  s.state.start(
+    {
+      isPrimary: true,
+      button: 0,
+      pointerId: 1,
+      clientX: 100,
+      clientY: 50,
+      currentTarget: s.target,
+      preventDefault() {}
+    },
+    'g'
+  )
+  assert.deepEqual(Array.from(s.selected.value), ['a', 'b'])
+  const move = s.listeners.get('pointermove') as (event: unknown) => void
+  move({
+    pointerId: 1,
+    pointerType: 'mouse',
+    buttons: 1,
+    clientX: 100,
+    clientY: 150,
+    preventDefault() {}
+  })
+  assert.deepEqual(Array.from(s.selected.value), ['a', 'b', 'c'])
+  s.state.cancelSelection(escape())
   s.scope.stop()
 })
