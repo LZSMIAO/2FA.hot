@@ -1205,9 +1205,13 @@ html.size-transition .desert-art svg * {
    * this padding is what positions it. The icons stay against the right edge;
    * the reserve has to hold both them (68px) and the extension's button, which
    * measures about 44px with its expand arrow, or the extension lands on top
-   * of the clear button.
+   * of the clear button. It has to be reserved from the start, not once the
+   * field has content: the extension measures the field when it decorates it
+   * and does not re-measure on a padding change, so a reserve that appears
+   * with the first keystroke leaves it parked over the icons until the field
+   * is blurred and focused again.
    */
-  .secret-field:has(.secret-actions.has-content) #secret {
+  .secret-field #secret {
     padding-inline-end: 8rem;
   }
 }
