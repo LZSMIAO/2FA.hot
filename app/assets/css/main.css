@@ -1279,50 +1279,45 @@ html.size-transition .desert-art svg * {
   text-align: left;
 }
 /*
- * Password managers dock a button of their own at the end of the field's text
- * area, which landed on the reveal and clear icons. Reserving more room pushes
- * it clear of them; the icons themselves stay against the right edge. Touch
- * devices seldom run these extensions and need the width for the secret.
+ * Password managers dock their button at the end of the field's TEXT, so this
+ * padding is what positions it. The button is right-aligned to that edge and
+ * grows leftward over the last characters, so widening the reserve does not
+ * open a slot beside it - it drags the text and the button left together and
+ * leaves dead space. Reserve only what clears our own icons: 68px for them,
+ * their 12px inset, and a small gap.
+ *
+ * This used to be gated on a fine pointer, on the assumption that touch
+ * devices rarely run these extensions. They do, and there the button landed
+ * on the hint text instead.
+ *
+ * It also has to be reserved from the start rather than once the field has
+ * content: the extension measures the field when it decorates it and does not
+ * re-measure on a padding change, so a reserve that appears with the first
+ * keystroke leaves its button parked over the icons until the field is
+ * blurred and focused again.
  */
-@media (pointer: fine) {
-  /*
-   * Password managers dock their button at the end of the field's TEXT, so
-   * this padding is what positions it. The icons stay against the right edge;
-   * the reserve has to hold both them (68px) and the extension's button, which
-   * button is right-aligned to that edge and grows leftward over the last
-   * characters, so widening this does not open a slot beside it - it just
-   * drags both the text and the button left and leaves dead space. Reserve
-   * only what clears the icons (68px plus their 12px inset, plus a gap).
-   *
-   * It has to be reserved from the start, not once the field has content: the
-   * extension measures the field when it decorates it and does not re-measure
-   * on a padding change, so a reserve that appears with the first keystroke
-   * leaves its button parked over the icons until the field is blurred and
-   * focused again.
-   */
-  .secret-field #secret {
-    padding-inline-end: 5.5rem;
-  }
-  /*
-   * A secret longer than the field gets clipped at that reserve's edge, part
-   * way through a character, which reads as a rendering fault rather than as
-   * "there is more". Fade the last characters into the field instead. Not
-   * while the field has focus: the caret sits on that same edge while typing,
-   * and the fade would swallow it.
-   */
-  .secret-field::after {
-    content: '';
-    position: absolute;
-    inset-block: 2px;
-    inset-inline-end: 5.5rem;
-    width: 1.5rem;
-    background: linear-gradient(to left, var(--ore-input), transparent);
-    pointer-events: none;
-    transition: opacity 120ms ease;
-  }
-  .secret-field:focus-within::after {
-    opacity: 0;
-  }
+.secret-field #secret {
+  padding-inline-end: 5.5rem;
+}
+/*
+ * A secret longer than the field gets clipped at that reserve's edge, part
+ * way through a character, which reads as a rendering fault rather than as
+ * "there is more". Fade the last characters into the field instead. Not
+ * while the field has focus: the caret sits on that same edge while typing,
+ * and the fade would swallow it.
+ */
+.secret-field::after {
+  content: '';
+  position: absolute;
+  inset-block: 2px;
+  inset-inline-end: 5.5rem;
+  width: 1.5rem;
+  background: linear-gradient(to left, var(--ore-input), transparent);
+  pointer-events: none;
+  transition: opacity 120ms ease;
+}
+.secret-field:focus-within::after {
+  opacity: 0;
 }
 .record-name {
   unicode-bidi: plaintext;

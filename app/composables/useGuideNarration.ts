@@ -60,9 +60,17 @@ export function useGuideNarration(text: () => string, paused: () => boolean) {
       pendingRestart = true
       return
     }
-    const voice = selectNarrationVoice(synth.getVoices(), lang)
-    // Do not let the OS pronounce the translated guide using an unrelated language.
-    if (!voice) {
+    const voices = synth.getVoices()
+    const voice = selectNarrationVoice(voices, lang)
+    /*
+     * Do not let the OS pronounce the translated guide using an unrelated
+     * language - but an empty list is not that. iOS publishes its voices only
+     * after the first utterance, so the wait above can time out with nothing,
+     * and giving up there told anyone on a phone that their browser could not
+     * narrate at all. With no list to choose from, speak on `lang` alone and
+     * let the engine pick; only a list that holds no match is a real mismatch.
+     */
+    if (!voice && voices.length) {
       fail()
       return
     }
