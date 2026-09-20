@@ -127,7 +127,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Kailangang mag-sign in ng mga kaibigan sa cross-border e-commerce para sa trabahong gaya ng pamamahala ng media account at mga network ng account, habang iniisip ang seguridad. Nagsimula ito sa pagnanais tumulong sa mas maraming kaibigang may ganoong pangangailangan at sa mga nagsisimula pa lang sa internet.\nMaraming kaparehong online tool, kabilang ang gumagawa ng code mula sa direktang link. Pero kung hindi mo alam, ang pagbukas ng URL na may secret, gaya ng `?secret=SECRET`, ay nagpapadala ng secret sa HTTP request. Natatanggap ito ng remote website service o CDN at maaari nilang itala at itago sa access log, monitoring o application log. Ibig sabihin, maaaring itago bilang plaintext ang secret sa request. Siyempre, nakadepende sa implementasyon, settings at privacy policy kung talagang itinatago :))"
+              "Kailangang mag-sign in ng mga kaibigan sa cross-border e-commerce para sa trabahong gaya ng pamamahala ng media account at mga network ng account, habang iniisip ang seguridad. Nagsimula ito sa pagnanais tumulong sa mas maraming kaibigang may ganoong pangangailangan at sa mga nagsisimula pa lang sa internet.\nMaraming kaparehong online tool, kabilang ang gumagawa ng code mula sa direktang link. Pero kung hindi mo alam, ang pagbukas ng URL na may secret, gaya ng `?secret=SECRET`, ay nagpapadala ng secret sa HTTP request. Natatanggap ito ng remote website service o CDN at maaari nilang itala at itago sa access log, monitoring o application log. Ibig sabihin, maaaring itago bilang plaintext ang secret sa request. Siyempre, nakadepende sa privacy policy kung talagang itinatago :))"
             ]
           },
           {

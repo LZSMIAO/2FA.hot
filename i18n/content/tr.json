@@ -127,7 +127,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Sınır ötesi e-ticarette çalışan arkadaşlarım, medya hesaplarını ve hesap ağlarını yönetmek gibi işler için hesaplara girerken güvenliği de düşünmek zorunda. Benzer ihtiyacı olan daha çok arkadaşa ve internete yeni başlayanlara yardım etmek başlangıç noktasıydı.\nDoğrudan bağlantıyla kod üretenler dahil birçok benzer çevrimiçi araç var. Ama bilmiyorsanız, `?secret=SECRET` gibi anahtar içeren URL açıldığında anahtar HTTP isteğinde gönderilir. Uzak site hizmeti veya CDN bu veriyi alır, erişim günlüğü, izleme ya da uygulama günlükleriyle kaydedip saklayabilir. Yani bu isteklerdeki anahtarlar düz metin tutulabilir. Elbette gerçekten saklaması uygulamasına, ayarlarına ve gizlilik politikasına bağlı :))"
+              "Sınır ötesi e-ticarette çalışan arkadaşlarım, medya hesaplarını ve hesap ağlarını yönetmek gibi işler için hesaplara girerken güvenliği de düşünmek zorunda. Benzer ihtiyacı olan daha çok arkadaşa ve internete yeni başlayanlara yardım etmek başlangıç noktasıydı.\nDoğrudan bağlantıyla kod üretenler dahil birçok benzer çevrimiçi araç var. Ama bilmiyorsanız, `?secret=SECRET` gibi anahtar içeren URL açıldığında anahtar HTTP isteğinde gönderilir. Uzak site hizmeti veya CDN bu veriyi alır, erişim günlüğü, izleme ya da uygulama günlükleriyle kaydedip saklayabilir. Yani bu isteklerdeki anahtarlar düz metin tutulabilir. Elbette gerçekten saklaması gizlilik politikasına bağlı :))"
             ]
           },
           {

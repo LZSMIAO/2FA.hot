@@ -127,7 +127,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Bạn bè làm thương mại điện tử xuyên biên giới cần đăng nhập tài khoản để làm việc như quản lý tài khoản truyền thông và mạng lưới tài khoản, đồng thời phải tính đến bảo mật. Giúp thêm những người có nhu cầu tương tự và người mới bắt đầu lên mạng là điểm khởi đầu.\nCó nhiều công cụ trực tuyến tương tự, kể cả tạo mã bằng liên kết trực tiếp. Nhưng nếu chưa biết, mở URL chứa khóa như `?secret=SECRET` sẽ gửi khóa qua yêu cầu HTTP. Dịch vụ trang web từ xa hoặc CDN nhận dữ liệu đó và có thể ghi, giữ bằng nhật ký truy cập, giám sát hay nhật ký ứng dụng. Nghĩa là khóa trong các yêu cầu đó có thể được lưu dạng rõ. Tất nhiên có thực sự lưu hay không phụ thuộc triển khai, cài đặt và chính sách riêng tư :))"
+              "Bạn bè làm thương mại điện tử xuyên biên giới cần đăng nhập tài khoản để làm việc như quản lý tài khoản truyền thông và mạng lưới tài khoản, đồng thời phải tính đến bảo mật. Giúp thêm những người có nhu cầu tương tự và người mới bắt đầu lên mạng là điểm khởi đầu.\nCó nhiều công cụ trực tuyến tương tự, kể cả tạo mã bằng liên kết trực tiếp. Nhưng nếu chưa biết, mở URL chứa khóa như `?secret=SECRET` sẽ gửi khóa qua yêu cầu HTTP. Dịch vụ trang web từ xa hoặc CDN nhận dữ liệu đó và có thể ghi, giữ bằng nhật ký truy cập, giám sát hay nhật ký ứng dụng. Nghĩa là khóa trong các yêu cầu đó có thể được lưu dạng rõ. Tất nhiên có thực sự lưu hay không phụ thuộc chính sách riêng tư :))"
             ]
           },
           {

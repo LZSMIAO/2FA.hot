@@ -127,7 +127,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Marafiki wa biashara ya mtandaoni ya kuvuka mipaka wanahitaji kuingia akaunti kwa kazi kama kusimamia akaunti za vyombo vya habari na mitandao ya akaunti, wakizingatia usalama pia. Kusaidia marafiki zaidi wenye mahitaji haya na wanaoanza kutumia mtandao ndiyo ilikuwa sababu ya kwanza.\nZana nyingi za mtandaoni zinafanana, zikiwemo zinazotengeneza misimbo kupitia viungo vya moja kwa moja. Lakini ikiwa hujui, kufungua URL yenye siri kama `?secret=SECRET` hutuma siri ndani ya ombi la HTTP. Huduma ya tovuti ya mbali au CDN hupokea data hiyo na inaweza kuiandika na kuihifadhi kupitia kumbukumbu za ufikiaji, ufuatiliaji au programu. Yaani siri katika maombi hayo zinaweza kuhifadhiwa bila usimbaji. Bila shaka, kama inazihifadhi kweli hutegemea utekelezaji, mipangilio na sera yake ya faragha :))"
+              "Marafiki wa biashara ya mtandaoni ya kuvuka mipaka wanahitaji kuingia akaunti kwa kazi kama kusimamia akaunti za vyombo vya habari na mitandao ya akaunti, wakizingatia usalama pia. Kusaidia marafiki zaidi wenye mahitaji haya na wanaoanza kutumia mtandao ndiyo ilikuwa sababu ya kwanza.\nZana nyingi za mtandaoni zinafanana, zikiwemo zinazotengeneza misimbo kupitia viungo vya moja kwa moja. Lakini ikiwa hujui, kufungua URL yenye siri kama `?secret=SECRET` hutuma siri ndani ya ombi la HTTP. Huduma ya tovuti ya mbali au CDN hupokea data hiyo na inaweza kuiandika na kuihifadhi kupitia kumbukumbu za ufikiaji, ufuatiliaji au programu. Yaani siri katika maombi hayo zinaweza kuhifadhiwa bila usimbaji. Bila shaka, kama inazihifadhi kweli hutegemea sera yake ya faragha :))"
             ]
           },
           {
