@@ -49,6 +49,7 @@
   --ore-dialog-exit-ease: cubic-bezier(0.4, 0, 0.6, 1);
   --ore-dialog-distance: 20px;
   --layer-skip: 50;
+  --layer-header: 20;
 }
 .dark {
   color-scheme: dark;
@@ -180,6 +181,12 @@ body {
     overscroll-behavior-y: none;
   }
 }
+/* A phone held sideways has no height to spend on a bar that never leaves. */
+@media (max-height: 500px) and (pointer: coarse) {
+  .site-header {
+    position: static;
+  }
+}
 button,
 a,
 input,
@@ -228,6 +235,9 @@ code {
   flex: 1;
 }
 .site-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--layer-header);
   --header-control-hover: #e2e3e7;
   /* Navigation must not reflow when a downloaded font becomes available. */
   --font-sans: system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;

@@ -81,6 +81,16 @@ function toggleAnimation() {
 }
 const hidden = shallowRef(false)
 const ready = shallowRef(false)
+const scene3d = useTemplateRef<HTMLElement>('backdrop')
+/*
+ * A page with nothing to scroll cannot scroll to reveal a focused field, so
+ * iOS slides the visual viewport inside the layout viewport instead. Fixed
+ * layers are pinned to the layout viewport and stay behind, which is the jump
+ * you see when the keyboard opens. Follow the visual viewport by hand.
+ */
+function syncVisualViewport() {
+  scene3d.value?.style.setProperty('--panorama-shift', `${window.visualViewport?.offsetTop ?? 0}px`)
+}
 let mobile: MediaQueryList | undefined
 function updateMobile() {
   mobileMotion.value = !!mobile?.matches
@@ -105,6 +115,9 @@ onMounted(() => {
   updateVisibility()
   preference.addEventListener('change', updatePreference)
   document.addEventListener('visibilitychange', updateVisibility)
+  syncVisualViewport()
+  window.visualViewport?.addEventListener('resize', syncVisualViewport)
+  window.visualViewport?.addEventListener('scroll', syncVisualViewport)
   // Keep the pre-paint flag true once the page takes over the playback state.
   watch(
     paused,
@@ -127,11 +140,14 @@ onBeforeUnmount(() => {
   mobile?.removeEventListener('change', updateMobile)
   preference?.removeEventListener('change', updatePreference)
   document.removeEventListener('visibilitychange', updateVisibility)
+  window.visualViewport?.removeEventListener('resize', syncVisualViewport)
+  window.visualViewport?.removeEventListener('scroll', syncVisualViewport)
 })
 </script>
 
 <template>
   <div
+    ref="backdrop"
     class="title-panorama"
     :class="{
       'mobile-motion': mobileMotion,
@@ -390,7 +406,7 @@ onBeforeUnmount(() => {
     --face-size: max(100vw, 100vh);
     --face-size: max(100vw, 100lvh);
     contain: strict;
-    transform: translateZ(0);
+    transform: translate3d(0, var(--panorama-shift, 0px), 0);
     backface-visibility: hidden;
   }
   .panorama-camera,
