@@ -145,7 +145,11 @@ watch(open, (visible) => {
   gap: 0.375rem;
 }
 .history-toggle-control .history-view-link {
+  /* Stacked under the switch this label is only ~21px tall, so grow the hit
+     area with padding the negative margin takes back out of the layout. */
   min-height: 0;
+  padding: 0.75rem;
+  margin: -0.75rem;
   font-size: var(--text-label);
   line-height: 1.5;
 }
