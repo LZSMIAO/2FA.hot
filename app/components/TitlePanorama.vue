@@ -1,11 +1,6 @@
 <script setup lang="ts">
 const { tx } = useMessages()
-const scenes = ['1.21', '1.20.1', '1.19.4', '1.18.2', '1.17.1', '1.16.5', '1.14.4'] as const
-const selected = useCookie<string>('2fa-panorama', {
-  default: () => '1.20.1',
-  maxAge: 31536000,
-  sameSite: 'lax'
-})
+const { scenes, selected, playbackPaused } = usePanoramaPreference()
 const hydrated = shallowRef(false)
 const scene = computed(() =>
   hydrated.value && scenes.includes(selected.value as (typeof scenes)[number])
@@ -58,11 +53,6 @@ const sceneItems = computed(() =>
     onSelect: () => changeScene(version)
   }))
 )
-const playbackPaused = useCookie<boolean>('2fa-panorama-paused', {
-  default: () => true,
-  maxAge: 31536000,
-  sameSite: 'lax'
-})
 const paused = computed(() => !hydrated.value || playbackPaused.value !== false)
 const mobileMotion = shallowRef(false)
 const cube = useTemplateRef<HTMLElement>('cube')
@@ -391,10 +381,9 @@ onBeforeUnmount(() => {
     transform: translateZ(0);
   }
   .panorama-controls {
-    position: absolute;
-    right: 0.5rem;
-    top: 5rem;
-    bottom: auto;
+    /* The header menu carries these at this width: the panorama's own strip
+       lands above the viewport, where nothing can reach it. */
+    display: none;
   }
   .panorama-control {
     width: 2.75rem;

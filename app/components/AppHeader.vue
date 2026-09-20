@@ -48,12 +48,53 @@ const themes = computed(() => [
     onSelect: () => selectTheme('system')
   }
 ])
+/*
+ * The backdrop's own controls sit above the viewport on a phone, so the menu
+ * carries them there instead. Only on the home page, which is the only place
+ * the backdrop is on screen.
+ */
+const { scenes, selected, playbackPaused } = usePanoramaPreference()
+const narrow = shallowRef(false)
+const onHome = computed(() => unlocalizedPath(route.path) === '/')
+onMounted(() => {
+  const query = window.matchMedia('(max-width: 700px)')
+  const update = () => (narrow.value = query.matches)
+  update()
+  query.addEventListener('change', update)
+  onBeforeUnmount(() => query.removeEventListener('change', update))
+})
+const backdrop = computed(() =>
+  narrow.value && onHome.value
+    ? [
+        {
+          label: tx('切换背景'),
+          icon: 'i-lucide-image',
+          children: scenes.map((version) => ({
+            label: `Minecraft ${version}`,
+            type: 'checkbox' as const,
+            checked: selected.value === version,
+            onSelect: () => {
+              selected.value = version
+            }
+          }))
+        },
+        {
+          label: tx(playbackPaused.value === false ? '暂停' : '继续'),
+          icon: playbackPaused.value === false ? 'i-lucide-pause' : 'i-lucide-play',
+          onSelect: () => {
+            playbackPaused.value = playbackPaused.value === false
+          }
+        }
+      ]
+    : []
+)
 const menu = computed(() => [
   { label: 'Lite', to: liteHref.value, external: true },
   { label: tx('本地历史'), to: localePath('/history'), icon: 'i-lucide-history' },
   { label: tx('使用说明'), to: localePath('/help'), icon: 'i-lucide-book-open' },
   { label: tx('功能建议'), to: localePath('/waitlist'), icon: 'i-lucide-plus' },
-  { label: tx('隐私说明'), to: localePath('/privacy'), icon: 'i-lucide-shield-check' }
+  { label: tx('隐私说明'), to: localePath('/privacy'), icon: 'i-lucide-shield-check' },
+  ...backdrop.value
 ])
 </script>
 <template>
