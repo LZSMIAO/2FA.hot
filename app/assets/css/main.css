@@ -1182,15 +1182,12 @@ html.size-transition .desert-art svg * {
   text-align: left;
 }
 /*
- * Password managers dock their own button against the field's inner edge,
- * landing on top of the reveal and clear icons. Give them the outermost slot
- * once the field has content. Touch devices seldom run these extensions and
- * need the width for the secret itself.
+ * Password managers dock a button of their own at the end of the field's text
+ * area, which landed on the reveal and clear icons. Reserving more room pushes
+ * it clear of them; the icons themselves stay against the right edge. Touch
+ * devices seldom run these extensions and need the width for the secret.
  */
 @media (pointer: fine) {
-  .secret-actions.has-content {
-    margin-inline-end: 1.5rem;
-  }
   .secret-field:has(.secret-actions.has-content) #secret {
     padding-inline-end: 7.5rem;
   }
