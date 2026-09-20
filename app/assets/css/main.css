@@ -517,8 +517,16 @@ code {
 .guide-trigger-label > span {
   grid-area: 1 / 1;
 }
+/*
+ * The spare label is here to reserve the width of the longer of the two
+ * strings, so the button does not resize when they swap. It shares a grid
+ * cell with the visible one, so its height counted too - and where it wraps
+ * and the visible label does not, it made the whole tab strip two lines tall.
+ */
 .guide-trigger-label > .is-spare {
   visibility: hidden;
+  height: 0;
+  overflow: hidden;
 }
 .mode-tabs > [data-slot='list'] {
   border-bottom: 0;

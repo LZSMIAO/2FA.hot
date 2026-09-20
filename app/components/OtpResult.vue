@@ -385,7 +385,8 @@ async function expand() {
             ><UIcon
               :key="copyConfirmed ? 'copied' : 'copy'"
               :name="copyConfirmed ? 'i-mc-check' : 'i-lucide-copy'" /></Transition></span
-        >{{ tx(copyConfirmed ? '已复制' : '复制验证码') }}<UKbd value="↵" class="copy-shortcut-key"
+        >{{ tx(copyConfirmed ? '已复制' : '复制验证码')
+        }}<UKbd v-if="desktopShortcut" value="↵" class="copy-shortcut-key"
       /></UButton>
     </motion.div>
     <ActionHint
@@ -442,7 +443,9 @@ async function expand() {
 
 <style scoped>
 .result-head {
-  padding-inline-end: 2rem;
+  /* The expand button is absolute and 44px wide, sitting 2px off the edge, so
+     2rem of reserve let the countdown run under it. */
+  padding-inline-end: 3.5rem;
 }
 .result-head .expand-button {
   position: absolute;

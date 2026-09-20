@@ -62,6 +62,15 @@ function leave(event: PointerEvent) {
   </div>
 </template>
 <style scoped>
+/*
+ * Decoration: worth 280px of a desktop column, not of a phone screen, where
+ * it is what fills the space the folded parameters leave behind.
+ */
+@media (max-width: 600px) {
+  .desert-accent {
+    display: none;
+  }
+}
 .desert-accent {
   position: relative;
   height: 7rem;
