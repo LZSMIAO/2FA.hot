@@ -1370,6 +1370,9 @@ html.size-transition .desert-art svg * {
   .input-tools {
     gap: 0.5rem;
   }
+  .input-tools > :nth-child(2) {
+    order: 1;
+  }
   .advanced-toggle {
     flex-wrap: wrap;
     gap: 0.25rem 0.75rem;
@@ -1447,9 +1450,7 @@ html.size-transition .desert-art svg * {
   .otp-slot-value,
   .result-reveal,
   .batch-reveal,
-  .batch-results,
-  .ore-dialog-motion,
-  .ore-overlay-motion {
+  .batch-results {
     animation: none !important;
     transition: none !important;
   }
