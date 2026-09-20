@@ -296,6 +296,7 @@ const date = (v: number) =>
             class="history-autosave"
             color="neutral"
             variant="outline"
+            :icon="vault.enabled.value ? 'i-lucide-save-off' : 'i-lucide-save'"
             :aria-pressed="vault.enabled.value"
             :disabled="vault.busy.value"
             @click="run(vault.toggle)"

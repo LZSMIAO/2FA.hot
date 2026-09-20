@@ -541,14 +541,16 @@ code {
 .input-tools {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  /* Three entry buttons need about 376px of label at these sizes; trimming the
+     gap and their side padding keeps them on one line well below that. */
+  gap: 0.5rem;
   margin: 1rem 0 2rem;
 }
 .input-tools button {
   font-size: var(--text-label);
   min-height: 2.75rem;
   justify-content: center;
-  padding-inline: 1rem;
+  padding-inline: 0.75rem;
 }
 .advanced {
   border-top: 1px solid var(--ui-border);
