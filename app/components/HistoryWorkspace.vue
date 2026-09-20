@@ -423,36 +423,37 @@ const date = (v: number) =>
             @pointerdown="startSelection($event, group.id)"
             @click="clickSelection($event, group.id)"
           />
-          <button
-            type="button"
-            class="history-batch-toggle"
-            :aria-expanded="batchExpanded(group.id)"
-            @click="toggleBatch(group.id, $event)"
-          >
-            <span class="record-icon" aria-hidden="true"
-              ><img src="/textures/trial-key.png" alt="" width="32" height="32"
-            /></span>
-            <span class="record-name">
-              <span class="record-title"
-                ><strong>{{ group.label || tx('批量取码') }}</strong></span
+          <span class="record-icon" aria-hidden="true"
+            ><img src="/textures/trial-key.png" alt="" width="32" height="32"
+          /></span>
+          <span class="record-name">
+            <span class="record-title">
+              <button
+                type="button"
+                class="history-batch-toggle"
+                :aria-expanded="batchExpanded(group.id)"
+                @click="toggleBatch(group.id, $event)"
               >
-              <span class="record-meta">
-                <span>{{ tx('记录：{count}', { count: group.rows.length }) }}</span>
-                <time>{{ date(group.rows[0]!.usedAt) }}</time>
-              </span>
+                <strong>{{ group.label || tx('批量取码') }}</strong>
+              </button>
+              <button
+                type="button"
+                class="record-edit"
+                :aria-label="tx('重命名分组')"
+                @click="editGroup(group)"
+              >
+                <UIcon name="i-lucide-pencil" />
+              </button>
             </span>
-            <UIcon
-              :name="batchExpanded(group.id) ? 'i-lucide-chevron-down' : 'i-lucide-chevron-right'"
-            />
-          </button>
-          <button
-            type="button"
-            class="record-edit"
-            :aria-label="tx('重命名分组')"
-            @click="editGroup(group)"
-          >
-            <UIcon name="i-lucide-pencil" />
-          </button>
+            <span class="record-meta">
+              <span>{{ tx('记录：{count}', { count: group.rows.length }) }}</span>
+              <time>{{ date(group.rows[0]!.usedAt) }}</time>
+            </span>
+          </span>
+          <UIcon
+            class="history-batch-chevron"
+            :name="batchExpanded(group.id) ? 'i-lucide-chevron-down' : 'i-lucide-chevron-right'"
+          />
         </div>
         <div
           class="history-group-rows"
@@ -759,8 +760,9 @@ const date = (v: number) =>
   padding-inline: var(--history-inset);
 }
 .history-batch-heading {
+  position: relative;
   display: grid;
-  grid-template-columns: 20px minmax(0, 1fr) 28px;
+  grid-template-columns: 20px 44px minmax(0, 1fr) 44px;
   align-items: center;
   gap: var(--control-gap);
   width: 100%;
@@ -770,15 +772,28 @@ const date = (v: number) =>
   border-bottom: 1px solid var(--ui-border);
 }
 .history-batch-toggle {
-  display: grid;
-  grid-template-columns: 44px minmax(0, 1fr) 44px;
-  gap: var(--control-gap);
-  align-items: center;
-  text-align: start;
   min-width: 0;
+  text-align: start;
 }
-.history-batch-toggle > .iconify {
+/* The name carries the control, but the whole heading answers the click. */
+.history-batch-toggle::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+.history-batch-heading > .record-name,
+.history-batch-heading > :deep(.selection-check) {
+  position: relative;
+}
+.history-batch-heading .record-edit {
+  z-index: 1;
+}
+.history-batch-heading > :deep(.selection-check) {
+  z-index: 2;
+}
+.history-batch-chevron {
   justify-self: center;
+  color: var(--ui-text-muted);
 }
 .history-batch-heading.is-selected {
   background: color-mix(in srgb, var(--action) 5%, transparent);
@@ -824,7 +839,7 @@ const date = (v: number) =>
 .history-group.is-batch .history-row {
   padding-inline-start: calc(var(--history-inset) + 20px + var(--control-gap) + 12px);
 }
-.history-batch-toggle[aria-expanded='true'] > .iconify {
+.history-group.is-expanded .history-batch-chevron {
   color: var(--accent-ink);
 }
 .history-batch-toggle:focus-visible {
@@ -1019,8 +1034,8 @@ const date = (v: number) =>
 }
 .history-row:hover .record-edit,
 .history-batch-heading:hover .record-edit,
-.history-batch-heading:focus-within .record-edit,
-.record-title:focus-within .record-edit {
+.history-batch-heading:has(:focus-visible) .record-edit,
+.history-row .record-title:focus-within .record-edit {
   opacity: 1;
 }
 .record-edit :deep(.iconify) {
@@ -1111,14 +1126,11 @@ const date = (v: number) =>
   padding: 12px 0;
 }
 @media (max-width: 600px) {
-  .history-batch-toggle {
-    grid-template-columns: minmax(0, 1fr) 44px;
-  }
   .history-batch-heading {
-    grid-template-columns: 20px minmax(0, 1fr) 28px;
+    grid-template-columns: 20px minmax(0, 1fr) 44px;
     gap: 8px;
   }
-  .history-batch-toggle > .record-icon {
+  .history-batch-heading > .record-icon {
     display: none;
   }
   .history-group.is-batch .history-row {
