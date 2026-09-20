@@ -10,14 +10,12 @@ test('all three README files provide live website content without repository chr
     assert.equal(result.sections.length, 5)
     assert.ok(result.introduction[0]?.includes('Minecraft'))
     assert.ok(!JSON.stringify(result).includes('img.shields.io'))
-    assert.ok(JSON.stringify(result).includes('Vibe Coding'))
+    assert.ok(!JSON.stringify(result).includes('Vibe Coding'))
     const stories = result.sections.flatMap((section) => section.blocks).filter((b) => b.spoiler)
-    assert.equal(stories.length, 1)
-    assert.ok(stories[0]!.spoiler!.text.includes('Vibe Coding'))
-    assert.ok(stories[0]!.spoiler!.text.includes('\n\n'))
-    assert.ok(!stories[0]!.spoiler!.text.includes('/2fa/'))
+    assert.equal(stories.length, 0)
+    assert.ok(!JSON.stringify(result).includes('BOOM'))
     assert.ok(
-      JSON.stringify(parseAboutReadme(source.replace('Vibe Coding', 'SYNC_TEST'))).includes(
+      JSON.stringify(parseAboutReadme(source.replace('HTTP', 'SYNC_TEST'))).includes(
         'SYNC_TEST'
       )
     )

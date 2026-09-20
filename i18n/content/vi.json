@@ -122,18 +122,8 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Bạn bè làm thương mại điện tử xuyên biên giới cần đăng nhập tài khoản để làm việc như quản lý tài khoản truyền thông, đồng thời phải tính đến bảo mật. Giúp thêm những người có nhu cầu tương tự và người mới bắt đầu lên mạng là điểm khởi đầu.\nCó nhiều công cụ trực tuyến tương tự, kể cả tạo mã bằng liên kết trực tiếp. Nhưng nếu chưa biết, mở URL chứa khóa như `/2fa/SECRET` hay `?secret=SECRET` sẽ gửi khóa qua yêu cầu HTTP. Dịch vụ trang web từ xa hoặc CDN nhận dữ liệu đó và có thể ghi, giữ bằng nhật ký truy cập, giám sát hay nhật ký ứng dụng. Nghĩa là khóa trong các yêu cầu đó có thể được lưu dạng rõ; nếu còn dán tài khoản + mật khẩu + 2FA và trang tải lên rồi giữ luôn... BOOM! Tất nhiên có thực sự lưu hay không phụ thuộc triển khai, cài đặt và chính sách riêng tư :))"
+              "Bạn bè làm thương mại điện tử xuyên biên giới cần đăng nhập tài khoản để làm việc như quản lý tài khoản truyền thông, đồng thời phải tính đến bảo mật. Giúp thêm những người có nhu cầu tương tự và người mới bắt đầu lên mạng là điểm khởi đầu.\nCó nhiều công cụ trực tuyến tương tự, kể cả tạo mã bằng liên kết trực tiếp. Nhưng nếu chưa biết, mở URL chứa khóa như `/2fa/SECRET` hay `?secret=SECRET` sẽ gửi khóa qua yêu cầu HTTP. Dịch vụ trang web từ xa hoặc CDN nhận dữ liệu đó và có thể ghi, giữ bằng nhật ký truy cập, giám sát hay nhật ký ứng dụng. Nghĩa là khóa trong các yêu cầu đó có thể được lưu dạng rõ. Tất nhiên có thực sự lưu hay không phụ thuộc triển khai, cài đặt và chính sách riêng tư :))"
             ]
-          },
-          {
-            "spoiler": {
-              "label": "Chuyện kể",
-              "text": "...Khoảng 2021, Cách mạng Công nghiệp lần thứ tư, nhân loại bước vào thời AI. Từ đó tôi cứ thấy người ta lạm dụng—đến lập trình viên chuyên nghiệp cũng làm trò cứt này—chỉ 5 phút để tạo cái giao diện gradient chết tiệt, lệch lạc, 100 kiểu thiết kế UI và 1.000 phần tử.\nNhư vài người đến tin nhắn của tôi cũng chẳng dám trả lời, dùng AI chắp vá hệ thống rác rồi kiếm bộn tiền bán cho người dùng thị trường xám.\n…Tất cả khiến tôi buồn nôn. Tôi bò khỏi giường rồi nôn hết lần này đến lần khác. Tiếc là chẳng được đỡ vững.\n\nMọi thứ tôi muốn làm, người giàu đã làm hết. Gần như toàn bộ 2fa.hot được làm bằng Vibe Coding—tất nhiên tôi sửa tới khi tạm hài lòng mới ra mắt. Như vài dự án cùng đồng nghiệp, muốn ra sớm nhưng không ngừng sửa đến khi đạt chuẩn, rồi thành ra chưa bao giờ lên sóng. Có dự án có thể một ngày quen thuộc với người đọc, dù các bạn không biết chúng tôi làm. Cảm giác trở lại sáu năm trước, mở Premiere Pro, lao vào sáng tạo không biết chán. Nhưng giờ tôi không làm video được nữa. Đáng suy nghĩ thật.\nMọi điều tôi muốn nói đều có người nói rồi. Tôi không chống AI. Sáu năm trước tôi học nhân văn; có khi còn đéo biết đưa một trang web lên mạng thế nào. Mong vài người dùng AI cho tử tế. Nó giúp làm việc nhưng không bao giờ thành bạn. Không bao giờ. Đừng để nó thay suy nghĩ hay cuộc đời; đừng dùng để tạo thiết kế chính mình còn lười thử, đầy lỗi và logic phá trải nghiệm… Mở localhost rồi trau chuốt thêm 100 lần. Không thì nó chẳng phải của bạn. Đừng tung ra làm mọi người phát tởm. Bán à? Bạn không xứng. Chỉ tiếp tục loay hoay trong ngành xám thôi.\nCông bằng tôi muốn toàn là hư cấu do kẻ bất công bịa ra. Tôi biết mình không đổi được cuộc sống hối hả hiện tại hay ngăn những thứ ấy. Bọn họ."
-            },
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": []
           }
         ]
       }

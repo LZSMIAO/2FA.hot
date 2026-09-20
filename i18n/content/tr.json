@@ -122,18 +122,8 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Sınır ötesi e-ticarette çalışan arkadaşlarım, medya hesaplarını yönetmek gibi işler için hesaplara girerken güvenliği de düşünmek zorunda. Benzer ihtiyacı olan daha çok arkadaşa ve internete yeni başlayanlara yardım etmek başlangıç noktasıydı.\nDoğrudan bağlantıyla kod üretenler dahil birçok benzer çevrimiçi araç var. Ama bilmiyorsanız, `/2fa/SECRET` veya `?secret=SECRET` gibi anahtar içeren URL açıldığında anahtar HTTP isteğinde gönderilir. Uzak site hizmeti veya CDN bu veriyi alır, erişim günlüğü, izleme ya da uygulama günlükleriyle kaydedip saklayabilir. Yani bu isteklerdeki anahtarlar düz metin tutulabilir; hesap + parola + 2FA da yapıştırdıysanız ve site onları da yükleyip sakladıysa... BOOM! Elbette gerçekten saklaması uygulamasına, ayarlarına ve gizlilik politikasına bağlı :))"
+              "Sınır ötesi e-ticarette çalışan arkadaşlarım, medya hesaplarını yönetmek gibi işler için hesaplara girerken güvenliği de düşünmek zorunda. Benzer ihtiyacı olan daha çok arkadaşa ve internete yeni başlayanlara yardım etmek başlangıç noktasıydı.\nDoğrudan bağlantıyla kod üretenler dahil birçok benzer çevrimiçi araç var. Ama bilmiyorsanız, `/2fa/SECRET` veya `?secret=SECRET` gibi anahtar içeren URL açıldığında anahtar HTTP isteğinde gönderilir. Uzak site hizmeti veya CDN bu veriyi alır, erişim günlüğü, izleme ya da uygulama günlükleriyle kaydedip saklayabilir. Yani bu isteklerdeki anahtarlar düz metin tutulabilir. Elbette gerçekten saklaması uygulamasına, ayarlarına ve gizlilik politikasına bağlı :))"
             ]
-          },
-          {
-            "spoiler": {
-              "label": "Hikâye",
-              "text": "...2021 civarı, Dördüncü Sanayi Devrimi, insanlık AI çağına girdi. O zamandan beri kötüye kullananları görüyorum—profesyonel programcılar bile bu boku yapıyor—yalnızca 5 dakikada lanet olası gradyanlı, hizası bozuk, 100 farklı UI tasarım stili ve 1.000 öğesi olan arayüz üretiyorlar.\nMesajlarıma cevap vermeye bile cesaret edemeyen bazıları gibi: AI ile derme çatma çöp sistem yapıp gri piyasa kullanıcılarına satarak servet kazanıyorlar.\n…Bunların hepsi midemi bulandırıyor. Yataktan sürünerek çıkıp tekrar tekrar kustum. Ne yazık ki sağlamca tutulmadım.\n\nYapmak istediğim her şeyi zenginler çoktan yaptı. 2fa.hot'ın neredeyse tamamı Vibe Coding ile yapıldı—tabii yayınlamadan önce az çok tatmin olana kadar düzelttim. İş arkadaşlarımla yaptığımız bazı projelerde olduğu gibi, hemen çıkarmak istiyoruz ama standartlarımızı karşılayana kadar düzeltmeyi bırakamıyoruz; sonunda hiç yayınlanmıyorlar. Bazı projeler bir gün bunu okuyanlara tanıdık gelebilir, bizim yaptığımızı bilmeseniz de. Altı yıl öncesine dönüp Premiere Pro'yu açmak, üretime dalıp hiç yorulmamak gibi. Ama artık video yapamıyorum. Düşündürüyor.\nSöylemek istediğim her şey önceden söylendi. AI karşıtı değilim. Altı yıl önce beşerî bilimler okuyordum; lanet olası bir siteyi internete nasıl koyacağımı bile bilmiyor olabilirdim. Bazılarının AI'ı iyi kullanmasını umuyorum. İş yapmanıza yardım edebilir ama asla siz olamaz. Asla. Düşüncelerinizi veya hayatınızı onunla değiştirmeyin; kendinizin bile kurcalamaya üşendiği, deneyimi bozan hatalar ve mantıkla dolu tasarımlar üretmeyin… localhost'ta açıp 100 kez daha düzeltin. Yoksa sizin değildir. Yayınlayıp herkesi iğrendirmeyin. Satmak mı? Hak etmiyorsunuz. Gri piyasa sektörlerinde debelenip duracaksınız.\nİstediğim adalet, adaletsizlerin uydurduğu kurgudan ibaret. Bugünün hızlı hayatını değiştiremeyeceğimi veya o şeyleri durduramayacağımı biliyorum. Onları."
-            },
-            "divider": false,
-            "ordered": false,
-            "list": false,
-            "lines": []
           }
         ]
       }
