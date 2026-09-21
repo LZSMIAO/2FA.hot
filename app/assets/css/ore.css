@@ -51,9 +51,13 @@
 }
 .app-shell {
   width: 100%;
-  overflow-x: clip;
   position: relative;
   z-index: 1;
+}
+.app-shell > #main-content,
+.app-shell > .site-footer {
+  /* Keep horizontal clipping out of the sticky header's ancestor chain. */
+  overflow-x: clip;
 }
 .app-shell > #main-content {
   width: calc(100vw - var(--page-scrollbar-width, 0px));
@@ -650,6 +654,180 @@
     animation: none !important;
   }
 }
+/* Phones share the compact header and higher input position. Viewport
+   workarounds remain separately scoped to the browser that needs them. */
+.header-pixel-wordmark {
+  display: none;
+}
+@media (max-width: 700px), (max-height: 500px) and (pointer: coarse) {
+  html[data-mobile] .header-wordmark {
+    display: none;
+  }
+  html[data-mobile] .header-pixel-wordmark {
+    display: block;
+    position: relative;
+    line-height: 1;
+    letter-spacing: 0;
+  }
+  html[data-mobile] .header-pixel-wordmark .game-title {
+    width: 7.5rem;
+    height: 3rem;
+  }
+  html[data-mobile] .header-pixel-wordmark .game-title-letters {
+    width: 6rem;
+  }
+  html[data-mobile] .header-pixel-wordmark .game-title-splash {
+    left: 4.625rem;
+    top: 1.5625rem;
+    width: 2.875rem;
+    filter: drop-shadow(1px 1px 0 #3f3f00);
+  }
+  html[data-mobile] .header-pixel-wordmark .message-splash {
+    left: 0;
+    top: 2.1875rem;
+    width: 7.5rem;
+    font-size: 0.8125rem;
+    line-height: 1;
+    transform: none;
+    animation: none;
+  }
+  html[data-mobile][data-brand-splash='message'] .header-pixel-wordmark .game-title-letters {
+    width: 5rem;
+    margin-inline: auto;
+  }
+  html[data-mobile] .header-pixel-wordmark > .brand-beta {
+    top: 0;
+    bottom: auto;
+    font-size: 0.5rem;
+  }
+  html[data-mobile] .home {
+    /* The tab list supplies the remaining 4px of the 16px header gap. */
+    padding-top: 0.75rem;
+  }
+  html[data-mobile] .home > .page-intro {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  html[data-mobile] .home > .page-intro .game-title {
+    display: none;
+  }
+  html[data-mobile] .home .mode-tabs > [data-slot='content'] {
+    /* The tab strip already contributes 2px below the buttons. */
+    margin-top: calc(1rem - 2px);
+  }
+  html[data-mobile] .home .input-panel,
+  html[data-mobile] .home .batch-input {
+    padding-top: 0.5rem;
+  }
+  html[data-mobile] .home .input-panel > .section-heading,
+  html[data-mobile] .home .batch-input > .section-heading {
+    min-height: 0;
+    margin-bottom: 0.25rem;
+  }
+  html[data-mobile] .home .section-heading .workspace-title {
+    font-size: 1.125rem;
+    line-height: 1.25;
+  }
+}
+
+/* Keep mobile footer layout in this bundle with its header rules. */
+@media (max-width: 700px), (max-height: 500px) and (pointer: coarse) {
+  html[data-ios] .site-footer {
+    /* Paint beyond Safari's document edge without adding scrollable height. */
+    box-shadow: 0 100vmax 0 100vmax var(--canvas);
+  }
+  html[data-mobile] .site-footer .footer-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    position: relative;
+    height: auto;
+    min-height: 0;
+    gap: 0.25rem;
+    padding: 0.75rem 1.25rem;
+  }
+  html[data-mobile] .site-footer .footer-brand {
+    grid-row: 1;
+    justify-self: start;
+    width: auto;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    justify-content: flex-start;
+  }
+  html[data-mobile] .site-footer .footer-inner nav {
+    grid-row: 2;
+    display: block;
+    min-width: 0;
+    width: 100%;
+    margin: 0;
+  }
+  html[data-mobile] .site-footer .footer-pages {
+    justify-content: space-between;
+    gap: 0.25rem 0.75rem;
+  }
+  html[data-mobile] .site-footer .footer-pages a {
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    max-width: 100%;
+    justify-content: flex-start;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  html[data-mobile] .site-footer .footer-contacts {
+    position: absolute;
+    inset-block-start: 0.75rem;
+    inset-inline-end: 1.25rem;
+  }
+  html[data-mobile] .site-footer .footer-contacts a {
+    width: 2.75rem;
+    min-height: 2.75rem;
+  }
+  html[data-mobile] .workspace-summary-copy .local-processing-label {
+    padding-inline-end: 0;
+  }
+  html[data-mobile] .workspace-summary-copy .local-processing-help {
+    position: relative;
+    top: auto;
+    width: 1.25rem;
+    height: 1.25rem;
+    line-height: 1;
+  }
+  html[data-mobile] .workspace-summary-copy .local-processing-help::after {
+    /* Keep a 44px touch target without creating a 44px line in the sentence. */
+    content: '';
+    position: absolute;
+    inset: -0.75rem;
+  }
+}
+
+@media (max-width: 360px) {
+  html[data-mobile] .site-footer .footer-pages {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  html[data-mobile] .header-inner {
+    padding-inline: 0.75rem;
+  }
+  html[data-mobile] .header-pixel-wordmark .game-title {
+    width: 6rem;
+  }
+  html[data-mobile] .header-pixel-wordmark .game-title-letters {
+    width: 5rem;
+  }
+  html[data-mobile] .header-pixel-wordmark .game-title-splash {
+    left: 3.625rem;
+    width: 2.375rem;
+  }
+  html[data-mobile] .header-pixel-wordmark .message-splash {
+    left: 0;
+    width: 6rem;
+    font-size: 0.6875rem;
+  }
+}
+
 .guide-trigger-inline {
   display: inline-flex;
   margin-inline-start: auto;

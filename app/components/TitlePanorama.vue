@@ -55,6 +55,8 @@ const sceneItems = computed(() =>
 )
 const paused = computed(() => !hydrated.value || playbackPaused.value !== false)
 const mobileMotion = shallowRef(false)
+const backdrop = useTemplateRef<HTMLElement>('backdrop')
+usePanoramaViewport(backdrop, mobileMotion)
 const cube = useTemplateRef<HTMLElement>('cube')
 let frame = 0
 let lastFrame = 0
@@ -132,6 +134,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div
+    ref="backdrop"
     class="title-panorama"
     :class="{
       'mobile-motion': mobileMotion,
@@ -390,9 +393,16 @@ onBeforeUnmount(() => {
     --face-size: max(100vw, 100vh);
     --face-size: max(100vw, 100lvh);
     contain: strict;
-    /* Keep one stable layer while Safari pans the viewport for the keyboard. */
     transform: translateZ(0);
     backface-visibility: hidden;
+  }
+  :global(html[data-ios] .title-panorama) {
+    height: var(--panorama-height, 100lvh);
+    --face-size: max(100vw, var(--panorama-height, 100lvh));
+    /* Keep viewport positioning out of iOS's 3D compositing layer. */
+    contain: none;
+    transform: none;
+    backface-visibility: visible;
   }
   .panorama-camera,
   .panorama-light,

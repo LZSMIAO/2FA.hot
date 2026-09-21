@@ -30,7 +30,14 @@ async function expandBatch() {
   const payload = pastedBatchText(valid.value.map((row) => row.config!))
   await navigateTo(localePath('/2fa/batch') + '#' + encodeURIComponent(payload))
 }
-const batchSessionId = shallowRef(crypto.randomUUID())
+function createBatchSessionId() {
+  // Batch grouping needs a unique ID even on a LAN HTTP development page.
+  // getRandomValues is available there; randomUUID requires a secure context.
+  return Array.from(crypto.getRandomValues(new Uint32Array(4)), (part) =>
+    part.toString(16).padStart(8, '0')
+  ).join('')
+}
+const batchSessionId = shallowRef(createBatchSessionId())
 const raw = shallowRef(''),
   entries = shallowRef<BatchEntry[]>([]),
   codes = shallowRef<Record<number, string>>({}),
@@ -392,7 +399,7 @@ function clear() {
   pastedSecrets.clear()
   imageRevision++
   qrIssue.value = ''
-  batchSessionId.value = crypto.randomUUID()
+  batchSessionId.value = createBatchSessionId()
   matching.value = false
   matchSource.value = ''
   matchAssociations.value = {}
