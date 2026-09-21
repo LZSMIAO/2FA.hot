@@ -41,11 +41,15 @@ function measureScrollbar() {
   document.documentElement.style.setProperty('--page-scrollbar-width', `${width}px`)
 }
 /*
- * A menu or dialog locks scrolling by setting overflow on the body, which takes
- * the scrollbar away. The reservation has to go with it, or the page keeps a
- * scrollbar-wide gap down its right edge for as long as the menu is open.
+ * The reservation deliberately stays while a menu or dialog locks scrolling.
+ * The lock takes the scrollbar away, and this used to drop the variable to 0
+ * with it so the page would not keep a scrollbar-wide strip down its right
+ * edge. But #main-content is sized from this value, so zeroing it widened the
+ * layout by the scrollbar and slid everything centred half of that to the
+ * right the moment a dialog opened, and back when it closed. The strip is the
+ * same width the scrollbar covered and sits under the dialog's overlay; the
+ * shift was the thing people saw.
  */
-let locked = false
 let measured = -1
 let viewportWidth = 0
 function onViewportResize() {
@@ -55,26 +59,13 @@ function onViewportResize() {
   viewportWidth = width
   measureScrollbar()
 }
-let watcher: MutationObserver | undefined
-function syncScrollLock() {
-  const nowLocked = document.body.style.overflow === 'hidden'
-  if (nowLocked === locked) return
-  locked = nowLocked
-  if (locked) {
-    measured = -1
-    document.documentElement.style.setProperty('--page-scrollbar-width', '0px')
-  } else measureScrollbar()
-}
 onMounted(() => {
   viewportWidth = window.innerWidth
   measureScrollbar()
   window.addEventListener('resize', onViewportResize, { passive: true })
-  watcher = new MutationObserver(syncScrollLock)
-  watcher.observe(document.body, { attributes: true, attributeFilter: ['style'] })
 })
 onBeforeUnmount(() => {
   window.removeEventListener('resize', onViewportResize)
-  watcher?.disconnect()
 })
 </script>
 <template>
