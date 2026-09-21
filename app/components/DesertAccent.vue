@@ -94,10 +94,10 @@ function leave(event: PointerEvent) {
    * Anchored to the panel's foot and drawn taller than it, so the scene keeps
    * its size while the cactus reaches well past the rule above the panel.
    */
-  top: -4rem;
+  top: -6rem;
   left: 50%;
   width: 100%;
-  height: 20rem;
+  height: 23rem;
   padding: 0;
   border: 0;
   background: transparent;
