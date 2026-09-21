@@ -262,10 +262,11 @@ test('all bubble variants share a top anchor and retain their text while fading'
   )
   const css = parse(component).descriptor.styles[0]!.content
   const bubbleRules = [...css.matchAll(/\.desert-tip\s*\{([^}]+)\}/g)].map((match) => match[1]!)
-  assert.ok(bubbleRules.some((rule) => /top:\s*2rem/.test(rule)))
-  assert.ok(
-    bubbleRules.some((rule) => /top:\s*0;/.test(rule)),
-    'mobile retains a fixed top anchor'
+  const fixedTopAnchors = bubbleRules.filter((rule) => /top:\s*-?[\d.]+(?:rem|px)?;/.test(rule))
+  assert.equal(
+    fixedTopAnchors.length,
+    2,
+    'desktop and mobile retain fixed top anchors without pinning their design offsets'
   )
   assert.ok(bubbleRules.every((rule) => !/bottom:/.test(rule)))
   assert.doesNotMatch(css, /\[data-motion.*?\][^{]*\.desert-tip/)

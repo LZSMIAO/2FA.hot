@@ -82,7 +82,7 @@ function leave(event: PointerEvent) {
     opacity 200ms ease;
 }
 .desert-accent.is-open {
-  height: 16rem;
+  height: 17rem;
   opacity: 1;
   transition:
     height 320ms var(--ease-out),
@@ -94,7 +94,7 @@ function leave(event: PointerEvent) {
    * Anchored to the panel's foot and drawn taller than it, so the scene keeps
    * its size while the cactus reaches well past the rule above the panel.
    */
-  top: -6rem;
+  top: -5rem;
   left: 50%;
   width: 100%;
   height: 23rem;

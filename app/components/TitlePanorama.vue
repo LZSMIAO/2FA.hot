@@ -61,6 +61,29 @@ const cube = useTemplateRef<HTMLElement>('cube')
 let frame = 0
 let lastFrame = 0
 let angle = 0
+let initialAngle = 0
+function saveAngle() {
+  if (!ready.value || !cube.value) return
+  const rotation = cube.value
+    .getAnimations()
+    .find(
+      (animation) =>
+        animation instanceof CSSAnimation && animation.animationName.startsWith('panorama-turn')
+    )
+  const currentAngle = mobileMotion.value
+    ? angle
+    : (initialAngle + Number(rotation?.currentTime ?? 0) / 500) % 360
+  try {
+    localStorage.setItem('2fa-panorama-angle', String(currentAngle))
+  } catch {}
+}
+watch(
+  playbackPaused,
+  (value) => {
+    if (value) saveAngle()
+  },
+  { flush: 'post' }
+)
 function stopFrame() {
   cancelAnimationFrame(frame)
   frame = 0
@@ -91,11 +114,15 @@ const reduced = shallowRef(false)
 let preference: MediaQueryList | undefined
 function updateVisibility() {
   hidden.value = document.hidden
+  if (hidden.value) saveAngle()
 }
 function updatePreference() {
   reduced.value = preference?.matches || false
 }
 onMounted(() => {
+  initialAngle =
+    Number.parseFloat(document.documentElement.style.getPropertyValue('--panorama-angle')) || 0
+  angle = initialAngle
   hydrated.value = true
   applyScene()
   mobile = window.matchMedia('(max-width: 700px), (pointer: coarse)')
@@ -107,6 +134,7 @@ onMounted(() => {
   updateVisibility()
   preference.addEventListener('change', updatePreference)
   document.addEventListener('visibilitychange', updateVisibility)
+  window.addEventListener('pagehide', saveAngle)
   // Keep the pre-paint flag true once the page takes over the playback state.
   watch(
     paused,
@@ -119,16 +147,22 @@ watch(
   (running) => {
     stopFrame()
     if (running) frame = requestAnimationFrame(rotateFrame)
-    if (!mobileMotion.value && cube.value) cube.value.style.removeProperty('transform')
+    if (cube.value) {
+      if (mobileMotion.value)
+        cube.value.style.transform = `translateZ(calc(var(--face-size) / 2)) rotateX(-8deg) rotateY(${angle}deg)`
+      else cube.value.style.removeProperty('transform')
+    }
   },
   { flush: 'post' }
 )
 onBeforeUnmount(() => {
+  saveAngle()
   disposed = true
   stopFrame()
   mobile?.removeEventListener('change', updateMobile)
   preference?.removeEventListener('change', updatePreference)
   document.removeEventListener('visibilitychange', updateVisibility)
+  window.removeEventListener('pagehide', saveAngle)
 })
 </script>
 
@@ -264,7 +298,8 @@ onBeforeUnmount(() => {
   margin-left: calc(var(--face-size) / -2);
   margin-top: calc(var(--face-size) / -2);
   transform-style: preserve-3d;
-  transform: translateZ(calc(var(--face-size) / 2)) rotateX(-8deg) rotateY(0deg);
+  transform: translateZ(calc(var(--face-size) / 2)) rotateX(-8deg)
+    rotateY(var(--panorama-angle, 0deg));
   animation: panorama-turn 180s linear infinite;
 }
 .panorama-face {
@@ -345,7 +380,8 @@ onBeforeUnmount(() => {
 }
 @keyframes panorama-turn {
   to {
-    transform: translateZ(calc(var(--face-size) / 2)) rotateX(-8deg) rotateY(360deg);
+    transform: translateZ(calc(var(--face-size) / 2)) rotateX(-8deg)
+      rotateY(calc(var(--panorama-angle, 0deg) + 360deg));
   }
 }
 @keyframes panorama-daylight {
