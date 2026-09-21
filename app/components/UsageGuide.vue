@@ -294,7 +294,7 @@ onBeforeUnmount(() => {
     <div v-if="!started" class="tutorial-intro">
       <h2>{{ tx('Authenticator 是什么？') }}</h2>
       <p>{{ tx('就是“验证器”。2fa.hot 和验证器 App 一样，用密钥生成一次性验证码。') }}</p>
-      <details class="tutorial-question" :open="!props.compact">
+      <details class="tutorial-question">
         <summary>
           <h3>{{ tx('为什么它能验证身份？') }}</h3>
         </summary>
@@ -306,7 +306,7 @@ onBeforeUnmount(() => {
           }}
         </p>
       </details>
-      <details class="tutorial-question" :open="!props.compact">
+      <details class="tutorial-question">
         <summary>
           <h3>{{ tx('演示里会看到什么？') }}</h3>
         </summary>
@@ -567,7 +567,19 @@ onBeforeUnmount(() => {
 .tutorial-intro strong {
   font-weight: 500;
 }
+.tutorial-question {
+  border-bottom: 1px solid var(--ui-border);
+}
+.tutorial-question:first-of-type {
+  margin-top: 1rem;
+  border-top: 1px solid var(--ui-border);
+}
+.tutorial-question[open] {
+  padding-bottom: 0.75rem;
+}
 .tutorial-question summary {
+  min-height: 2.75rem;
+  padding: 0.75rem 0;
   display: flex;
   align-items: center;
   gap: 0.5rem;

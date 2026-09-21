@@ -126,8 +126,9 @@ function leave(event: PointerEvent) {
 .desert-tip {
   position: absolute;
   /* Anchor the top, so longer translations grow down without moving the bubble. */
-  top: 2rem;
+  top: 7rem;
   right: 0;
+  z-index: 2;
   width: 48%;
   max-width: 13rem;
   text-align: start;
@@ -182,7 +183,7 @@ function leave(event: PointerEvent) {
     height: 13.5rem;
   }
   .desert-tip {
-    top: 0;
+    top: 4.75rem;
     width: 52%;
   }
 }

@@ -600,7 +600,7 @@ onBeforeUnmount(() => {
           :readonly="guiding"
           @update:model-value="updateRaw"
           class="w-full secret-field"
-          :class="{ 'is-text-dragging': textDragging }"
+          :class="{ 'is-text-dragging': textDragging, 'is-concealed': !revealed && !!displayRaw }"
           dir="ltr"
           :type="revealed ? 'text' : 'password'"
           size="xl"
@@ -628,6 +628,12 @@ onBeforeUnmount(() => {
           @blur="handleSecretBlur"
         >
           <template #default>
+            <span
+              v-if="!revealed && displayRaw"
+              class="secret-mask-overlay secret-pixel-mask"
+              aria-hidden="true"
+              >******</span
+            >
             <SecretInputHints
               v-if="!displayRaw && (!secretFocused || textDragging) && !guiding && !pendingPaste"
               :override="textDragging ? tx('将文字拖到此处') : undefined"
@@ -1560,5 +1566,21 @@ onBeforeUnmount(() => {
 .workspace.is-reviewing .advanced-options {
   align-self: start;
   padding-top: 0.75rem;
+}
+
+.secret-field.is-concealed :deep(input) {
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.secret-field.is-concealed :deep(input::selection) {
+  background: transparent;
+}
+.secret-mask-overlay {
+  position: absolute;
+  inset-inline-start: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  line-height: 1;
 }
 </style>

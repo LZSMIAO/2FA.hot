@@ -15,8 +15,8 @@ const reducedMotion = useReducedMotion()
     :transition="{ duration: reducedMotion ? 0 : 0.22 }"
   >
     <UInput
-      :model-value="secret"
-      :type="revealed ? 'text' : 'password'"
+      :model-value="revealed ? secret : '******'"
+      type="text"
       :aria-label="labelId ? undefined : tx('密钥')"
       :aria-labelledby="labelId"
       readonly
@@ -25,7 +25,7 @@ const reducedMotion = useReducedMotion()
       dir="ltr"
       size="xl"
       class="w-full"
-      :ui="{ base: 'font-mono pr-14' }"
+      :ui="{ base: revealed ? 'font-mono pr-14' : 'secret-pixel-mask pr-14' }"
     >
       <template #trailing>
         <button

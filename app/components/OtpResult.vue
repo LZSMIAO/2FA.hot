@@ -223,8 +223,34 @@ function handleCopyShortcut(event: KeyboardEvent) {
   window.dispatchEvent(new CustomEvent('2fa-ui-sound', { detail: 'click' }))
   void copyCurrent()
 }
-onMounted(() => window.addEventListener('keydown', handleCopyShortcut))
-onBeforeUnmount(() => window.removeEventListener('keydown', handleCopyShortcut))
+const shortcutRoute = useRoute()
+let focusFrame = 0
+async function focusStandaloneCode() {
+  if (!props.standalone) return
+  cancelAnimationFrame(focusFrame)
+  await nextTick()
+  // The language popup's FocusScope restores its trigger after its leave
+  // animation. Wait for that popup to unmount before focusing the result.
+  const finish = () => {
+    if (document.querySelector('.language-menu')) {
+      focusFrame = requestAnimationFrame(finish)
+      return
+    }
+    focusFrame = requestAnimationFrame(() => {
+      codeElement.value?.focus({ preventScroll: true })
+    })
+  }
+  finish()
+}
+watch(() => shortcutRoute.path, focusStandaloneCode, { flush: 'post' })
+onMounted(() => {
+  window.addEventListener('keydown', handleCopyShortcut)
+  void focusStandaloneCode()
+})
+onBeforeUnmount(() => {
+  cancelAnimationFrame(focusFrame)
+  window.removeEventListener('keydown', handleCopyShortcut)
+})
 defineExpose({ copyCurrent })
 function prepareSizeChange() {
   if (!props.config || props.guideStep !== undefined) return
@@ -325,6 +351,7 @@ async function expand() {
     />
     <div
       ref="codeElement"
+      :tabindex="standalone ? -1 : undefined"
       :id="standalone ? undefined : 'tutorial-digits'"
       class="otp-digits"
       :class="{ empty: !code, eight: digitCount === 8 }"
