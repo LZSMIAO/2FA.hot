@@ -277,7 +277,8 @@ onBeforeUnmount(() => {
   --face-size: max(100vw, 100svh);
   position: fixed;
   inset: 0;
-  width: 100vw;
+  /* Classic scrollbars occupy viewport space; 100vw would overhang by their width. */
+  width: 100%;
   z-index: 0;
   overflow: hidden;
   pointer-events: none;

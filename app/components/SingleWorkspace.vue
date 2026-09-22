@@ -632,7 +632,7 @@ onBeforeUnmount(() => {
               v-if="!revealed && displayRaw"
               class="secret-mask-overlay secret-pixel-mask"
               aria-hidden="true"
-              >******</span
+              >****************</span
             >
             <SecretInputHints
               v-if="!displayRaw && (!secretFocused || textDragging) && !guiding && !pendingPaste"

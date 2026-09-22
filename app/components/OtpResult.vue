@@ -368,7 +368,7 @@ async function expand() {
           <Transition name="otp-ready" :css="!sizeTransitionActive">
             <span v-if="code" :key="code" class="otp-slot-value">{{ code[position - 1] }}</span>
           </Transition>
-          <span class="otp-slot-dot" :class="{ 'is-visible': !code }" />
+          <span class="otp-slot-placeholder" :class="{ 'is-visible': !code }">*</span>
         </span>
       </span>
     </div>
@@ -599,7 +599,7 @@ async function expand() {
   margin-inline-start: 0.14em;
 }
 .otp-slot-value,
-.otp-slot-dot {
+.otp-slot-placeholder {
   grid-area: 1 / 1;
 }
 .otp-slot-value {
@@ -607,14 +607,15 @@ async function expand() {
   font-size: 1.08em;
   line-height: 1;
 }
-.otp-slot-dot {
-  width: 0.08em;
-  height: 0.08em;
-  background: var(--ui-text-muted);
+.otp-slot-placeholder {
+  font-size: 0.7em;
+  line-height: 1;
+  transform: translateY(0.12em);
+  color: var(--ui-text-muted);
   opacity: 0;
   transition: opacity 180ms ease;
 }
-.otp-slot-dot.is-visible {
+.otp-slot-placeholder.is-visible {
   opacity: 1;
 }
 /* Only the numerals move; slot geometry and the current copy value stay stable. */
@@ -637,7 +638,7 @@ async function expand() {
   transform: translateY(-120%);
 }
 @media (prefers-reduced-motion: reduce) {
-  .otp-slot-dot,
+  .otp-slot-placeholder,
   .otp-ready-enter-active,
   .otp-ready-leave-active {
     transition: none;

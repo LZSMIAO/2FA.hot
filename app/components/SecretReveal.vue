@@ -15,7 +15,7 @@ const reducedMotion = useReducedMotion()
     :transition="{ duration: reducedMotion ? 0 : 0.22 }"
   >
     <UInput
-      :model-value="revealed ? secret : '******'"
+      :model-value="revealed ? secret : '****************'"
       type="text"
       :aria-label="labelId ? undefined : tx('密钥')"
       :aria-labelledby="labelId"
