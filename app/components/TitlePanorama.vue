@@ -177,21 +177,23 @@ onBeforeUnmount(() => {
     }"
     aria-hidden="true"
   >
-    <div class="panorama-camera">
-      <div ref="cube" class="panorama-cube">
-        <div
-          v-for="face in 6"
-          :key="face"
-          class="panorama-face"
-          :class="`face-${face - 1}`"
-          :style="{
-            backgroundImage: `var(--panorama-face-${face - 1}, url(${faceUrl('1.20.1', face - 1)}))`
-          }"
-        />
+    <div class="panorama-scene">
+      <div class="panorama-camera">
+        <div ref="cube" class="panorama-cube">
+          <div
+            v-for="face in 6"
+            :key="face"
+            class="panorama-face"
+            :class="`face-${face - 1}`"
+            :style="{
+              backgroundImage: `var(--panorama-face-${face - 1}, url(${faceUrl('1.20.1', face - 1)}))`
+            }"
+          />
+        </div>
       </div>
+      <div class="panorama-light" />
+      <div class="panorama-shade" />
     </div>
-    <div class="panorama-light" />
-    <div class="panorama-shade" />
   </div>
   <div class="panorama-controls">
     <UDropdownMenu
@@ -277,12 +279,20 @@ onBeforeUnmount(() => {
   --face-size: max(100vw, 100svh);
   position: fixed;
   inset: 0;
-  /* Classic scrollbars occupy viewport space; 100vw would overhang by their width. */
+  /* Clip the scene to the visible page without making the document wider. */
   width: 100%;
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
   background: #667e80;
+}
+.panorama-scene {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* Keep the camera and lighting steady when a scrollbar appears or a dialog locks it. */
+  width: 100vw;
+  height: 100%;
 }
 .panorama-camera {
   position: absolute;

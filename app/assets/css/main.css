@@ -75,8 +75,6 @@
 }
 html {
   touch-action: manipulation;
-  /* Clip at the viewport without creating a scroll container for the sticky header. */
-  overflow-x: clip;
 }
 /* Anchor arrival is an out-of-flow pixel pointer, never a full-width highlight. */
 .anchor-arrival-active {
@@ -160,6 +158,8 @@ html {
 }
 body {
   width: 100%;
+  /* Let the viewport inherit clipping, and let dialog overflow:hidden lock both axes. */
+  overflow-x: clip;
   touch-action: manipulation;
   margin: 0;
   background: var(--canvas);
