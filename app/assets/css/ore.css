@@ -61,6 +61,8 @@
 }
 .app-shell > #main-content {
   width: calc(100vw - var(--page-scrollbar-width, 0px));
+  /* Native scrollbar measurements round to whole CSS pixels at Windows zoom levels. */
+  max-width: 100%;
 }
 .site-header,
 .site-footer {
