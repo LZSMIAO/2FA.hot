@@ -738,10 +738,6 @@
 
 /* Keep mobile footer layout in this bundle with its header rules. */
 @media (max-width: 700px), (max-height: 500px) and (pointer: coarse) {
-  html[data-ios] .site-footer {
-    /* Paint beyond Safari's document edge without adding scrollable height. */
-    box-shadow: 0 100vmax 0 100vmax var(--canvas);
-  }
   html[data-mobile] .site-footer .footer-inner {
     display: grid;
     grid-template-columns: minmax(0, 1fr);

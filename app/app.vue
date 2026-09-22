@@ -70,8 +70,8 @@ onBeforeUnmount(() => {
 </script>
 <template>
   <UApp :locale="uiLocale" :toaster="null">
-    <TitlePanorama />
     <div class="app-shell">
+      <TitlePanorama bounded />
       <AppHeader />
       <main id="main-content" class="ore-theme">
         <NuxtPage :page-key="(route) => unlocalizedPath(route.path)" />

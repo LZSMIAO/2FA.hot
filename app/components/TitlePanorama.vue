@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineProps<{ bounded?: boolean }>()
 const { tx } = useMessages()
 const { scenes, selected, playbackPaused } = usePanoramaPreference()
 const hydrated = shallowRef(false)
@@ -167,32 +168,34 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div
-    ref="backdrop"
-    class="title-panorama"
-    :class="{
-      'mobile-motion': mobileMotion,
-      paused: !ready || paused || hidden || reduced,
-      'is-running': ready && !paused && !hidden && !reduced
-    }"
-    aria-hidden="true"
-  >
-    <div class="panorama-scene">
-      <div class="panorama-camera">
-        <div ref="cube" class="panorama-cube">
-          <div
-            v-for="face in 6"
-            :key="face"
-            class="panorama-face"
-            :class="`face-${face - 1}`"
-            :style="{
-              backgroundImage: `var(--panorama-face-${face - 1}, url(${faceUrl('1.20.1', face - 1)}))`
-            }"
-          />
+  <div :class="{ 'panorama-boundary': bounded }">
+    <div
+      ref="backdrop"
+      class="title-panorama"
+      :class="{
+        'mobile-motion': mobileMotion,
+        paused: !ready || paused || hidden || reduced,
+        'is-running': ready && !paused && !hidden && !reduced
+      }"
+      aria-hidden="true"
+    >
+      <div class="panorama-scene">
+        <div class="panorama-camera">
+          <div ref="cube" class="panorama-cube">
+            <div
+              v-for="face in 6"
+              :key="face"
+              class="panorama-face"
+              :class="`face-${face - 1}`"
+              :style="{
+                backgroundImage: `var(--panorama-face-${face - 1}, url(${faceUrl('1.20.1', face - 1)}))`
+              }"
+            />
+          </div>
         </div>
+        <div class="panorama-light" />
+        <div class="panorama-shade" />
       </div>
-      <div class="panorama-light" />
-      <div class="panorama-shade" />
     </div>
   </div>
   <div class="panorama-controls">
@@ -245,6 +248,15 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+.panorama-boundary {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  /* Clip fixed paint at the document edge, including Safari's moving bottom inset.
+     Unlike a transform or paint containment, this keeps the camera viewport-fixed. */
+  clip-path: inset(0);
+}
 .panorama-preview {
   width: 48px;
   height: 32px;
