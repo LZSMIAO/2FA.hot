@@ -103,9 +103,7 @@
             "divider": false,
             "ordered": false,
             "list": false,
-            "lines": [
-              "这是我公开的第一个 Vibe coding 轮子项目，有感而发写了些文字，感兴趣可以到[主页](https://github.com/LZSMIAO)看看。"
-            ]
+            "lines": ["这是我公开的第一个 Vibe coding 轮子项目，如果能帮到你真是太好了。"]
           }
         ]
       }
