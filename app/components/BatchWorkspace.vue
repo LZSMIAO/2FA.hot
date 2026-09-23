@@ -5,7 +5,8 @@ import {
   pastedBatchText,
   parseSmartBatch,
   removeBatchLines,
-  insertBatchText
+  insertBatchText,
+  batchPasteText
 } from '~/utils/smart-paste'
 import { countdownState } from '~/utils/countdown-state'
 import { generateOtp, groupCode, remainingSeconds, toOtpUri, type BatchEntry } from '~/utils/otp'
@@ -171,6 +172,7 @@ function finishMatching(value: string, source: string, associations: Record<numb
   matching.value = false
 }
 function importBatchSource(value: string) {
+  value = batchPasteText(value)
   const source = [reviewSource.value.trimEnd(), value].filter(Boolean).join('\n')
   const analysis = analyzePaste(value)
   pastedSecrets = new Set(analysis.candidates.map((candidate) => candidate.config.secret))
@@ -369,8 +371,8 @@ async function save() {
 }
 function pasteBatch(event: ClipboardEvent) {
   if (guiding.value) return
-  const text = event.clipboardData ? transferText(event.clipboardData) : ''
-  if (!text) return
+  const text = event.clipboardData ? batchPasteText(transferText(event.clipboardData)) : ''
+  if (!text.trim()) return
   imageRevision++
   qrIssue.value = ''
   const analysis = analyzePaste(text)
@@ -382,7 +384,7 @@ function pasteBatch(event: ClipboardEvent) {
   event.preventDefault()
   const inserted = insertBatchText(raw.value, normalized, input.selectionStart, input.selectionEnd)
   const source =
-    input.selectionStart === raw.value.length && raw.value
+    input.selectionStart === input.value.length && raw.value
       ? reviewSource.value + '\n' + text
       : insertBatchText(raw.value, text, input.selectionStart, input.selectionEnd).text
   pastedSecrets = new Set(analysis.candidates.map((candidate) => candidate.config.secret))

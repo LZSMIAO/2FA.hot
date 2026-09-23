@@ -365,8 +365,22 @@ export function removeBatchLines(text: string, lines: readonly number[]): string
     .join('\n')
 }
 
+/**
+ * Batch rows use LF only, matching the offsets a textarea reports for its value.
+ * A copied line often carries its line break; the row separator is added on insert.
+ */
+export function batchPasteText(text: string): string {
+  return text
+    .replace(/\r\n?/g, '\n')
+    .replace(/^\s*\n/, '')
+    .replace(/\n\s*$/, '')
+}
+
 /** Keep pasted batch entries separate from the text on either side of the selection. */
 export function insertBatchText(current: string, incoming: string, start: number, end: number) {
+  // start/end come from the textarea, which counts a CRLF as one character.
+  current = current.replace(/\r\n?/g, '\n')
+  incoming = batchPasteText(incoming)
   const before = current.slice(0, start)
   const after = current.slice(end)
   const leading = before && !before.endsWith('\n') && !incoming.startsWith('\n') ? '\n' : ''

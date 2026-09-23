@@ -7,7 +7,8 @@ import {
   pastedBatchText,
   pastedInputText,
   removeBatchLines,
-  insertBatchText
+  insertBatchText,
+  batchPasteText
 } from '../app/utils/smart-paste.ts'
 import { parseBatch, toOtpUri, parseOtp, DEMO_SECRET } from '../app/utils/otp.ts'
 const key = 'JBSWY3DPEHPK3PXP'
@@ -25,6 +26,34 @@ test('batch paste separates entries and replaces only the selected range', () =>
     key + '\n' + second + '\n' + key
   )
   assert.equal(insertBatchText(key, second, 0, 0).text, second + '\n' + key)
+})
+test('pasting Windows lines one by one neither stacks blank lines nor splits a row', () => {
+  // A textarea reports its value, and therefore every selection offset, with LF only.
+  const textarea = (value: string) => value.replace(/\r\n?/g, '\n')
+  const rows = [
+    'l6iq zqdo 76rm s3co k3tg zjqb tsrp 2azj',
+    'l6iq zqdo 76rm s3co k3tg zjqb tsrp 2azj',
+    'n6av 6eyv c4nj iad5 kkdo tefv 3hje zqh6',
+    'n6av 6eyv c4nj iad5 kkdo tefv 3hje zqh6'
+  ]
+  let value = ''
+  for (const row of rows) {
+    const end = textarea(value).length
+    value = insertBatchText(value, row + '\r\n', end, end).text
+  }
+  assert.equal(value, rows.join('\n'))
+  // Clicking after the last row's final character must not land inside it.
+  const end = textarea(value).length
+  const next = 'mps5 ryjy b37r cr5v fcpy bhlf 6fj3 7mt3'
+  assert.equal(insertBatchText(value, next + '\r\n', end, end).text, [...rows, next].join('\n'))
+  // Earlier CRLF text is measured the same way the textarea measures it.
+  const legacy = rows.join('\r\n')
+  const at = textarea(legacy).indexOf('\n') + 1
+  assert.equal(
+    insertBatchText(legacy, next, at, at).text,
+    [rows[0], next, ...rows.slice(1)].join('\n')
+  )
+  assert.equal(batchPasteText('\r\n  ' + key + '\r\n\r\n'), '  ' + key)
 })
 test('plain, grouped and named keys preserve their actual secret', () => {
   for (const source of [
