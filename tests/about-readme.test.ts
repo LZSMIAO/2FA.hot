@@ -10,7 +10,6 @@ test('all three README files provide live website content without repository chr
     assert.equal(result.sections.length, 4)
     assert.ok(result.introduction[0]?.includes('Minecraft'))
     assert.ok(!JSON.stringify(result).includes('img.shields.io'))
-    assert.ok(JSON.stringify(result).includes('https://github.com/LZSMIAO'))
     const stories = result.sections.flatMap((section) => section.blocks).filter((b) => b.spoiler)
     assert.equal(stories.length, 0)
     assert.ok(!JSON.stringify(result).includes('BOOM'))
