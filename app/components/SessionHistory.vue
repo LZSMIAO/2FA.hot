@@ -34,12 +34,12 @@ async function toggleBatch(id: string, event: MouseEvent) {
   const scroller = parent?.closest('.session-rows')
   if (!child || !scroller) return
   /*
-   * The panel is still growing into its new height. Measuring against the old
-   * one makes the new rows look out of view, and scrolling for them drags the
-   * row that was just opened up and out - it then slides back down as the
-   * panel finishes. Wait for the height to settle before deciding.
+   * The panel is still growing and clips the list while it does. Scrolling the
+   * new rows into view now would scroll that clip too, dragging the row that
+   * was just opened up and out - it then slides back down as the panel
+   * finishes. Wait for the height to settle before deciding.
    */
-  const body = parent?.closest('.session-body')
+  const body = parent?.closest<HTMLElement>('.session-body')
   let settled = false
   const settle = () => {
     if (settled) return
@@ -47,9 +47,18 @@ async function toggleBatch(id: string, event: MouseEvent) {
     if (child.getBoundingClientRect().bottom > scroller.getBoundingClientRect().bottom)
       child.scrollIntoView({ block: 'nearest', behavior: 'instant' })
   }
+  // Row controls finish transitions of their own; only the body's height counts.
+  const heightSettled = (event: TransitionEvent) => {
+    if (event.target !== body || event.propertyName !== 'height') return
+    body?.removeEventListener('transitionend', heightSettled)
+    settle()
+  }
+  body?.addEventListener('transitionend', heightSettled)
   // A panel already at its maximum height never transitions, so cap the wait.
-  body?.addEventListener('transitionend', settle, { once: true })
-  setTimeout(settle, 260)
+  setTimeout(() => {
+    body?.removeEventListener('transitionend', heightSettled)
+    settle()
+  }, 260)
 }
 function selectEntry(config: OtpConfig) {
   emit('select')
@@ -331,8 +340,13 @@ function time(value: number) {
   overflow: hidden;
   transition: height 200ms var(--ease-out);
 }
+/*
+ * The list takes its final height at once while the body above animates and
+ * clips it. Sized at 100% of the body, it was shorter than rows that had
+ * already been added, and flashed a scrollbar until the body caught up.
+ */
 .session-rows {
-  height: 100%;
+  height: calc(var(--session-count) * var(--session-row-height));
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: thin;
