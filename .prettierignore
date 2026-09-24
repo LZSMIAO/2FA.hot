@@ -8,3 +8,5 @@ extensions/passkeys/dist-store/
 extensions/passkeys/dist-preview/
 extensions/passkeys/output/
 public/lite-assets/sha.js
+# Hand-edited on GitHub; tests/announcements.test.ts checks that it parses.
+ANNOUNCEMENTS.md
