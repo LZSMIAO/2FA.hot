@@ -24,7 +24,7 @@ en: English text        ← 沒寫的語言會顯示英文；也可以加 ja、k
 日期: 2026-09-25
 對象: 老用戶
 圖標: image-up
-zh-TW: 背景可以換成自己的圖片了。\n快來試試吧:))
+zh-TW: 背景可以換成自己的相片了。\n快來試試吧:))
 zh-CN: 背景可以换成自己的图片了。\n快来试试吧:))
 en: You can now use your own image as the background.\nCome give it a try :))
 ja: 背景を自分の画像に変更できるようになりました。\nぜひ試してみてください :))
