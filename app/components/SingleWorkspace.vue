@@ -1110,8 +1110,10 @@ onBeforeUnmount(() => {
     border: 0;
     align-self: start;
   }
+  /* The panel's 2.5rem top padding lifts the expand button above this row, so
+     the countdown ends flush with the digits. */
   .workspace :deep(.result-head) {
-    padding-inline-end: 2rem;
+    padding-inline-end: 0;
   }
   .secret-entry {
     grid-row: 2;

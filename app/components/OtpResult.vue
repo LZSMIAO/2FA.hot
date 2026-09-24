@@ -313,7 +313,7 @@ async function expand() {
     <span v-if="config">{{ tx(standalone ? '当前有效验证码' : '当前验证码') }}</span>
     <div class="result-head-actions">
       <OtpCountdownMeta
-        v-if="compactLayout || standalone"
+        v-if="(compactLayout || standalone) && config"
         :compact="compactLayout"
         :active="!!config && !!code && !error && !calculationError"
         :remaining="remaining"
