@@ -63,7 +63,7 @@
             "lines": [
               "Todos os cálculos deste site leem e processam os dados localmente no seu navegador.",
               "Ao ativar o histórico local, os registros são armazenados no navegador. Você pode definir uma senha para criptografar ou deixá-la em branco e visualizar os registros diretamente.",
-              "Use `/2fa#SECRET`: o fragmento após `#` não é enviado com a requisição da página e é lido localmente por esta ferramenta."
+              "Use `/2fa#SECRET` (várias chaves: `/2fa#SECRET1#SECRET2`): o fragmento após `#` não é enviado com a requisição da página e é lido localmente por esta ferramenta."
             ]
           },
           {

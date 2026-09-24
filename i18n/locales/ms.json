@@ -641,5 +641,6 @@
   "migrationImportBlocked": "Baca semua kod QR sebelum mengimport.",
   "copyAllSecrets": "Salin semua kunci",
   "holdToReorder": "tekan lama untuk menyusun semula",
-  "orderSaved": "Susunan disimpan."
+  "orderSaved": "Susunan disimpan.",
+  "linkPrivacyBatch": "Pisahkan beberapa kunci dengan satu lagi # (koma juga boleh) untuk melihatnya sekali gus; jika kunci dibuang hingga tinggal satu, halaman bertukar ke paparan tunggal. Pilihan selain lalai ditulis selepas kuncinya, contohnya /2fa#KEY1#KEY2?digits=8."
 }

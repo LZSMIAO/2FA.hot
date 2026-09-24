@@ -14,7 +14,15 @@ import {
   restoreBatchLinks
 } from '~/utils/smart-paste'
 import { countdownState } from '~/utils/countdown-state'
-import { generateOtp, groupCode, remainingSeconds, toOtpUri, type BatchEntry } from '~/utils/otp'
+import {
+  accessPath,
+  generateOtp,
+  groupCode,
+  remainingSeconds,
+  toOtpUri,
+  type BatchEntry,
+  type OtpConfig
+} from '~/utils/otp'
 import { codeOutput } from '~/utils/code-output'
 import { pastedImages, transferText } from '~/utils/transfer-text'
 const props = defineProps<{
@@ -25,16 +33,25 @@ const props = defineProps<{
   guideStep?: number
   demo?: { input: number; results: number; copied: string }
 }>()
-const emit = defineEmits<{ single: [value: string]; collapse: [] }>()
+const emit = defineEmits<{ single: [value: string]; collapse: []; rows: [configs: OtpConfig[]] }>()
 const localePath = useLocalePath()
+// The standalone page opens on the same link as a single key, and hears the names
+// through shared state, as the single view does: links never carry them.
+const expandedConfig = useState<OtpConfig | null>('expanded-otp-config', () => null)
+const expandedHistoryPreview = useState('expanded-history-preview', () => false)
+const expandedBatch = useState<OtpConfig[] | null>('expanded-batch-configs', () => null)
 async function expandBatch() {
   if (guiding.value || !valid.value.length) return
   if (props.standalone) {
     emit('collapse')
     return
   }
-  const payload = pastedBatchText(valid.value.map((row) => row.config!))
-  await navigateTo(localePath('/2fa/batch') + '#' + encodeURIComponent(payload))
+  const configs = valid.value.map((row) => row.config!)
+  if (configs.length === 1) {
+    expandedConfig.value = configs[0]!
+    expandedHistoryPreview.value = false
+  } else expandedBatch.value = configs
+  await navigateTo(localePath(accessPath(configs)))
 }
 function createBatchSessionId() {
   // Batch grouping needs a unique ID even on a LAN HTTP development page.
@@ -357,6 +374,14 @@ function offerUndoHint(event: InputEvent) {
   showUndoHint('delete')
 }
 const valid = computed(() => entries.value.filter((x) => x.config))
+// The standalone page keeps its link in step, and turns into the single view at one key.
+watch(valid, (rows) => {
+  if (props.standalone)
+    emit(
+      'rows',
+      rows.map((row) => row.config!)
+    )
+})
 const associationState = computed(() => {
   if (valid.value.length && valid.value.every((entry) => !!entry.config?.label)) return 'linked'
   if (reviewAnalysis.value.accounts?.length || valid.value.some((entry) => !!entry.config?.label))
@@ -650,10 +675,20 @@ onBeforeUnmount(() => {
 </script>
 <template>
   <p v-if="autoHistoryError" class="inline-error" role="alert">{{ tx(autoHistoryError) }}</p>
-  <div ref="batchRoot" class="batch-workspace ore-workspace-frame" @keydown="cancelSelection">
+  <div
+    ref="batchRoot"
+    class="batch-workspace"
+    :class="standalone ? 'is-standalone' : 'ore-workspace-frame'"
+    @keydown="cancelSelection"
+  >
     <div class="batch-input">
       <div class="section-heading">
-        <h2 class="workspace-title">{{ tx('批量获取验证码') }}</h2>
+        <h2 class="workspace-title">
+          {{ tx(standalone ? '当前有效验证码' : '批量获取验证码') }}
+        </h2>
+        <span v-if="standalone" class="batch-standalone-count">{{
+          tx('有效：{count}', { count: valid.length })
+        }}</span>
         <AppHint :text="tx(standalone ? '返回工具首页' : '查看独立取码页')">
           <UButton
             color="neutral"
@@ -785,7 +820,7 @@ onBeforeUnmount(() => {
           class="batch-results"
           :class="{ 'demo-highlight': guideStep === 3 }"
         >
-          <div class="batch-toolbar">
+          <div v-if="!standalone" class="batch-toolbar">
             <div v-if="!standalone" class="batch-selection-actions">
               <UButton
                 color="neutral"
@@ -809,7 +844,6 @@ onBeforeUnmount(() => {
                 {{ tx('删除所选：{count}', { count: selected.length }) }}
               </UButton>
             </div>
-            <span v-else>{{ tx('有效：{count}', { count: valid.length }) }}</span>
             <UButton
               id="batch-demo-copy"
               class="primary-button"
@@ -887,7 +921,7 @@ onBeforeUnmount(() => {
                 :aria-label="tx('复制第 {count} 条验证码', { count: entry.line })"
                 @click="copyRows(entry.line)"
             /></template>
-            <AppHint v-if="!standalone" :text="tx('删除记录')">
+            <AppHint :text="tx('删除记录')">
               <UButton
                 color="neutral"
                 variant="ghost"
@@ -898,6 +932,15 @@ onBeforeUnmount(() => {
               />
             </AppHint>
           </div>
+          <!-- Standalone, copying everything is the page's main action, like the single view's. -->
+          <UButton
+            v-if="standalone"
+            class="primary-button batch-standalone-copy"
+            :disabled="!valid.length"
+            :icon="copied && copiedLine === 'all' ? 'i-mc-check' : 'i-lucide-copy'"
+            @click="copyRows()"
+            >{{ tx(copied && copiedLine === 'all' ? '已复制' : '复制全部有效验证码') }}</UButton
+          >
         </div>
       </div>
     </div>
@@ -1201,6 +1244,49 @@ onBeforeUnmount(() => {
   }
 }
 
+/*
+ * Standalone, the page's result card is the frame, as for a single key: the
+ * workspace drops its own, and its heading reads like the single view's.
+ */
+.batch-workspace.is-standalone {
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+  overflow: visible;
+}
+.is-standalone .batch-input {
+  padding: 0;
+}
+.is-standalone .batch-input .section-heading {
+  flex-wrap: nowrap;
+  margin-bottom: 1rem;
+  padding-block: 0.5rem;
+  padding-inline-end: 2.75rem;
+}
+.is-standalone .batch-input .workspace-title {
+  font-size: clamp(1.125rem, 2vw, 1.375rem);
+  line-height: 1.3;
+}
+.batch-standalone-count {
+  margin-inline-start: auto;
+  color: var(--ui-text-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.is-standalone .batch-expand {
+  inset-block-start: 0;
+  inset-inline-end: 0;
+}
+.is-standalone .batch-results {
+  padding: 0;
+}
+.batch-standalone-copy {
+  justify-content: center;
+  width: 100%;
+  min-height: 3.25rem;
+  margin-top: 1rem;
+  font-size: 1.125rem;
+}
 .batch-field {
   position: relative;
 }

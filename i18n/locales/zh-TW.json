@@ -641,5 +641,6 @@
   "migrationImportBlocked": "讀取全部 QR 碼後才能匯入。",
   "copyAllSecrets": "複製全部密鑰",
   "holdToReorder": "按住可拖動排序",
-  "orderSaved": "順序已儲存。"
+  "orderSaved": "順序已儲存。",
+  "linkPrivacyBatch": "多個密鑰之間再用 # 分隔（也可以用逗號），頁面會顯示批量驗證碼；刪到只剩一個時，自動切換為單條樣式。非預設參數寫在各自的密鑰後面，例如 /2fa#密鑰1#密鑰2?digits=8。"
 }

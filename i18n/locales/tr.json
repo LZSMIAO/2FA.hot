@@ -641,5 +641,6 @@
   "migrationImportBlocked": "İçe aktarmadan önce tüm QR kodlarını okuyun.",
   "copyAllSecrets": "Tüm anahtarları kopyala",
   "holdToReorder": "sıralamak için basılı tutun",
-  "orderSaved": "Sıralama kaydedildi."
+  "orderSaved": "Sıralama kaydedildi.",
+  "linkPrivacyBatch": "Birden çok anahtarı bir # daha ile ayırırsanız (virgül de olur) toplu görünür; anahtarları teke indirdiğinizde sayfa tekli görünüme geçer. Varsayılandan farklı ayarlar kendi anahtarının ardından yazılır, örneğin /2fa#KEY1#KEY2?digits=8."
 }

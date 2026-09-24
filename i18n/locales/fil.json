@@ -641,5 +641,6 @@
   "migrationImportBlocked": "Basahin muna ang lahat ng QR code bago mag-import.",
   "copyAllSecrets": "Kopyahin lahat ng key",
   "holdToReorder": "pindutin nang matagal para iayos",
-  "orderSaved": "Na-save ang pagkakasunod-sunod."
+  "orderSaved": "Na-save ang pagkakasunod-sunod.",
+  "linkPrivacyBatch": "Paghiwalayin ang maraming key ng isa pang # (puwede rin ang kuwit) para makita nang sabay-sabay; kapag inalis hanggang isa na lang, lilipat ang page sa iisang view. Isulat ang mga opsyong iba sa default pagkatapos ng sarili nitong key, halimbawa /2fa#KEY1#KEY2?digits=8."
 }

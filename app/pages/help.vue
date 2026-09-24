@@ -110,7 +110,14 @@ const sections = [
     </p>
     <p>{{ tx('把链接末尾的“密钥”换成你自己的完整密钥，打开就能查看当前验证码。') }}</p>
     <h2 id="link-privacy">{{ tx('为什么使用 #？') }}</h2>
-    <p><code dir="ltr">/2fa#YOUR_SECRET</code></p>
+    <p><code dir="ltr">/2fa#YOUR_SECRET</code><br /><code dir="ltr">/2fa#SECRET1#SECRET2</code></p>
+    <p>
+      {{
+        tx(
+          '多个密钥之间再用 # 分隔（也可以用逗号），页面会显示批量验证码；删到只剩一个时，自动切换为单条样式。非默认参数写在各自的密钥后面，例如 /2fa#密钥1#密钥2?digits=8。'
+        )
+      }}
+    </p>
     <p>
       {{
         tx(

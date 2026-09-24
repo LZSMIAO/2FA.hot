@@ -641,5 +641,6 @@
   "migrationImportBlocked": "Soma misimbo yote ya QR kabla ya kuingiza.",
   "copyAllSecrets": "Nakili funguo zote",
   "holdToReorder": "shikilia ili kuburuta na kupanga",
-  "orderSaved": "Mpangilio umehifadhiwa."
+  "orderSaved": "Mpangilio umehifadhiwa.",
+  "linkPrivacyBatch": "Tenganisha funguo kadhaa kwa # nyingine (koma pia zinafaa) ili zionekane pamoja; ukiondoa hadi ubaki mmoja, ukurasa hubadilika kuwa mwonekano mmoja. Mipangilio isiyo ya chaguomsingi huandikwa baada ya ufunguo wake, kwa mfano /2fa#KEY1#KEY2?digits=8."
 }

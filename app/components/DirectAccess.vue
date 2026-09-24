@@ -3,6 +3,7 @@ const localePath = useLocalePath()
 import {
   analyzePaste,
   extractedSurroundingText,
+  pastedBatchText,
   pastedInputText,
   type PasteAnalysis
 } from '~/utils/smart-paste'
@@ -21,13 +22,25 @@ async function copySecret() {
     copyingSecret.value = false
   }
 }
-import { parseOtp, algorithmFrom, toAccessPath, identity, type OtpConfig } from '~/utils/otp'
+import {
+  parseOtp,
+  algorithmFrom,
+  toAccessPath,
+  accessPath,
+  accessEntries,
+  identity,
+  type OtpConfig
+} from '~/utils/otp'
 const expandedConfig = useState<OtpConfig | null>('expanded-otp-config', () => null)
 const expandedHistoryPreview = useState('expanded-history-preview', () => false)
 let historyPreviewIdentity =
   expandedHistoryPreview.value && expandedConfig.value ? identity(expandedConfig.value) : ''
 onBeforeRouteLeave((to) => {
+  // Back on the tool, a batch shown here continues in the batch workspace.
+  if (unlocalizedPath(to.path) === '/' && batchRows.length)
+    batchTransfer.value = pastedBatchText(batchRows)
   if (!/^\/2fa(?:\/|$)/.test(unlocalizedPath(to.path))) {
+    expandedBatch.value = null
     historyPreviewIdentity = ''
     expandedConfig.value = null
     expandedHistoryPreview.value = false
@@ -61,13 +74,67 @@ watch([input, composing], (_, __, onCleanup) => {
 })
 const fragment = shallowRef('')
 const pathWarning = shallowRef(false)
+/*
+ * Several keys in the link show the batch view on this same page. Its rows
+ * keep the link in step, so removing keys down to one turns it into the
+ * single view. Names arrive through shared state; links never carry them.
+ */
+const expandedBatch = useState<OtpConfig[] | null>('expanded-batch-configs', () => null)
+const batchSource = shallowRef('')
+const batchVersion = shallowRef(0)
+let batchRows: OtpConfig[] = []
+let writtenHash = ''
+function sameKeys(a: readonly OtpConfig[], b: readonly OtpConfig[]) {
+  return (
+    a.length === b.length && a.every((config, index) => identity(config) === identity(b[index]!))
+  )
+}
+function followBatch(configs: OtpConfig[]) {
+  batchRows = configs
+  const hash = accessPath(configs).slice('/2fa'.length)
+  if (configs.length > 1) {
+    if (route.hash === hash) return
+    writtenHash = hash
+    void navigateTo(localePath('/2fa') + hash, { replace: true })
+  } else if (configs.length === 1) {
+    expandedConfig.value = configs[0]!
+    expandedHistoryPreview.value = false
+    void navigateTo(localePath(accessPath(configs)), { replace: true })
+  } else void navigateTo(localePath('/2fa'), { replace: true })
+}
+function collapseBatch() {
+  void navigateTo(localePath('/'))
+}
 const missing = computed(() => !route.params.secret && !fragment.value)
 function load() {
+  // The batch view rewrote its own link; what it shows is already current.
+  if (writtenHash && route.hash === writtenHash) {
+    writtenHash = ''
+    return
+  }
   pathWarning.value = Boolean(route.params.secret)
   config.value = null
   issue.value = ''
   fragment.value = route.hash
+  batchSource.value = ''
   if (!route.params.secret && !fragment.value) return
+  if (!route.params.secret) {
+    try {
+      const configs = accessEntries(fragment.value)
+      if (configs.length > 1) {
+        batchSource.value = pastedBatchText(
+          expandedBatch.value && sameKeys(expandedBatch.value, configs)
+            ? expandedBatch.value
+            : configs
+        )
+        batchVersion.value++
+        return
+      }
+    } catch (e) {
+      issue.value = (e as Error).message
+      return
+    }
+  }
   try {
     const options = route.query
     for (const name of ['algorithm', 'digits', 'period'])
@@ -302,6 +369,16 @@ useHead({ meta: [{ name: 'referrer', content: 'no-referrer' }] })
       <UButton :to="localePath('/2fa/')" color="neutral" variant="outline">{{
         tx('重新输入密钥')
       }}</UButton>
+    </div>
+    <div v-else-if="batchSource" class="direct-result direct-batch ore-workspace-frame">
+      <BatchWorkspace
+        :initial="batchSource"
+        :import-version="batchVersion"
+        replace
+        standalone
+        @rows="followBatch"
+        @collapse="collapseBatch"
+      />
     </div>
     <div v-else class="direct-result ore-workspace-frame">
       <OtpResult

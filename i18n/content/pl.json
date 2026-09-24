@@ -63,7 +63,7 @@
             "lines": [
               "Wszystkie obliczenia tej witryny odczytują i przetwarzają dane lokalnie w Twojej przeglądarce.",
               "Po włączeniu lokalnej historii wpisy są przechowywane w przeglądarce. Możesz ustawić hasło szyfrowania albo go nie ustawiać i przeglądać wpisy bezpośrednio.",
-              "Używaj `/2fa#SECRET`: fragment po `#` nie jest wysyłany z żądaniem strony i jest odczytywany lokalnie przez narzędzie."
+              "Używaj `/2fa#SECRET` (kilka kluczy: `/2fa#SECRET1#SECRET2`): fragment po `#` nie jest wysyłany z żądaniem strony i jest odczytywany lokalnie przez narzędzie."
             ]
           },
           {

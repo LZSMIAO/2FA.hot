@@ -63,7 +63,7 @@
             "lines": [
               "Tutti i calcoli di questo sito leggono ed elaborano i dati localmente nel tuo browser.",
               "Quando attivi la cronologia locale, i record vengono salvati nel browser. Puoi impostare una password per crittografarli, oppure non impostarla e visualizzarli direttamente.",
-              "Usa `/2fa#SECRET`: il frammento dopo `#` non viene inviato con la richiesta della pagina ed è letto localmente da questo strumento."
+              "Usa `/2fa#SECRET` (più chiavi: `/2fa#SECRET1#SECRET2`): il frammento dopo `#` non viene inviato con la richiesta della pagina ed è letto localmente da questo strumento."
             ]
           },
           {

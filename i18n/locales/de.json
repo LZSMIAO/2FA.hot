@@ -641,5 +641,6 @@
   "migrationImportBlocked": "Lies zuerst alle QR-Codes ein, dann kannst du importieren.",
   "copyAllSecrets": "Alle Schlüssel kopieren",
   "holdToReorder": "gedrückt halten zum Umsortieren",
-  "orderSaved": "Reihenfolge gespeichert."
+  "orderSaved": "Reihenfolge gespeichert.",
+  "linkPrivacyBatch": "Mehrere Schlüssel trennst du mit einem weiteren # (Kommas gehen auch), um sie gesammelt zu sehen; bleibt nur einer übrig, wechselt die Seite zur Einzelansicht. Abweichende Einstellungen stehen hinter ihrem Schlüssel, zum Beispiel /2fa#KEY1#KEY2?digits=8."
 }

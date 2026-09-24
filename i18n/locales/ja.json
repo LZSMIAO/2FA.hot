@@ -641,5 +641,6 @@
   "migrationImportBlocked": "すべての QR コードを読み取ってからインポートできます。",
   "copyAllSecrets": "すべてのキーをコピー",
   "holdToReorder": "長押しでドラッグして並べ替え",
-  "orderSaved": "並び順を保存しました。"
+  "orderSaved": "並び順を保存しました。",
+  "linkPrivacyBatch": "複数のキーはさらに # で区切ると（カンマも可）一括表示になり、1 つまで減らすと単体表示に切り替わります。既定と異なる設定は各キーの後ろに付けます（例：/2fa#KEY1#KEY2?digits=8）。"
 }

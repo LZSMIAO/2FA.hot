@@ -641,5 +641,6 @@
   "migrationImportBlocked": "모든 QR 코드를 읽은 뒤에 가져올 수 있습니다.",
   "copyAllSecrets": "모든 키 복사",
   "holdToReorder": "길게 눌러 끌어서 순서 변경",
-  "orderSaved": "순서를 저장했습니다."
+  "orderSaved": "순서를 저장했습니다.",
+  "linkPrivacyBatch": "여러 키는 #로 한 번 더 구분하면(쉼표도 가능) 일괄 보기로 표시되고, 하나만 남으면 단일 보기로 바뀝니다. 기본값과 다른 설정은 각 키 뒤에 붙입니다(예: /2fa#KEY1#KEY2?digits=8)."
 }

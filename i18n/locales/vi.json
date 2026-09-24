@@ -641,5 +641,6 @@
   "migrationImportBlocked": "Hãy đọc tất cả mã QR trước khi nhập.",
   "copyAllSecrets": "Sao chép tất cả khóa",
   "holdToReorder": "nhấn giữ để kéo sắp xếp",
-  "orderSaved": "Đã lưu thứ tự."
+  "orderSaved": "Đã lưu thứ tự.",
+  "linkPrivacyBatch": "Phân tách nhiều khóa bằng thêm một dấu # (dấu phẩy cũng được) để xem theo lô; khi xóa bớt chỉ còn một khóa, trang chuyển sang dạng đơn. Tùy chọn khác mặc định viết sau khóa của nó, ví dụ /2fa#KEY1#KEY2?digits=8."
 }

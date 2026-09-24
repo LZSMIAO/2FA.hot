@@ -63,7 +63,7 @@
             "lines": [
               "Semua perhitungan situs ini membaca dan memproses data secara lokal di browser Anda.",
               "Saat riwayat lokal diaktifkan, catatan disimpan di peramban. Anda dapat menetapkan kata sandi untuk enkripsi, atau membiarkannya tanpa kata sandi dan melihat catatan langsung.",
-              "Gunakan `/2fa#SECRET`: fragmen setelah `#` tidak dikirim bersama permintaan halaman dan dibaca lokal oleh alat ini."
+              "Gunakan `/2fa#SECRET` (beberapa kunci: `/2fa#SECRET1#SECRET2`): fragmen setelah `#` tidak dikirim bersama permintaan halaman dan dibaca lokal oleh alat ini."
             ]
           },
           {

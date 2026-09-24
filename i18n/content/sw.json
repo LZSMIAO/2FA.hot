@@ -63,7 +63,7 @@
             "lines": [
               "Hesabu zote za tovuti hii husoma na kuchakata data ndani ya kivinjari chako.",
               "Ukiwasha historia ya ndani, rekodi huhifadhiwa katika kivinjari chako. Unaweza kuweka nenosiri la usimbaji au kutoliweka na kuona rekodi moja kwa moja.",
-              "Tumia `/2fa#SECRET`: kipande baada ya `#` hakitumwi pamoja na ombi la ukurasa na husomwa ndani ya kifaa na zana hii."
+              "Tumia `/2fa#SECRET` (funguo kadhaa: `/2fa#SECRET1#SECRET2`): kipande baada ya `#` hakitumwi pamoja na ombi la ukurasa na husomwa ndani ya kifaa na zana hii."
             ]
           },
           {

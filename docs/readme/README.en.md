@@ -48,7 +48,7 @@ Have a feature in mind? Explore the [wishlist](https://2fa.hot/waitlist) and sha
 
 - All calculations on this site read and process data locally in your browser.
 - When you enable local history, records are stored in your browser. You can set a password for encryption, or leave it unset and view records directly.
-- Use `/2fa#SECRET`: the fragment after `#` is not sent with the page request. Full links may remain in browser history; never share them publicly.
+- Use `/2fa#SECRET` (several keys: `/2fa#SECRET1#SECRET2`): the fragment after `#` is not sent with the page request. Full links may remain in browser history; never share them publicly.
 
 Finally, do not share them publicly or with anyone you do not trust. Forgotten local-history passphrases cannot be recovered.
 

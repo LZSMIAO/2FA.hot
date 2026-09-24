@@ -63,7 +63,7 @@
             "lines": [
               "Alle Berechnungen dieser Website lesen und verarbeiten Daten lokal in deinem Browser.",
               "Wenn du den lokalen Verlauf aktivierst, werden Einträge in deinem Browser gespeichert. Du kannst ein Passwort zur Verschlüsselung festlegen oder es weglassen und die Einträge direkt ansehen.",
-              "Verwende `/2fa#SECRET`: Das Fragment nach `#` wird nicht mit der Seitenanfrage gesendet und vom Tool lokal gelesen."
+              "Verwende `/2fa#SECRET` (mehrere Schlüssel: `/2fa#SECRET1#SECRET2`): Das Fragment nach `#` wird nicht mit der Seitenanfrage gesendet und vom Tool lokal gelesen."
             ]
           },
           {

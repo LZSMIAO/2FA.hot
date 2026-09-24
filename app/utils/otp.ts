@@ -291,6 +291,25 @@ export function toAccessPath(config: OtpConfig): string {
   const parameters = query.toString()
   return `/2fa#${encodeURIComponent(c.secret)}${parameters ? `?${parameters}` : ''}`
 }
+/**
+ * Several keys share the single-key link: /2fa#KEY1#KEY2, each written as it
+ * would be alone (KEY?digits=8). A key and its options never contain # once
+ * encoded, so it separates them without escaping. One key is a plain link.
+ */
+export function accessPath(configs: readonly OtpConfig[]): string {
+  return '/2fa#' + configs.map((config) => toAccessPath(config).slice('/2fa#'.length)).join('#')
+}
+
+/** The keys a /2fa#KEY1#KEY2 fragment holds; commas, half- or full-width, also separate. */
+export function accessEntries(fragment: string): OtpConfig[] {
+  const entries = fragment
+    .replace(/^#/, '')
+    .split(/[#,，]/)
+    .map((entry) => entry.trim())
+    .filter(Boolean)
+  if (!entries.length) throw new Error('配置链接格式不正确。')
+  return entries.map((entry) => parseOtp('/2fa#' + entry))
+}
 export function groupCode(code: string) {
   return code.length === 5
     ? code

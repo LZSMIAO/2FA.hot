@@ -641,5 +641,6 @@
   "migrationImportBlocked": "Lisez tous les QR codes avant d’importer.",
   "copyAllSecrets": "Copier toutes les clés",
   "holdToReorder": "maintenez pour réorganiser",
-  "orderSaved": "Ordre enregistré."
+  "orderSaved": "Ordre enregistré.",
+  "linkPrivacyBatch": "Séparez plusieurs clés par un autre # (les virgules marchent aussi) pour les voir en lot ; en retirant des clés jusqu’à n’en garder qu’une, la page passe à la vue unique. Les options non par défaut suivent leur clé, par exemple /2fa#KEY1#KEY2?digits=8."
 }

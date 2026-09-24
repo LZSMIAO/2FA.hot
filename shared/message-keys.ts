@@ -894,5 +894,9 @@ export const sourceKeys = new Map<string, string>([
   ['读取全部二维码后才能导入。', 'migrationImportBlocked'],
   ['复制全部密钥', 'copyAllSecrets'],
   ['按住可拖动排序', 'holdToReorder'],
-  ['顺序已保存。', 'orderSaved']
+  ['顺序已保存。', 'orderSaved'],
+  [
+    '多个密钥之间再用 # 分隔（也可以用逗号），页面会显示批量验证码；删到只剩一个时，自动切换为单条样式。非默认参数写在各自的密钥后面，例如 /2fa#密钥1#密钥2?digits=8。',
+    'linkPrivacyBatch'
+  ]
 ])

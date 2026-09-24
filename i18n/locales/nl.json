@@ -641,5 +641,6 @@
   "migrationImportBlocked": "Lees eerst alle QR-codes in voordat je importeert.",
   "copyAllSecrets": "Alle sleutels kopiëren",
   "holdToReorder": "ingedrukt houden om te verslepen",
-  "orderSaved": "Volgorde opgeslagen."
+  "orderSaved": "Volgorde opgeslagen.",
+  "linkPrivacyBatch": "Scheid meerdere sleutels met nog een # (komma’s werken ook) om ze samen te zien; blijft er na verwijderen één over, dan schakelt de pagina naar de enkele weergave. Afwijkende instellingen staan achter hun sleutel, bijvoorbeeld /2fa#KEY1#KEY2?digits=8."
 }
