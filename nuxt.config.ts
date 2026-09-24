@@ -27,6 +27,20 @@ export default defineNuxtConfig({
     plugins: ['~~/server/plugins/security-headers'],
     prerender: { crawlLinks: false, failOnError: true, concurrency: 4 }
   },
+  vite: {
+    $server: {
+      build: {
+        rolldownOptions: {
+          /*
+           * The server bundle leaves shared/ for Nitro to bundle. A relative
+           * import such as app/utils/otp.ts's '../../shared/locales.ts' was
+           * written back one directory too deep, and the build failed.
+           */
+          makeAbsoluteExternalsRelative: false
+        }
+      }
+    }
+  },
   ui: { fonts: false },
   icon: {
     provider: 'server',
