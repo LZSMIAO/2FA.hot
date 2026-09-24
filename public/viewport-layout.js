@@ -25,6 +25,26 @@
     document.documentElement.setAttribute('data-passkey-host', '')
 })()
 
+// iOS keeps its bounce, which settles the page's end smoothly when Safari's bar
+// shrinks; without it the page stayed overscrolled and snapped on the next
+// touch. But a pull at the very top then opened pull-to-refresh, sliding the
+// page down under a blank strip. Only there is the bounce turned off: in the
+// iOS 27 simulator this stopped the pull and kept the end's settle, and the
+// switch takes effect within a gesture that starts at the top.
+;(function () {
+  var root = document.documentElement
+  if (!root.hasAttribute('data-ios')) return
+  var atTop
+  function update() {
+    var top = window.scrollY <= 0
+    if (top === atTop) return
+    atTop = top
+    root.style.overscrollBehaviorY = top ? 'none' : ''
+  }
+  update()
+  window.addEventListener('scroll', update, { passive: true })
+})()
+
 // The prerendered page cannot read the playback cookie, so mark it here and let
 // CSS pick the icon; the control then never changes shape after the first paint.
 ;(function () {
