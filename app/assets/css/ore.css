@@ -24,7 +24,9 @@
   --ore-bevel: inset 2px 2px 0 var(--ore-highlight), inset -2px -2px 0 var(--ore-shade);
   /*
    * Ore UI gives buttons a solid base to stand on; panels are an outline and a
-   * bevel. Under a pale panel that base read as a heavy grey strip, not depth.
+   * bevel. Under a pale panel that base read as a heavy grey strip, not depth,
+   * and on the dark theme as a black band along every panel's foot, so both
+   * themes use this one definition.
    */
   --ore-window-shadow: inset 2px 2px 0 var(--ore-highlight), inset -2px -2px 0 var(--ore-shade);
   --ore-button-shadow:
@@ -47,10 +49,6 @@
   --ore-highlight: oklch(1 0 0 / 0.18);
   --ore-shade: oklch(0 0 0 / 0.3);
   --ore-input: #1e1e1f;
-  /* On the dark theme the same base reads as a soft shadow, so it stays. */
-  --ore-window-shadow:
-    inset 2px 2px 0 var(--ore-highlight), inset -2px -2px 0 var(--ore-shade),
-    0 4px 0 var(--ore-outline);
 }
 #main-content {
   background: transparent;
@@ -760,9 +758,15 @@
   }
 }
 
-/* Keep mobile footer layout in this bundle with its header rules. */
+/*
+ * The narrow footer is decided by width, not by the device. It used to be
+ * gated on data-mobile, so a desktop browser in a narrow window kept the
+ * one-row layout: brand, links and icons squeezed into a line, with the links
+ * wrapping above and below the brand. html:root matches what the attribute
+ * selector weighed, which these rules need over the footer's scoped styles.
+ */
 @media (max-width: 700px), (max-height: 500px) and (pointer: coarse) {
-  html[data-mobile] .site-footer .footer-inner {
+  html:root .site-footer .footer-inner {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     position: relative;
@@ -771,26 +775,31 @@
     gap: 0;
     padding: 0.25rem 1.25rem;
   }
-  html[data-mobile] .site-footer .footer-brand {
+  html:root .site-footer .footer-brand {
     grid-row: 1;
     justify-self: start;
     width: auto;
+    /* The icons are absolute at the row's end, so the brand has to stop short of
+       them itself; the tagline then gives way with an ellipsis. */
+    max-width: calc(100% - 6rem);
     min-width: 2.75rem;
     min-height: 2.75rem;
     justify-content: flex-start;
   }
-  html[data-mobile] .site-footer .footer-inner nav {
+  html:root .site-footer .footer-inner nav {
     grid-row: 2;
     display: block;
     min-width: 0;
     width: 100%;
     margin: 0;
   }
-  html[data-mobile] .site-footer .footer-pages {
-    justify-content: space-between;
-    gap: 0.25rem 0.75rem;
+  html:root .site-footer .footer-pages {
+    /* Grouped at the start; spread across the width, four short links sat a
+       column apart. */
+    justify-content: flex-start;
+    gap: 0.25rem 1.25rem;
   }
-  html[data-mobile] .site-footer .footer-pages a {
+  html:root .site-footer .footer-pages a {
     min-width: 2.75rem;
     min-height: 2.75rem;
     max-width: 100%;
@@ -798,12 +807,12 @@
     white-space: normal;
     overflow-wrap: anywhere;
   }
-  html[data-mobile] .site-footer .footer-contacts {
+  html:root .site-footer .footer-contacts {
     position: absolute;
     inset-block-start: 0.25rem;
     inset-inline-end: 1.25rem;
   }
-  html[data-mobile] .site-footer .footer-contacts a {
+  html:root .site-footer .footer-contacts a {
     width: 2.75rem;
     min-height: 2.75rem;
   }
@@ -813,10 +822,6 @@
 }
 
 @media (max-width: 360px) {
-  html[data-mobile] .site-footer .footer-pages {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
   html[data-mobile] .header-inner {
     padding-inline: 0.75rem;
   }

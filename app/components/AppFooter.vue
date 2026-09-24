@@ -81,23 +81,4 @@ const { tx } = useMessages()
 .footer-inner .footer-contacts a {
   width: 2.25rem;
 }
-@media (max-width: 480px) {
-  .footer-inner {
-    flex-wrap: wrap;
-  }
-  .footer-inner nav {
-    margin-inline-start: auto;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-  }
-  .footer-inner .footer-contacts a {
-    width: 2.75rem;
-  }
-  .footer-inner nav {
-    gap: 1rem;
-  }
-  .footer-pages {
-    gap: 0.75rem;
-  }
-}
 </style>
