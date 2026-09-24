@@ -31,6 +31,7 @@ export const panoramaGroups = [
   { id: 'minecraft', label: 'Minecraft', scenes: panoramaScenes }
 ] as const
 export const previewOf = (scene: string) => `/panorama/previews/${scene}.png`
+// New visitors are set to 26.1 at a chosen angle before first paint; see public/panorama-preference.js.
 export const defaultPanoramaScene: PanoramaScene = '1.20.1'
 /** The visitor's own background, kept in IndexedDB; see ~/utils/custom-panorama. */
 export const customPanoramaScene = 'custom'

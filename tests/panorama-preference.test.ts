@@ -4,19 +4,42 @@ import { test } from 'node:test'
 import vm from 'node:vm'
 
 const bootstrap = readFileSync(new URL('../public/panorama-preference.js', import.meta.url), 'utf8')
-function restore(cookie: string, angle: string | null) {
+function visit(cookie: string, stored: Record<string, string>, cookiesWork = true) {
   const styles = new Map<string, string>()
+  const jar = new Map(
+    cookie
+      .split('; ')
+      .filter(Boolean)
+      .map((pair) => [pair.slice(0, pair.indexOf('=')), pair.slice(pair.indexOf('=') + 1)])
+  )
+  const data = new Map(Object.entries(stored))
   vm.runInNewContext(bootstrap, {
     document: {
-      cookie,
+      get cookie() {
+        return [...jar].map(([name, value]) => `${name}=${value}`).join('; ')
+      },
+      set cookie(value: string) {
+        const pair = value.split(';')[0]!
+        if (cookiesWork)
+          jar.set(pair.slice(0, pair.indexOf('=')), pair.slice(pair.indexOf('=') + 1))
+      },
       documentElement: {
         style: { setProperty: (key: string, value: string) => styles.set(key, value) }
       }
     },
-    localStorage: { getItem: () => angle }
+    localStorage: {
+      getItem: (key: string) => data.get(key) ?? null,
+      setItem: (key: string, value: string) => void data.set(key, String(value))
+    }
   })
-  return styles
+  return { styles, jar, data }
 }
+// A returning browser, as first-visit.js marks one, with a kept angle.
+const restore = (cookie: string, angle: string | null) =>
+  visit(cookie, {
+    '2fa-first-visit': '0',
+    ...(angle === null ? {} : { '2fa-panorama-angle': angle })
+  }).styles
 
 test('first paint restores both Nuxt-quoted and plain scene cookies', () => {
   for (const value of ['%221.21%22', '1.21']) {
@@ -34,4 +57,35 @@ test('invalid scene does not discard a saved angle; malformed angles never enter
   assert.equal(restore('2fa-panorama=invalid', '90').get('--panorama-angle'), '90deg')
   for (const angle of ['NaN', '-1', '360', '1; color:red'])
     assert.equal(restore('', angle).has('--panorama-angle'), false)
+})
+
+test('a new visitor opens on the 26.1 cherry grove at its chosen angle, kept as a setting', () => {
+  // With no cookie yet, or with the default the server wrote along with the first page.
+  for (const cookie of ['', '2fa-panorama=1.20.1']) {
+    const { styles, jar, data } = visit(cookie, { '2fa-first-visit': String(Date.now()) })
+    assert.equal(styles.get('--panorama-face-0'), 'url(/panorama/26.1/panorama_0.webp)')
+    assert.equal(styles.get('--panorama-angle'), '90deg')
+    // Quoted as Nuxt writes it, so the page reads the scene back as a string.
+    assert.equal(jar.get('2fa-panorama'), '%2226.1%22')
+    assert.equal(data.get('2fa-panorama-angle'), '90')
+  }
+})
+
+test('returning visitors and new visitors with settings keep what they had', () => {
+  // Marked returning by first-visit.js: the old default stays, nothing is written.
+  const returning = visit('2fa-panorama=1.20.1', { '2fa-first-visit': '0' })
+  assert.equal(returning.styles.get('--panorama-face-0'), 'url(/panorama/panorama_0.webp)')
+  assert.equal(returning.jar.get('2fa-panorama'), '1.20.1')
+  assert.equal(returning.data.has('2fa-panorama-angle'), false)
+  // A new visitor who already turned the scene or picked another one.
+  const turned = visit('', { '2fa-first-visit': '1700000000000', '2fa-panorama-angle': '12' })
+  assert.equal(turned.styles.has('--panorama-face-0'), false)
+  assert.equal(turned.styles.get('--panorama-angle'), '12deg')
+  const picked = visit('2fa-panorama=%221.21%22', { '2fa-first-visit': '1700000000000' })
+  assert.equal(picked.styles.get('--panorama-face-0'), 'url(/panorama/1.21/panorama_0.webp)')
+  assert.equal(picked.data.has('2fa-panorama-angle'), false)
+  // Blocked cookies cannot keep the scene, so no angle is kept for it either.
+  const blocked = visit('', { '2fa-first-visit': String(Date.now()) }, false)
+  assert.equal(blocked.styles.has('--panorama-face-0'), false)
+  assert.equal(blocked.data.has('2fa-panorama-angle'), false)
 })
