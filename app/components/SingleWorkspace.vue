@@ -7,14 +7,9 @@ const secretFocused = shallowRef(false)
 function handleSecretFocus() {
   historyOrder = []
   historyCursor = undefined
+  // Focus alone leaves the notices above the settings in place; they go when the
+  // content changes. Clearing them here pulled everything below them up.
   secretFocused.value = true
-  dismissInputNotices()
-}
-function dismissInputNotices() {
-  clearTimeout(validation)
-  issue.value = ''
-  pasteIssue.value = ''
-  extracted.value = ''
 }
 function handleSecretBlur() {
   secretFocused.value = false
@@ -343,15 +338,20 @@ watch(
     digits.value = defaults.digits
     period.value = defaults.period
     pasteIssue.value = ''
-    issue.value = ''
   },
   { flush: 'sync' }
 )
 watch([raw, kind, algorithm, digits, period, composing], () => {
   clearTimeout(validation)
-  issue.value = ''
-  if (!raw.value.trim() || composing.value) return
+  // The message changes once typing pauses, not on every keystroke: clearing it
+  // at once and showing it again 300ms later moved everything below it twice.
+  if (!raw.value.trim()) {
+    issue.value = ''
+    return
+  }
+  if (composing.value) return
   validation = setTimeout(() => {
+    issue.value = ''
     if (pendingPaste.value || guiding.value) return
     if (!config.value && inputAnalysis.value.candidates.length) {
       inspectPaste(raw.value)
