@@ -128,6 +128,8 @@ watch(
     if (!enabled) stop()
   }
 )
+// The dialog forwards pasted screenshots here, so they are read like chosen files.
+defineExpose({ images })
 onMounted(() => document.addEventListener('visibilitychange', visibility))
 onBeforeUnmount(() => {
   active = false

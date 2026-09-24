@@ -629,5 +629,14 @@
   "historySelectedOfTotal": "{count} de {total} seleccionados",
   "batchUndoHint": "Pulsa {undo} para deshacer este pegado o {single} para deshacerlo línea a línea",
   "batchUndoPraise": "¡Genial, parece que dominas los atajos!\n{undo} deshace todo el pegado y {single}, una línea cada vez",
-  "qrSourceNotice": "Clave leída del código QR."
+  "qrSourceNotice": "Clave leída del código QR.",
+  "footerTagline": "Generador multifunción de códigos TOTP",
+  "customBackground": "Fondo personalizado",
+  "uploadBackground": "Subir imagen de fondo…",
+  "removeCustomBackground": "Quitar fondo personalizado",
+  "backgroundCountIssue": "Elige 1 imagen de fondo o las 6 caras del panorama (panorama_0–5).",
+  "imageUnreadable": "No se pudo leer esta imagen. Prueba con otra.",
+  "migrationPasteHint": "También puedes pegar una captura o un enlace de exportación.",
+  "migrationNextStep": "En Google Authenticator, toca Siguiente para ver el próximo código QR y escanéalo o pega una captura.",
+  "migrationImportBlocked": "Lee todos los códigos QR antes de importar."
 }

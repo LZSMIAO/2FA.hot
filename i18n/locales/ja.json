@@ -629,5 +629,14 @@
   "historySelectedOfTotal": "{total} 件中 {count} 件を選択",
   "batchUndoHint": "{undo} で今回の貼り付けを取り消し、{single} で 1 行ずつ取り消せます",
   "batchUndoPraise": "いいですね、ショートカットを使いこなしていますね！\n{undo} で貼り付け全体を、{single} で 1 行ずつ取り消せます",
-  "qrSourceNotice": "QR コードからキーを読み取りました。"
+  "qrSourceNotice": "QR コードからキーを読み取りました。",
+  "footerTagline": "多機能 TOTP 認証コードジェネレーター",
+  "customBackground": "カスタム背景",
+  "uploadBackground": "背景画像をアップロード…",
+  "removeCustomBackground": "カスタム背景を削除",
+  "backgroundCountIssue": "背景画像を 1 枚、またはパノラマの 6 面（panorama_0–5）を選択してください。",
+  "imageUnreadable": "この画像を読み込めませんでした。別の画像でお試しください。",
+  "migrationPasteHint": "スクリーンショットやエクスポートリンクを直接貼り付けることもできます。",
+  "migrationNextStep": "Google Authenticator で「次へ」をタップして次の QR コードを表示し、続けてスキャンするかスクリーンショットを貼り付けてください。",
+  "migrationImportBlocked": "すべての QR コードを読み取ってからインポートできます。"
 }

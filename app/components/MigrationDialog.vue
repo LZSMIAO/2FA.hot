@@ -12,6 +12,7 @@ import {
 } from '~/utils/ga-migration'
 import { parseOtp } from '~/utils/otp'
 import { downloadFile } from '~/utils/download'
+import { pastedImages, transferText } from '~/utils/transfer-text'
 const props = defineProps<{ initial?: string }>()
 const emit = defineEmits<{ close: []; import: [value: string]; batch: [value: string] }>()
 const { tx } = useMessages()
@@ -42,7 +43,10 @@ const chosen = computed(() =>
   accounts.value.filter((account) => selected.value.includes(migrationAccountKey(account)))
 )
 const importable = computed(() => chosen.value.filter((account) => !importIssue(account)))
+const scanner = useTemplateRef<{ images: (files: File[]) => Promise<void> }>('scanner')
+const progress = useTemplateRef<HTMLElement>('progress')
 function accept(values: string[]) {
+  const before = accounts.value.length
   // Errors never erase previously scanned fragments, including those from earlier files.
   for (const value of values) {
     try {
@@ -80,6 +84,56 @@ function accept(values: string[]) {
       issue.value = (error as Error).message
     }
   }
+  // New accounts land below the scanner; bring the progress and next step into view.
+  if (accounts.value.length > before)
+    nextTick(() =>
+      progress.value?.scrollIntoView({
+        block: 'nearest',
+        behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+      })
+    )
+}
+const pasteConfirmed = shallowRef(false)
+let pasteTimer: ReturnType<typeof setTimeout> | undefined
+function confirmPaste() {
+  clearTimeout(pasteTimer)
+  pasteConfirmed.value = true
+  pasteTimer = setTimeout(() => (pasteConfirmed.value = false), 3000)
+}
+/**
+ * The page ignores pastes while a dialog is open, so this one reads its own:
+ * screenshots and copied image files go to the scanner, export links are decoded.
+ * The link field below keeps its native paste.
+ */
+function pasted(event: ClipboardEvent) {
+  if (!open.value || event.defaultPrevented || !event.clipboardData) return
+  const target = event.target
+  if (
+    target instanceof HTMLElement &&
+    target.closest('input, textarea, [contenteditable]:not([contenteditable="false"])')
+  )
+    return
+  const images = pastedImages(event.clipboardData)
+  if (images.length) {
+    event.preventDefault()
+    issue.value = ''
+    confirmPaste()
+    void scanner.value?.images(images)
+    return
+  }
+  const lines = transferText(event.clipboardData)
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+  if (!lines.length) return
+  event.preventDefault()
+  issue.value = ''
+  if (lines.length > 100) {
+    issue.value = '每次最多 100 条，请分批处理。'
+    return
+  }
+  confirmPaste()
+  accept(lines)
 }
 function decode() {
   issue.value = ''
@@ -144,6 +198,7 @@ async function showQr(account: MigrationAccount) {
   }
 }
 onMounted(() => {
+  document.addEventListener('paste', pasted)
   if (props.initial?.trim())
     accept(
       props.initial
@@ -154,6 +209,8 @@ onMounted(() => {
 })
 onBeforeUnmount(() => {
   qrSequence++
+  clearTimeout(pasteTimer)
+  document.removeEventListener('paste', pasted)
 })
 </script>
 <template>
@@ -171,17 +228,22 @@ onBeforeUnmount(() => {
               '在 Google Authenticator 中打开“转移账号 → 导出账号”，选好账号后生成二维码。在这里扫码或选择截图；有多张二维码时，请全部导入。'
             )
           }}
+          {{ tx('也可以直接粘贴截图或导出链接。') }}
         </p>
-        <MigrationScanner
-          :key="scannerRevision"
-          :enabled="open"
-          @detected="accept"
-          @issue="
-            (value) => {
-              if (value) issue = value
-            }
-          "
-        />
+        <div class="migration-source">
+          <PasteConfirmation class="migration-paste-confirmation" :show="pasteConfirmed" />
+          <MigrationScanner
+            ref="scanner"
+            :key="scannerRevision"
+            :enabled="open"
+            @detected="accept"
+            @issue="
+              (value) => {
+                if (value) issue = value
+              }
+            "
+          />
+        </div>
         <UCollapsible v-model:open="linkOpen">
           <UButton color="neutral" variant="ghost" icon="i-lucide-link">{{
             tx('粘贴导出链接')
@@ -203,21 +265,37 @@ onBeforeUnmount(() => {
             </div></template
           >
         </UCollapsible>
-        <div v-if="groups.length" class="migration-progress" role="status">
-          <p v-for="(group, index) in groups" :key="group.key">
-            <span v-if="groups.length > 1">{{ index + 1 }} · </span>
-            {{
-              tx(
-                group.missing.length
-                  ? '已读取 {count}/{total} 张二维码，还缺第 {missing} 张。'
-                  : '已读取 {count}/{total} 张二维码。',
-                {
-                  count: group.received,
-                  total: group.total,
-                  ...(group.missing.length ? { missing: group.missing.join(', ') } : {})
-                }
-              )
-            }}
+        <div v-if="groups.length" ref="progress" class="migration-progress" role="status">
+          <div v-for="(group, index) in groups" :key="group.key" class="migration-group">
+            <p>
+              <span v-if="groups.length > 1">{{ index + 1 }} · </span>
+              {{
+                tx(
+                  group.missing.length
+                    ? '已读取 {count}/{total} 张二维码，还缺第 {missing} 张。'
+                    : '已读取 {count}/{total} 张二维码。',
+                  {
+                    count: group.received,
+                    total: group.total,
+                    ...(group.missing.length ? { missing: group.missing.join(', ') } : {})
+                  }
+                )
+              }}
+            </p>
+            <!-- One marker per QR code of the export, filled in as each is read. -->
+            <ol v-if="group.total > 1" class="migration-steps" aria-hidden="true">
+              <li
+                v-for="step in group.total"
+                :key="step"
+                :class="{ 'is-read': !group.missing.includes(step) }"
+              >
+                <UIcon v-if="!group.missing.includes(step)" name="i-mc-check" />
+                <span v-else>{{ step }}</span>
+              </li>
+            </ol>
+          </div>
+          <p v-if="incomplete" class="migration-next">
+            {{ tx('在 Google Authenticator 中点“下一步”显示下一张二维码，继续扫描或粘贴截图。') }}
           </p>
           <p>
             {{
@@ -300,20 +378,25 @@ onBeforeUnmount(() => {
       </div>
     </template>
     <template v-if="accounts.length" #footer>
-      <div class="migration-actions">
-        <UButton
-          class="primary-button"
-          :disabled="!importable.length || incomplete"
-          @click="importAccounts()"
-          >{{ tx('导入') }} ({{ importable.length }})</UButton
-        >
-        <UButton
-          color="neutral"
-          variant="outline"
-          :disabled="!chosen.length"
-          @click="copy(chosen.map((account) => account.uri).join('\n'))"
-          >{{ tx('复制配置 URI') }} ({{ chosen.length }})</UButton
-        >
+      <div class="migration-footer">
+        <p v-if="incomplete" class="migration-footer-hint">
+          {{ tx('读取全部二维码后才能导入。') }}
+        </p>
+        <div class="migration-actions">
+          <UButton
+            class="primary-button"
+            :disabled="!importable.length || incomplete"
+            @click="importAccounts()"
+            >{{ tx('导入') }} ({{ importable.length }})</UButton
+          >
+          <UButton
+            color="neutral"
+            variant="outline"
+            :disabled="!chosen.length"
+            @click="copy(chosen.map((account) => account.uri).join('\n'))"
+            >{{ tx('复制配置 URI') }} ({{ chosen.length }})</UButton
+          >
+        </div>
       </div>
     </template>
   </UModal>
@@ -336,6 +419,59 @@ onBeforeUnmount(() => {
 .migration-progress p {
   margin: 0 0 0.75rem;
   line-height: 1.7;
+}
+.migration-source {
+  position: relative;
+  padding-top: 1.5rem;
+}
+.migration-paste-confirmation {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  line-height: 1.25rem;
+}
+.migration-group {
+  margin-bottom: 0.75rem;
+}
+.migration-group p {
+  margin-bottom: 0.5rem;
+}
+.migration-steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.migration-steps li {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border: 2px dashed var(--ui-border);
+  color: var(--ui-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.migration-steps li.is-read {
+  border-style: solid;
+  border-color: var(--action);
+  background: var(--action);
+  color: white;
+  box-shadow: var(--ore-bevel);
+}
+.migration-next {
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+.migration-footer {
+  width: 100%;
+}
+.migration-footer-hint {
+  width: 100%;
+  margin: 0 0 0.5rem;
+  color: var(--ui-text-muted);
+  font-size: var(--text-caption);
 }
 .migration-account {
   border-top: 2px solid var(--ui-border);

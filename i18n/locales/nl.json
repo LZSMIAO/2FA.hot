@@ -629,5 +629,14 @@
   "historySelectedOfTotal": "{count} van {total} geselecteerd",
   "batchUndoHint": "Druk op {undo} om deze plakactie ongedaan te maken, of op {single} om dat regel voor regel te doen",
   "batchUndoPraise": "Top, je kent de sneltoetsen blijkbaar!\n{undo} maakt de hele plakactie ongedaan, {single} één regel tegelijk",
-  "qrSourceNotice": "Sleutel uit de QR-code gelezen."
+  "qrSourceNotice": "Sleutel uit de QR-code gelezen.",
+  "footerTagline": "Multifunctionele TOTP-codegenerator",
+  "customBackground": "Eigen achtergrond",
+  "uploadBackground": "Achtergrondafbeelding uploaden…",
+  "removeCustomBackground": "Eigen achtergrond verwijderen",
+  "backgroundCountIssue": "Kies 1 achtergrondafbeelding of 6 panoramavlakken (panorama_0–5).",
+  "imageUnreadable": "Deze afbeelding kan niet worden gelezen. Probeer een andere.",
+  "migrationPasteHint": "Je kunt ook een screenshot of exportlink plakken.",
+  "migrationNextStep": "Tik in Google Authenticator op Volgende om de volgende QR-code te tonen en scan die of plak een screenshot.",
+  "migrationImportBlocked": "Lees eerst alle QR-codes in voordat je importeert."
 }

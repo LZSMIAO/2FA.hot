@@ -64,7 +64,8 @@ function leave(event: PointerEvent) {
 <style scoped>
 .desert-accent {
   position: relative;
-  height: 7rem;
+  /* Closed, it takes no room: the settings beside it set the panel's height. */
+  height: 0;
   align-self: start;
   opacity: 0;
   pointer-events: none;

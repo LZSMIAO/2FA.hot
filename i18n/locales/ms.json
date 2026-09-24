@@ -629,5 +629,14 @@
   "historySelectedOfTotal": "{count} daripada {total} dipilih",
   "batchUndoHint": "Tekan {undo} untuk membuat asal tampalan ini, atau {single} untuk membuat asal baris demi baris",
   "batchUndoPraise": "Bagus, nampaknya anda tahu pintasannya!\n{undo} membuat asal seluruh tampalan, {single} baris demi baris",
-  "qrSourceNotice": "Kunci dibaca daripada kod QR."
+  "qrSourceNotice": "Kunci dibaca daripada kod QR.",
+  "footerTagline": "Penjana Kod TOTP Pelbagai Fungsi",
+  "customBackground": "Latar belakang tersuai",
+  "uploadBackground": "Muat naik imej latar…",
+  "removeCustomBackground": "Alih keluar latar belakang tersuai",
+  "backgroundCountIssue": "Pilih 1 imej latar, atau 6 muka panorama (panorama_0–5).",
+  "imageUnreadable": "Imej ini tidak dapat dibaca. Cuba imej lain.",
+  "migrationPasteHint": "Anda juga boleh menampal tangkapan skrin atau pautan eksport.",
+  "migrationNextStep": "Dalam Google Authenticator, ketik Seterusnya untuk memaparkan kod QR seterusnya, kemudian imbas atau tampal tangkapan skrin.",
+  "migrationImportBlocked": "Baca semua kod QR sebelum mengimport."
 }

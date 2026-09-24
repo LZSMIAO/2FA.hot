@@ -629,5 +629,14 @@
   "historySelectedOfTotal": "已選 {count} / {total}",
   "batchUndoHint": "按 {undo} 撤回本次貼上，按 {single} 逐條撤回",
   "batchUndoPraise": "太好了，看來你會用快捷鍵！\n{undo} 撤回整次貼上，{single} 逐條撤回",
-  "qrSourceNotice": "已從 QR 碼識別密鑰。"
+  "qrSourceNotice": "已從 QR 碼識別密鑰。",
+  "footerTagline": "多功能 TOTP 驗證碼產生器",
+  "customBackground": "自訂背景",
+  "uploadBackground": "上傳背景圖片…",
+  "removeCustomBackground": "移除自訂背景",
+  "backgroundCountIssue": "請選擇 1 張背景圖，或 6 張全景面（panorama_0–5）。",
+  "imageUnreadable": "無法讀取這張圖片，請換一張後重試。",
+  "migrationPasteHint": "也可以直接貼上截圖或匯出連結。",
+  "migrationNextStep": "在 Google Authenticator 點「下一步」顯示下一張 QR 碼，繼續掃描或貼上截圖。",
+  "migrationImportBlocked": "讀取全部 QR 碼後才能匯入。"
 }

@@ -5,6 +5,14 @@
  * the header menu is the only way to reach them.
  */
 export const panoramaScenes = [
+  '26.3',
+  '26.2',
+  '26.1',
+  '1.21.11',
+  '1.21.9',
+  '1.21.6',
+  '1.21.5',
+  '1.21.4',
   '1.21',
   '1.20.1',
   '1.19.4',
@@ -15,6 +23,8 @@ export const panoramaScenes = [
 ] as const
 export type PanoramaScene = (typeof panoramaScenes)[number]
 export const defaultPanoramaScene: PanoramaScene = '1.20.1'
+/** The visitor's own background, kept in IndexedDB; see ~/utils/custom-panorama. */
+export const customPanoramaScene = 'custom'
 
 export function usePanoramaPreference() {
   const selected = useCookie<string>('2fa-panorama', {
@@ -27,5 +37,10 @@ export function usePanoramaPreference() {
     maxAge: 31536000,
     sameSite: 'lax'
   })
-  return { scenes: panoramaScenes, selected, playbackPaused }
+  // Shared with the header menu: whether a custom background exists, and its shape.
+  const custom = useState<{ layout: 'cube' | 'flat'; preview: string } | null>(
+    'custom-panorama',
+    () => null
+  )
+  return { scenes: panoramaScenes, selected, playbackPaused, custom }
 }

@@ -361,9 +361,7 @@ onBeforeUnmount(() => {
     ><template #body
       ><div class="modal-stack" @keydown="cancelSelection">
         <div class="qr-import-region">
-          <p class="qr-paste-confirmation" role="status" aria-live="polite">
-            <span v-if="pasteConfirmed">{{ tx('已粘贴内容') }}</span>
-          </p>
+          <PasteConfirmation class="qr-paste-confirmation" :show="pasteConfirmed" />
           <UContextMenu
             :items="[
               {

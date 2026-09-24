@@ -254,7 +254,8 @@ code {
 }
 .header-inner,
 .footer-inner {
-  max-width: 76rem;
+  /* Same width as the header and page, so the brand lines up with the title. */
+  max-width: 69rem;
   margin: auto;
   padding: 0 2.5rem;
   display: flex;
@@ -1360,7 +1361,7 @@ html.size-transition .desert-art svg * {
 }
 .wordmark,
 .tool-wordmark,
-.footer-brand,
+.footer-wordmark,
 .otp-digits,
 .batch-code,
 .countdown-value,

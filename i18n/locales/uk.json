@@ -629,5 +629,14 @@
   "historySelectedOfTotal": "Вибрано {count} з {total}",
   "batchUndoHint": "Натисніть {undo}, щоб скасувати цю вставку, або {single}, щоб скасовувати її по одному рядку",
   "batchUndoPraise": "Чудово, схоже, ви знаєте гарячі клавіші!\n{undo} скасовує всю вставку, {single} — по одному рядку",
-  "qrSourceNotice": "Ключ зчитано з QR-коду."
+  "qrSourceNotice": "Ключ зчитано з QR-коду.",
+  "footerTagline": "Багатофункціональний генератор кодів TOTP",
+  "customBackground": "Власний фон",
+  "uploadBackground": "Завантажити фонове зображення…",
+  "removeCustomBackground": "Видалити власний фон",
+  "backgroundCountIssue": "Виберіть 1 фонове зображення або 6 граней панорами (panorama_0–5).",
+  "imageUnreadable": "Не вдалося прочитати зображення. Спробуйте інше.",
+  "migrationPasteHint": "Можна також вставити знімок екрана або посилання експорту.",
+  "migrationNextStep": "У Google Authenticator натисніть «Далі», щоб показати наступний QR-код, потім відскануйте його або вставте знімок екрана.",
+  "migrationImportBlocked": "Зчитайте всі QR-коди, перш ніж імпортувати."
 }

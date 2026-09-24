@@ -629,5 +629,14 @@
   "historySelectedOfTotal": "เลือกแล้ว {count} จาก {total}",
   "batchUndoHint": "กด {undo} เพื่อเลิกทำการวางครั้งนี้ หรือกด {single} เพื่อเลิกทำทีละบรรทัด",
   "batchUndoPraise": "เยี่ยมเลย ดูเหมือนคุณจะรู้จักคีย์ลัด!\n{undo} เลิกทำการวางทั้งหมด {single} เลิกทำทีละบรรทัด",
-  "qrSourceNotice": "อ่านคีย์จากคิวอาร์โค้ดแล้ว"
+  "qrSourceNotice": "อ่านคีย์จากคิวอาร์โค้ดแล้ว",
+  "footerTagline": "เครื่องมือสร้างรหัส TOTP แบบมัลติฟังก์ชัน",
+  "customBackground": "พื้นหลังที่กำหนดเอง",
+  "uploadBackground": "อัปโหลดภาพพื้นหลัง…",
+  "removeCustomBackground": "ลบพื้นหลังที่กำหนดเอง",
+  "backgroundCountIssue": "เลือกภาพพื้นหลัง 1 ภาพ หรือด้านพาโนรามา 6 ด้าน (panorama_0–5)",
+  "imageUnreadable": "อ่านภาพนี้ไม่ได้ โปรดลองภาพอื่น",
+  "migrationPasteHint": "วางภาพหน้าจอหรือลิงก์ส่งออกได้โดยตรงเช่นกัน",
+  "migrationNextStep": "ใน Google Authenticator แตะ \"ถัดไป\" เพื่อแสดงคิวอาร์โค้ดถัดไป แล้วสแกนหรือวางภาพหน้าจอ",
+  "migrationImportBlocked": "อ่านคิวอาร์โค้ดให้ครบทุกภาพก่อนนำเข้า"
 }

@@ -629,5 +629,14 @@
   "historySelectedOfTotal": "{total}개 중 {count}개 선택",
   "batchUndoHint": "{undo} 키로 이번 붙여넣기를 취소하고, {single} 키로 한 줄씩 취소할 수 있습니다",
   "batchUndoPraise": "좋아요, 단축키를 쓸 줄 아시는군요!\n{undo} 키는 붙여넣기 전체를, {single} 키는 한 줄씩 취소합니다",
-  "qrSourceNotice": "QR 코드에서 키를 읽었습니다."
+  "qrSourceNotice": "QR 코드에서 키를 읽었습니다.",
+  "footerTagline": "다기능 TOTP 인증 코드 생성기",
+  "customBackground": "사용자 지정 배경",
+  "uploadBackground": "배경 이미지 업로드…",
+  "removeCustomBackground": "사용자 지정 배경 삭제",
+  "backgroundCountIssue": "배경 이미지 1장 또는 파노라마 6면(panorama_0–5)을 선택하세요.",
+  "imageUnreadable": "이 이미지를 읽을 수 없습니다. 다른 이미지로 다시 시도하세요.",
+  "migrationPasteHint": "스크린샷이나 내보내기 링크를 바로 붙여넣을 수도 있습니다.",
+  "migrationNextStep": "Google Authenticator에서 다음을 눌러 다음 QR 코드를 표시한 뒤, 계속 스캔하거나 스크린샷을 붙여넣으세요.",
+  "migrationImportBlocked": "모든 QR 코드를 읽은 뒤에 가져올 수 있습니다."
 }

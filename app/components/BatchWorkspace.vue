@@ -133,7 +133,10 @@ function receivePaste(value: string, images: File[] = []) {
   const hadRows = !!raw.value.trim()
   clear()
   if (!hadRows && analysis.candidates.length === 1) emit('single', value)
-  else importBatchSource(value, images)
+  else {
+    importBatchSource(value, images)
+    confirmPaste()
+  }
 }
 let imageRevision = 0
 /** Pasted into the box itself, codes join its rows; elsewhere they start a new batch. */
@@ -552,6 +555,15 @@ function pasteBatch(event: ClipboardEvent) {
   qrIssue.value = ''
   insertPaste(input, text)
 }
+// Same feedback as the single input: a pasted fill briefly says it arrived.
+const pasteConfirmed = shallowRef(false)
+let pasteFeedbackTimer: ReturnType<typeof setTimeout> | undefined
+function confirmPaste() {
+  clearTimeout(pasteFeedbackTimer)
+  pasteConfirmed.value = true
+  pasteFeedbackTimer = setTimeout(() => (pasteConfirmed.value = false), 3000)
+}
+onBeforeUnmount(() => clearTimeout(pasteFeedbackTimer))
 /** Insert pasted text at the box's selection, as one undoable fill. */
 function insertPaste(input: HTMLTextAreaElement, value: string, images: File[] = []) {
   const state = fillState()
@@ -582,6 +594,7 @@ function insertPaste(input: HTMLTextAreaElement, value: string, images: File[] =
   matchSource.value = source
   matchAssociations.value = {}
   matchSnapshot.value = raw.value
+  confirmPaste()
   nextTick(() => {
     input.setSelectionRange(inserted.cursor, inserted.cursor)
     void update()
@@ -669,29 +682,31 @@ onBeforeUnmount(() => {
         @cancel="matching = false"
         @clear="clear"
       />
-      <UTextarea
-        v-else-if="!standalone"
-        @paste="pasteBatch"
-        @beforeinput="offerUndoHint"
-        :model-value="displayRaw"
-        @update:model-value="
-          (value) => {
-            if (!guiding) raw = String(value)
-          }
-        "
-        :readonly="guiding"
-        id="batch-demo-input"
-        :rows="5"
-        class="w-full secret-field"
-        size="xl"
-        :placeholder="tx('每行一个密钥，可以连续粘贴多条。\n也支持 otpauth:// 配置链接。')"
-        :aria-label="tx('批量密钥')"
-        aria-keyshortcuts="Control+Z Control+Shift+Z Meta+Z Meta+Shift+Z"
-        aria-describedby="batch-input-hint"
-        :ui="{ base: 'font-mono text-base leading-6 px-3 py-3 ring-[var(--control-line)]' }"
-        :spellcheck="false"
-        autocomplete="off"
-      />
+      <div v-else-if="!standalone" class="batch-field">
+        <PasteConfirmation class="batch-paste-confirmation" :show="pasteConfirmed" />
+        <UTextarea
+          @paste="pasteBatch"
+          @beforeinput="offerUndoHint"
+          :model-value="displayRaw"
+          @update:model-value="
+            (value) => {
+              if (!guiding) raw = String(value)
+            }
+          "
+          :readonly="guiding"
+          id="batch-demo-input"
+          :rows="5"
+          class="w-full secret-field"
+          size="xl"
+          :placeholder="tx('每行一个密钥，可以连续粘贴多条。\n也支持 otpauth:// 配置链接。')"
+          :aria-label="tx('批量密钥')"
+          aria-keyshortcuts="Control+Z Control+Shift+Z Meta+Z Meta+Shift+Z"
+          aria-describedby="batch-input-hint"
+          :ui="{ base: 'font-mono text-base leading-6 px-3 py-3 ring-[var(--control-line)]' }"
+          :spellcheck="false"
+          autocomplete="off"
+        />
+      </div>
       <ActionHint
         :key="undoHintKind"
         :open="undoHintOpen && !guiding"
@@ -1184,5 +1199,17 @@ onBeforeUnmount(() => {
     margin-inline-start: 25px;
     font-size: 1.5rem;
   }
+}
+
+.batch-field {
+  position: relative;
+}
+/* Sits on the box's top edge, like the single input's confirmation. */
+.batch-paste-confirmation {
+  position: absolute;
+  inset-block-start: -0.75rem;
+  inset-inline-end: 0.75rem;
+  z-index: 1;
+  line-height: 1.5rem;
 }
 </style>

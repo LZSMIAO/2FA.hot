@@ -629,5 +629,14 @@
   "historySelectedOfTotal": "{total} kayıttan {count} tanesi seçili",
   "batchUndoHint": "Bu yapıştırmayı geri almak için {undo}, satır satır geri almak için {single} tuşlarına basın",
   "batchUndoPraise": "Harika, kısayolları bildiğiniz belli!\n{undo} tüm yapıştırmayı, {single} satır satır geri alır",
-  "qrSourceNotice": "Anahtar QR kodundan okundu."
+  "qrSourceNotice": "Anahtar QR kodundan okundu.",
+  "footerTagline": "Çok İşlevli TOTP Kod Üretici",
+  "customBackground": "Özel arka plan",
+  "uploadBackground": "Arka plan görseli yükle…",
+  "removeCustomBackground": "Özel arka planı kaldır",
+  "backgroundCountIssue": "1 arka plan görseli veya 6 panorama yüzü (panorama_0–5) seçin.",
+  "imageUnreadable": "Bu görsel okunamadı. Lütfen başka birini deneyin.",
+  "migrationPasteHint": "Ekran görüntüsünü veya dışa aktarma bağlantısını doğrudan da yapıştırabilirsiniz.",
+  "migrationNextStep": "Google Authenticator’da sonraki QR kodunu göstermek için İleri’ye dokunun, ardından tarayın veya ekran görüntüsünü yapıştırın.",
+  "migrationImportBlocked": "İçe aktarmadan önce tüm QR kodlarını okuyun."
 }

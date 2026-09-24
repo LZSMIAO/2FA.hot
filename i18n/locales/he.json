@@ -629,5 +629,14 @@
   "historySelectedOfTotal": "נבחרו {count} מתוך {total}",
   "batchUndoHint": "הקישו {undo} כדי לבטל את ההדבקה הזו, או {single} כדי לבטל אותה שורה אחר שורה",
   "batchUndoPraise": "מעולה, נראה שאתם מכירים את הקיצורים!\n{undo} מבטל את כל ההדבקה, {single} שורה אחר שורה",
-  "qrSourceNotice": "המפתח נקרא מקוד ה־QR."
+  "qrSourceNotice": "המפתח נקרא מקוד ה־QR.",
+  "footerTagline": "מחולל קודי TOTP רב־תכליתי",
+  "customBackground": "רקע מותאם אישית",
+  "uploadBackground": "העלאת תמונת רקע…",
+  "removeCustomBackground": "הסרת הרקע המותאם אישית",
+  "backgroundCountIssue": "בחרו תמונת רקע אחת, או 6 פאות פנורמה (panorama_0–5).",
+  "imageUnreadable": "לא ניתן לקרוא את התמונה. נסו תמונה אחרת.",
+  "migrationPasteHint": "אפשר גם להדביק צילום מסך או קישור ייצוא.",
+  "migrationNextStep": "ב-Google Authenticator הקישו \"הבא\" כדי להציג את קוד ה-QR הבא, ואז סרקו אותו או הדביקו צילום מסך.",
+  "migrationImportBlocked": "יש לקרוא את כל קודי ה-QR לפני הייבוא."
 }

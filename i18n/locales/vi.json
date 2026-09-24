@@ -629,5 +629,14 @@
   "historySelectedOfTotal": "Đã chọn {count} trên {total}",
   "batchUndoHint": "Nhấn {undo} để hoàn tác lần dán này, hoặc {single} để hoàn tác từng dòng",
   "batchUndoPraise": "Tuyệt, có vẻ bạn biết dùng phím tắt!\n{undo} hoàn tác cả lần dán, {single} hoàn tác từng dòng",
-  "qrSourceNotice": "Đã đọc khóa từ mã QR."
+  "qrSourceNotice": "Đã đọc khóa từ mã QR.",
+  "footerTagline": "Trình tạo mã TOTP đa năng",
+  "customBackground": "Hình nền tùy chỉnh",
+  "uploadBackground": "Tải ảnh nền lên…",
+  "removeCustomBackground": "Xóa hình nền tùy chỉnh",
+  "backgroundCountIssue": "Chọn 1 ảnh nền hoặc 6 mặt toàn cảnh (panorama_0–5).",
+  "imageUnreadable": "Không đọc được ảnh này. Hãy thử ảnh khác.",
+  "migrationPasteHint": "Bạn cũng có thể dán trực tiếp ảnh chụp màn hình hoặc liên kết xuất.",
+  "migrationNextStep": "Trong Google Authenticator, nhấn Tiếp theo để hiện mã QR kế tiếp, rồi quét hoặc dán ảnh chụp màn hình.",
+  "migrationImportBlocked": "Hãy đọc tất cả mã QR trước khi nhập."
 }

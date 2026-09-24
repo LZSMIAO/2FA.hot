@@ -629,5 +629,14 @@
   "historySelectedOfTotal": "{count} kati ya {total} zimechaguliwa",
   "batchUndoHint": "Bonyeza {undo} kutendua ubandikaji huu, au {single} kuutendua mstari mmoja baada ya mwingine",
   "batchUndoPraise": "Vizuri, inaonekana unajua njia za mkato!\n{undo} hutendua ubandikaji wote, {single} mstari mmoja baada ya mwingine",
-  "qrSourceNotice": "Ufunguo umesomwa kutoka kwenye msimbo wa QR."
+  "qrSourceNotice": "Ufunguo umesomwa kutoka kwenye msimbo wa QR.",
+  "footerTagline": "Kizalishaji cha Misimbo ya TOTP chenye Kazi Nyingi",
+  "customBackground": "Mandharinyuma maalum",
+  "uploadBackground": "Pakia picha ya mandharinyuma…",
+  "removeCustomBackground": "Ondoa mandharinyuma maalum",
+  "backgroundCountIssue": "Chagua picha 1 ya mandharinyuma, au pande 6 za panorama (panorama_0–5).",
+  "imageUnreadable": "Picha hii haikuweza kusomwa. Jaribu nyingine.",
+  "migrationPasteHint": "Unaweza pia kubandika picha ya skrini au kiungo cha kuhamisha.",
+  "migrationNextStep": "Katika Google Authenticator, gusa Inayofuata ili kuonyesha msimbo wa QR unaofuata, kisha uuchanganue au ubandike picha ya skrini.",
+  "migrationImportBlocked": "Soma misimbo yote ya QR kabla ya kuingiza."
 }

@@ -879,5 +879,17 @@ export const sourceKeys = new Map<string, string>([
   ['已选 {count} / {total}', 'historySelectedOfTotal'],
   ['按 {undo} 撤回本次粘贴，按 {single} 逐条撤回', 'batchUndoHint'],
   ['太好了，看来你会用快捷键！\n{undo} 撤回整次粘贴，{single} 逐条撤回', 'batchUndoPraise'],
-  ['已从二维码识别密钥。', 'qrSourceNotice']
+  ['已从二维码识别密钥。', 'qrSourceNotice'],
+  ['多功能 TOTP 验证码生成器', 'footerTagline'],
+  ['自定义背景', 'customBackground'],
+  ['上传背景图片…', 'uploadBackground'],
+  ['移除自定义背景', 'removeCustomBackground'],
+  ['请选择 1 张背景图，或 6 张全景面（panorama_0–5）。', 'backgroundCountIssue'],
+  ['无法读取这张图片，请换一张后重试。', 'imageUnreadable'],
+  ['也可以直接粘贴截图或导出链接。', 'migrationPasteHint'],
+  [
+    '在 Google Authenticator 中点“下一步”显示下一张二维码，继续扫描或粘贴截图。',
+    'migrationNextStep'
+  ],
+  ['读取全部二维码后才能导入。', 'migrationImportBlocked']
 ])

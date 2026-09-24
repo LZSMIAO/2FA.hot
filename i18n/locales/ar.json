@@ -629,5 +629,14 @@
   "historySelectedOfTotal": "{count} من {total} محدد",
   "batchUndoHint": "اضغط {undo} للتراجع عن هذا اللصق، أو {single} للتراجع عنه سطرًا تلو الآخر",
   "batchUndoPraise": "رائع، يبدو أنك تعرف الاختصارات!\n{undo} يتراجع عن اللصق كله، و{single} سطرًا تلو الآخر",
-  "qrSourceNotice": "تمت قراءة المفتاح من رمز QR."
+  "qrSourceNotice": "تمت قراءة المفتاح من رمز QR.",
+  "footerTagline": "مولّد رموز TOTP متعدد الوظائف",
+  "customBackground": "خلفية مخصصة",
+  "uploadBackground": "رفع صورة خلفية…",
+  "removeCustomBackground": "إزالة الخلفية المخصصة",
+  "backgroundCountIssue": "اختر صورة خلفية واحدة، أو 6 أوجه للمنظر البانورامي (panorama_0–5).",
+  "imageUnreadable": "تعذّرت قراءة هذه الصورة. جرّب صورة أخرى.",
+  "migrationPasteHint": "يمكنك أيضًا لصق لقطة شاشة أو رابط التصدير مباشرة.",
+  "migrationNextStep": "في Google Authenticator، اضغط «التالي» لعرض رمز QR التالي، ثم امسحه ضوئيًا أو الصق لقطة الشاشة.",
+  "migrationImportBlocked": "اقرأ جميع رموز QR قبل الاستيراد."
 }

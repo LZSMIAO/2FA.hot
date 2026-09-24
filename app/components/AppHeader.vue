@@ -2,6 +2,7 @@
 const localePath = useLocalePath()
 import { isPrivatePage, unlocalizedPath } from '~~/shared/seo/routes'
 import ButtonSoundToggle from './ButtonSoundToggle.vue'
+import { customPanoramaScene } from '~/composables/usePanoramaPreference'
 
 const { tx, locale } = useMessages()
 const liteHref = computed(() => '/lite?lang=' + locale.value)
@@ -32,18 +33,24 @@ const themes = computed(() => [
   {
     label: tx('浅色'),
     icon: 'i-lucide-sun',
+    type: 'checkbox' as const,
+    checked: colorMode.preference === 'light',
     class: 'selection-sound-item',
     onSelect: () => selectTheme('light')
   },
   {
     label: tx('深色'),
     icon: 'i-lucide-moon',
+    type: 'checkbox' as const,
+    checked: colorMode.preference === 'dark',
     class: 'selection-sound-item',
     onSelect: () => selectTheme('dark')
   },
   {
     label: tx('跟随系统'),
     icon: 'i-lucide-monitor',
+    type: 'checkbox' as const,
+    checked: colorMode.preference === 'system',
     class: 'selection-sound-item',
     onSelect: () => selectTheme('system')
   }
@@ -53,7 +60,7 @@ const themes = computed(() => [
  * carries them there instead. Only on the home page, which is the only place
  * the backdrop is on screen.
  */
-const { scenes, selected, playbackPaused } = usePanoramaPreference()
+const { scenes, selected, playbackPaused, custom } = usePanoramaPreference()
 const narrow = shallowRef(false)
 const onHome = computed(() => unlocalizedPath(route.path) === '/')
 onMounted(() => {
@@ -70,15 +77,20 @@ const backdrop = computed(() =>
           label: tx('切换背景'),
           icon: 'i-lucide-image',
           children: [
-            /* On its own in the top menu this read as "pause" with no object. */
-            {
-              label: tx(playbackPaused.value === false ? '暂停' : '继续'),
-              icon: playbackPaused.value === false ? 'i-lucide-pause' : 'i-lucide-play',
-              onSelect: () => {
-                playbackPaused.value = playbackPaused.value === false
-              }
-            },
-            { type: 'separator' as const },
+            /* On its own in the top menu this read as "pause" with no object.
+               A still custom image has nothing to play. */
+            ...(selected.value === customPanoramaScene && custom.value?.layout === 'flat'
+              ? []
+              : [
+                  {
+                    label: tx(playbackPaused.value === false ? '暂停' : '继续'),
+                    icon: playbackPaused.value === false ? 'i-lucide-pause' : 'i-lucide-play',
+                    onSelect: () => {
+                      playbackPaused.value = playbackPaused.value === false
+                    }
+                  },
+                  { type: 'separator' as const }
+                ]),
             ...scenes.map((version) => ({
               label: `Minecraft ${version}`,
               type: 'checkbox' as const,
@@ -86,7 +98,35 @@ const backdrop = computed(() =>
               onSelect: () => {
                 selected.value = version
               }
-            }))
+            })),
+            { type: 'separator' as const },
+            ...(custom.value
+              ? [
+                  {
+                    label: tx('自定义背景'),
+                    type: 'checkbox' as const,
+                    checked: selected.value === customPanoramaScene,
+                    onSelect: () => {
+                      selected.value = customPanoramaScene
+                    }
+                  }
+                ]
+              : []),
+            // The panorama owns the file input and storage; ask it to act.
+            {
+              label: tx('上传背景图片…'),
+              icon: 'i-lucide-upload',
+              onSelect: () => window.dispatchEvent(new Event('2fa-panorama-upload'))
+            },
+            ...(custom.value
+              ? [
+                  {
+                    label: tx('移除自定义背景'),
+                    icon: 'i-lucide-trash-2',
+                    onSelect: () => window.dispatchEvent(new Event('2fa-panorama-remove'))
+                  }
+                ]
+              : [])
           ]
         }
       ]

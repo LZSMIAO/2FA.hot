@@ -629,5 +629,14 @@
   "historySelectedOfTotal": "{count} von {total} ausgewählt",
   "batchUndoHint": "{undo} drücken, um das Einfügen rückgängig zu machen, {single} für jeweils eine Zeile",
   "batchUndoPraise": "Super – Tastenkürzel im Griff!\n{undo} macht das ganze Einfügen rückgängig, {single} jeweils eine Zeile",
-  "qrSourceNotice": "Schlüssel aus dem QR-Code gelesen."
+  "qrSourceNotice": "Schlüssel aus dem QR-Code gelesen.",
+  "footerTagline": "Multifunktionaler TOTP-Code-Generator",
+  "customBackground": "Eigener Hintergrund",
+  "uploadBackground": "Hintergrundbild hochladen…",
+  "removeCustomBackground": "Eigenen Hintergrund entfernen",
+  "backgroundCountIssue": "Wähle 1 Hintergrundbild oder 6 Panoramaseiten (panorama_0–5).",
+  "imageUnreadable": "Dieses Bild konnte nicht gelesen werden. Bitte versuche ein anderes.",
+  "migrationPasteHint": "Du kannst auch einen Screenshot oder Exportlink einfügen.",
+  "migrationNextStep": "Tippe in Google Authenticator auf Weiter, um den nächsten QR-Code anzuzeigen, und scanne ihn oder füge einen Screenshot ein.",
+  "migrationImportBlocked": "Lies zuerst alle QR-Codes ein, dann kannst du importieren."
 }

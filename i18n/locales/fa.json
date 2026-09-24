@@ -629,5 +629,14 @@
   "historySelectedOfTotal": "{count} از {total} انتخاب شده",
   "batchUndoHint": "برای لغو این چسباندن {undo} و برای لغو سطر به سطر آن {single} را بزنید",
   "batchUndoPraise": "عالی است، معلوم است که میان‌برها را بلدید!\n{undo} کل چسباندن را لغو می‌کند و {single} سطر به سطر",
-  "qrSourceNotice": "کلید از کد QR خوانده شد."
+  "qrSourceNotice": "کلید از کد QR خوانده شد.",
+  "footerTagline": "تولیدکننده چندمنظوره کد TOTP",
+  "customBackground": "پس‌زمینه سفارشی",
+  "uploadBackground": "بارگذاری تصویر پس‌زمینه…",
+  "removeCustomBackground": "حذف پس‌زمینه سفارشی",
+  "backgroundCountIssue": "۱ تصویر پس‌زمینه، یا ۶ وجه پانوراما (panorama_0–5) انتخاب کنید.",
+  "imageUnreadable": "این تصویر خوانده نشد. تصویر دیگری را امتحان کنید.",
+  "migrationPasteHint": "می‌توانید اسکرین‌شات یا پیوند خروجی را مستقیماً بچسبانید.",
+  "migrationNextStep": "در Google Authenticator روی «بعدی» بزنید تا کد QR بعدی نمایش داده شود، سپس آن را اسکن کنید یا اسکرین‌شات را بچسبانید.",
+  "migrationImportBlocked": "پیش از وارد کردن، همه کدهای QR را بخوانید."
 }

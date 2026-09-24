@@ -5,7 +5,10 @@ const { tx } = useMessages()
 <template>
   <footer class="site-footer">
     <div class="footer-inner">
-      <NuxtLink class="footer-brand" :to="localePath('/')">2fa.hot</NuxtLink>
+      <NuxtLink class="footer-brand" :to="localePath('/')"
+        ><span class="footer-wordmark">2fa.hot</span
+        ><span class="footer-tagline"> - {{ tx('多功能 TOTP 验证码生成器') }}</span></NuxtLink
+      >
       <nav :aria-label="tx('页脚导航')">
         <div class="footer-pages">
           <NuxtLink :to="localePath('/guides')">{{ tx('指南') }}</NuxtLink>
@@ -40,6 +43,24 @@ const { tx } = useMessages()
 <style scoped>
 .footer-inner nav {
   gap: 1.75rem;
+}
+/* The brand reads as one line; on a narrow footer the description gives way first. */
+.footer-inner .footer-brand {
+  width: auto;
+  min-width: 0;
+  max-width: 100%;
+  justify-content: flex-start;
+  gap: 0;
+  white-space: nowrap;
+}
+.footer-wordmark {
+  flex-shrink: 0;
+}
+.footer-tagline {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre;
 }
 .footer-pages,
 .footer-contacts {

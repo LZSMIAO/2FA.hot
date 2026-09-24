@@ -629,5 +629,14 @@
   "historySelectedOfTotal": "Zaznaczono {count} z {total}",
   "batchUndoHint": "Naciśnij {undo}, aby cofnąć to wklejenie, lub {single}, aby cofać je po jednym wierszu",
   "batchUndoPraise": "Świetnie, widać, że znasz skróty!\n{undo} cofa całe wklejenie, {single} po jednym wierszu",
-  "qrSourceNotice": "Odczytano klucz z kodu QR."
+  "qrSourceNotice": "Odczytano klucz z kodu QR.",
+  "footerTagline": "Wielofunkcyjny generator kodów TOTP",
+  "customBackground": "Własne tło",
+  "uploadBackground": "Prześlij obraz tła…",
+  "removeCustomBackground": "Usuń własne tło",
+  "backgroundCountIssue": "Wybierz 1 obraz tła lub 6 ścian panoramy (panorama_0–5).",
+  "imageUnreadable": "Nie udało się odczytać tego obrazu. Spróbuj innego.",
+  "migrationPasteHint": "Możesz też wkleić zrzut ekranu lub link eksportu.",
+  "migrationNextStep": "W Google Authenticator stuknij Dalej, aby wyświetlić kolejny kod QR, a potem go zeskanuj lub wklej zrzut ekranu.",
+  "migrationImportBlocked": "Odczytaj wszystkie kody QR przed importem."
 }

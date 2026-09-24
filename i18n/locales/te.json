@@ -629,5 +629,14 @@
   "historySelectedOfTotal": "{total}లో {count} ఎంపికయ్యాయి",
   "batchUndoHint": "ఈ పేస్ట్‌ను రద్దు చేయడానికి {undo}, ఒక్కో వరుసను రద్దు చేయడానికి {single} నొక్కండి",
   "batchUndoPraise": "బాగుంది, మీకు షార్ట్‌కట్‌లు తెలిసినట్లుంది!\n{undo} మొత్తం పేస్ట్‌ను, {single} ఒక్కో వరుసను రద్దు చేస్తుంది",
-  "qrSourceNotice": "QR కోడ్ నుండి కీ చదవబడింది."
+  "qrSourceNotice": "QR కోడ్ నుండి కీ చదవబడింది.",
+  "footerTagline": "బహుళ ప్రయోజన TOTP కోడ్ జనరేటర్",
+  "customBackground": "అనుకూల నేపథ్యం",
+  "uploadBackground": "నేపథ్య చిత్రాన్ని అప్‌లోడ్ చేయండి…",
+  "removeCustomBackground": "అనుకూల నేపథ్యాన్ని తీసివేయండి",
+  "backgroundCountIssue": "1 నేపథ్య చిత్రం లేదా 6 పనోరమా ముఖాలు (panorama_0–5) ఎంచుకోండి.",
+  "imageUnreadable": "ఈ చిత్రాన్ని చదవలేకపోయాం. వేరొకదాన్ని ప్రయత్నించండి.",
+  "migrationPasteHint": "స్క్రీన్‌షాట్ లేదా ఎగుమతి లింక్‌ను నేరుగా అతికించవచ్చు కూడా.",
+  "migrationNextStep": "Google Authenticatorలో తదుపరి QR కోడ్ చూపడానికి \"తదుపరి\" నొక్కి, దాన్ని స్కాన్ చేయండి లేదా స్క్రీన్‌షాట్ అతికించండి.",
+  "migrationImportBlocked": "దిగుమతి చేసే ముందు అన్ని QR కోడ్‌లను చదవండి."
 }

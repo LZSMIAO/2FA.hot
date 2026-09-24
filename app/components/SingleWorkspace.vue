@@ -606,9 +606,7 @@ onBeforeUnmount(() => {
         <h2 id="secret-heading" class="workspace-title">{{ tx('输入密钥') }}</h2>
       </div>
       <div class="secret-entry">
-        <p class="paste-confirmation" role="status" aria-live="polite">
-          <span v-if="pasteConfirmed">{{ tx('已粘贴内容') }}</span>
-        </p>
+        <PasteConfirmation class="paste-confirmation" :show="pasteConfirmed" />
         <label class="sr-only" for="secret">{{ tx('2FA 密钥') }}</label>
         <UInput
           v-show="!pendingPaste || guiding"
@@ -989,10 +987,6 @@ onBeforeUnmount(() => {
   line-height: 1.5rem;
   pointer-events: none;
 }
-.paste-confirmation span {
-  padding-inline: 0.375rem;
-  background: var(--panel);
-}
 .secret-entry /* The one control the walkthrough hands back to the reader. */
 .input-tools .is-demo-target {
   outline: 2px solid var(--accent-ink);
@@ -1061,6 +1055,10 @@ onBeforeUnmount(() => {
   .workspace {
     grid-template-rows: auto auto auto 1fr;
     row-gap: 0.75rem;
+  }
+  /* The rows size the card here; a floor only left a gap under an empty one. */
+  .workspace:not(.is-reviewing) {
+    min-height: 0;
   }
   .workspace.is-reviewing {
     grid-template-columns: minmax(0, 1fr);
@@ -1180,31 +1178,32 @@ onBeforeUnmount(() => {
     margin-top: 0;
     flex: 1;
   }
+  /*
+   * The copy button holds the top row and never moves. Until a code exists
+   * there is nothing to export, so the export row below it stays collapsed and
+   * the empty card is compact; it grows in, with the gap, once a code appears.
+   */
   .workspace :deep(.result-output) {
     display: grid;
-    grid-template-rows: repeat(2, minmax(3rem, auto));
-    gap: 1rem;
+    grid-template-rows: auto auto;
+    row-gap: 1rem;
     grid-column: 1;
     align-self: start;
     margin-top: 1.25rem;
+    transition: row-gap 240ms var(--ease-out);
   }
-  /* Reserve the actual export row, including wrapped translations, before a code exists. */
-  .workspace :deep(.export-reveal) {
-    grid-row: 1;
-    grid-template-rows: 1fr;
-    transition: none;
+  .workspace :deep(.result-output:not(.has-exports)) {
+    row-gap: 0;
   }
   .workspace :deep(.result-copy-position) {
-    grid-row: 2;
+    grid-row: 1;
     display: flex;
+    min-height: 3rem;
   }
   .workspace :deep(.result-copy-position .result-copy) {
     flex: 1;
   }
-  .workspace :deep(.result-output.has-exports .result-copy-position) {
-    grid-row: 1;
-  }
-  .workspace :deep(.result-output.has-exports .export-reveal) {
+  .workspace :deep(.export-reveal) {
     grid-row: 2;
   }
   .workspace :deep(.export-reveal:not(.is-open)) {
@@ -1212,12 +1211,22 @@ onBeforeUnmount(() => {
     opacity: 0;
   }
   .workspace :deep(.export-reveal.is-open) {
-    transition: opacity 200ms ease 100ms;
+    transition:
+      grid-template-rows 240ms var(--ease-out),
+      opacity 200ms ease 100ms;
+  }
+  .workspace :deep(.export-reveal.is-resizing) {
+    transition: none;
   }
   .workspace :deep(.export-reveal .result-links) {
-    height: 100%;
+    min-height: 3rem;
     margin-top: 0;
     transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .workspace :deep(.result-output) {
+    transition: none;
   }
 }
 @media (max-width: 700px) {

@@ -629,5 +629,14 @@
   "historySelectedOfTotal": "{total} میں سے {count} منتخب",
   "batchUndoHint": "اس پیسٹ کو واپس لینے کے لیے {undo} اور ایک ایک سطر واپس لینے کے لیے {single} دبائیں",
   "batchUndoPraise": "بہت خوب، لگتا ہے آپ شارٹ کٹس جانتے ہیں!\n{undo} پورا پیسٹ واپس لیتا ہے، {single} ایک ایک سطر",
-  "qrSourceNotice": "کلید QR کوڈ سے پڑھ لی گئی۔"
+  "qrSourceNotice": "کلید QR کوڈ سے پڑھ لی گئی۔",
+  "footerTagline": "کثیر المقاصد TOTP کوڈ جنریٹر",
+  "customBackground": "حسبِ منشا پس منظر",
+  "uploadBackground": "پس منظر کی تصویر اپ لوڈ کریں…",
+  "removeCustomBackground": "حسبِ منشا پس منظر ہٹائیں",
+  "backgroundCountIssue": "1 پس منظر کی تصویر، یا پینوراما کے 6 رخ (panorama_0–5) منتخب کریں۔",
+  "imageUnreadable": "یہ تصویر پڑھی نہیں جا سکی۔ کوئی دوسری آزمائیں۔",
+  "migrationPasteHint": "آپ اسکرین شاٹ یا ایکسپورٹ لنک براہِ راست پیسٹ بھی کر سکتے ہیں۔",
+  "migrationNextStep": "Google Authenticator میں اگلا QR کوڈ دکھانے کے لیے \"اگلا\" دبائیں، پھر اسے اسکین کریں یا اسکرین شاٹ پیسٹ کریں۔",
+  "migrationImportBlocked": "درآمد سے پہلے تمام QR کوڈ پڑھیں۔"
 }

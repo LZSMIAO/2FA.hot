@@ -629,5 +629,14 @@
   "historySelectedOfTotal": "{count} sur {total} sélectionnés",
   "batchUndoHint": "Appuyez sur {undo} pour annuler ce collage, ou sur {single} pour l’annuler ligne par ligne",
   "batchUndoPraise": "Super, vous maîtrisez les raccourcis !\n{undo} annule tout le collage, {single} une ligne à la fois",
-  "qrSourceNotice": "Clé lue depuis le QR code."
+  "qrSourceNotice": "Clé lue depuis le QR code.",
+  "footerTagline": "Générateur multifonction de codes TOTP",
+  "customBackground": "Arrière-plan personnalisé",
+  "uploadBackground": "Importer une image de fond…",
+  "removeCustomBackground": "Supprimer l’arrière-plan personnalisé",
+  "backgroundCountIssue": "Choisissez 1 image de fond ou les 6 faces du panorama (panorama_0–5).",
+  "imageUnreadable": "Impossible de lire cette image. Essayez-en une autre.",
+  "migrationPasteHint": "Vous pouvez aussi coller une capture d’écran ou un lien d’exportation.",
+  "migrationNextStep": "Dans Google Authenticator, touchez Suivant pour afficher le QR code suivant, puis scannez-le ou collez une capture.",
+  "migrationImportBlocked": "Lisez tous les QR codes avant d’importer."
 }

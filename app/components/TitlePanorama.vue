@@ -1,59 +1,171 @@
 <script setup lang="ts">
+import {
+  customPanoramaFromFiles,
+  loadCustomPanorama,
+  removeCustomPanorama,
+  saveCustomPanorama,
+  type CustomPanorama
+} from '~/utils/custom-panorama'
+import {
+  customPanoramaScene,
+  defaultPanoramaScene,
+  type PanoramaScene
+} from '~/composables/usePanoramaPreference'
 defineProps<{ bounded?: boolean }>()
 const { tx } = useMessages()
-const { scenes, selected, playbackPaused } = usePanoramaPreference()
+const { scenes, selected, playbackPaused, custom } = usePanoramaPreference()
 const hydrated = shallowRef(false)
-const scene = computed(() =>
-  hydrated.value && scenes.includes(selected.value as (typeof scenes)[number])
-    ? selected.value
-    : '1.20.1'
-)
+const scene = computed(() => {
+  if (!hydrated.value) return defaultPanoramaScene
+  if (selected.value === customPanoramaScene) return customPanoramaScene
+  return scenes.includes(selected.value as PanoramaScene) ? selected.value : defaultPanoramaScene
+})
+// Object URLs for the stored custom background, in face order.
+const customUrls = shallowRef<string[]>([])
+const flat = computed(() => scene.value === customPanoramaScene && custom.value?.layout === 'flat')
 function faceUrl(version: string, face: number) {
+  if (version === customPanoramaScene) return customUrls.value[face] || ''
   return `/panorama/${version === '1.20.1' ? '' : `${version}/`}panorama_${face}.png`
 }
 function applyScene() {
-  for (let face = 0; face < 6; face++) {
-    document.documentElement.style.setProperty(
-      `--panorama-face-${face}`,
-      `url(${faceUrl(scene.value, face)})`
-    )
-  }
+  const root = document.documentElement
+  // The custom images are still being read; the head script already cleared the faces.
+  if (scene.value === customPanoramaScene && !customUrls.value.length) return
+  root.toggleAttribute('data-panorama-flat', flat.value)
+  if (flat.value) root.style.setProperty('--panorama-flat', `url(${customUrls.value[0]})`)
+  else
+    for (let face = 0; face < 6; face++)
+      root.style.setProperty(`--panorama-face-${face}`, `url(${faceUrl(scene.value, face)})`)
 }
-watch(scene, () => {
+watch([scene, customUrls], () => {
   if (hydrated.value) applyScene()
 })
 const loading = shallowRef(false)
-const loadError = shallowRef(false)
+const issue = shallowRef('')
 let disposed = false
+async function decodeAll(urls: string[]) {
+  await Promise.all(
+    urls.map(async (url) => {
+      const image = new Image()
+      image.src = url
+      await image.decode()
+    })
+  )
+}
 async function changeScene(version: string) {
   if (loading.value || version === scene.value) return
   loading.value = true
-  loadError.value = false
+  issue.value = ''
   try {
-    await Promise.all(
-      Array.from({ length: 6 }, async (_, face) => {
-        const image = new Image()
-        image.src = faceUrl(version, face)
-        await image.decode()
-      })
-    )
+    const faces = version === customPanoramaScene && custom.value?.layout === 'flat' ? 1 : 6
+    await decodeAll(Array.from({ length: faces }, (_, face) => faceUrl(version, face)))
     if (!disposed) selected.value = version
   } catch {
-    if (!disposed) loadError.value = true
+    if (!disposed) issue.value = '无法完成操作，请重试。'
   } finally {
     if (!disposed) loading.value = false
   }
 }
-const sceneItems = computed(() =>
+function showCustom(stored: CustomPanorama | null) {
+  customUrls.value.forEach((url) => URL.revokeObjectURL(url))
+  customUrls.value = stored ? stored.images.map((image) => URL.createObjectURL(image)) : []
+  custom.value = stored ? { layout: stored.layout, preview: customUrls.value[0]! } : null
+  try {
+    // Lets the head script lay out a still backdrop before the images are read.
+    if (stored) localStorage.setItem('2fa-panorama-custom-layout', stored.layout)
+    else localStorage.removeItem('2fa-panorama-custom-layout')
+  } catch {}
+}
+async function restoreCustom() {
+  let stored: CustomPanorama | null = null
+  try {
+    stored = await loadCustomPanorama()
+  } catch {
+    // Storage can be unavailable, e.g. in some private windows.
+  }
+  if (disposed) return
+  showCustom(stored)
+  if (!stored && selected.value === customPanoramaScene) selected.value = defaultPanoramaScene
+}
+const upload = useTemplateRef<HTMLInputElement>('upload')
+function chooseUpload() {
+  if (!loading.value) upload.value?.click()
+}
+async function receiveUpload() {
+  const files = [...(upload.value?.files || [])]
+  if (upload.value) upload.value.value = ''
+  if (!files.length) return
+  loading.value = true
+  issue.value = ''
+  try {
+    const { layout, images } = customPanoramaFromFiles(files)
+    const urls = images.map((image) => URL.createObjectURL(image))
+    try {
+      await decodeAll(urls)
+    } catch {
+      throw new Error('无法读取这张图片，请换一张后重试。')
+    } finally {
+      urls.forEach((url) => URL.revokeObjectURL(url))
+    }
+    const stored = { layout, images }
+    await saveCustomPanorama(stored)
+    if (disposed) return
+    showCustom(stored)
+    selected.value = customPanoramaScene
+  } catch (cause) {
+    const text = (cause as Error).message
+    if (!disposed) issue.value = /[\u3400-\u9fff]/.test(text) ? text : '无法完成操作，请重试。'
+  } finally {
+    if (!disposed) loading.value = false
+  }
+}
+async function removeCustom() {
+  if (selected.value === customPanoramaScene) selected.value = defaultPanoramaScene
+  try {
+    await removeCustomPanorama()
+  } catch {}
+  if (!disposed) showCustom(null)
+}
+// The header menu offers the same actions on a phone, where these controls are off screen.
+function uploadRequested() {
+  chooseUpload()
+}
+function removeRequested() {
+  void removeCustom()
+}
+const sceneItems = computed(() => [
   scenes.map((version) => ({
     label: `Minecraft ${version}`,
-    version,
+    preview: `/panorama/previews/${version}.png`,
     type: 'checkbox' as const,
     checked: scene.value === version,
     disabled: loading.value,
     onSelect: () => changeScene(version)
-  }))
-)
+  })),
+  [
+    ...(custom.value
+      ? [
+          {
+            label: tx('自定义背景'),
+            preview: custom.value.preview,
+            type: 'checkbox' as const,
+            checked: scene.value === customPanoramaScene,
+            disabled: loading.value,
+            onSelect: () => changeScene(customPanoramaScene)
+          }
+        ]
+      : []),
+    {
+      label: tx('上传背景图片…'),
+      icon: 'i-lucide-upload',
+      disabled: loading.value,
+      onSelect: chooseUpload
+    },
+    ...(custom.value
+      ? [{ label: tx('移除自定义背景'), icon: 'i-lucide-trash-2', onSelect: removeCustom }]
+      : [])
+  ]
+])
 const paused = computed(() => !hydrated.value || playbackPaused.value !== false)
 const mobileMotion = shallowRef(false)
 const backdrop = useTemplateRef<HTMLElement>('backdrop')
@@ -126,6 +238,9 @@ onMounted(() => {
   angle = initialAngle
   hydrated.value = true
   applyScene()
+  void restoreCustom()
+  window.addEventListener('2fa-panorama-upload', uploadRequested)
+  window.addEventListener('2fa-panorama-remove', removeRequested)
   mobile = window.matchMedia('(max-width: 700px), (pointer: coarse)')
   updateMobile()
   mobile.addEventListener('change', updateMobile)
@@ -164,6 +279,9 @@ onBeforeUnmount(() => {
   preference?.removeEventListener('change', updatePreference)
   document.removeEventListener('visibilitychange', updateVisibility)
   window.removeEventListener('pagehide', saveAngle)
+  window.removeEventListener('2fa-panorama-upload', uploadRequested)
+  window.removeEventListener('2fa-panorama-remove', removeRequested)
+  showCustom(null)
 })
 </script>
 
@@ -193,6 +311,7 @@ onBeforeUnmount(() => {
             />
           </div>
         </div>
+        <div class="panorama-flat" />
         <div class="panorama-light" />
         <div class="panorama-shade" />
       </div>
@@ -219,15 +338,19 @@ onBeforeUnmount(() => {
       ></AppHint>
       <template #item-leading="{ item }">
         <img
-          :src="`/panorama/previews/${item.version}.png`"
+          v-if="item.preview"
+          :src="item.preview"
           class="panorama-preview"
           alt=""
           width="48"
           height="32"
         />
+        <span v-else class="panorama-preview panorama-action-icon"
+          ><UIcon :name="item.icon"
+        /></span>
       </template>
     </UDropdownMenu>
-    <AppHint :text="tx(paused ? '继续' : '暂停')"
+    <AppHint v-if="!flat" :text="tx(paused ? '继续' : '暂停')"
       ><button
         class="panorama-control panorama-playback"
         :aria-label="tx(paused ? '继续' : '暂停')"
@@ -239,11 +362,21 @@ onBeforeUnmount(() => {
         /></span></button
     ></AppHint>
   </div>
+  <input
+    ref="upload"
+    type="file"
+    class="sr-only"
+    accept="image/png,image/jpeg,image/webp"
+    multiple
+    tabindex="-1"
+    aria-hidden="true"
+    @change="receiveUpload"
+  />
   <ActionHint
-    :open="loadError"
-    :message="tx('无法完成操作，请重试。')"
+    :open="!!issue"
+    :message="tx(issue)"
     icon="i-lucide-circle-alert"
-    @close="loadError = false"
+    @close="issue = ''"
   />
 </template>
 
@@ -264,6 +397,12 @@ onBeforeUnmount(() => {
   object-fit: cover;
   border: 1px solid var(--ui-border);
   image-rendering: pixelated;
+}
+.panorama-action-icon {
+  display: grid;
+  place-items: center;
+  border-style: dashed;
+  color: var(--ui-text-muted);
 }
 :global(.panorama-menu) {
   width: 208px;
@@ -349,6 +488,19 @@ onBeforeUnmount(() => {
 .face-5 {
   transform: rotateX(90deg) translateZ(calc(var(--face-size) / -2));
 }
+.panorama-flat {
+  position: absolute;
+  inset: 0;
+  display: none;
+  background: var(--panorama-flat) center / cover no-repeat;
+}
+/* A single uploaded image is a still backdrop in place of the cube. */
+:global(html[data-panorama-flat] .title-panorama .panorama-flat) {
+  display: block;
+}
+:global(html[data-panorama-flat] .title-panorama .panorama-camera) {
+  display: none;
+}
 .panorama-light {
   position: absolute;
   /* Keep the moving light's edges outside the viewport for the entire cycle. */
@@ -432,6 +584,11 @@ onBeforeUnmount(() => {
 .panorama-control:hover,
 .panorama-control:focus-visible {
   opacity: 1;
+}
+/* An inline wrapper sat the glyph on the text baseline, about 2px above the image icon's. */
+.panorama-playback-icon {
+  display: grid;
+  place-items: center;
 }
 @media (prefers-reduced-motion: reduce) {
   .panorama-playback {

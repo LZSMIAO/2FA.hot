@@ -22,9 +22,11 @@
   --ore-input: #ffffff;
   --ore-inset: inset 0 3px 0 var(--ore-shade);
   --ore-bevel: inset 2px 2px 0 var(--ore-highlight), inset -2px -2px 0 var(--ore-shade);
-  --ore-window-shadow:
-    inset 2px 2px 0 var(--ore-highlight), inset -2px -2px 0 var(--ore-shade),
-    0 4px 0 var(--ore-outline);
+  /*
+   * Ore UI gives buttons a solid base to stand on; panels are an outline and a
+   * bevel. Under a pale panel that base read as a heavy grey strip, not depth.
+   */
+  --ore-window-shadow: inset 2px 2px 0 var(--ore-highlight), inset -2px -2px 0 var(--ore-shade);
   --ore-button-shadow:
     inset 2px 2px 0 var(--ore-highlight), inset -2px -2px 0 var(--ore-shade),
     0 3px 0 var(--ore-outline);
@@ -45,6 +47,10 @@
   --ore-highlight: oklch(1 0 0 / 0.18);
   --ore-shade: oklch(0 0 0 / 0.3);
   --ore-input: #1e1e1f;
+  /* On the dark theme the same base reads as a soft shadow, so it stays. */
+  --ore-window-shadow:
+    inset 2px 2px 0 var(--ore-highlight), inset -2px -2px 0 var(--ore-shade),
+    0 4px 0 var(--ore-outline);
 }
 #main-content {
   background: transparent;
@@ -1086,6 +1092,14 @@
 /* Keep checkbox text spacing independent of anonymous text and framework defaults. */
 .ore-check-row > [data-slot='wrapper'] {
   margin-inline-start: var(--control-gap, 0.5rem);
+}
+/*
+ * The box sits in a 1.5rem row, but a label in 14px dialog text was only 21px
+ * tall and hung from the top, so it read 1.5px high. Sharing the row's height
+ * centres a single line on the box and starts a wrapped label level with it.
+ */
+.ore-check-row > [data-slot='wrapper'] > [data-slot='label'] {
+  line-height: 1.5rem;
 }
 
 /* Shared controls preserve semantics across workspaces and teleported surfaces. */

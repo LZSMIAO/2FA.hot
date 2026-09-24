@@ -629,5 +629,14 @@
   "historySelectedOfTotal": "{total} में से {count} चुने गए",
   "batchUndoHint": "इस पेस्ट को पूर्ववत करने के लिए {undo}, और एक-एक पंक्ति पूर्ववत करने के लिए {single} दबाएँ",
   "batchUndoPraise": "बढ़िया, लगता है आप शॉर्टकट जानते हैं!\n{undo} पूरा पेस्ट पूर्ववत करता है, {single} एक-एक पंक्ति",
-  "qrSourceNotice": "कुंजी QR कोड से पढ़ी गई।"
+  "qrSourceNotice": "कुंजी QR कोड से पढ़ी गई।",
+  "footerTagline": "बहुउद्देशीय TOTP कोड जनरेटर",
+  "customBackground": "कस्टम पृष्ठभूमि",
+  "uploadBackground": "पृष्ठभूमि छवि अपलोड करें…",
+  "removeCustomBackground": "कस्टम पृष्ठभूमि हटाएँ",
+  "backgroundCountIssue": "1 पृष्ठभूमि छवि, या पैनोरमा के 6 फलक (panorama_0–5) चुनें।",
+  "imageUnreadable": "यह छवि पढ़ी नहीं जा सकी। कृपया कोई दूसरी आज़माएँ।",
+  "migrationPasteHint": "आप स्क्रीनशॉट या एक्सपोर्ट लिंक सीधे पेस्ट भी कर सकते हैं।",
+  "migrationNextStep": "Google Authenticator में अगला QR कोड दिखाने के लिए \"अगला\" टैप करें, फिर उसे स्कैन करें या स्क्रीनशॉट पेस्ट करें।",
+  "migrationImportBlocked": "इंपोर्ट करने से पहले सभी QR कोड पढ़ें।"
 }

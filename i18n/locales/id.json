@@ -629,5 +629,14 @@
   "historySelectedOfTotal": "{count} dari {total} dipilih",
   "batchUndoHint": "Tekan {undo} untuk membatalkan tempelan ini, atau {single} untuk membatalkannya baris demi baris",
   "batchUndoPraise": "Bagus, sepertinya Anda tahu pintasannya!\n{undo} membatalkan seluruh tempelan, {single} baris demi baris",
-  "qrSourceNotice": "Kunci dibaca dari kode QR."
+  "qrSourceNotice": "Kunci dibaca dari kode QR.",
+  "footerTagline": "Generator Kode TOTP Multifungsi",
+  "customBackground": "Latar belakang kustom",
+  "uploadBackground": "Unggah gambar latar…",
+  "removeCustomBackground": "Hapus latar belakang kustom",
+  "backgroundCountIssue": "Pilih 1 gambar latar, atau 6 sisi panorama (panorama_0–5).",
+  "imageUnreadable": "Gambar ini tidak dapat dibaca. Coba gambar lain.",
+  "migrationPasteHint": "Anda juga bisa menempelkan tangkapan layar atau tautan ekspor.",
+  "migrationNextStep": "Di Google Authenticator, ketuk Berikutnya untuk menampilkan kode QR berikutnya, lalu pindai atau tempel tangkapan layar.",
+  "migrationImportBlocked": "Baca semua kode QR sebelum mengimpor."
 }

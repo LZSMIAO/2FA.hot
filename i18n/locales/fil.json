@@ -629,5 +629,14 @@
   "historySelectedOfTotal": "{count} sa {total} ang napili",
   "batchUndoHint": "Pindutin ang {undo} para i-undo ang pag-paste na ito, o {single} para i-undo ito nang isa-isang linya",
   "batchUndoPraise": "Ayos, mukhang alam mo ang mga shortcut!\nIna-undo ng {undo} ang buong pag-paste, at ng {single} nang isa-isang linya",
-  "qrSourceNotice": "Nabasa ang key mula sa QR code."
+  "qrSourceNotice": "Nabasa ang key mula sa QR code.",
+  "footerTagline": "Multifunctional na TOTP Code Generator",
+  "customBackground": "Custom na background",
+  "uploadBackground": "Mag-upload ng larawan sa background…",
+  "removeCustomBackground": "Alisin ang custom na background",
+  "backgroundCountIssue": "Pumili ng 1 larawan sa background, o 6 na mukha ng panorama (panorama_0–5).",
+  "imageUnreadable": "Hindi mabasa ang larawang ito. Sumubok ng iba.",
+  "migrationPasteHint": "Puwede ka ring mag-paste ng screenshot o export link.",
+  "migrationNextStep": "Sa Google Authenticator, i-tap ang Susunod para ipakita ang susunod na QR code, saka i-scan ito o mag-paste ng screenshot.",
+  "migrationImportBlocked": "Basahin muna ang lahat ng QR code bago mag-import."
 }
