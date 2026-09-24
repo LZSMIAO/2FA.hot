@@ -463,7 +463,14 @@ onBeforeUnmount(() => {
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
-  background: #667e80;
+  /*
+   * Safari 26 and later fill the area behind their bottom bar with the
+   * background colour of a fixed element on that edge, and this layer spans
+   * it. A grey-teal loading tone here showed as a pale slab under the bar
+   * whenever the footer was not at the bottom; the page's own colour matches
+   * the header and footer instead.
+   */
+  background: var(--canvas);
 }
 .panorama-scene {
   position: absolute;
