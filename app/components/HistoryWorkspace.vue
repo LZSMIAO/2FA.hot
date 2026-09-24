@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { VaultRecord } from '~/composables/useVault'
 import { downloadFile } from '~/utils/download'
+import { arrangeHistory, type HistoryDrag, type HistoryDrop } from '~/utils/history-order'
 
 const localePath = useLocalePath()
 const { tx, locale } = useMessages()
@@ -37,7 +38,7 @@ const { copy: copySecretValue, copied: secretCopied, message: secretCopyError } 
 const copiedSecretId = shallowRef('')
 const copyingSecret = shallowRef(false)
 async function copySecret(id: string) {
-  if (!vault.unlocked.value || copyingSecret.value) return
+  if (takeDragClick() || !vault.unlocked.value || copyingSecret.value) return
   const record = vault.records.value.find((item) => item.id === id)
   if (!record) return
   copyingSecret.value = true
@@ -46,6 +47,21 @@ async function copySecret(id: string) {
   note.value = ''
   try {
     if (await copySecretValue(record.secret)) note.value = '密钥已复制'
+    else error.value = secretCopyError.value
+  } finally {
+    copyingSecret.value = false
+  }
+}
+/** A batch's key copies every key in it, one per line, in the order shown. */
+async function copyBatch(group: { id: string; rows: VaultRecord[] }) {
+  if (takeDragClick() || !vault.unlocked.value || copyingSecret.value) return
+  copyingSecret.value = true
+  copiedSecretId.value = group.id
+  error.value = ''
+  note.value = ''
+  try {
+    if (await copySecretValue(group.rows.map((row) => row.secret).join('\n')))
+      note.value = '密钥已复制'
     else error.value = secretCopyError.value
   } finally {
     copyingSecret.value = false
@@ -72,7 +88,8 @@ const rows = computed(() =>
         .toLocaleLowerCase(locale.value)
         .includes(search.value.toLocaleLowerCase(locale.value))
     )
-    .sort((a, b) => b.usedAt - a.usedAt)
+    // A hand-arranged list keeps its order; everything else stays newest first.
+    .sort((a, b) => (b.position ?? b.usedAt) - (a.position ?? a.usedAt))
 )
 const expandedBatches = ref(new Set<string>())
 const collapsedSearchBatches = ref(new Set<string>())
@@ -102,6 +119,157 @@ const groups = computed(() => {
   }
   return [...grouped.values()]
 })
+/*
+ * Keys double as drag handles. A mouse drags as soon as it moves; a finger
+ * holds first, so a swipe over the list still scrolls. A click that ends a
+ * drag does not also copy.
+ */
+const arranging = computed(
+  () => !search.value && vault.unlocked.value && vault.records.value.length > 1
+)
+const dragging = shallowRef<{ source: HistoryDrag; label: string; x: number; y: number } | null>(
+  null
+)
+const dropTarget = shallowRef<HistoryDrop | null>(null)
+let press: {
+  source: HistoryDrag
+  label: string
+  pointerId: number
+  mouse: boolean
+  x: number
+  y: number
+  timer: ReturnType<typeof setTimeout>
+} | null = null
+let dragClick = false
+function takeDragClick() {
+  const swallowed = dragClick
+  dragClick = false
+  return swallowed
+}
+function pressKey(event: PointerEvent, source: HistoryDrag, label: string) {
+  dragClick = false
+  if (event.button !== 0 || !arranging.value || vault.busy.value) return
+  endDrag()
+  press = {
+    source,
+    label,
+    pointerId: event.pointerId,
+    mouse: event.pointerType === 'mouse',
+    x: event.clientX,
+    y: event.clientY,
+    timer: setTimeout(beginDrag, 350)
+  }
+  window.addEventListener('pointermove', movePointer, { passive: false })
+  window.addEventListener('pointerup', releasePointer)
+  window.addEventListener('pointercancel', endDrag)
+}
+function beginDrag() {
+  if (!press) return
+  clearTimeout(press.timer)
+  dragging.value = { source: press.source, label: press.label, x: press.x, y: press.y }
+  dragClick = true
+  document.documentElement.classList.add('history-arranging')
+}
+function movePointer(event: PointerEvent) {
+  if (!press || event.pointerId !== press.pointerId) return
+  if (!dragging.value) {
+    const moved = Math.hypot(event.clientX - press.x, event.clientY - press.y)
+    if (moved <= (press.mouse ? 6 : 10)) return
+    if (!press.mouse) return endDrag()
+    beginDrag()
+  }
+  event.preventDefault()
+  dragging.value = { ...dragging.value!, x: event.clientX, y: event.clientY }
+  dropTarget.value = dropAt(event.clientX, event.clientY)
+  scrollNearEdge(event.clientY)
+}
+function dropAt(x: number, y: number): HistoryDrop | null {
+  const source = dragging.value?.source
+  const hit = document
+    .elementFromPoint(x, y)
+    ?.closest<HTMLElement>('.history-row, .history-batch-heading')
+  if (!source || !hit || !surface.value?.contains(hit)) return null
+  const rect = hit.getBoundingClientRect()
+  const ratio = (y - rect.top) / rect.height
+  const side = ratio < 0.5 ? 'before' : 'after'
+  if (hit.classList.contains('history-batch-heading')) {
+    const batchId = hit.dataset.selectionId!.slice('batch:'.length)
+    if ('batchId' in source) return source.batchId === batchId ? null : { place: side, batchId }
+    // The heading's top edge goes above the batch; the rest of it goes in.
+    return ratio < 0.3 ? { place: 'before', batchId } : { place: 'into', batchId }
+  }
+  const id = hit.dataset.selectionId!
+  const batchId = hit.dataset.batchId
+  if ('batchId' in source) {
+    if (!batchId) return { place: side, id }
+    return batchId === source.batchId ? null : { place: side, batchId }
+  }
+  return source.id === id ? null : { place: side, id }
+}
+let scrollFrame = 0,
+  scrollSpeed = 0
+function scrollNearEdge(y: number) {
+  const edge = 64
+  scrollSpeed =
+    y < edge
+      ? -Math.ceil((edge - y) / 4)
+      : y > window.innerHeight - edge
+        ? Math.ceil((y - window.innerHeight + edge) / 4)
+        : 0
+  if (scrollSpeed && !scrollFrame) scrollFrame = requestAnimationFrame(stepScroll)
+}
+function stepScroll() {
+  scrollFrame = 0
+  if (!scrollSpeed || !dragging.value) return
+  window.scrollBy(0, scrollSpeed)
+  dropTarget.value = dropAt(dragging.value.x, dragging.value.y)
+  scrollFrame = requestAnimationFrame(stepScroll)
+}
+async function releasePointer(event: PointerEvent) {
+  if (!press || event.pointerId !== press.pointerId) return
+  const source = dragging.value?.source,
+    target = dropTarget.value
+  endDrag()
+  if (!source || !target) return
+  const next = arrangeHistory(
+    groups.value.flatMap((group) =>
+      group.rows.map((row) => ({ id: row.id, batchId: row.batchId, batchLabel: row.batchLabel }))
+    ),
+    source,
+    target
+  )
+  if (!next) return
+  // Show the record where it landed, inside its batch.
+  const joined = 'id' in source ? next.find((item) => item.id === source.id)?.batchId : undefined
+  if (joined) expandedBatches.value.add('batch:' + joined)
+  await run(() => vault.arrange(next), '顺序已保存。')
+}
+function endDrag() {
+  if (press) clearTimeout(press.timer)
+  press = null
+  dragging.value = null
+  dropTarget.value = null
+  scrollSpeed = 0
+  cancelAnimationFrame(scrollFrame)
+  scrollFrame = 0
+  document.documentElement.classList.remove('history-arranging')
+  window.removeEventListener('pointermove', movePointer)
+  window.removeEventListener('pointerup', releasePointer)
+  window.removeEventListener('pointercancel', endDrag)
+}
+onBeforeUnmount(endDrag)
+const dropsOn = (match: Partial<Record<'id' | 'batchId' | 'place', string>>) =>
+  !!dropTarget.value &&
+  Object.entries(match).every(
+    ([key, value]) => (dropTarget.value as Record<string, string>)[key] === value
+  )
+const isDragged = (item: HistoryDrag) =>
+  !!dragging.value &&
+  ('id' in item
+    ? 'id' in dragging.value.source && dragging.value.source.id === item.id
+    : 'batchId' in dragging.value.source && dragging.value.source.batchId === item.batchId)
+const keyHint = (action: string) =>
+  arranging.value ? `${tx(action)} · ${tx('按住可拖动排序')}` : tx(action)
 /*
  * Past this many rows the reveal fills the screen anyway, and sliding that
  * many live codes open costs more than the motion adds.
@@ -433,12 +601,21 @@ const date = (v: number) =>
         v-for="group in groups"
         :key="group.id"
         class="history-group"
-        :class="{ 'is-batch': group.batch, 'is-expanded': group.batch && batchExpanded(group.id) }"
+        :class="{
+          'is-batch': group.batch,
+          'is-expanded': group.batch && batchExpanded(group.id),
+          'drop-before': group.batch && dropsOn({ batchId: group.batchId, place: 'before' }),
+          'drop-after': group.batch && dropsOn({ batchId: group.batchId, place: 'after' }),
+          'is-dragged': group.batch && isDragged({ batchId: group.batchId })
+        }"
       >
         <div
           v-if="group.batch"
           class="history-batch-heading"
-          :class="{ 'is-selected': group.rows.some((row) => selectedSet.has(row.id)) }"
+          :class="{
+            'is-selected': group.rows.some((row) => selectedSet.has(row.id)),
+            'drop-into': dropsOn({ batchId: group.batchId, place: 'into' })
+          }"
           :data-selection-id="group.id"
         >
           <SelectionCheck
@@ -453,9 +630,39 @@ const date = (v: number) =>
             @pointerdown="startSelection($event, group.id)"
             @click="clickSelection($event, group.id)"
           />
-          <span class="record-icon" aria-hidden="true"
-            ><img src="/textures/trial-key.png" alt="" width="32" height="32"
-          /></span>
+          <AppHint
+            :text="
+              secretCopied && copiedSecretId === group.id
+                ? tx('密钥已复制')
+                : keyHint('复制全部密钥')
+            "
+          >
+            <button
+              type="button"
+              class="record-icon record-copy-secret record-key"
+              :aria-label="tx('复制全部密钥')"
+              :disabled="copyingSecret || !vault.unlocked.value"
+              @pointerdown="
+                pressKey($event, { batchId: group.batchId }, group.label || tx('批量取码'))
+              "
+              @contextmenu.prevent
+              @click="copyBatch(group)"
+            >
+              <UIcon
+                v-if="secretCopied && copiedSecretId === group.id"
+                name="i-mc-check"
+                class="text-primary"
+              />
+              <img
+                v-else
+                src="/textures/trial-key.png"
+                alt=""
+                width="32"
+                height="32"
+                draggable="false"
+              />
+            </button>
+          </AppHint>
           <span class="record-name">
             <span class="record-title">
               <button
@@ -477,7 +684,7 @@ const date = (v: number) =>
             </span>
             <span class="record-meta">
               <span>{{ tx('记录：{count}', { count: group.rows.length }) }}</span>
-              <time>{{ date(group.rows[0]!.usedAt) }}</time>
+              <time>{{ date(Math.max(...group.rows.map((row) => row.usedAt))) }}</time>
             </span>
           </span>
           <UIcon
@@ -497,8 +704,14 @@ const date = (v: number) =>
               v-for="row in group.rows"
               :key="row.id"
               class="history-row"
-              :class="{ 'is-selected': selectedSet.has(row.id) }"
+              :class="{
+                'is-selected': selectedSet.has(row.id),
+                'drop-before': dropsOn({ id: row.id, place: 'before' }),
+                'drop-after': dropsOn({ id: row.id, place: 'after' }),
+                'is-dragged': isDragged({ id: row.id })
+              }"
               :data-selection-id="row.id"
+              :data-batch-id="row.batchId"
             >
               <SelectionCheck
                 class="history-select-cell"
@@ -508,13 +721,19 @@ const date = (v: number) =>
                 @click="clickSelection($event, row.id)"
               />
               <AppHint
-                :text="tx(secretCopied && copiedSecretId === row.id ? '密钥已复制' : '复制密钥')"
+                :text="
+                  secretCopied && copiedSecretId === row.id ? tx('密钥已复制') : keyHint('复制密钥')
+                "
               >
                 <button
                   type="button"
-                  class="record-icon record-copy-secret"
+                  class="record-icon record-copy-secret record-key"
                   :aria-label="tx('复制密钥')"
                   :disabled="copyingSecret || !vault.unlocked.value"
+                  @pointerdown="
+                    pressKey($event, { id: row.id }, row.label || row.issuer || tx('未命名记录'))
+                  "
+                  @contextmenu.prevent
                   @click="copySecret(row.id)"
                 >
                   <UIcon
@@ -522,7 +741,14 @@ const date = (v: number) =>
                     name="i-mc-check"
                     class="text-primary"
                   />
-                  <img v-else src="/textures/trial-key.png" alt="" width="32" height="32" />
+                  <img
+                    v-else
+                    src="/textures/trial-key.png"
+                    alt=""
+                    width="32"
+                    height="32"
+                    draggable="false"
+                  />
                 </button>
               </AppHint>
               <div class="record-name">
@@ -768,6 +994,17 @@ const date = (v: number) =>
       </form></template
     >
   </UModal>
+  <Teleport to="body">
+    <div
+      v-if="dragging"
+      class="history-drag-ghost ore-theme"
+      aria-hidden="true"
+      :style="{ transform: `translate(${dragging.x + 14}px, ${dragging.y + 14}px)` }"
+    >
+      <img src="/textures/trial-key.png" alt="" width="24" height="24" />
+      <span>{{ dragging.label }}</span>
+    </div>
+  </Teleport>
 </template>
 <style scoped>
 .history-group {
@@ -799,11 +1036,16 @@ const date = (v: number) =>
   position: absolute;
   inset: 0;
 }
-.history-batch-heading > .record-name,
+/*
+ * The name must not be positioned: that made it the containing block for the
+ * toggle's overlay, which then stopped at the name and left the chevron dead.
+ */
 .history-batch-heading > :deep(.selection-check) {
   position: relative;
 }
-.history-batch-heading .record-edit {
+.history-batch-heading .record-edit,
+.history-batch-heading .record-key {
+  position: relative;
   z-index: 1;
 }
 .history-batch-heading > :deep(.selection-check) {
@@ -812,6 +1054,8 @@ const date = (v: number) =>
 .history-batch-chevron {
   justify-self: center;
   color: var(--ui-text-muted);
+  /* Icons are masks, which paint above the toggle's overlay; let clicks reach it. */
+  pointer-events: none;
 }
 .history-batch-heading.is-selected {
   background: color-mix(in srgb, var(--action) 5%, transparent);
@@ -1100,6 +1344,82 @@ const date = (v: number) =>
   background: transparent;
   cursor: pointer;
 }
+.record-key {
+  /* A held key starts a drag, so it must not scroll the page, select text or open a menu. */
+  touch-action: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+.record-key img {
+  pointer-events: none;
+}
+:global(html.history-arranging),
+:global(html.history-arranging *) {
+  cursor: grabbing !important;
+  user-select: none;
+}
+/* Where a dragged key will land: a line between rows, or the batch it joins. */
+.history-row,
+.history-group {
+  position: relative;
+}
+.history-row.drop-before::before,
+.history-row.drop-after::after,
+.history-group.drop-before::before,
+.history-group.drop-after::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  z-index: 3;
+  height: 3px;
+  background: var(--accent-ink);
+  pointer-events: none;
+}
+.history-row.drop-before::before,
+.history-group.drop-before::before {
+  top: -2px;
+}
+.history-row.drop-after::after,
+.history-group.drop-after::after {
+  bottom: -2px;
+}
+.history-batch-heading.drop-into {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: -2px;
+  background: color-mix(in srgb, var(--action) 10%, transparent);
+}
+.history-row.is-dragged,
+.history-group.is-dragged {
+  opacity: 0.45;
+}
+.history-drag-ghost {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 16rem;
+  padding: 0.375rem 0.75rem 0.375rem 0.5rem;
+  border: 2px solid var(--ore-outline);
+  background: var(--panel);
+  color: var(--ui-text-highlighted);
+  box-shadow: var(--ore-window-shadow);
+  font-size: 0.875rem;
+  font-weight: 600;
+  pointer-events: none;
+}
+.history-drag-ghost img {
+  flex-shrink: 0;
+  image-rendering: pixelated;
+}
+.history-drag-ghost span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .record-copy-secret:focus-visible {
   outline: 2px solid var(--accent-ink);
   outline-offset: 2px;
@@ -1213,12 +1533,22 @@ const date = (v: number) =>
   border-bottom: 0;
 }
 @media (max-width: 600px) {
+  /* The batch key moves beside the chevron, where row keys sit on a phone. */
   .history-batch-heading {
-    grid-template-columns: 20px minmax(0, 1fr) 44px;
+    grid-template-columns: 20px minmax(0, 1fr) 44px 44px;
     gap: 8px;
   }
-  .history-batch-heading > .record-icon {
-    display: none;
+  .history-batch-heading > .record-name {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .history-batch-heading > .record-key {
+    grid-column: 3;
+    grid-row: 1;
+  }
+  .history-batch-heading > .history-batch-chevron {
+    grid-column: 4;
+    grid-row: 1;
   }
   .history-group.is-batch .history-row {
     padding-inline-start: calc(var(--history-inset) + 12px);

@@ -638,5 +638,8 @@
   "imageUnreadable": "Deze afbeelding kan niet worden gelezen. Probeer een andere.",
   "migrationPasteHint": "Je kunt ook een screenshot of exportlink plakken.",
   "migrationNextStep": "Tik in Google Authenticator op Volgende om de volgende QR-code te tonen en scan die of plak een screenshot.",
-  "migrationImportBlocked": "Lees eerst alle QR-codes in voordat je importeert."
+  "migrationImportBlocked": "Lees eerst alle QR-codes in voordat je importeert.",
+  "copyAllSecrets": "Alle sleutels kopiëren",
+  "holdToReorder": "ingedrukt houden om te verslepen",
+  "orderSaved": "Volgorde opgeslagen."
 }

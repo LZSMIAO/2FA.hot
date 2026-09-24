@@ -638,5 +638,8 @@
   "imageUnreadable": "Bu görsel okunamadı. Lütfen başka birini deneyin.",
   "migrationPasteHint": "Ekran görüntüsünü veya dışa aktarma bağlantısını doğrudan da yapıştırabilirsiniz.",
   "migrationNextStep": "Google Authenticator’da sonraki QR kodunu göstermek için İleri’ye dokunun, ardından tarayın veya ekran görüntüsünü yapıştırın.",
-  "migrationImportBlocked": "İçe aktarmadan önce tüm QR kodlarını okuyun."
+  "migrationImportBlocked": "İçe aktarmadan önce tüm QR kodlarını okuyun.",
+  "copyAllSecrets": "Tüm anahtarları kopyala",
+  "holdToReorder": "sıralamak için basılı tutun",
+  "orderSaved": "Sıralama kaydedildi."
 }

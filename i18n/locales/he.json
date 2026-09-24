@@ -638,5 +638,8 @@
   "imageUnreadable": "לא ניתן לקרוא את התמונה. נסו תמונה אחרת.",
   "migrationPasteHint": "אפשר גם להדביק צילום מסך או קישור ייצוא.",
   "migrationNextStep": "ב-Google Authenticator הקישו \"הבא\" כדי להציג את קוד ה-QR הבא, ואז סרקו אותו או הדביקו צילום מסך.",
-  "migrationImportBlocked": "יש לקרוא את כל קודי ה-QR לפני הייבוא."
+  "migrationImportBlocked": "יש לקרוא את כל קודי ה-QR לפני הייבוא.",
+  "copyAllSecrets": "העתקת כל המפתחות",
+  "holdToReorder": "לחיצה ארוכה לגרירה ולשינוי הסדר",
+  "orderSaved": "הסדר נשמר."
 }

@@ -638,5 +638,8 @@
   "imageUnreadable": "無法讀取這張圖片，請換一張後重試。",
   "migrationPasteHint": "也可以直接貼上截圖或匯出連結。",
   "migrationNextStep": "在 Google Authenticator 點「下一步」顯示下一張 QR 碼，繼續掃描或貼上截圖。",
-  "migrationImportBlocked": "讀取全部 QR 碼後才能匯入。"
+  "migrationImportBlocked": "讀取全部 QR 碼後才能匯入。",
+  "copyAllSecrets": "複製全部密鑰",
+  "holdToReorder": "按住可拖動排序",
+  "orderSaved": "順序已儲存。"
 }

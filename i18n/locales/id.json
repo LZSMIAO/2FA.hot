@@ -638,5 +638,8 @@
   "imageUnreadable": "Gambar ini tidak dapat dibaca. Coba gambar lain.",
   "migrationPasteHint": "Anda juga bisa menempelkan tangkapan layar atau tautan ekspor.",
   "migrationNextStep": "Di Google Authenticator, ketuk Berikutnya untuk menampilkan kode QR berikutnya, lalu pindai atau tempel tangkapan layar.",
-  "migrationImportBlocked": "Baca semua kode QR sebelum mengimpor."
+  "migrationImportBlocked": "Baca semua kode QR sebelum mengimpor.",
+  "copyAllSecrets": "Salin semua kunci",
+  "holdToReorder": "tahan untuk menyeret dan mengurutkan",
+  "orderSaved": "Urutan disimpan."
 }

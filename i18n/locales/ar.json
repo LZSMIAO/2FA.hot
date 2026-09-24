@@ -638,5 +638,8 @@
   "imageUnreadable": "تعذّرت قراءة هذه الصورة. جرّب صورة أخرى.",
   "migrationPasteHint": "يمكنك أيضًا لصق لقطة شاشة أو رابط التصدير مباشرة.",
   "migrationNextStep": "في Google Authenticator، اضغط «التالي» لعرض رمز QR التالي، ثم امسحه ضوئيًا أو الصق لقطة الشاشة.",
-  "migrationImportBlocked": "اقرأ جميع رموز QR قبل الاستيراد."
+  "migrationImportBlocked": "اقرأ جميع رموز QR قبل الاستيراد.",
+  "copyAllSecrets": "نسخ جميع المفاتيح",
+  "holdToReorder": "اضغط مطولًا للسحب وإعادة الترتيب",
+  "orderSaved": "تم حفظ الترتيب."
 }

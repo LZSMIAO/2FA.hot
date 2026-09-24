@@ -638,5 +638,8 @@
   "imageUnreadable": "This image could not be read. Please try another one.",
   "migrationPasteHint": "You can also paste a screenshot or an export link.",
   "migrationNextStep": "In Google Authenticator, tap Next to show the next QR code, then scan it or paste a screenshot.",
-  "migrationImportBlocked": "Read every QR code before importing."
+  "migrationImportBlocked": "Read every QR code before importing.",
+  "copyAllSecrets": "Copy all keys",
+  "holdToReorder": "hold to drag and reorder",
+  "orderSaved": "Order saved."
 }

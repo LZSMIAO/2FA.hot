@@ -638,5 +638,8 @@
   "imageUnreadable": "この画像を読み込めませんでした。別の画像でお試しください。",
   "migrationPasteHint": "スクリーンショットやエクスポートリンクを直接貼り付けることもできます。",
   "migrationNextStep": "Google Authenticator で「次へ」をタップして次の QR コードを表示し、続けてスキャンするかスクリーンショットを貼り付けてください。",
-  "migrationImportBlocked": "すべての QR コードを読み取ってからインポートできます。"
+  "migrationImportBlocked": "すべての QR コードを読み取ってからインポートできます。",
+  "copyAllSecrets": "すべてのキーをコピー",
+  "holdToReorder": "長押しでドラッグして並べ替え",
+  "orderSaved": "並び順を保存しました。"
 }

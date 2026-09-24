@@ -891,5 +891,8 @@ export const sourceKeys = new Map<string, string>([
     '在 Google Authenticator 中点“下一步”显示下一张二维码，继续扫描或粘贴截图。',
     'migrationNextStep'
   ],
-  ['读取全部二维码后才能导入。', 'migrationImportBlocked']
+  ['读取全部二维码后才能导入。', 'migrationImportBlocked'],
+  ['复制全部密钥', 'copyAllSecrets'],
+  ['按住可拖动排序', 'holdToReorder'],
+  ['顺序已保存。', 'orderSaved']
 ])

@@ -638,5 +638,8 @@
   "imageUnreadable": "Hindi mabasa ang larawang ito. Sumubok ng iba.",
   "migrationPasteHint": "Puwede ka ring mag-paste ng screenshot o export link.",
   "migrationNextStep": "Sa Google Authenticator, i-tap ang Susunod para ipakita ang susunod na QR code, saka i-scan ito o mag-paste ng screenshot.",
-  "migrationImportBlocked": "Basahin muna ang lahat ng QR code bago mag-import."
+  "migrationImportBlocked": "Basahin muna ang lahat ng QR code bago mag-import.",
+  "copyAllSecrets": "Kopyahin lahat ng key",
+  "holdToReorder": "pindutin nang matagal para iayos",
+  "orderSaved": "Na-save ang pagkakasunod-sunod."
 }

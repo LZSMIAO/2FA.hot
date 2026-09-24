@@ -638,5 +638,8 @@
   "imageUnreadable": "این تصویر خوانده نشد. تصویر دیگری را امتحان کنید.",
   "migrationPasteHint": "می‌توانید اسکرین‌شات یا پیوند خروجی را مستقیماً بچسبانید.",
   "migrationNextStep": "در Google Authenticator روی «بعدی» بزنید تا کد QR بعدی نمایش داده شود، سپس آن را اسکن کنید یا اسکرین‌شات را بچسبانید.",
-  "migrationImportBlocked": "پیش از وارد کردن، همه کدهای QR را بخوانید."
+  "migrationImportBlocked": "پیش از وارد کردن، همه کدهای QR را بخوانید.",
+  "copyAllSecrets": "کپی همه کلیدها",
+  "holdToReorder": "برای جابه‌جایی نگه دارید",
+  "orderSaved": "ترتیب ذخیره شد."
 }

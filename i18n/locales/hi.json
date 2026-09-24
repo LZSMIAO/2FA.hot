@@ -638,5 +638,8 @@
   "imageUnreadable": "यह छवि पढ़ी नहीं जा सकी। कृपया कोई दूसरी आज़माएँ।",
   "migrationPasteHint": "आप स्क्रीनशॉट या एक्सपोर्ट लिंक सीधे पेस्ट भी कर सकते हैं।",
   "migrationNextStep": "Google Authenticator में अगला QR कोड दिखाने के लिए \"अगला\" टैप करें, फिर उसे स्कैन करें या स्क्रीनशॉट पेस्ट करें।",
-  "migrationImportBlocked": "इंपोर्ट करने से पहले सभी QR कोड पढ़ें।"
+  "migrationImportBlocked": "इंपोर्ट करने से पहले सभी QR कोड पढ़ें।",
+  "copyAllSecrets": "सभी कुंजियाँ कॉपी करें",
+  "holdToReorder": "क्रम बदलने के लिए दबाकर रखें",
+  "orderSaved": "क्रम सहेजा गया।"
 }

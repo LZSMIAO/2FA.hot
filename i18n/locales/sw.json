@@ -638,5 +638,8 @@
   "imageUnreadable": "Picha hii haikuweza kusomwa. Jaribu nyingine.",
   "migrationPasteHint": "Unaweza pia kubandika picha ya skrini au kiungo cha kuhamisha.",
   "migrationNextStep": "Katika Google Authenticator, gusa Inayofuata ili kuonyesha msimbo wa QR unaofuata, kisha uuchanganue au ubandike picha ya skrini.",
-  "migrationImportBlocked": "Soma misimbo yote ya QR kabla ya kuingiza."
+  "migrationImportBlocked": "Soma misimbo yote ya QR kabla ya kuingiza.",
+  "copyAllSecrets": "Nakili funguo zote",
+  "holdToReorder": "shikilia ili kuburuta na kupanga",
+  "orderSaved": "Mpangilio umehifadhiwa."
 }

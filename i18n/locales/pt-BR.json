@@ -638,5 +638,8 @@
   "imageUnreadable": "Não foi possível ler esta imagem. Tente outra.",
   "migrationPasteHint": "Você também pode colar uma captura de tela ou um link de exportação.",
   "migrationNextStep": "No Google Authenticator, toque em Avançar para mostrar o próximo código QR e escaneie-o ou cole uma captura.",
-  "migrationImportBlocked": "Leia todos os códigos QR antes de importar."
+  "migrationImportBlocked": "Leia todos os códigos QR antes de importar.",
+  "copyAllSecrets": "Copiar todas as chaves",
+  "holdToReorder": "segure para reordenar",
+  "orderSaved": "Ordem salva."
 }

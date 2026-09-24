@@ -24,6 +24,8 @@ export interface VaultRecord extends OtpConfig {
   batchId?: string
   /** A shared name for every record of one batch, so groups stay apart in history. */
   batchLabel?: string
+  /** Set once the list is arranged by hand; history sorts by it, else by usedAt. */
+  position?: number
 }
 export interface SessionRecord extends VaultRecord {
   batch?: readonly OtpConfig[]
@@ -41,6 +43,7 @@ function validRecords(value: unknown): VaultRecord[] {
         (typeof r.batchId !== 'string' || !r.batchId || r.batchId.length > 120)) ||
       (r.batchLabel !== undefined &&
         (typeof r.batchLabel !== 'string' || r.batchLabel.length > 120)) ||
+      (r.position !== undefined && !Number.isFinite(r.position)) ||
       typeof r.note !== 'string' ||
       r.note.length > 1000 ||
       !Number.isFinite(r.usedAt) ||
@@ -54,7 +57,8 @@ function validRecords(value: unknown): VaultRecord[] {
       note: r.note,
       usedAt: r.usedAt,
       ...(r.batchId ? { batchId: r.batchId } : {}),
-      ...(r.batchId && r.batchLabel ? { batchLabel: r.batchLabel } : {})
+      ...(r.batchId && r.batchLabel ? { batchLabel: r.batchLabel } : {}),
+      ...(r.position !== undefined ? { position: r.position } : {})
     }
   })
 }
@@ -332,6 +336,34 @@ export function createVault() {
       recent.value = recent.value.map((entry) => (entry.id === id ? { ...entry, label } : entry))
     })
   }
+  /**
+   * Store the order the list was dragged into, and the batch each record now
+   * belongs to. Positions count down from now, so records saved later still
+   * land on top.
+   */
+  async function arrange(order: { id: string; batchId?: string; batchLabel?: string }[]) {
+    return operation(async () => {
+      const byId = new Map(records.value.map((record) => [record.id, record]))
+      if (order.length !== byId.size || order.some((item) => !byId.has(item.id)))
+        throw new Error('无法完成操作，请重试。')
+      const top = Date.now()
+      await commit(
+        order.map((item, index) => {
+          const { batchId: _batch, batchLabel: _label, ...record } = byId.get(item.id)!
+          return {
+            ...record,
+            position: top - index,
+            ...(item.batchId
+              ? {
+                  batchId: item.batchId,
+                  ...(item.batchLabel ? { batchLabel: item.batchLabel } : {})
+                }
+              : {})
+          }
+        })
+      )
+    })
+  }
   async function remove(ids: string[]) {
     return operation(() => commit(records.value.filter((r) => !ids.includes(r.id))))
   }
@@ -445,6 +477,7 @@ export function createVault() {
     edit,
     editBatch,
     editRecent,
+    arrange,
     remove,
     toggle,
     disable,

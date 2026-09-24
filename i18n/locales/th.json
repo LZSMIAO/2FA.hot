@@ -638,5 +638,8 @@
   "imageUnreadable": "อ่านภาพนี้ไม่ได้ โปรดลองภาพอื่น",
   "migrationPasteHint": "วางภาพหน้าจอหรือลิงก์ส่งออกได้โดยตรงเช่นกัน",
   "migrationNextStep": "ใน Google Authenticator แตะ \"ถัดไป\" เพื่อแสดงคิวอาร์โค้ดถัดไป แล้วสแกนหรือวางภาพหน้าจอ",
-  "migrationImportBlocked": "อ่านคิวอาร์โค้ดให้ครบทุกภาพก่อนนำเข้า"
+  "migrationImportBlocked": "อ่านคิวอาร์โค้ดให้ครบทุกภาพก่อนนำเข้า",
+  "copyAllSecrets": "คัดลอกคีย์ทั้งหมด",
+  "holdToReorder": "กดค้างเพื่อลากจัดลำดับ",
+  "orderSaved": "บันทึกลำดับแล้ว"
 }

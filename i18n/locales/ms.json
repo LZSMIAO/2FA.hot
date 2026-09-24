@@ -638,5 +638,8 @@
   "imageUnreadable": "Imej ini tidak dapat dibaca. Cuba imej lain.",
   "migrationPasteHint": "Anda juga boleh menampal tangkapan skrin atau pautan eksport.",
   "migrationNextStep": "Dalam Google Authenticator, ketik Seterusnya untuk memaparkan kod QR seterusnya, kemudian imbas atau tampal tangkapan skrin.",
-  "migrationImportBlocked": "Baca semua kod QR sebelum mengimport."
+  "migrationImportBlocked": "Baca semua kod QR sebelum mengimport.",
+  "copyAllSecrets": "Salin semua kunci",
+  "holdToReorder": "tekan lama untuk menyusun semula",
+  "orderSaved": "Susunan disimpan."
 }

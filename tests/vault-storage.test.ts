@@ -339,3 +339,52 @@ test('a batch name is shared by every record of the group, survives a backup and
     stop()
   }
 })
+
+test('a hand-arranged order and batch moves persist, survive a backup and let new saves lead', async () => {
+  const { vault, stop } = mount()
+  try {
+    await waitFor(() => vault.ready.value)
+    if (vault.exists.value) await vault.erase()
+    await vault.enable()
+    const base = { algorithm: 'SHA-1' as const, digits: 6 as const, period: 30, issuer: '' }
+    await vault.save([{ ...base, secret: 'JBSWY3DPEHPK3PXP', label: 'single' }])
+    await vault.save(
+      [
+        { ...base, secret: 'KRSXG5CTMVRXEZLU', label: 'one' },
+        { ...base, secret: 'GEZDGNBVGY3TQOJQ', label: 'two' }
+      ],
+      'batch-1',
+      true
+    )
+    await vault.editBatch('batch-1', 'Work')
+    const id = (label: string) => vault.records.value.find((row) => row.label === label)!.id
+    // The single record joins the batch, placed between its two members.
+    await vault.arrange([
+      { id: id('one'), batchId: 'batch-1', batchLabel: 'Work' },
+      { id: id('single'), batchId: 'batch-1', batchLabel: 'Work' },
+      { id: id('two'), batchId: 'batch-1', batchLabel: 'Work' }
+    ])
+    const order = () =>
+      [...vault.records.value]
+        .sort((a, b) => (b.position ?? b.usedAt) - (a.position ?? a.usedAt))
+        .map((row) => `${row.label}@${row.batchId || ''}:${row.batchLabel || ''}`)
+    assert.deepEqual(order(), ['one@batch-1:Work', 'single@batch-1:Work', 'two@batch-1:Work'])
+
+    const restored = await vault.inspectBackup(await vault.backup(), '')
+    assert.deepEqual(
+      [...restored]
+        .sort((a, b) => (b.position ?? b.usedAt) - (a.position ?? a.usedAt))
+        .map((row) => row.label),
+      ['one', 'single', 'two']
+    )
+    // A list that no longer matches the stored records is refused.
+    await assert.rejects(() => vault.arrange([{ id: id('one') }]))
+
+    await new Promise((resolve) => setTimeout(resolve, 5))
+    await vault.save([{ ...base, secret: 'MFRGGZDFMZTWQ2LK', label: 'newest' }])
+    assert.equal(order()[0], 'newest@:')
+    await vault.erase()
+  } finally {
+    stop()
+  }
+})
