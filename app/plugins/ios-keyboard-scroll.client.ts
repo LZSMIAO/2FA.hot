@@ -1,11 +1,14 @@
 /**
- * iOS scrolls the page to make room for the keyboard and leaves it there when
- * the keyboard closes, while fixed and sticky layers return to their places.
- * Measured on iOS 27: focusing the secret scrolled the page 16px and shifted
- * the backdrop and header up with it; on dismissal only they came back, so the
- * content read as jumping up against them. The page goes back to where it was
- * in the same event as the viewport's return, unless the reader scrolled while
- * typing.
+ * iOS pans the page to make room for the keyboard, carrying fixed and sticky
+ * layers with it, and on dismissal hands those layers back to their places
+ * while the page stays panned. Measured on iOS 27: focusing the secret moved
+ * everything up 16px; when the keyboard closed the backdrop and header came
+ * back down and the content did not, so it read as jumping up against them.
+ *
+ * Putting the page back after Safari's hand-back is a frame late and shows as
+ * a second jump. So it goes back as the field loses focus, while the keyboard
+ * is still up: page and layers return together, in one step. The viewport's
+ * return then finishes the job if iOS moved anything after all.
  */
 export default defineNuxtPlugin(() => {
   const found = window.visualViewport
@@ -16,34 +19,40 @@ export default defineNuxtPlugin(() => {
     target instanceof Element && target.matches('input, textarea, select, [contenteditable="true"]')
   /** Where the page was before the keyboard, while a field has focus. */
   let before: number | null = null
-  /** Where to put it back once the viewport returns. */
+  /** Where it belongs until the viewport is back. */
   let restore: number | null = null
   let scrolled = false
+  let expiry = 0
 
+  function returnPage() {
+    if (restore !== null && Math.abs(window.scrollY - restore) > 0.5)
+      window.scrollTo(window.scrollX, restore)
+  }
   function settle() {
     if (restore === null || viewport.offsetTop > 0.5) return
-    const top = restore
-    restore = null
-    if (Math.abs(window.scrollY - top) > 0.5) window.scrollTo(window.scrollX, top)
+    returnPage()
+    // Keep watching until the keyboard has fully gone.
+    if (viewport.height >= window.innerHeight - 1) restore = null
   }
 
   document.addEventListener('focusin', (event) => {
-    if (!editable(event.target)) return
-    // Moving from one field to the next keeps the position from before the first.
-    if (restore !== null) before = restore
-    else if (before === null) {
-      before = window.scrollY
-      scrolled = false
-    }
+    if (!editable(event.target) || before !== null) return
+    before = window.scrollY
+    scrolled = false
     restore = null
   })
   document.addEventListener('focusout', (event) => {
     if (!editable(event.target) || before === null) return
-    restore = scrolled ? null : before
+    // Moving straight to another field keeps the position from before the first.
+    if (editable(event.relatedTarget)) return
+    const top = before
     before = null
-    // A field taking focus next runs first; otherwise settle now if the
-    // viewport is already home, or when it gets there.
-    queueMicrotask(settle)
+    // The reader scrolled while typing; where they went is where they stay.
+    if (scrolled) return
+    restore = top
+    returnPage()
+    clearTimeout(expiry)
+    expiry = window.setTimeout(() => (restore = null), 1500)
   })
   addEventListener(
     'touchmove',
