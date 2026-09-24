@@ -175,11 +175,14 @@ body {
 }
 /*
  * The backdrop is fixed and the page is not, so a rubber-band drag slides the
- * header and footer over a scene that stays put. Touch devices get no bounce.
+ * header and footer over a scene that stays put. Touch devices get no bounce,
+ * except iOS: Safari 26 shrinks its bottom clearance when the tab bar
+ * minimizes, which leaves a page at its end scrolled past the new limit.
+ * Without the bounce, Safari settled that on the next touch as a hard jump.
  */
 @media (pointer: coarse) {
-  html,
-  body {
+  html:not([data-ios]),
+  html:not([data-ios]) body {
     overscroll-behavior-y: none;
   }
 }
@@ -1527,8 +1530,8 @@ html.size-transition .desert-art svg * {
 }
 
 @media (max-width: 700px), (max-height: 500px) and (pointer: coarse) {
-  html,
-  body {
+  html:not([data-ios]),
+  html:not([data-ios]) body {
     overscroll-behavior-y: none;
   }
   .app-shell {
@@ -1540,13 +1543,13 @@ html.size-transition .desert-art svg * {
     padding-bottom: env(safe-area-inset-bottom);
   }
   /*
-   * iOS Safari changes the bottom inset as its toolbar collapses and expands
-   * (0 to about 34px), so at the end of the page the footer grew a strip and
-   * snapped back on the next tap or scroll. A fixed clearance past the home
-   * indicator keeps the page's length the same in every toolbar state.
+   * iOS Safari changes the bottom inset as its toolbar collapses and expands,
+   * which made the footer's length change mid-scroll. Safari already scrolls
+   * the page's end clear of its bar and the home indicator, so a small fixed
+   * margin is all the footer adds.
    */
   html[data-ios] .site-footer {
-    padding-bottom: 2.25rem;
+    padding-bottom: 0.75rem;
   }
   .guide-layer.guide-inline {
     position: static;

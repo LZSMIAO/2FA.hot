@@ -813,12 +813,21 @@
     gap: 0.25rem 1.25rem;
   }
   html:root .site-footer .footer-pages a {
-    min-width: 2.75rem;
+    /* A short word like "About" padded to 44px left a wider gap after it. The
+       links keep their own width and reach into the gap for the touch target. */
+    position: relative;
+    min-width: 0;
     min-height: 2.75rem;
     max-width: 100%;
     justify-content: flex-start;
     white-space: normal;
     overflow-wrap: anywhere;
+  }
+  html:root .site-footer .footer-pages a::before {
+    content: '';
+    position: absolute;
+    /* Half the 1.25rem column gap each side, so neighbours never overlap. */
+    inset: 0 -0.625rem;
   }
   html:root .site-footer .footer-contacts {
     position: absolute;
