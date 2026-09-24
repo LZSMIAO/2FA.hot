@@ -13,7 +13,7 @@ import {
 
 const root = new URL('../', import.meta.url)
 const facePath = (scene: string, face: number) =>
-  `public/panorama/${scene === '1.20.1' ? '' : `${scene}/`}panorama_${face}.png`
+  `public/panorama/${scene === '1.20.1' ? '' : `${scene}/`}panorama_${face}.webp`
 
 test('every scene ships six credited faces and a preview, listed in the pre-paint script', () => {
   const script = readFileSync(new URL('public/panorama-preference.js', root), 'utf8')
@@ -27,12 +27,20 @@ test('every scene ships six credited faces and a preview, listed in the pre-pain
       const hash = createHash('sha1')
         .update(readFileSync(new URL(path, root)))
         .digest('hex')
-      // Credits name each file with its official SHA-1, so a swapped file shows up here.
+      // Credits keep each face's official PNG (size, SHA-1, source) and the SHA-1 of the
+      // WebP actually served, so a swapped or re-encoded file shows up here.
       const name = path.replace('public/panorama/', '')
+      const official = name.replace(/\.webp$/, '.png')
       assert.match(
         credits,
         new RegExp(
-          '`' + name.replaceAll('.', '\\.') + '`: \\d+ bytes; (verified )?SHA-1 `' + hash + '`'
+          '`' +
+            official.replaceAll('.', '\\.') +
+            '`: \\d+ bytes; (verified )?SHA-1 `[0-9a-f]{40}`; \\S+; served as `' +
+            name.replaceAll('.', '\\.') +
+            '` \\(WebP q85\\) SHA-1 `' +
+            hash +
+            '`'
         ),
         path
       )

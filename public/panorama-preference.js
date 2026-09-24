@@ -36,7 +36,7 @@
         throw new Error('Unknown panorama')
       const path = `/panorama/${scene === '1.20.1' ? '' : `${scene}/`}`
       for (let face = 0; face < 6; face++) {
-        root.style.setProperty(`--panorama-face-${face}`, `url(${path}panorama_${face}.png)`)
+        root.style.setProperty(`--panorama-face-${face}`, `url(${path}panorama_${face}.webp)`)
       }
     }
   } catch {

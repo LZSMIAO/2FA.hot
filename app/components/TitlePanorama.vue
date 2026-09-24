@@ -27,7 +27,7 @@ const customUrls = shallowRef<string[]>([])
 const flat = computed(() => scene.value === customPanoramaScene && custom.value?.layout === 'flat')
 function faceUrl(version: string, face: number) {
   if (version === customPanoramaScene) return customUrls.value[face] || ''
-  return `/panorama/${version === '1.20.1' ? '' : `${version}/`}panorama_${face}.png`
+  return `/panorama/${version === '1.20.1' ? '' : `${version}/`}panorama_${face}.webp`
 }
 function applyScene() {
   const root = document.documentElement

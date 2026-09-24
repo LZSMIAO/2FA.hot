@@ -21,12 +21,12 @@ function restore(cookie: string, angle: string | null) {
 test('first paint restores both Nuxt-quoted and plain scene cookies', () => {
   for (const value of ['%221.21%22', '1.21']) {
     const styles = restore(`2fa-panorama=${value}`, '127.5')
-    assert.equal(styles.get('--panorama-face-0'), 'url(/panorama/1.21/panorama_0.png)')
+    assert.equal(styles.get('--panorama-face-0'), 'url(/panorama/1.21/panorama_0.webp)')
     assert.equal(styles.get('--panorama-angle'), '127.5deg')
   }
   assert.equal(
     restore('2fa-panorama=1.20.1', '0').get('--panorama-face-5'),
-    'url(/panorama/panorama_5.png)'
+    'url(/panorama/panorama_5.webp)'
   )
 })
 
