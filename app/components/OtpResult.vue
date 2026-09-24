@@ -17,12 +17,14 @@ useHead({
     }
   ]
 })
-import { toAccessPath, type OtpConfig } from '~/utils/otp'
+import { sealedAccessPath, toAccessPath, type OtpConfig } from '~/utils/otp'
 const props = defineProps<{
   config: OtpConfig | null
   error?: string
   compactLayout?: boolean
   standalone?: boolean
+  /** The standalone page was opened from a safe link, /2fa#~… */
+  sealedLink?: boolean
   historyPreview?: boolean
   guideStep?: number
 }>()
@@ -53,7 +55,8 @@ const { copied, message, copy } = useCopy()
 const { copied: linkCopied, message: linkMessage, copy: copyLink } = useCopy()
 async function handleLink() {
   if (!props.config || props.guideStep !== undefined) return
-  if (!props.standalone) {
+  // A safe link's page asks which link to copy; a plain link's page copies it as before.
+  if (!props.standalone || props.sealedLink) {
     exportMode.value = 'link'
     return
   }
@@ -254,9 +257,7 @@ onBeforeUnmount(() => {
 defineExpose({ copyCurrent })
 function prepareSizeChange() {
   if (!props.config || props.guideStep !== undefined) return
-  void preloadRouteComponents(
-    localePath(props.standalone ? '/' : toAccessPath(props.config))
-  ).catch(() => {})
+  void preloadRouteComponents(localePath(props.standalone ? '/' : '/2fa')).catch(() => {})
 }
 async function expand() {
   if (!props.config || !config.value || props.guideStep !== undefined || sizeTransitionActive.value)
@@ -279,7 +280,8 @@ async function expand() {
       expandedConfig.value = { ...props.config }
       expandedHistoryPreview.value = !!props.historyPreview
     }
-    const target = localePath(props.standalone ? '/' : toAccessPath(props.config))
+    // Expanding opens a safe link, so the address bar and history never show the key.
+    const target = localePath(props.standalone ? '/' : sealedAccessPath([props.config]))
     await preloadRouteComponents(target).catch(() => {})
     if (revision !== navigationRevision) return
     const navigate = async () => {

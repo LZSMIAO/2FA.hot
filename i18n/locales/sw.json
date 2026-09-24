@@ -642,5 +642,11 @@
   "copyAllSecrets": "Nakili funguo zote",
   "holdToReorder": "shikilia ili kuburuta na kupanga",
   "orderSaved": "Mpangilio umehifadhiwa.",
-  "linkPrivacyBatch": "Tenganisha funguo kadhaa kwa # nyingine (koma pia zinafaa) ili zionekane pamoja; ukiondoa hadi ubaki mmoja, ukurasa hubadilika kuwa mwonekano mmoja. Mipangilio isiyo ya chaguomsingi huandikwa baada ya ufunguo wake, kwa mfano /2fa#KEY1#KEY2?digits=8."
+  "linkPrivacyBatch": "Tenganisha funguo kadhaa kwa # nyingine (koma pia zinafaa) ili zionekane pamoja; ukiondoa hadi ubaki mmoja, ukurasa hubadilika kuwa mwonekano mmoja. Mipangilio isiyo ya chaguomsingi huandikwa baada ya ufunguo wake, kwa mfano /2fa#KEY1#KEY2?digits=8.",
+  "safeLinkCopy": "Kiungo salama",
+  "safeLinkBroken": "Kiungo hiki salama hakijakamilika au kimeharibika. Nakili kiungo kizima tena.",
+  "safeLinkNotice": "Kiungo salama hakina ufunguo katika maandishi wazi; husimbwa ndani ya kivinjari chako na hakipiti kwenye seva kamwe. Viungo vyote viwili hufungua msimbo moja kwa moja, kwa hivyo vishiriki kwa uangalifu.",
+  "safeLinkHow": "Kiungo salama huundwa vipi?",
+  "safeLinkLocal": "Kivinjari chako huunda kiungo salama ndani ya kifaa: husimba kila kitu kilicho baada ya # kwa ufunguo nasibu wa matumizi mara moja na kuweka ufunguo huo pia ndani ya kiungo; kiungo kinapofunguliwa, kivinjari hukifumbua ndani ya kifaa vilevile. Hatua zote mbili hazihitaji mtandao, na hakuna kitu kilicho baada ya # kinachotumwa kwa seva. Ufunguo katika maandishi wazi hauonekani kamwe kwenye upau wa anwani, historia ya kivinjari wala picha za skrini, lakini yeyote aliye na kiungo kizima bado anaweza kukifungua, kwa hivyo usikishiriki hadharani kamwe.",
+  "safeLinkDefault": "Unapopanua msimbo, upau wa anwani huonyesha kiungo salama, /2fa#~…, badala ya ufunguo katika maandishi wazi. Viungo vya maandishi wazi unavyofungua mwenyewe hubaki kama vilivyo."
 }

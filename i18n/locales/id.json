@@ -642,5 +642,11 @@
   "copyAllSecrets": "Salin semua kunci",
   "holdToReorder": "tahan untuk menyeret dan mengurutkan",
   "orderSaved": "Urutan disimpan.",
-  "linkPrivacyBatch": "Pisahkan beberapa kunci dengan # lagi (koma juga bisa) agar tampil sekaligus; jika kunci dihapus hingga tersisa satu, halaman beralih ke tampilan tunggal. Opsi selain bawaan ditulis setelah kuncinya, misalnya /2fa#KEY1#KEY2?digits=8."
+  "linkPrivacyBatch": "Pisahkan beberapa kunci dengan # lagi (koma juga bisa) agar tampil sekaligus; jika kunci dihapus hingga tersisa satu, halaman beralih ke tampilan tunggal. Opsi selain bawaan ditulis setelah kuncinya, misalnya /2fa#KEY1#KEY2?digits=8.",
+  "safeLinkCopy": "Tautan aman",
+  "safeLinkBroken": "Tautan aman ini tidak lengkap atau rusak. Salin kembali tautan lengkapnya.",
+  "safeLinkNotice": "Tautan aman tidak memuat kunci dalam teks biasa; tautan ini dienkripsi secara lokal di browser Anda dan tidak pernah melewati server. Kedua tautan langsung membuka kode, jadi bagikan dengan hati-hati.",
+  "safeLinkHow": "Bagaimana tautan aman dibuat?",
+  "safeLinkLocal": "Browser Anda membuat tautan aman secara lokal: semua yang ada setelah # dienkripsi dengan kunci acak sekali pakai, lalu kunci itu juga dimasukkan ke dalam tautan; saat tautan dibuka, browser juga mendekripsinya secara lokal. Kedua langkah ini tidak memerlukan jaringan, dan tidak ada bagian setelah # yang dikirim ke server. Kunci dalam teks biasa tidak pernah muncul di bilah alamat, riwayat browser, atau tangkapan layar, tetapi siapa pun yang memiliki tautan lengkap tetap bisa membukanya, jadi jangan pernah membagikannya secara publik.",
+  "safeLinkDefault": "Setelah Anda memperbesar kode, bilah alamat menampilkan tautan aman, /2fa#~…, alih-alih kunci dalam teks biasa. Tautan teks biasa yang Anda buka sendiri tetap seperti semula."
 }

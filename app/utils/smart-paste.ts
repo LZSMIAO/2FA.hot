@@ -1,4 +1,12 @@
-import { parseOtp, toOtpUri, defaults, identity, type BatchEntry, type OtpConfig } from './otp.ts'
+import {
+  accessLinkEntries,
+  parseOtp,
+  toOtpUri,
+  defaults,
+  identity,
+  type BatchEntry,
+  type OtpConfig
+} from './otp.ts'
 
 export interface PasteCandidate {
   config: OtpConfig
@@ -18,6 +26,15 @@ const tryParse = (value: string) => {
   } catch {
     return null
   }
+}
+/** A link's keys: a /2fa# link, plain or safe, may hold several. */
+const tryLink = (value: string): OtpConfig[] => {
+  try {
+    const configs = accessLinkEntries(value)
+    if (configs.length > 1) return configs
+  } catch {}
+  const config = tryParse(value)
+  return config ? [config] : []
 }
 
 function decodeAccountCell(cell: string): string {
@@ -111,16 +128,15 @@ export function analyzePaste(text: string): PasteAnalysis {
   for (const { source, line } of lines) {
     // Reject an invalid URI as a whole; its secret parameter is not a fallback key.
     if (/^[a-z][\w+.-]*:\/\//i.test(source) || source.startsWith('/2fa')) {
-      const config = tryParse(source)
-      if (config) candidates.push({ config, line, source })
-      else allStructured = false
+      const configs = tryLink(source)
+      for (const config of configs) candidates.push({ config, line, source })
+      if (!configs.length) allStructured = false
       continue
     }
     if (source.includes('://')) {
       allStructured = false
       const remainder = source.replace(/[a-z][\w+.-]*:\/\/[^\s<>"'，。；）]+/gi, (value) => {
-        const config = tryParse(value)
-        if (config) candidates.push({ config, line, source: value })
+        for (const config of tryLink(value)) candidates.push({ config, line, source: value })
         return ' '
       })
       for (const match of remainder.matchAll(

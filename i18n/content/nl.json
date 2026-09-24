@@ -63,7 +63,8 @@
             "lines": [
               "Alle berekeningen op deze site lezen en verwerken gegevens lokaal in je browser.",
               "Als je lokale geschiedenis inschakelt, worden items in je browser opgeslagen. Je kunt een wachtwoord instellen voor versleuteling, of geen wachtwoord instellen en de items direct bekijken.",
-              "Gebruik `/2fa#SECRET` (meerdere sleutels: `/2fa#SECRET1#SECRET2`): het fragment na `#` wordt niet met het paginaverzoek meegestuurd en wordt lokaal door deze tool gelezen."
+              "Gebruik `/2fa#SECRET` (meerdere sleutels: `/2fa#SECRET1#SECRET2`): het fragment na `#` wordt niet met het paginaverzoek meegestuurd en wordt lokaal door deze tool gelezen.",
+              "Als je een code vergroot, toont de adresbalk een veilige link in plaats van de sleutel in platte tekst (`/2fa#~…`). Je browser versleutelt en opent hem lokaal; er gaat niets via de server. Iedereen met de volledige link kan hem nog steeds openen, dus deel hem voorzichtig."
             ]
           },
           {

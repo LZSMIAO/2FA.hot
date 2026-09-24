@@ -1,4 +1,5 @@
 import { supportedLocales } from '../../shared/locales.ts'
+import { isSealedFragment, openFragment, sealFragment } from './sealed-link.ts'
 export type Algorithm = 'SHA-1' | 'SHA-256' | 'SHA-512'
 export type OtpKind = 'totp' | 'steam'
 export interface OtpConfig {
@@ -13,6 +14,7 @@ export interface OtpConfig {
 export const defaults = { algorithm: 'SHA-1' as Algorithm, digits: 6 as const, period: 30 }
 export const DEMO_SECRET = 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ' // RFC 6238 public test vector
 const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567'
+const linkHosts = ['2fa.hot', 'www.2fa.hot', 'localhost', '127.0.0.1', '[::1]']
 const steamAlphabet = '23456789BCDFGHJKMNPQRTVWXY'
 
 function encodeBase64(bytes: Uint8Array): string {
@@ -145,13 +147,16 @@ export function parseOtp(raw: string, options: Partial<OtpConfig> = {}): OtpConf
     const path = parts.join('/')
     const fragmentLink = /^\/2fa\/?$/.test(path) && !!link.hash
     if (
-      !['2fa.hot', 'www.2fa.hot', 'localhost', '127.0.0.1', '[::1]'].includes(link.hostname) ||
+      !linkHosts.includes(link.hostname) ||
       link.username ||
       link.password ||
       (!fragmentLink && (link.hash || !/^\/2fa\/[^/]+\/?$/.test(path)))
     )
       throw new Error('仅支持 TOTP 配置，不支持 HOTP 或其他链接。')
-    const [fragmentSecret = '', fragmentQuery = ''] = link.hash.slice(1).split('?')
+    // A safe link opens here, in the browser, into the plain link it seals.
+    const fragment =
+      fragmentLink && isSealedFragment(link.hash) ? openFragment(link.hash) : link.hash.slice(1)
+    const [fragmentSecret = '', fragmentQuery = ''] = fragment.split('?')
     const parameters = new URLSearchParams(link.search)
     if (fragmentLink)
       new URLSearchParams(fragmentQuery).forEach((value, name) => parameters.append(name, value))
@@ -300,8 +305,14 @@ export function accessPath(configs: readonly OtpConfig[]): string {
   return '/2fa#' + configs.map((config) => toAccessPath(config).slice('/2fa#'.length)).join('#')
 }
 
+/** The same link with its keys sealed in the browser: /2fa#~… (see sealed-link.ts). */
+export function sealedAccessPath(configs: readonly OtpConfig[]): string {
+  return '/2fa#' + sealFragment(accessPath(configs).slice('/2fa#'.length))
+}
+
 /** The keys a /2fa#KEY1#KEY2 fragment holds; commas, half- or full-width, also separate. */
 export function accessEntries(fragment: string): OtpConfig[] {
+  if (isSealedFragment(fragment)) return accessEntries(openFragment(fragment))
   const entries = fragment
     .replace(/^#/, '')
     .split(/[#,，]/)
@@ -309,6 +320,28 @@ export function accessEntries(fragment: string): OtpConfig[] {
     .filter(Boolean)
   if (!entries.length) throw new Error('配置链接格式不正确。')
   return entries.map((entry) => parseOtp('/2fa#' + entry))
+}
+
+/** Every key a whole pasted /2fa# link holds, plain or safe; [] when it is not one. */
+export function accessLinkEntries(input: string): OtpConfig[] {
+  let link: URL
+  try {
+    link = new URL(input.trim(), 'https://2fa.hot')
+  } catch {
+    return []
+  }
+  const parts = link.pathname.split('/')
+  if (supportedLocales.some((locale) => locale.code === parts[1])) parts.splice(1, 1)
+  if (
+    !linkHosts.includes(link.hostname) ||
+    link.username ||
+    link.password ||
+    link.search ||
+    !link.hash ||
+    !/^\/2fa\/?$/.test(parts.join('/'))
+  )
+    return []
+  return accessEntries(link.hash)
 }
 export function groupCode(code: string) {
   return code.length === 5

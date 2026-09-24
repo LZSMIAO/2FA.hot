@@ -642,5 +642,11 @@
   "copyAllSecrets": "Alle sleutels kopiëren",
   "holdToReorder": "ingedrukt houden om te verslepen",
   "orderSaved": "Volgorde opgeslagen.",
-  "linkPrivacyBatch": "Scheid meerdere sleutels met nog een # (komma’s werken ook) om ze samen te zien; blijft er na verwijderen één over, dan schakelt de pagina naar de enkele weergave. Afwijkende instellingen staan achter hun sleutel, bijvoorbeeld /2fa#KEY1#KEY2?digits=8."
+  "linkPrivacyBatch": "Scheid meerdere sleutels met nog een # (komma’s werken ook) om ze samen te zien; blijft er na verwijderen één over, dan schakelt de pagina naar de enkele weergave. Afwijkende instellingen staan achter hun sleutel, bijvoorbeeld /2fa#KEY1#KEY2?digits=8.",
+  "safeLinkCopy": "Veilige link",
+  "safeLinkBroken": "Deze veilige link is onvolledig of beschadigd. Kopieer de volledige link opnieuw.",
+  "safeLinkNotice": "Een veilige link bevat de sleutel niet in platte tekst; hij wordt lokaal in je browser versleuteld en gaat nooit via de server. Beide links openen de code direct, dus deel ze voorzichtig.",
+  "safeLinkHow": "Hoe wordt een veilige link gemaakt?",
+  "safeLinkLocal": "Je browser maakt een veilige link lokaal: hij versleutelt alles na de # met een willekeurige sleutel voor eenmalig gebruik en zet die sleutel ook in de link; bij het openen ontsleutelt de browser hem eveneens lokaal. Geen van beide stappen heeft een netwerk nodig, en niets na de # wordt naar de server gestuurd. De sleutel in platte tekst verschijnt nooit in de adresbalk, de browsergeschiedenis of op screenshots, maar iedereen met de volledige link kan hem nog steeds openen, dus deel hem nooit openbaar.",
+  "safeLinkDefault": "Als je een code vergroot, toont de adresbalk een veilige link, /2fa#~…, in plaats van de sleutel in platte tekst. Links in platte tekst die je zelf opent, blijven zoals ze zijn."
 }

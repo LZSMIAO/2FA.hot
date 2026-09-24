@@ -63,7 +63,8 @@
             "lines": [
               "Semua pengiraan laman ini membaca dan memproses data secara setempat dalam pelayar anda.",
               "Apabila sejarah setempat diaktifkan, rekod disimpan dalam pelayar. Anda boleh menetapkan kata laluan untuk penyulitan atau membiarkannya tanpa kata laluan dan melihat rekod secara terus.",
-              "Gunakan `/2fa#SECRET` (beberapa kunci: `/2fa#SECRET1#SECRET2`): fragmen selepas `#` tidak dihantar bersama permintaan halaman dan dibaca secara setempat oleh alat ini."
+              "Gunakan `/2fa#SECRET` (beberapa kunci: `/2fa#SECRET1#SECRET2`): fragmen selepas `#` tidak dihantar bersama permintaan halaman dan dibaca secara setempat oleh alat ini.",
+              "Apabila anda membesarkan kod, bar alamat memaparkan pautan selamat dan bukan kunci dalam teks biasa (`/2fa#~…`). Pelayar anda menyulitkan dan membukanya secara setempat; tiada apa-apa melalui pelayan. Sesiapa yang mempunyai pautan penuh masih boleh membukanya, jadi kongsi dengan berhati-hati."
             ]
           },
           {

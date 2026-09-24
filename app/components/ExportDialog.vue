@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { tx } = useMessages()
-import { toAccessPath, toOtpUri, type OtpConfig } from '~/utils/otp'
+import { sealedAccessPath, toAccessPath, toOtpUri, type OtpConfig } from '~/utils/otp'
 import { downloadFile } from '~/utils/download'
 const props = defineProps<{ mode: 'qr' | 'link'; config: OtpConfig }>()
 const emit = defineEmits<{ close: [] }>()
@@ -10,12 +10,31 @@ const open = shallowRef(true),
 const label = shallowRef(props.config.label),
   issuer = shallowRef(props.config.issuer)
 const { copied, message, copy } = useCopy()
+const { copied: safeCopied, message: safeMessage, copy: copySafe } = useCopy()
 const config = computed(() => ({ ...props.config, label: label.value, issuer: issuer.value }))
 const value = computed(() =>
   props.mode === 'qr'
     ? toOtpUri(config.value)
     : `${window.location.origin}${toAccessPath(config.value)}`
 )
+// Sealed here in the browser when the dialog opens, ready to copy within the click.
+const safeLink = computed(() =>
+  props.mode === 'link' ? `${window.location.origin}${sealedAccessPath([props.config])}` : ''
+)
+/*
+ * The link box masks its key as the key field does; settings after ? stay
+ * readable. Masked text is not selectable, so a manual copy never yields
+ * asterisks. If copying the safe link fails, the box shows it for a manual copy.
+ */
+const shown = shallowRef<'masked' | 'plain' | 'safe'>('masked')
+const linkParameters = computed(() => {
+  const path = toAccessPath(config.value)
+  return path.includes('?') ? path.slice(path.indexOf('?')) : ''
+})
+const origin = computed(() => window.location.origin)
+async function copySafeLink() {
+  if (!(await copySafe(safeLink.value))) shown.value = 'safe'
+}
 let sequence = 0
 watch(
   value,
@@ -70,7 +89,7 @@ onBeforeUnmount(() => {
               tx(
                 mode === 'qr'
                   ? '二维码和配置文件包含密钥，请仅交给需要使用的人。'
-                  : '链接含密钥，会留在浏览器历史中，请谨慎分享。'
+                  : '安全链接不含明文密钥，在你的浏览器本地加密生成，不经过服务器。两种链接都能直接打开验证码，请谨慎分享。'
               )
             }}
           </p>
@@ -97,17 +116,52 @@ onBeforeUnmount(() => {
                     )
                   }}
                 </p>
+                <strong>{{ tx('安全链接是怎么生成的？') }}</strong>
+                <p>
+                  {{
+                    tx(
+                      '安全链接由你的浏览器在本地生成：用一次性随机密钥加密 # 后面的内容，再把这把密钥一起放进链接；打开时也由浏览器在本地解开。加密和解密都不需要联网，# 后面的内容也不会发送给服务器。地址栏、浏览器历史和截图中不会出现明文密钥，但拿到完整链接的人仍能打开，请勿公开分享。'
+                    )
+                  }}
+                </p>
               </div>
             </template>
           </UPopover>
         </div>
         <textarea
+          v-if="mode === 'qr'"
           :value="value"
           readonly
           class="export-value mono"
           :aria-label="tx('包含密钥的配置或获取链接')"
         />
-        <p v-if="issue || message" class="inline-error">{{ tx(issue || message) }}</p>
+        <div v-else class="export-link">
+          <div
+            class="export-value mono"
+            :class="{ 'is-masked': shown === 'masked' }"
+            role="textbox"
+            aria-readonly="true"
+            :aria-label="tx('包含密钥的配置或获取链接')"
+            dir="ltr"
+          >
+            <template v-if="shown === 'masked'"
+              >{{ origin }}/2fa#<span class="secret-pixel-mask">****************</span
+              >{{ linkParameters }}</template
+            ><template v-else>{{ shown === 'safe' ? safeLink : value }}</template>
+          </div>
+          <button
+            type="button"
+            class="link-visibility"
+            :aria-label="tx(shown === 'plain' ? '隐藏密钥' : '查看密钥')"
+            :aria-pressed="shown === 'plain'"
+            @click="shown = shown === 'plain' ? 'masked' : 'plain'"
+          >
+            <UIcon :name="shown === 'plain' ? 'i-lucide-eye-off' : 'i-lucide-eye'" />
+          </button>
+        </div>
+        <p v-if="issue || message || safeMessage" class="inline-error">
+          {{ tx(issue || message || safeMessage) }}
+        </p>
       </div></template
     ><template #footer
       ><div class="modal-actions w-full">
@@ -119,6 +173,13 @@ onBeforeUnmount(() => {
           icon="i-lucide-download"
           @click="downloadFile(qr, '2fa-configuration.png')"
           >{{ tx('下载 PNG') }}</UButton
+        ><UButton
+          v-if="mode === 'link'"
+          color="neutral"
+          variant="outline"
+          :icon="safeCopied ? 'i-mc-check' : 'i-lucide-shield-check'"
+          @click="copySafeLink"
+          >{{ tx(safeCopied ? '已复制' : '安全链接') }}</UButton
         ><UButton
           class="primary-button"
           :icon="copied ? 'i-mc-check' : 'i-lucide-copy'"
@@ -164,5 +225,45 @@ onBeforeUnmount(() => {
   border-radius: var(--ui-radius);
   font-size: var(--text-caption);
   word-break: break-all;
+}
+.export-link {
+  position: relative;
+}
+.export-link .export-value {
+  padding-right: 52px;
+}
+.export-value.is-masked {
+  user-select: none;
+}
+.export-value .secret-pixel-mask {
+  /* The key field's pixel asterisks, scaled to this box's caption text. */
+  font-size: 1.5em;
+  line-height: 0;
+}
+.link-visibility {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--ui-text-muted);
+  cursor: pointer;
+}
+.link-visibility .iconify {
+  width: 20px;
+  height: 20px;
+}
+.link-visibility:hover {
+  color: var(--ui-text-highlighted);
+}
+.link-visibility:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: -4px;
 }
 </style>

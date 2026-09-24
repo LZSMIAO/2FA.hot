@@ -642,5 +642,11 @@
   "copyAllSecrets": "Kopiuj wszystkie klucze",
   "holdToReorder": "przytrzymaj, aby zmienić kolejność",
   "orderSaved": "Kolejność zapisana.",
-  "linkPrivacyBatch": "Kilka kluczy rozdziel kolejnym # (przecinki też działają), aby zobaczyć je zbiorczo; po usunięciu kluczy do jednego strona przełączy się na widok pojedynczy. Ustawienia inne niż domyślne podaj po danym kluczu, np. /2fa#KEY1#KEY2?digits=8."
+  "linkPrivacyBatch": "Kilka kluczy rozdziel kolejnym # (przecinki też działają), aby zobaczyć je zbiorczo; po usunięciu kluczy do jednego strona przełączy się na widok pojedynczy. Ustawienia inne niż domyślne podaj po danym kluczu, np. /2fa#KEY1#KEY2?digits=8.",
+  "safeLinkCopy": "Bezpieczny link",
+  "safeLinkBroken": "Ten bezpieczny link jest niekompletny lub uszkodzony. Skopiuj ponownie cały link.",
+  "safeLinkNotice": "Bezpieczny link nie zawiera klucza w postaci jawnej: jest szyfrowany lokalnie w twojej przeglądarce i nigdy nie przechodzi przez serwer. Oba linki od razu otwierają kod, więc udostępniaj je ostrożnie.",
+  "safeLinkHow": "Jak powstaje bezpieczny link?",
+  "safeLinkLocal": "Bezpieczny link tworzy lokalnie twoja przeglądarka: szyfruje wszystko po # jednorazowym losowym kluczem i umieszcza ten klucz również w linku; przy otwieraniu przeglądarka także lokalnie go odszyfrowuje. Żaden z tych kroków nie wymaga sieci, a nic po # nie jest wysyłane do serwera. Klucz w postaci jawnej nie pojawia się na pasku adresu, w historii przeglądarki ani na zrzutach ekranu, ale każdy, kto ma pełny link, nadal może go otworzyć, więc nigdy nie udostępniaj go publicznie.",
+  "safeLinkDefault": "Po powiększeniu kodu pasek adresu pokazuje bezpieczny link /2fa#~… zamiast klucza w postaci jawnej. Jawne linki, które otwierasz sam, pozostają bez zmian."
 }

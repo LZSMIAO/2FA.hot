@@ -15,7 +15,7 @@ import {
 } from '~/utils/smart-paste'
 import { countdownState } from '~/utils/countdown-state'
 import {
-  accessPath,
+  sealedAccessPath,
   generateOtp,
   groupCode,
   remainingSeconds,
@@ -51,7 +51,8 @@ async function expandBatch() {
     expandedConfig.value = configs[0]!
     expandedHistoryPreview.value = false
   } else expandedBatch.value = configs
-  await navigateTo(localePath(accessPath(configs)))
+  // Expanding opens a safe link, so the address bar and history never show the keys.
+  await navigateTo(localePath(sealedAccessPath(configs)))
 }
 function createBatchSessionId() {
   // Batch grouping needs a unique ID even on a LAN HTTP development page.

@@ -17,6 +17,9 @@ importers:
       '@iconify-json/lucide':
         specifier: 1.2.130
         version: 1.2.130
+      '@noble/ciphers':
+        specifier: 2.4.0
+        version: 2.4.0
       '@nuxt/ui':
         specifier: 4.11.1
         version: 4.11.1(72de3413cfc3c2683bb7479784fb1a07)
@@ -1324,6 +1327,10 @@ packages:
     peerDependencies:
       '@emnapi/core': ^1.7.1 || ^2.0.0-alpha.4
       '@emnapi/runtime': ^1.7.1 || ^2.0.0-alpha.4
+
+  '@noble/ciphers@2.4.0':
+    resolution: {integrity: sha512-AnjFn0Jv92laAkvMrghlFZq4qQCIN/4DxFV/eooqtC2YTjB7kBeLMS2T9KJX4Dn+ZVXLOwK0lSgqDtx9gvxtiw==}
+    engines: {node: '>= 20.19.0'}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -6562,6 +6569,8 @@ snapshots:
       '@emnapi/runtime': 1.11.2
       '@tybys/wasm-util': 0.10.3
     optional: true
+
+  '@noble/ciphers@2.4.0': {}
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:

@@ -642,5 +642,11 @@
   "copyAllSecrets": "Alle Schlüssel kopieren",
   "holdToReorder": "gedrückt halten zum Umsortieren",
   "orderSaved": "Reihenfolge gespeichert.",
-  "linkPrivacyBatch": "Mehrere Schlüssel trennst du mit einem weiteren # (Kommas gehen auch), um sie gesammelt zu sehen; bleibt nur einer übrig, wechselt die Seite zur Einzelansicht. Abweichende Einstellungen stehen hinter ihrem Schlüssel, zum Beispiel /2fa#KEY1#KEY2?digits=8."
+  "linkPrivacyBatch": "Mehrere Schlüssel trennst du mit einem weiteren # (Kommas gehen auch), um sie gesammelt zu sehen; bleibt nur einer übrig, wechselt die Seite zur Einzelansicht. Abweichende Einstellungen stehen hinter ihrem Schlüssel, zum Beispiel /2fa#KEY1#KEY2?digits=8.",
+  "safeLinkCopy": "Sicherer Link",
+  "safeLinkBroken": "Dieser sichere Link ist unvollständig oder beschädigt. Kopiere den vollständigen Link erneut.",
+  "safeLinkNotice": "Ein sicherer Link enthält den Schlüssel nicht im Klartext, wird lokal in deinem Browser verschlüsselt und läuft nie über den Server. Beide Links öffnen den Code direkt; teile sie mit Bedacht.",
+  "safeLinkHow": "Wie entsteht ein sicherer Link?",
+  "safeLinkLocal": "Dein Browser erstellt den sicheren Link lokal: Er verschlüsselt alles nach dem # mit einem einmaligen Zufallsschlüssel und fügt diesen Schlüssel dem Link hinzu; beim Öffnen entschlüsselt der Browser ihn ebenfalls lokal. Keiner der beiden Schritte braucht eine Netzwerkverbindung, und nichts nach dem # wird an den Server gesendet. Der Schlüssel erscheint nie im Klartext in der Adressleiste, im Browserverlauf oder auf Screenshots. Wer den vollständigen Link hat, kann ihn aber trotzdem öffnen, also teile ihn nie öffentlich.",
+  "safeLinkDefault": "Wenn du einen Code vergrößerst, zeigt die Adressleiste einen sicheren Link (/2fa#~…) statt des Schlüssels im Klartext. Links im Klartext, die du selbst öffnest, bleiben unverändert."
 }

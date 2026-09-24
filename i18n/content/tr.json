@@ -63,7 +63,8 @@
             "lines": [
               "Bu sitedeki tüm hesaplamalar verileri yerel olarak tarayıcınızda okur ve işler.",
               "Yerel geçmişi açtığınızda kayıtlar tarayıcıda tutulur. Şifreleme için parola belirleyebilir veya boş bırakıp kayıtları doğrudan görebilirsiniz.",
-              "`/2fa#SECRET` (birden çok anahtar: `/2fa#SECRET1#SECRET2`) kullanın: `#` sonrasındaki parça sayfa isteğinde gönderilmez, araç tarafından yerel okunur."
+              "`/2fa#SECRET` (birden çok anahtar: `/2fa#SECRET1#SECRET2`) kullanın: `#` sonrasındaki parça sayfa isteğinde gönderilmez, araç tarafından yerel okunur.",
+              "Bir kodu büyüttüğünüzde adres çubuğu düz metin anahtar yerine güvenli bir bağlantı gösterir (`/2fa#~…`). Tarayıcınız onu yerel olarak şifreler ve açar; hiçbir şey sunucudan geçmez. Tam bağlantıya sahip olan herkes onu yine de açabilir, bu yüzden dikkatli paylaşın."
             ]
           },
           {

@@ -642,5 +642,11 @@
   "copyAllSecrets": "Salin semua kunci",
   "holdToReorder": "tekan lama untuk menyusun semula",
   "orderSaved": "Susunan disimpan.",
-  "linkPrivacyBatch": "Pisahkan beberapa kunci dengan satu lagi # (koma juga boleh) untuk melihatnya sekali gus; jika kunci dibuang hingga tinggal satu, halaman bertukar ke paparan tunggal. Pilihan selain lalai ditulis selepas kuncinya, contohnya /2fa#KEY1#KEY2?digits=8."
+  "linkPrivacyBatch": "Pisahkan beberapa kunci dengan satu lagi # (koma juga boleh) untuk melihatnya sekali gus; jika kunci dibuang hingga tinggal satu, halaman bertukar ke paparan tunggal. Pilihan selain lalai ditulis selepas kuncinya, contohnya /2fa#KEY1#KEY2?digits=8.",
+  "safeLinkCopy": "Pautan selamat",
+  "safeLinkBroken": "Pautan selamat ini tidak lengkap atau rosak. Salin semula pautan penuh.",
+  "safeLinkNotice": "Pautan selamat tidak mengandungi kunci dalam teks biasa; ia disulitkan secara setempat dalam pelayar anda dan tidak pernah melalui pelayan. Kedua-dua pautan terus membuka kod, jadi kongsi dengan berhati-hati.",
+  "safeLinkHow": "Bagaimanakah pautan selamat dihasilkan?",
+  "safeLinkLocal": "Pelayar anda menghasilkan pautan selamat secara setempat: semua kandungan selepas # disulitkan dengan kunci rawak sekali guna, kemudian kunci itu turut dimasukkan ke dalam pautan; apabila pautan dibuka, pelayar juga menyahsulitnya secara setempat. Kedua-dua langkah tidak memerlukan rangkaian, dan tiada apa-apa selepas # dihantar ke pelayan. Kunci dalam teks biasa tidak pernah muncul dalam bar alamat, sejarah pelayar atau tangkapan skrin, tetapi sesiapa yang mempunyai pautan penuh masih boleh membukanya, jadi jangan sekali-kali kongsikannya secara awam.",
+  "safeLinkDefault": "Selepas anda membesarkan kod, bar alamat memaparkan pautan selamat, /2fa#~…, dan bukan kunci dalam teks biasa. Pautan teks biasa yang anda buka sendiri kekal seperti asal."
 }

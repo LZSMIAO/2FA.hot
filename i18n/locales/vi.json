@@ -642,5 +642,11 @@
   "copyAllSecrets": "Sao chép tất cả khóa",
   "holdToReorder": "nhấn giữ để kéo sắp xếp",
   "orderSaved": "Đã lưu thứ tự.",
-  "linkPrivacyBatch": "Phân tách nhiều khóa bằng thêm một dấu # (dấu phẩy cũng được) để xem theo lô; khi xóa bớt chỉ còn một khóa, trang chuyển sang dạng đơn. Tùy chọn khác mặc định viết sau khóa của nó, ví dụ /2fa#KEY1#KEY2?digits=8."
+  "linkPrivacyBatch": "Phân tách nhiều khóa bằng thêm một dấu # (dấu phẩy cũng được) để xem theo lô; khi xóa bớt chỉ còn một khóa, trang chuyển sang dạng đơn. Tùy chọn khác mặc định viết sau khóa của nó, ví dụ /2fa#KEY1#KEY2?digits=8.",
+  "safeLinkCopy": "Liên kết an toàn",
+  "safeLinkBroken": "Liên kết an toàn này không đầy đủ hoặc đã bị hỏng. Hãy sao chép lại toàn bộ liên kết.",
+  "safeLinkNotice": "Liên kết an toàn không chứa khóa dạng văn bản thuần, được mã hóa cục bộ trong trình duyệt của bạn và không bao giờ đi qua máy chủ. Cả hai loại liên kết đều mở thẳng mã, hãy chia sẻ cẩn thận.",
+  "safeLinkHow": "Liên kết an toàn được tạo ra như thế nào?",
+  "safeLinkLocal": "Trình duyệt của bạn tạo liên kết an toàn một cách cục bộ: mã hóa toàn bộ phần sau # bằng một khóa ngẫu nhiên dùng một lần rồi đặt luôn khóa đó vào liên kết; khi mở liên kết, trình duyệt cũng giải mã cục bộ. Cả hai bước đều không cần mạng, và không có gì sau # được gửi đến máy chủ. Khóa dạng văn bản thuần không xuất hiện trên thanh địa chỉ, lịch sử trình duyệt hay ảnh chụp màn hình, nhưng ai có liên kết đầy đủ vẫn mở được, vì vậy đừng bao giờ chia sẻ công khai.",
+  "safeLinkDefault": "Khi bạn phóng to mã, thanh địa chỉ hiển thị liên kết an toàn /2fa#~… thay vì khóa dạng văn bản thuần. Các liên kết dạng văn bản thuần do bạn tự mở vẫn giữ nguyên."
 }

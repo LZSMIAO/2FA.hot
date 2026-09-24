@@ -642,5 +642,11 @@
   "copyAllSecrets": "Copiar todas las claves",
   "holdToReorder": "mantén pulsado para reordenar",
   "orderSaved": "Orden guardado.",
-  "linkPrivacyBatch": "Separa varias claves con otro # (también sirven las comas) para verlas en lote; si quitas claves hasta dejar una, se cambia a la vista individual. Las opciones distintas de las predeterminadas van tras su clave, por ejemplo /2fa#KEY1#KEY2?digits=8."
+  "linkPrivacyBatch": "Separa varias claves con otro # (también sirven las comas) para verlas en lote; si quitas claves hasta dejar una, se cambia a la vista individual. Las opciones distintas de las predeterminadas van tras su clave, por ejemplo /2fa#KEY1#KEY2?digits=8.",
+  "safeLinkCopy": "Enlace seguro",
+  "safeLinkBroken": "Este enlace seguro está incompleto o dañado. Vuelve a copiar el enlace completo.",
+  "safeLinkNotice": "El enlace seguro no contiene la clave en texto plano: se cifra localmente en tu navegador y nunca pasa por el servidor. Ambos enlaces abren el código directamente; compártelos con cuidado.",
+  "safeLinkHow": "¿Cómo se crea un enlace seguro?",
+  "safeLinkLocal": "Tu navegador crea el enlace seguro localmente: cifra todo lo que va tras el # con una clave aleatoria de un solo uso y añade esa clave al propio enlace; al abrirlo, el navegador también lo descifra localmente. Ninguno de los dos pasos necesita conexión, y nada de lo que va tras el # se envía al servidor. La clave en texto plano nunca aparece en la barra de direcciones, el historial del navegador ni las capturas de pantalla, pero cualquiera con el enlace completo puede abrirlo, así que nunca lo compartas públicamente.",
+  "safeLinkDefault": "Al ampliar un código, la barra de direcciones muestra un enlace seguro, /2fa#~…, en lugar de la clave en texto plano. Los enlaces en texto plano que abras tú mismo no cambian."
 }

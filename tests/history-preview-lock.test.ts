@@ -225,7 +225,7 @@ test('lock closes exports and cancels an expansion waiting for route preloading'
     window: { dispatchEvent() {} },
     CustomEvent: class {},
     localePath: (value: string) => value,
-    toAccessPath: () => '/2fa#private-seed',
+    sealedAccessPath: () => '/2fa#~sealed-private-seed',
     preloadRouteComponents: () => loading,
     navigateTo: (path: string) => destinations.push(path),
     nextTick: async () => {},

@@ -25,12 +25,13 @@ async function copySecret() {
 import {
   parseOtp,
   algorithmFrom,
-  toAccessPath,
   accessPath,
   accessEntries,
+  sealedAccessPath,
   identity,
   type OtpConfig
 } from '~/utils/otp'
+import { isSealedFragment, openFragment, sealFragment } from '~/utils/sealed-link'
 const expandedConfig = useState<OtpConfig | null>('expanded-otp-config', () => null)
 const expandedHistoryPreview = useState('expanded-history-preview', () => false)
 let historyPreviewIdentity =
@@ -89,23 +90,37 @@ function sameKeys(a: readonly OtpConfig[], b: readonly OtpConfig[]) {
     a.length === b.length && a.every((config, index) => identity(config) === identity(b[index]!))
   )
 }
+/** What the current link carries after /2fa, read out of a safe link when it is one. */
+function plainHash() {
+  try {
+    return isSealedFragment(route.hash) ? '#' + openFragment(route.hash) : route.hash
+  } catch {
+    return ''
+  }
+}
 function followBatch(configs: OtpConfig[]) {
   batchRows = configs
-  const hash = accessPath(configs).slice('/2fa'.length)
+  // The link keeps the form it opened with: a plain link stays plain, a safe one stays safe.
+  const sealed = isSealedFragment(route.hash)
+  const plain = accessPath(configs).slice('/2fa'.length)
   if (configs.length > 1) {
-    if (route.hash === hash) return
+    if (plainHash() === plain) return
+    const hash = sealed ? '#' + sealFragment(plain.slice(1)) : plain
     writtenHash = hash
     void navigateTo(localePath('/2fa') + hash, { replace: true })
   } else if (configs.length === 1) {
     expandedConfig.value = configs[0]!
     expandedHistoryPreview.value = false
-    void navigateTo(localePath(accessPath(configs)), { replace: true })
+    void navigateTo(localePath(sealed ? sealedAccessPath(configs) : accessPath(configs)), {
+      replace: true
+    })
   } else void navigateTo(localePath('/2fa'), { replace: true })
 }
 function collapseBatch() {
   void navigateTo(localePath('/'))
 }
 const missing = computed(() => !route.params.secret && !fragment.value)
+const sealedLink = computed(() => isSealedFragment(fragment.value))
 function load() {
   // The batch view rewrote its own link; what it shows is already current.
   if (writtenHash && route.hash === writtenHash) {
@@ -162,7 +177,7 @@ function load() {
 }
 function useFragmentLink() {
   if (!config.value) return
-  return navigateTo(localePath(toAccessPath(config.value)), { replace: true })
+  return navigateTo(localePath(sealedAccessPath([config.value])), { replace: true })
 }
 function submit() {
   if (pendingPaste.value) return
@@ -172,7 +187,7 @@ function submit() {
     const parsed = parseOtp(input.value)
     expandedConfig.value = parsed
     expandedHistoryPreview.value = false
-    navigateTo(localePath(toAccessPath(parsed)))
+    navigateTo(localePath(sealedAccessPath([parsed])))
     input.value = ''
   } catch (e) {
     issue.value = (e as Error).message
@@ -384,6 +399,7 @@ useHead({ meta: [{ name: 'referrer', content: 'no-referrer' }] })
       <OtpResult
         :config="pathWarning ? null : config"
         :history-preview="!!config && historyPreviewIdentity === identity(config)"
+        :sealed-link="sealedLink"
         standalone
       />
       <div v-if="config" class="direct-meta">

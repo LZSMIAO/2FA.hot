@@ -63,7 +63,8 @@
             "lines": [
               "Mọi phép tính trên trang này đều đọc và xử lý dữ liệu cục bộ trong trình duyệt của bạn.",
               "Khi bật lịch sử cục bộ, bản ghi nằm trong trình duyệt. Bạn có thể đặt mật khẩu mã hóa hoặc để trống và xem trực tiếp.",
-              "Dùng `/2fa#SECRET` (nhiều khóa: `/2fa#SECRET1#SECRET2`): fragment sau `#` không gửi cùng yêu cầu trang và được công cụ đọc cục bộ."
+              "Dùng `/2fa#SECRET` (nhiều khóa: `/2fa#SECRET1#SECRET2`): fragment sau `#` không gửi cùng yêu cầu trang và được công cụ đọc cục bộ.",
+              "Khi bạn phóng to mã, thanh địa chỉ hiển thị liên kết an toàn thay vì khóa dạng văn bản thuần (`/2fa#~…`). Trình duyệt của bạn mã hóa và mở nó cục bộ; không có gì đi qua máy chủ. Ai có liên kết đầy đủ vẫn mở được, vì vậy hãy chia sẻ cẩn thận."
             ]
           },
           {

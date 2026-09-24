@@ -642,5 +642,11 @@
   "copyAllSecrets": "Copiar todas as chaves",
   "holdToReorder": "segure para reordenar",
   "orderSaved": "Ordem salva.",
-  "linkPrivacyBatch": "Separe várias chaves com outro # (vírgulas também funcionam) para vê-las em lote; ao remover chaves até restar uma, a página passa para a visualização única. Opções diferentes do padrão vêm depois da própria chave, por exemplo /2fa#KEY1#KEY2?digits=8."
+  "linkPrivacyBatch": "Separe várias chaves com outro # (vírgulas também funcionam) para vê-las em lote; ao remover chaves até restar uma, a página passa para a visualização única. Opções diferentes do padrão vêm depois da própria chave, por exemplo /2fa#KEY1#KEY2?digits=8.",
+  "safeLinkCopy": "Link seguro",
+  "safeLinkBroken": "Este link seguro está incompleto ou danificado. Copie o link completo novamente.",
+  "safeLinkNotice": "O link seguro não contém a chave em texto simples: ele é criptografado localmente no seu navegador e nunca passa pelo servidor. Os dois links abrem o código diretamente; compartilhe-os com cuidado.",
+  "safeLinkHow": "Como um link seguro é criado?",
+  "safeLinkLocal": "Seu navegador cria o link seguro localmente: ele criptografa tudo o que vem depois do # com uma chave aleatória de uso único e coloca essa chave no próprio link; ao abrir o link, o navegador também o descriptografa localmente. Nenhuma das etapas precisa de internet, e nada do que vem depois do # é enviado ao servidor. A chave em texto simples nunca aparece na barra de endereços, no histórico do navegador nem em capturas de tela, mas quem tiver o link completo ainda consegue abri-lo, então nunca o compartilhe publicamente.",
+  "safeLinkDefault": "Ao ampliar um código, a barra de endereços mostra um link seguro, /2fa#~…, em vez da chave em texto simples. Links em texto simples que você mesmo abrir continuam como estão."
 }

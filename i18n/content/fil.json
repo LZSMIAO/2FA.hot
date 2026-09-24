@@ -63,7 +63,8 @@
             "lines": [
               "Lahat ng pagkalkula sa site na ito ay nagbabasa at nagpoproseso ng data nang lokal sa iyong browser.",
               "Kapag pinagana ang lokal na history, nasa browser ang mga record. Maaari kang magtakda ng password para sa encryption, o walang password upang direktang matingnan ang mga record.",
-              "Gamitin ang `/2fa#SECRET` (maraming key: `/2fa#SECRET1#SECRET2`): hindi ipinapadala kasama ng page request ang fragment pagkatapos ng `#` at lokal itong binabasa ng tool."
+              "Gamitin ang `/2fa#SECRET` (maraming key: `/2fa#SECRET1#SECRET2`): hindi ipinapadala kasama ng page request ang fragment pagkatapos ng `#` at lokal itong binabasa ng tool.",
+              "Kapag pinalaki mo ang code, ipinapakita ng address bar ang ligtas na link sa halip na ang key sa plain text (`/2fa#~…`). Lokal itong ini-encrypt at binubuksan ng iyong browser; walang dumaraan sa server. Mabubuksan pa rin ito ng sinumang may buong link, kaya ibahagi nang maingat."
             ]
           },
           {

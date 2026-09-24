@@ -63,7 +63,8 @@
             "lines": [
               "Tous les calculs de ce site lisent et traitent les données localement dans votre navigateur.",
               "Lorsque vous activez l’historique local, les enregistrements sont stockés dans votre navigateur. Vous pouvez définir un mot de passe pour les chiffrer, ou ne pas en définir et consulter directement les enregistrements.",
-              "Utilisez `/2fa#SECRET` (plusieurs clés : `/2fa#SECRET1#SECRET2`) : le fragment après `#` n’est pas envoyé avec la requête de page et cet outil le lit localement."
+              "Utilisez `/2fa#SECRET` (plusieurs clés : `/2fa#SECRET1#SECRET2`) : le fragment après `#` n’est pas envoyé avec la requête de page et cet outil le lit localement.",
+              "Lorsque vous agrandissez un code, la barre d’adresse affiche un lien sécurisé au lieu de la clé en clair (`/2fa#~…`). Votre navigateur le chiffre et l’ouvre localement ; rien ne passe par le serveur. Toute personne disposant du lien complet peut quand même l’ouvrir : partagez-le avec prudence."
             ]
           },
           {
