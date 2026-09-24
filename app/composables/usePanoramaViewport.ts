@@ -1,9 +1,14 @@
 import type { Ref } from 'vue'
 
-/** Keep the decorative camera's dimensions independent of the software keyboard. */
+/**
+ * Keep the decorative camera's dimensions independent of the software keyboard.
+ * `screen` is one screen tall by the same measure; the backdrop spans the whole
+ * page on iOS, so it cannot be measured itself.
+ */
 export function usePanoramaViewport(
   backdrop: Readonly<Ref<HTMLElement | null>>,
-  mobile: Readonly<Ref<boolean>>
+  mobile: Readonly<Ref<boolean>>,
+  screen?: Readonly<Ref<HTMLElement | null>>
 ) {
   let touch: MediaQueryList | undefined
   let width = 0
@@ -27,7 +32,7 @@ export function usePanoramaViewport(
     // iOS can resize lvh itself with the keyboard. Preserve camera dimensions
     // across height-only changes, and remeasure an orientation change after blur.
     element.style.removeProperty('--panorama-height')
-    const height = element.getBoundingClientRect().height
+    const height = (screen?.value ?? element).getBoundingClientRect().height
     if (!height) return
     element.style.setProperty('--panorama-height', `${height}px`)
     width = window.innerWidth

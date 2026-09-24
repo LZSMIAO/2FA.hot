@@ -197,7 +197,8 @@ const sceneItems = computed(() => [
 const paused = computed(() => !hydrated.value || playbackPaused.value !== false)
 const mobileMotion = shallowRef(false)
 const backdrop = useTemplateRef<HTMLElement>('backdrop')
-usePanoramaViewport(backdrop, mobileMotion)
+const screen = useTemplateRef<HTMLElement>('screen')
+usePanoramaViewport(backdrop, mobileMotion, screen)
 const cube = useTemplateRef<HTMLElement>('cube')
 let frame = 0
 let lastFrame = 0
@@ -325,6 +326,7 @@ onBeforeUnmount(() => {
       }"
       aria-hidden="true"
     >
+      <div ref="screen" class="panorama-screen" />
       <div class="panorama-scene">
         <div class="panorama-camera">
           <div ref="cube" class="panorama-cube">
@@ -471,6 +473,15 @@ onBeforeUnmount(() => {
    * the header and footer instead.
    */
   background: var(--canvas);
+}
+/* One screen tall however tall the backdrop is, for measuring the camera's size. */
+.panorama-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: var(--panorama-height, 100lvh);
+  visibility: hidden;
 }
 .panorama-scene {
   position: absolute;
@@ -647,13 +658,72 @@ onBeforeUnmount(() => {
     transform: translateZ(0);
     backface-visibility: hidden;
   }
+  /*
+   * iOS Safari never draws a fixed or sticky layer below the line its bottom
+   * bar starts at, and fills the rest with a flat colour: a pale band under
+   * the bar. It also moves such layers apart from the page when the keyboard
+   * opens or the page bounces. Measured in the iOS 27 simulator, only content
+   * that scrolls with the page reaches the screen's edge. So on iOS the
+   * backdrop is part of the page, covering all of it and scrolling with it.
+   * The camera stays sized and centred on the first screen, so the top of the
+   * page looks as before; further down the scene carries on below it.
+   */
   :global(html[data-ios] .title-panorama) {
-    height: var(--panorama-height, 100lvh);
-    --face-size: max(100vw, var(--panorama-height, 100lvh));
-    /* Keep viewport positioning out of iOS's 3D compositing layer. */
+    position: absolute;
+    height: 100%;
+    --panorama-screen: var(--panorama-height, 100lvh);
+    --face-size: max(100vw, var(--panorama-screen));
+    /* Keep positioning out of iOS's 3D compositing layer. */
     contain: none;
     transform: none;
     backface-visibility: visible;
+  }
+  :global(html[data-ios] .title-panorama .panorama-camera) {
+    perspective-origin: 50% calc(var(--panorama-screen) / 2);
+  }
+  :global(html[data-ios] .title-panorama .panorama-cube) {
+    top: calc(var(--panorama-screen) / 2);
+  }
+  :global(html[data-ios] .title-panorama .panorama-light) {
+    top: calc(var(--panorama-screen) * -0.2);
+    bottom: auto;
+    height: calc(var(--panorama-screen) * 1.4);
+  }
+  /* The vignette keeps the first screen's shape; below it the edge tone carries on. */
+  :global(html[data-ios] .title-panorama .panorama-shade) {
+    background: radial-gradient(
+      ellipse calc(50vw * 1.4142) calc(var(--panorama-screen) * 0.7071) at 50%
+        calc(var(--panorama-screen) / 2),
+      #10141033,
+      #1014104d 65%,
+      #080c1080
+    );
+  }
+  :global(html.dark[data-ios] .title-panorama .panorama-shade) {
+    background: radial-gradient(
+      ellipse calc(50vw * 1.4142) calc(var(--panorama-screen) * 0.7071) at 50%
+        calc(var(--panorama-screen) / 2),
+      #10141099,
+      #101410a3 65%,
+      #080c10bf
+    );
+  }
+  /* A still image keeps the first screen's framing and continues as its own
+     reflection, fading out, rather than stretching to the page's height. */
+  :global(html[data-ios] .title-panorama .panorama-flat) {
+    bottom: auto;
+    height: var(--panorama-screen);
+  }
+  :global(html[data-ios] .title-panorama .panorama-flat::after) {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: inherit;
+    transform: scaleY(-1);
+    mask-image: linear-gradient(to top, #000 30%, transparent);
   }
   .panorama-camera,
   .panorama-light,
