@@ -9,6 +9,10 @@
  * a second jump. So it goes back as the field loses focus, while the keyboard
  * is still up: page and layers return together, in one step. The viewport's
  * return then finishes the job if iOS moved anything after all.
+ *
+ * The starting point is read when the finger lands, not on focus: Safari
+ * sometimes pans before it fires focus, and a position read then was already
+ * the panned one, so nothing moved back.
  */
 export default defineNuxtPlugin(() => {
   const found = window.visualViewport
@@ -23,6 +27,9 @@ export default defineNuxtPlugin(() => {
   let restore: number | null = null
   let scrolled = false
   let expiry = 0
+  /** The page's position when the latest touch began, and when it last changed. */
+  let touchTop = 0
+  let touchAt = -Infinity
 
   function returnPage() {
     if (restore !== null && Math.abs(window.scrollY - restore) > 0.5)
@@ -37,7 +44,9 @@ export default defineNuxtPlugin(() => {
 
   document.addEventListener('focusin', (event) => {
     if (!editable(event.target) || before !== null) return
-    before = window.scrollY
+    // A tap focuses within a moment of landing; focus from a keyboard or a
+    // script has no touch before it and reads the position as it is.
+    before = performance.now() - touchAt < 1000 ? touchTop : window.scrollY
     scrolled = false
     restore = null
   })
@@ -66,8 +75,18 @@ export default defineNuxtPlugin(() => {
     'touchstart',
     () => {
       restore = null
+      touchTop = window.scrollY
+      touchAt = performance.now()
     },
-    { passive: true }
+    { capture: true, passive: true }
+  )
+  // A long press focuses on release; the position stays the one from landing.
+  addEventListener(
+    'touchend',
+    () => {
+      touchAt = performance.now()
+    },
+    { capture: true, passive: true }
   )
   viewport.addEventListener('scroll', settle)
   viewport.addEventListener('resize', settle)
