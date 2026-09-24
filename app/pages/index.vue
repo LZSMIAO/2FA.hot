@@ -282,5 +282,6 @@ watch(
         </div>
       </div>
     </div>
+    <SiteAnnouncement :paused="guideOpen" />
   </div>
 </template>

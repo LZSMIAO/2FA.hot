@@ -38,7 +38,12 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
-      script: [{ src: '/panorama-preference.js' }, { src: '/brand-splash.js' }],
+      // first-visit.js runs first: it must see storage before this visit writes any.
+      script: [
+        { src: '/first-visit.js' },
+        { src: '/panorama-preference.js' },
+        { src: '/brand-splash.js' }
+      ],
       title: toolHeadings.en,
       meta: [
         {
