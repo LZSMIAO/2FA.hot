@@ -877,5 +877,6 @@ export const sourceKeys = new Map<string, string>([
     'guideDetailRemaining'
   ],
   ['已选 {count} / {total}', 'historySelectedOfTotal'],
-  ['按 {undo} 撤回本次粘贴，按 {single} 逐条撤回', 'batchUndoHint']
+  ['按 {undo} 撤回本次粘贴，按 {single} 逐条撤回', 'batchUndoHint'],
+  ['不错嘛，还知道用快捷键！{undo} 撤回整次粘贴，{single} 逐条撤回', 'batchUndoPraise']
 ])

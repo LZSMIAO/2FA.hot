@@ -627,5 +627,6 @@
   "guideStepRemaining": "Tingnan ang natitirang oras",
   "guideDetailRemaining": "Ang bar sa ilalim ng code ang natitirang oras, at paunti-unti itong bumababa na parang experience bar. Kapag naubos, papalit ang bagong code at hindi na gagana ang luma.",
   "historySelectedOfTotal": "{count} sa {total} ang napili",
-  "batchUndoHint": "Pindutin ang {undo} para i-undo ang pag-paste na ito, o {single} para i-undo ito nang isa-isang linya"
+  "batchUndoHint": "Pindutin ang {undo} para i-undo ang pag-paste na ito, o {single} para i-undo ito nang isa-isang linya",
+  "batchUndoPraise": "Galing, alam mo ang mga shortcut! Ina-undo ng {undo} ang buong pag-paste, at ng {single} nang isa-isang linya"
 }

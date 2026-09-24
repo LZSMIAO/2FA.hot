@@ -271,22 +271,41 @@ function handleUndoShortcut(event: KeyboardEvent) {
       : null
   if (editor && editor !== batchInput()) return
   event.preventDefault()
-  if (undoHint.value) finishUndoHint()
   undoFill(event.shiftKey)
+  // Someone who already reaches for the keys needs praise, not the deletion tip.
+  if (!undoShortcutUsed.value) {
+    undoShortcutUsed.value = true
+    rememberHint('2fa-batch-undo-shortcut-used-v1')
+    showUndoHint('shortcut')
+  } else if (undoHintOpen.value && undoHintKind.value === 'delete') finishUndoHint()
 }
-const undoHint = shallowRef(false)
+const undoHintOpen = shallowRef(false)
+const undoHintKind = shallowRef<'delete' | 'shortcut'>('delete')
 const undoKeys = shallowRef({ undo: 'Ctrl+Z', single: 'Ctrl+Shift+Z' })
 const undoHintSeen = useState('batch-undo-hint-seen-v1', () => false)
+const undoShortcutUsed = useState('batch-undo-shortcut-used-v1', () => false)
 let undoHintTimer: ReturnType<typeof setTimeout> | undefined
 let keyboardMedia: MediaQueryList | undefined
+function rememberHint(key: string) {
+  try {
+    localStorage.setItem(key, '1')
+  } catch {}
+}
+function showUndoHint(kind: 'delete' | 'shortcut') {
+  undoHintKind.value = kind
+  undoHintOpen.value = true
+  clearTimeout(undoHintTimer)
+  undoHintTimer = setTimeout(finishUndoHint, 8000)
+}
 function finishUndoHint() {
   clearTimeout(undoHintTimer)
-  undoHint.value = false
+  undoHintOpen.value = false
 }
 /** Teach the undo keys once, when someone first starts deleting pasted rows by hand. */
 function offerUndoHint(event: InputEvent) {
   if (
     undoHintSeen.value ||
+    undoShortcutUsed.value ||
     !event.inputType.startsWith('delete') ||
     !fills.length ||
     guiding.value ||
@@ -294,12 +313,8 @@ function offerUndoHint(event: InputEvent) {
   )
     return
   undoHintSeen.value = true
-  try {
-    localStorage.setItem('2fa-batch-undo-hint-seen-v1', '1')
-  } catch {}
-  undoHint.value = true
-  clearTimeout(undoHintTimer)
-  undoHintTimer = setTimeout(finishUndoHint, 8000)
+  rememberHint('2fa-batch-undo-hint-seen-v1')
+  showUndoHint('delete')
 }
 const valid = computed(() => entries.value.filter((x) => x.config))
 const associationState = computed(() => {
@@ -551,6 +566,7 @@ onMounted(() => {
     undoKeys.value = { undo: '⌘Z', single: '⇧⌘Z' }
   try {
     undoHintSeen.value ||= localStorage.getItem('2fa-batch-undo-hint-seen-v1') === '1'
+    undoShortcutUsed.value ||= localStorage.getItem('2fa-batch-undo-shortcut-used-v1') === '1'
   } catch {}
 })
 onBeforeUnmount(() => {
@@ -621,9 +637,14 @@ onBeforeUnmount(() => {
         autocomplete="off"
       />
       <ActionHint
-        :open="undoHint && !guiding"
-        :message="tx('按 {undo} 撤回本次粘贴，按 {single} 逐条撤回', undoKeys)"
-        icon="i-lucide-undo-2"
+        :key="undoHintKind"
+        :open="undoHintOpen && !guiding"
+        :message="
+          undoHintKind === 'shortcut'
+            ? tx('不错嘛，还知道用快捷键！{undo} 撤回整次粘贴，{single} 逐条撤回', undoKeys)
+            : tx('按 {undo} 撤回本次粘贴，按 {single} 逐条撤回', undoKeys)
+        "
+        :icon="undoHintKind === 'shortcut' ? 'i-lucide-thumbs-up' : 'i-lucide-undo-2'"
         @close="finishUndoHint"
       />
       <div v-if="!standalone && !matching && !guiding && valid.length" class="batch-paste-notice">
