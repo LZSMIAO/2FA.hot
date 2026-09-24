@@ -6,7 +6,9 @@ import {
   parseSmartBatch,
   removeBatchLines,
   insertBatchText,
-  batchPasteText
+  batchPasteText,
+  batchFillRows,
+  keptBatchFill
 } from '~/utils/smart-paste'
 import { countdownState } from '~/utils/countdown-state'
 import { generateOtp, groupCode, remainingSeconds, toOtpUri, type BatchEntry } from '~/utils/otp'
@@ -173,6 +175,7 @@ function finishMatching(value: string, source: string, associations: Record<numb
 }
 function importBatchSource(value: string) {
   value = batchPasteText(value)
+  const state = fillState()
   const source = [reviewSource.value.trimEnd(), value].filter(Boolean).join('\n')
   const analysis = analyzePaste(value)
   pastedSecrets = new Set(analysis.candidates.map((candidate) => candidate.config.secret))
@@ -180,11 +183,123 @@ function importBatchSource(value: string) {
     analysis.candidates.length && analysis.accounts?.length
       ? pastedBatchText(analysis.candidates.map((candidate) => candidate.config))
       : value
-  raw.value = [raw.value.trimEnd(), normalized].filter(Boolean).join('\n')
+  const kept = raw.value.trimEnd()
+  raw.value = [kept, normalized].filter(Boolean).join('\n')
   matchSource.value = source
   matchAssociations.value = {}
   matchSnapshot.value = raw.value
+  rememberFill(state, normalized, state.raw.length, (rows) => {
+    const text = [kept, rows].filter(Boolean).join('\n')
+    return { text, cursor: text.length }
+  })
   nextTick(() => update())
+}
+// Pastes are inserted programmatically, so the textarea's native history cannot undo them.
+// Undo returns to the text as it was before a fill, like stepping back through each later edit.
+type FillState = {
+  raw: string
+  source: string
+  snapshot: string
+  associations: Record<number, string>
+}
+type BatchFill = {
+  state: FillState
+  text: string
+  rows: number
+  cursor: number
+  place: (rows: string) => { text: string; cursor: number }
+}
+let fills: BatchFill[] = []
+function fillState(): FillState {
+  return {
+    raw: raw.value,
+    source: matchSource.value,
+    snapshot: matchSnapshot.value,
+    associations: matchAssociations.value
+  }
+}
+function rememberFill(state: FillState, text: string, cursor: number, place: BatchFill['place']) {
+  const rows = batchFillRows(text)
+  if (rows) fills = [...fills.slice(-49), { state, text, rows, cursor, place }]
+}
+function undoFill(single: boolean) {
+  const fill = fills.at(-1)
+  if (!fill) return
+  let cursor = fill.cursor
+  if (single && fill.rows > 1) {
+    fill.rows--
+    const placed = fill.place(keptBatchFill(fill.text, fill.rows))
+    raw.value = matchSource.value = matchSnapshot.value = placed.text
+    matchAssociations.value = {}
+    cursor = placed.cursor
+  } else {
+    fills.pop()
+    raw.value = fill.state.raw
+    matchSource.value = fill.state.source
+    matchSnapshot.value = fill.state.snapshot
+    matchAssociations.value = fill.state.associations
+  }
+  pastedSecrets.clear()
+  const input = batchInput()
+  if (input && document.activeElement === input)
+    nextTick(() => input.setSelectionRange(cursor, cursor))
+}
+function batchInput() {
+  return batchRoot.value?.querySelector<HTMLTextAreaElement>('#batch-demo-input') || undefined
+}
+function handleUndoShortcut(event: KeyboardEvent) {
+  if (
+    event.key.toLowerCase() !== 'z' ||
+    !(event.ctrlKey || event.metaKey) ||
+    event.altKey ||
+    event.defaultPrevented ||
+    event.isComposing ||
+    !fills.length ||
+    props.standalone ||
+    guiding.value ||
+    matching.value ||
+    !batchRoot.value?.getClientRects().length
+  )
+    return
+  if (document.querySelector('[role="dialog"], [role="alertdialog"], [role="menu"]')) return
+  // Page-level pastes are undoable too, but other editors keep their own history.
+  const editor =
+    event.target instanceof HTMLElement
+      ? event.target.closest(
+          'input, textarea, select, [contenteditable]:not([contenteditable="false"]), [role="textbox"]'
+        )
+      : null
+  if (editor && editor !== batchInput()) return
+  event.preventDefault()
+  if (undoHint.value) finishUndoHint()
+  undoFill(event.shiftKey)
+}
+const undoHint = shallowRef(false)
+const undoKeys = shallowRef({ undo: 'Ctrl+Z', single: 'Ctrl+Shift+Z' })
+const undoHintSeen = useState('batch-undo-hint-seen-v1', () => false)
+let undoHintTimer: ReturnType<typeof setTimeout> | undefined
+let keyboardMedia: MediaQueryList | undefined
+function finishUndoHint() {
+  clearTimeout(undoHintTimer)
+  undoHint.value = false
+}
+/** Teach the undo keys once, when someone first starts deleting pasted rows by hand. */
+function offerUndoHint(event: InputEvent) {
+  if (
+    undoHintSeen.value ||
+    !event.inputType.startsWith('delete') ||
+    !fills.length ||
+    guiding.value ||
+    !keyboardMedia?.matches
+  )
+    return
+  undoHintSeen.value = true
+  try {
+    localStorage.setItem('2fa-batch-undo-hint-seen-v1', '1')
+  } catch {}
+  undoHint.value = true
+  clearTimeout(undoHintTimer)
+  undoHintTimer = setTimeout(finishUndoHint, 8000)
 }
 const valid = computed(() => entries.value.filter((x) => x.config))
 const associationState = computed(() => {
@@ -388,6 +503,12 @@ function pasteBatch(event: ClipboardEvent) {
       ? reviewSource.value + '\n' + text
       : insertBatchText(raw.value, text, input.selectionStart, input.selectionEnd).text
   pastedSecrets = new Set(analysis.candidates.map((candidate) => candidate.config.secret))
+  const before = raw.value,
+    start = input.selectionStart,
+    end = input.selectionEnd
+  rememberFill(fillState(), normalized, start, (rows) =>
+    rows ? insertBatchText(before, rows, start, end) : { text: before, cursor: start }
+  )
   raw.value = inserted.text
   matchSource.value = source
   matchAssociations.value = {}
@@ -399,6 +520,8 @@ function pasteBatch(event: ClipboardEvent) {
 }
 function clear() {
   pastedSecrets.clear()
+  fills = []
+  finishUndoHint()
   imageRevision++
   qrIssue.value = ''
   batchSessionId.value = createBatchSessionId()
@@ -422,12 +545,22 @@ onMounted(() => {
       update()
   }, 250)
   window.addEventListener('pagehide', clear)
+  window.addEventListener('keydown', handleUndoShortcut)
+  keyboardMedia = matchMedia('(min-width: 701px) and (hover: hover) and (pointer: fine)')
+  if (/mac|iphone|ipad/i.test(navigator.platform || navigator.userAgent))
+    undoKeys.value = { undo: '⌘Z', single: '⇧⌘Z' }
+  try {
+    undoHintSeen.value ||= localStorage.getItem('2fa-batch-undo-hint-seen-v1') === '1'
+  } catch {}
 })
 onBeforeUnmount(() => {
   sequence++
   clearInterval(timer)
+  clearTimeout(undoHintTimer)
   codeCache.clear()
+  fills = []
   window.removeEventListener('pagehide', clear)
+  window.removeEventListener('keydown', handleUndoShortcut)
 })
 </script>
 <template>
@@ -467,6 +600,7 @@ onBeforeUnmount(() => {
       <UTextarea
         v-else-if="!standalone"
         @paste="pasteBatch"
+        @beforeinput="offerUndoHint"
         :model-value="displayRaw"
         @update:model-value="
           (value) => {
@@ -480,10 +614,17 @@ onBeforeUnmount(() => {
         size="xl"
         :placeholder="tx('每行一个密钥，可以连续粘贴多条。\n也支持 otpauth:// 配置链接。')"
         :aria-label="tx('批量密钥')"
+        aria-keyshortcuts="Control+Z Control+Shift+Z Meta+Z Meta+Shift+Z"
         aria-describedby="batch-input-hint"
         :ui="{ base: 'font-mono text-base leading-6 px-3 py-3 ring-[var(--control-line)]' }"
         :spellcheck="false"
         autocomplete="off"
+      />
+      <ActionHint
+        :open="undoHint && !guiding"
+        :message="tx('按 {undo} 撤回本次粘贴，按 {single} 逐条撤回', undoKeys)"
+        icon="i-lucide-undo-2"
+        @close="finishUndoHint"
       />
       <div v-if="!standalone && !matching && !guiding && valid.length" class="batch-paste-notice">
         <PasteNotice

@@ -626,5 +626,6 @@
   "mf2db3712a685": "שמירה אוטומטית",
   "guideStepRemaining": "עקבו אחרי הזמן שנותר",
   "guideDetailRemaining": "הפס מתחת לקוד הוא הזמן שנותר, והוא יורד במדרגות כמו פס ניסיון. כשהוא מתרוקן נכנס קוד חדש והישן מפסיק לעבוד מיד.",
-  "historySelectedOfTotal": "נבחרו {count} מתוך {total}"
+  "historySelectedOfTotal": "נבחרו {count} מתוך {total}",
+  "batchUndoHint": "הקישו {undo} כדי לבטל את ההדבקה הזו, או {single} כדי לבטל אותה שורה אחר שורה"
 }

@@ -626,5 +626,6 @@
   "mf2db3712a685": "Automatisch opslaan",
   "guideStepRemaining": "Kijk naar de resterende tijd",
   "guideDetailRemaining": "De balk onder de code is de resterende tijd en loopt met stapjes leeg, als een ervaringsbalk. Is hij leeg, dan neemt een nieuwe code het over en werkt de oude niet meer.",
-  "historySelectedOfTotal": "{count} van {total} geselecteerd"
+  "historySelectedOfTotal": "{count} van {total} geselecteerd",
+  "batchUndoHint": "Druk op {undo} om deze plakactie ongedaan te maken, of op {single} om dat regel voor regel te doen"
 }

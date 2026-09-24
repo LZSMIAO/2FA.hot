@@ -626,5 +626,6 @@
   "mf2db3712a685": "Awtomatikong pag-save",
   "guideStepRemaining": "Tingnan ang natitirang oras",
   "guideDetailRemaining": "Ang bar sa ilalim ng code ang natitirang oras, at paunti-unti itong bumababa na parang experience bar. Kapag naubos, papalit ang bagong code at hindi na gagana ang luma.",
-  "historySelectedOfTotal": "{count} sa {total} ang napili"
+  "historySelectedOfTotal": "{count} sa {total} ang napili",
+  "batchUndoHint": "Pindutin ang {undo} para i-undo ang pag-paste na ito, o {single} para i-undo ito nang isa-isang linya"
 }

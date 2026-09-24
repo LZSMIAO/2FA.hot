@@ -626,5 +626,6 @@
   "mf2db3712a685": "Otomatik kaydetme",
   "guideStepRemaining": "Kalan süreye bak",
   "guideDetailRemaining": "Kodun altındaki çubuk kalan süredir ve deneyim çubuğu gibi çentik çentik azalır. Boşaldığında yeni bir kod gelir, eskisi hemen geçersiz olur.",
-  "historySelectedOfTotal": "{total} kayıttan {count} tanesi seçili"
+  "historySelectedOfTotal": "{total} kayıttan {count} tanesi seçili",
+  "batchUndoHint": "Bu yapıştırmayı geri almak için {undo}, satır satır geri almak için {single} tuşlarına basın"
 }

@@ -876,5 +876,6 @@ export const sourceKeys = new Map<string, string>([
     '验证码下面这条是剩余时间，像经验条一样一格格减少。走完就换一组新的，旧的立刻作废。',
     'guideDetailRemaining'
   ],
-  ['已选 {count} / {total}', 'historySelectedOfTotal']
+  ['已选 {count} / {total}', 'historySelectedOfTotal'],
+  ['按 {undo} 撤回本次粘贴，按 {single} 逐条撤回', 'batchUndoHint']
 ])

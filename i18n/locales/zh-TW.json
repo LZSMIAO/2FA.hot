@@ -626,5 +626,6 @@
   "mf2db3712a685": "自動保存",
   "guideStepRemaining": "看剩餘時間",
   "guideDetailRemaining": "驗證碼下面這條是剩餘時間，像經驗條一樣一格格減少。走完就換一組新的，舊的立刻失效。",
-  "historySelectedOfTotal": "已選 {count} / {total}"
+  "historySelectedOfTotal": "已選 {count} / {total}",
+  "batchUndoHint": "按 {undo} 撤回本次貼上，按 {single} 逐條撤回"
 }

@@ -626,5 +626,6 @@
   "mf2db3712a685": "Autozapis",
   "guideStepRemaining": "Patrz na pozostały czas",
   "guideDetailRemaining": "Pasek pod kodem to pozostały czas i opada kreskami, jak pasek doświadczenia. Gdy się opróżni, wchodzi nowy kod, a stary przestaje działać.",
-  "historySelectedOfTotal": "Zaznaczono {count} z {total}"
+  "historySelectedOfTotal": "Zaznaczono {count} z {total}",
+  "batchUndoHint": "Naciśnij {undo}, aby cofnąć to wklejenie, lub {single}, aby cofać je po jednym wierszu"
 }

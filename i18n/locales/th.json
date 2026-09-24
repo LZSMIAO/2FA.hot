@@ -626,5 +626,6 @@
   "mf2db3712a685": "บันทึกอัตโนมัติ",
   "guideStepRemaining": "ดูเวลาที่เหลือ",
   "guideDetailRemaining": "แถบใต้รหัสคือเวลาที่เหลือ ลดลงทีละช่องเหมือนแถบประสบการณ์ พอหมดก็เปลี่ยนเป็นรหัสชุดใหม่ และชุดเดิมใช้ไม่ได้ทันที",
-  "historySelectedOfTotal": "เลือกแล้ว {count} จาก {total}"
+  "historySelectedOfTotal": "เลือกแล้ว {count} จาก {total}",
+  "batchUndoHint": "กด {undo} เพื่อเลิกทำการวางครั้งนี้ หรือกด {single} เพื่อเลิกทำทีละบรรทัด"
 }

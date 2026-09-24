@@ -8,7 +8,9 @@ import {
   pastedInputText,
   removeBatchLines,
   insertBatchText,
-  batchPasteText
+  batchPasteText,
+  batchFillRows,
+  keptBatchFill
 } from '../app/utils/smart-paste.ts'
 import { parseBatch, toOtpUri, parseOtp, DEMO_SECRET } from '../app/utils/otp.ts'
 const key = 'JBSWY3DPEHPK3PXP'
@@ -54,6 +56,22 @@ test('pasting Windows lines one by one neither stacks blank lines nor splits a r
     [rows[0], next, ...rows.slice(1)].join('\n')
   )
   assert.equal(batchPasteText('\r\n  ' + key + '\r\n\r\n'), '  ' + key)
+})
+test('undoing a batch fill row by row rebuilds the text around the original selection', () => {
+  const fill = 'A1\n\nB2\nC3'
+  assert.equal(batchFillRows(fill), 3)
+  assert.deepEqual(
+    [3, 2, 1, 0].map((rows) => keptBatchFill(fill, rows)),
+    [fill, 'A1\n\nB2', 'A1', '']
+  )
+  // Pasted between two existing rows: each step keeps the neighbours on their own lines.
+  const before = 'TOP\nBOTTOM'
+  const at = 'TOP\n'.length
+  const place = (rows: string) => (rows ? insertBatchText(before, rows, at, at).text : before)
+  assert.equal(place(keptBatchFill(fill, 3)), 'TOP\nA1\n\nB2\nC3\nBOTTOM')
+  assert.equal(place(keptBatchFill(fill, 2)), 'TOP\nA1\n\nB2\nBOTTOM')
+  assert.equal(place(keptBatchFill(fill, 1)), 'TOP\nA1\nBOTTOM')
+  assert.equal(place(keptBatchFill(fill, 0)), before)
 })
 test('plain, grouped and named keys preserve their actual secret', () => {
   for (const source of [

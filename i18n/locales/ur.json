@@ -626,5 +626,6 @@
   "mf2db3712a685": "خودکار محفوظ کرنا",
   "guideStepRemaining": "باقی وقت دیکھیں",
   "guideDetailRemaining": "کوڈ کے نیچے والی پٹی باقی وقت ہے، جو تجربے کی پٹی کی طرح ایک ایک خانہ کم ہوتی ہے۔ ختم ہوتے ہی نیا کوڈ آ جاتا ہے اور پرانا فوراً بیکار ہو جاتا ہے۔",
-  "historySelectedOfTotal": "{total} میں سے {count} منتخب"
+  "historySelectedOfTotal": "{total} میں سے {count} منتخب",
+  "batchUndoHint": "اس پیسٹ کو واپس لینے کے لیے {undo} اور ایک ایک سطر واپس لینے کے لیے {single} دبائیں"
 }

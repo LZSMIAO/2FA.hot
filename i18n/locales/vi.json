@@ -626,5 +626,6 @@
   "mf2db3712a685": "Tự động lưu",
   "guideStepRemaining": "Xem thời gian còn lại",
   "guideDetailRemaining": "Thanh dưới mã là thời gian còn lại, vơi dần từng nấc như thanh kinh nghiệm. Hết thanh là có mã mới thay thế, mã cũ lập tức không dùng được nữa.",
-  "historySelectedOfTotal": "Đã chọn {count} trên {total}"
+  "historySelectedOfTotal": "Đã chọn {count} trên {total}",
+  "batchUndoHint": "Nhấn {undo} để hoàn tác lần dán này, hoặc {single} để hoàn tác từng dòng"
 }

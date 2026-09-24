@@ -626,5 +626,6 @@
   "mf2db3712a685": "Simpan otomatis",
   "guideStepRemaining": "Lihat sisa waktunya",
   "guideDetailRemaining": "Batang di bawah kode adalah sisa waktu dan turun bertahap, seperti batang pengalaman. Begitu habis, kode baru menggantikannya dan yang lama langsung tidak berlaku.",
-  "historySelectedOfTotal": "{count} dari {total} dipilih"
+  "historySelectedOfTotal": "{count} dari {total} dipilih",
+  "batchUndoHint": "Tekan {undo} untuk membatalkan tempelan ini, atau {single} untuk membatalkannya baris demi baris"
 }

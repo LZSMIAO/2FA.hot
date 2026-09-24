@@ -626,5 +626,6 @@
   "mf2db3712a685": "Salvataggio automatico",
   "guideStepRemaining": "Guarda il tempo rimasto",
   "guideDetailRemaining": "La barra sotto il codice è il tempo rimasto e cala a tacche, come una barra dell’esperienza. Quando si svuota arriva un codice nuovo e il vecchio non vale più.",
-  "historySelectedOfTotal": "{count} di {total} selezionati"
+  "historySelectedOfTotal": "{count} di {total} selezionati",
+  "batchUndoHint": "Premi {undo} per annullare questo incollaggio o {single} per annullarlo una riga alla volta"
 }

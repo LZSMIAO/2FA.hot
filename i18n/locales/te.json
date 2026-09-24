@@ -626,5 +626,6 @@
   "mf2db3712a685": "ఆటో సేవ్",
   "guideStepRemaining": "మిగిలిన సమయం చూడండి",
   "guideDetailRemaining": "కోడ్ కింది పట్టీ మిగిలిన సమయం; అనుభవ పట్టీలా గడి గడిగా తగ్గుతుంది. ఖాళీ అయ్యాక కొత్త కోడ్ వస్తుంది, పాతది వెంటనే పనికిరాదు.",
-  "historySelectedOfTotal": "{total}లో {count} ఎంపికయ్యాయి"
+  "historySelectedOfTotal": "{total}లో {count} ఎంపికయ్యాయి",
+  "batchUndoHint": "ఈ పేస్ట్‌ను రద్దు చేయడానికి {undo}, ఒక్కో వరుసను రద్దు చేయడానికి {single} నొక్కండి"
 }

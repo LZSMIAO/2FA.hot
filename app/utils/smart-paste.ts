@@ -376,6 +376,21 @@ export function batchPasteText(text: string): string {
     .replace(/\n\s*$/, '')
 }
 
+/** Non-empty rows in a batch fill; each one becomes a separate entry. */
+export function batchFillRows(text: string): number {
+  return text.split('\n').filter((line) => line.trim()).length
+}
+
+/** The part of a batch fill that keeps its first `rows` non-empty rows. */
+export function keptBatchFill(text: string, rows: number): string {
+  if (rows <= 0) return ''
+  const lines = text.split('\n')
+  let seen = 0
+  for (let i = 0; i < lines.length; i++)
+    if (lines[i]!.trim() && ++seen === rows) return lines.slice(0, i + 1).join('\n')
+  return text
+}
+
 /** Keep pasted batch entries separate from the text on either side of the selection. */
 export function insertBatchText(current: string, incoming: string, start: number, end: number) {
   // start/end come from the textarea, which counts a CRLF as one character.

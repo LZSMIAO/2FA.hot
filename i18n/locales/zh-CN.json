@@ -626,5 +626,6 @@
   "mf2db3712a685": "自动保存",
   "guideStepRemaining": "看剩余时间",
   "guideDetailRemaining": "验证码下面这条是剩余时间，像经验条一样一格格减少。走完就换一组新的，旧的立刻作废。",
-  "historySelectedOfTotal": "已选 {count} / {total}"
+  "historySelectedOfTotal": "已选 {count} / {total}",
+  "batchUndoHint": "按 {undo} 撤回本次粘贴，按 {single} 逐条撤回"
 }

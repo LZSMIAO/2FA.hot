@@ -626,5 +626,6 @@
   "mf2db3712a685": "Autosave",
   "guideStepRemaining": "Watch the time left",
   "guideDetailRemaining": "The bar under the code is the time left, draining a notch at a time like an experience bar. When it empties a new code takes over and the old one stops working.",
-  "historySelectedOfTotal": "{count} of {total} selected"
+  "historySelectedOfTotal": "{count} of {total} selected",
+  "batchUndoHint": "Press {undo} to undo this paste, or {single} to undo one row at a time"
 }

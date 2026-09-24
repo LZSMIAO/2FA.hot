@@ -626,5 +626,6 @@
   "mf2db3712a685": "Kuhifadhi kiotomatiki",
   "guideStepRemaining": "Angalia muda uliosalia",
   "guideDetailRemaining": "Upau ulio chini ya msimbo ni muda uliosalia, na hupungua hatua kwa hatua kama upau wa uzoefu. Ukiisha, msimbo mpya huchukua nafasi na ule wa zamani hukoma mara moja.",
-  "historySelectedOfTotal": "{count} kati ya {total} zimechaguliwa"
+  "historySelectedOfTotal": "{count} kati ya {total} zimechaguliwa",
+  "batchUndoHint": "Bonyeza {undo} kutendua ubandikaji huu, au {single} kuutendua mstari mmoja baada ya mwingine"
 }

@@ -626,5 +626,6 @@
   "mf2db3712a685": "Simpan automatik",
   "guideStepRemaining": "Lihat baki masa",
   "guideDetailRemaining": "Bar di bawah kod ialah baki masa dan turun berperingkat, seperti bar pengalaman. Apabila habis, kod baharu mengambil alih dan yang lama terus tidak sah.",
-  "historySelectedOfTotal": "{count} daripada {total} dipilih"
+  "historySelectedOfTotal": "{count} daripada {total} dipilih",
+  "batchUndoHint": "Tekan {undo} untuk membuat asal tampalan ini, atau {single} untuk membuat asal baris demi baris"
 }

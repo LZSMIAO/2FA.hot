@@ -626,5 +626,6 @@
   "mf2db3712a685": "自動保存",
   "guideStepRemaining": "残り時間を見る",
   "guideDetailRemaining": "コードの下のバーが残り時間です。経験値バーのように一目盛りずつ減り、なくなると新しいコードに変わって古いほうはすぐ使えなくなります。",
-  "historySelectedOfTotal": "{total} 件中 {count} 件を選択"
+  "historySelectedOfTotal": "{total} 件中 {count} 件を選択",
+  "batchUndoHint": "{undo} で今回の貼り付けを取り消し、{single} で 1 行ずつ取り消せます"
 }

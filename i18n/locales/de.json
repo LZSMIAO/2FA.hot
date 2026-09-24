@@ -626,5 +626,6 @@
   "mf2db3712a685": "Automatisch speichern",
   "guideStepRemaining": "Die Restzeit im Blick",
   "guideDetailRemaining": "Der Balken unter dem Code ist die Restzeit und leert sich kerbenweise wie eine Erfahrungsleiste. Ist er leer, übernimmt ein neuer Code und der alte gilt nicht mehr.",
-  "historySelectedOfTotal": "{count} von {total} ausgewählt"
+  "historySelectedOfTotal": "{count} von {total} ausgewählt",
+  "batchUndoHint": "{undo} drücken, um das Einfügen rückgängig zu machen, {single} für jeweils eine Zeile"
 }
