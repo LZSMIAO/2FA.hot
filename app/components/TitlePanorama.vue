@@ -9,6 +9,8 @@ import {
 import {
   customPanoramaScene,
   defaultPanoramaScene,
+  panoramaGroups,
+  previewOf,
   type PanoramaScene
 } from '~/composables/usePanoramaPreference'
 defineProps<{ bounded?: boolean }>()
@@ -134,14 +136,24 @@ function removeRequested() {
   void removeCustom()
 }
 const sceneItems = computed(() => [
-  scenes.map((version) => ({
-    label: `Minecraft ${version}`,
-    preview: `/panorama/previews/${version}.png`,
-    type: 'checkbox' as const,
-    checked: scene.value === version,
-    disabled: loading.value,
-    onSelect: () => changeScene(version)
-  })),
+  // One entry per collection; its scenes open beside it. The entry shows the
+  // scene in use when it belongs to that collection, so the choice stays visible.
+  panoramaGroups.map((group) => {
+    const active = (group.scenes as readonly string[]).includes(scene.value)
+    return {
+      label: group.label,
+      icon: 'i-lucide-images',
+      preview: previewOf(active ? scene.value : group.scenes[0]),
+      children: group.scenes.map((version) => ({
+        label: version,
+        preview: previewOf(version),
+        type: 'checkbox' as const,
+        checked: scene.value === version,
+        disabled: loading.value,
+        onSelect: () => changeScene(version)
+      }))
+    }
+  }),
   [
     ...(custom.value
       ? [

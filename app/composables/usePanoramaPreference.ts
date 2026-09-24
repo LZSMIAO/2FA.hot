@@ -22,6 +22,15 @@ export const panoramaScenes = [
   '1.14.4'
 ] as const
 export type PanoramaScene = (typeof panoramaScenes)[number]
+/**
+ * Scenes are offered by group, each folded behind one menu entry, so a long
+ * run of versions never pushes the upload and custom entries off the bottom
+ * of the menu. Another collection is another entry here.
+ */
+export const panoramaGroups = [
+  { id: 'minecraft', label: 'Minecraft', scenes: panoramaScenes }
+] as const
+export const previewOf = (scene: string) => `/panorama/previews/${scene}.png`
 export const defaultPanoramaScene: PanoramaScene = '1.20.1'
 /** The visitor's own background, kept in IndexedDB; see ~/utils/custom-panorama. */
 export const customPanoramaScene = 'custom'

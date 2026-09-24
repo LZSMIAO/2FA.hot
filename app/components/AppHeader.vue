@@ -2,7 +2,7 @@
 const localePath = useLocalePath()
 import { isPrivatePage, unlocalizedPath } from '~~/shared/seo/routes'
 import ButtonSoundToggle from './ButtonSoundToggle.vue'
-import { customPanoramaScene } from '~/composables/usePanoramaPreference'
+import { customPanoramaScene, panoramaGroups } from '~/composables/usePanoramaPreference'
 
 const { tx, locale } = useMessages()
 const liteHref = computed(() => '/lite?lang=' + locale.value)
@@ -60,7 +60,7 @@ const themes = computed(() => [
  * carries them there instead. Only on the home page, which is the only place
  * the backdrop is on screen.
  */
-const { scenes, selected, playbackPaused, custom } = usePanoramaPreference()
+const { selected, playbackPaused, custom } = usePanoramaPreference()
 const narrow = shallowRef(false)
 const onHome = computed(() => unlocalizedPath(route.path) === '/')
 onMounted(() => {
@@ -91,13 +91,17 @@ const backdrop = computed(() =>
                   },
                   { type: 'separator' as const }
                 ]),
-            ...scenes.map((version) => ({
-              label: `Minecraft ${version}`,
-              type: 'checkbox' as const,
-              checked: selected.value === version,
-              onSelect: () => {
-                selected.value = version
-              }
+            // Each collection folds behind one entry, as in the backdrop's own menu.
+            ...panoramaGroups.map((group) => ({
+              label: group.label,
+              children: group.scenes.map((version) => ({
+                label: version,
+                type: 'checkbox' as const,
+                checked: selected.value === version,
+                onSelect: () => {
+                  selected.value = version
+                }
+              }))
             })),
             { type: 'separator' as const },
             ...(custom.value
