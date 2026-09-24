@@ -417,7 +417,7 @@ onBeforeUnmount(() => {
           >
             <button
               type="button"
-              class="tutorial-tip-toggle"
+              class="tutorial-tip-toggle info-mark"
               :class="{ 'is-open': tipVisible }"
               :aria-label="tx('小提示')"
             >
@@ -780,18 +780,16 @@ onBeforeUnmount(() => {
   padding: 1rem 1.25rem 0;
   min-height: 10rem;
 }
+/* Inline flow, so the info mark trails the title's last word as it wraps. */
 .tutorial-step-head {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
   min-width: 0;
+  font-size: var(--text-label);
 }
-/* The title has to give, or a long one pushes the circle out of the drawer. */
 .tutorial-step-head > strong {
-  min-width: 0;
   overflow-wrap: anywhere;
 }
 .tutorial-step-head > span {
+  margin-inline-end: 0.5rem;
   font-family: var(--font-mono);
   font-size: var(--text-caption);
   color: var(--accent-ink);
@@ -805,15 +803,6 @@ onBeforeUnmount(() => {
   font-size: var(--text-label);
   line-height: 1.8;
   margin-top: 0.5rem;
-}
-.tutorial-tip-toggle {
-  display: inline-grid;
-  place-items: center;
-  flex: 0 0 1.5rem;
-  width: 1.5rem;
-  height: 1.5rem;
-  margin-inline-start: -0.125rem;
-  color: var(--ui-text-muted);
 }
 .tutorial-tip-toggle:hover,
 .tutorial-tip-toggle.is-open {

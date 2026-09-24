@@ -84,7 +84,7 @@ onBeforeUnmount(() => {
             :content="{ side: 'top', align: 'end', sideOffset: 2 }"
             :ui="{ content: 'parameter-help-tooltip', arrow: 'parameter-help-arrow' }"
           >
-            <button type="button" class="link-info" :aria-label="tx('为什么使用 #？')">
+            <button type="button" class="info-mark" :aria-label="tx('为什么使用 #？')">
               <UIcon name="i-lucide-info" aria-hidden="true" />
             </button>
             <template #content>
@@ -131,36 +131,15 @@ onBeforeUnmount(() => {
 </template>
 <style scoped>
 .export-notice {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--control-gap, 0.5rem);
+  /* Match the modal's paragraph size; the mark aligns to this line's text. */
+  font-size: var(--text-label);
 }
 .export-notice p {
-  flex: 1;
+  /* Inline, so the info mark trails the notice's last word. */
+  display: inline;
 }
-.link-info {
-  display: grid;
-  place-items: center;
-  flex: 0 0 32px;
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--ui-text-muted);
+.export-notice .info-mark {
   cursor: default;
-}
-.link-info .iconify {
-  width: 16px;
-  height: 16px;
-}
-.link-info:hover,
-.link-info:focus-visible {
-  color: var(--ui-text-highlighted);
-}
-.link-info:focus-visible {
-  outline: 2px solid var(--accent-ink);
-  outline-offset: 2px;
 }
 .link-info-content {
   display: grid;

@@ -395,7 +395,7 @@ onBeforeUnmount(() => {
                   :content="{ side: 'top', align: 'center', sideOffset: 2 }"
                   :ui="{ content: 'parameter-help-tooltip', arrow: 'parameter-help-arrow' }"
                 >
-                  <button type="button" class="qr-import-info" :aria-label="tx('使用说明')">
+                  <button type="button" class="info-mark" :aria-label="tx('使用说明')">
                     <UIcon name="i-lucide-info" aria-hidden="true" />
                   </button>
                   <template #content>
@@ -585,33 +585,16 @@ onBeforeUnmount(() => {
   gap: 14px;
 }
 .qr-drop-line {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
+  text-align: center;
+  /* Match the modal's paragraph size; the mark aligns to this line's text. */
+  font-size: var(--text-label);
 }
-.qr-import-info {
-  display: grid;
-  place-items: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--ui-text-muted);
+/* Inline, so the info mark trails the instruction's last word. */
+.qr-drop-instruction {
+  display: inline;
+}
+.qr-drop-line .info-mark {
   cursor: default;
-}
-.qr-import-info .iconify {
-  width: 1rem;
-  height: 1rem;
-}
-.qr-import-info:hover,
-.qr-import-info:focus-visible {
-  color: var(--ui-text-highlighted);
-}
-.qr-import-info:focus-visible {
-  outline: 2px solid var(--accent-ink);
-  outline-offset: -4px;
 }
 .qr-import-tips {
   display: grid;

@@ -13,7 +13,7 @@ const { tx } = useMessages()
           <AppHint :text="tx('保存与备份')"
             ><NuxtLink
               :to="localePath('/help#history')"
-              class="history-intro-help"
+              class="history-intro-help info-mark"
               :aria-label="tx('保存与备份')"
               ><UIcon name="i-lucide-info" /></NuxtLink
           ></AppHint>
@@ -39,25 +39,12 @@ const { tx } = useMessages()
   font-size: calc(var(--text-title) * 1.15);
   font-weight: 800;
 }
-.history-page .page-intro p {
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
-}
 .history-intro-help {
-  display: inline-grid;
-  place-items: center;
-  width: 1.5rem;
-  height: 1.5rem;
   /* This sits on the panorama, where muted grey washes out in light mode. */
   color: var(--ui-text);
 }
 .history-intro-help:hover,
 .history-intro-help:focus-visible {
   color: var(--accent-ink);
-}
-.history-intro-help :deep(.iconify) {
-  width: 1rem;
-  height: 1rem;
 }
 </style>

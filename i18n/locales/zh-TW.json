@@ -628,5 +628,5 @@
   "guideDetailRemaining": "驗證碼下面這條是剩餘時間，像經驗條一樣一格格減少。走完就換一組新的，舊的立刻失效。",
   "historySelectedOfTotal": "已選 {count} / {total}",
   "batchUndoHint": "按 {undo} 撤回本次貼上，按 {single} 逐條撤回",
-  "batchUndoPraise": "不錯嘛，還知道用快捷鍵！{undo} 撤回整次貼上，{single} 逐條撤回"
+  "batchUndoPraise": "太好了，看來你會用快捷鍵！\n{undo} 撤回整次貼上，{single} 逐條撤回"
 }

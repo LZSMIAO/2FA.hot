@@ -641,7 +641,7 @@ onBeforeUnmount(() => {
         :open="undoHintOpen && !guiding"
         :message="
           undoHintKind === 'shortcut'
-            ? tx('不错嘛，还知道用快捷键！{undo} 撤回整次粘贴，{single} 逐条撤回', undoKeys)
+            ? tx('太好了，看来你会用快捷键！\n{undo} 撤回整次粘贴，{single} 逐条撤回', undoKeys)
             : tx('按 {undo} 撤回本次粘贴，按 {single} 逐条撤回', undoKeys)
         "
         :icon="undoHintKind === 'shortcut' ? 'i-lucide-thumbs-up' : 'i-lucide-undo-2'"

@@ -628,5 +628,5 @@
   "guideDetailRemaining": "Batang di bawah kode adalah sisa waktu dan turun bertahap, seperti batang pengalaman. Begitu habis, kode baru menggantikannya dan yang lama langsung tidak berlaku.",
   "historySelectedOfTotal": "{count} dari {total} dipilih",
   "batchUndoHint": "Tekan {undo} untuk membatalkan tempelan ini, atau {single} untuk membatalkannya baris demi baris",
-  "batchUndoPraise": "Keren, Anda tahu pintasannya! {undo} membatalkan seluruh tempelan, {single} baris demi baris"
+  "batchUndoPraise": "Bagus, sepertinya Anda tahu pintasannya!\n{undo} membatalkan seluruh tempelan, {single} baris demi baris"
 }

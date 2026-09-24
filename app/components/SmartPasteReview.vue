@@ -202,31 +202,34 @@ function useSelected() {
           <button type="button" class="select-all-label" @click="toggleAll">
             {{ tx(allSelected ? '取消全选' : '全选') }}
           </button>
-          <span
-            class="selection-count"
-            :aria-label="tx('检测到 {count} 条候选密钥', { count: result.candidates.length })"
-            >{{ selected.length }} / {{ result.candidates.length }}</span
-          >
+          <span class="selection-count-group">
+            <span
+              class="selection-count"
+              :aria-label="tx('检测到 {count} 条候选密钥', { count: result.candidates.length })"
+              >{{ selected.length }} / {{ result.candidates.length }}</span
+            ><UPopover
+              mode="hover"
+              :open-delay="0"
+              :close-delay="100"
+              enable-touch
+              arrow
+              :content="{ side: 'top', align: 'center', sideOffset: 2 }"
+              :ui="{ content: 'parameter-help-tooltip', arrow: 'parameter-help-arrow' }"
+            >
+              <button type="button" class="info-mark" :aria-label="tx('使用说明')">
+                <UIcon name="i-lucide-info" aria-hidden="true" />
+              </button>
+              <template #content>
+                <div class="review-tips">
+                  <p>
+                    {{ tx('检测到 {count} 条候选密钥', { count: result.candidates.length }) }}
+                  </p>
+                  <p v-if="reviewNotice">{{ tx(reviewNotice) }}</p>
+                </div>
+              </template>
+            </UPopover>
+          </span>
         </div>
-        <UPopover
-          mode="hover"
-          :open-delay="0"
-          :close-delay="100"
-          enable-touch
-          arrow
-          :content="{ side: 'top', align: 'end', sideOffset: 2 }"
-          :ui="{ content: 'parameter-help-tooltip', arrow: 'parameter-help-arrow' }"
-        >
-          <button type="button" class="review-info" :aria-label="tx('使用说明')">
-            <UIcon name="i-lucide-info" aria-hidden="true" />
-          </button>
-          <template #content>
-            <div class="review-tips">
-              <p>{{ tx('检测到 {count} 条候选密钥', { count: result.candidates.length }) }}</p>
-              <p v-if="reviewNotice">{{ tx(reviewNotice) }}</p>
-            </div>
-          </template>
-        </UPopover>
       </div>
       <p v-if="!result.candidates.length && reviewNotice" class="field-hint" role="alert">
         {{ tx(reviewNotice) }}
@@ -603,25 +606,8 @@ function useSelected() {
 </style>
 
 <style scoped>
-.review-info {
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--ui-text-muted);
+.selection-count-group .info-mark {
   cursor: default;
-}
-.review-info .iconify {
-  width: 16px;
-  height: 16px;
-}
-.review-info:focus-visible {
-  outline: 2px solid var(--accent-ink);
-  outline-offset: -2px;
 }
 .review-tips {
   max-width: min(18rem, calc(100vw - 3rem));
@@ -632,9 +618,12 @@ function useSelected() {
 .review-tips p + p {
   margin-top: 0.375rem;
 }
+/* The mark aligns to its parent's text, so the count's size lives here. */
+.selection-count-group {
+  font-size: 0.8125rem;
+}
 .selection-count {
   font-variant-numeric: tabular-nums;
-  font-size: 0.8125rem;
 }
 </style>
 

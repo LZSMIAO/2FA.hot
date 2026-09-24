@@ -11,7 +11,7 @@ function entranceSound() {
     <Transition name="hint" appear @enter="entranceSound">
       <aside v-if="open" class="action-hint ore-theme" role="status" aria-live="polite">
         <UIcon :name="icon" class="hint-icon" />
-        <span>{{ message }}</span>
+        <span class="hint-message">{{ message }}</span>
         <button type="button" :aria-label="tx('关闭')" @click="$emit('close')">
           <UIcon name="i-lucide-x" />
         </button>
@@ -40,6 +40,10 @@ function entranceSound() {
   font-size: 16px;
   font-weight: 600;
   line-height: 1.5;
+}
+/* A message may put its details on a second line. */
+.hint-message {
+  white-space: pre-line;
 }
 .hint-icon {
   flex-shrink: 0;

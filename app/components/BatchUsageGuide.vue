@@ -182,7 +182,7 @@ onBeforeUnmount(() => {
         >
           <button
             type="button"
-            class="tutorial-tip-toggle"
+            class="tutorial-tip-toggle info-mark"
             :class="{ 'is-open': tipOpen }"
             :aria-label="tx('小提示')"
           >
@@ -292,23 +292,15 @@ onBeforeUnmount(() => {
   display: grid;
   grid-template-rows: auto 1fr 2rem auto;
 }
+/* Inline flow, so the info mark trails the title's last word as it wraps. */
 .batch-guide-head {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
   min-width: 0;
+  margin-bottom: 1rem;
+  font-size: var(--text-section);
 }
-.batch-guide-head h2 {
-  min-width: 0;
+.batch-guide-body .batch-guide-head h2 {
+  display: inline;
   margin: 0;
-}
-.tutorial-tip-toggle {
-  display: inline-grid;
-  place-items: center;
-  width: 1.5rem;
-  height: 1.5rem;
-  flex-shrink: 0;
-  color: var(--ui-text-muted);
 }
 .tutorial-tip-toggle:hover,
 .tutorial-tip-toggle.is-open {

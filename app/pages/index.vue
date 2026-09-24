@@ -267,7 +267,7 @@ watch(
                 >
                   <NuxtLink
                     :to="localePath('/privacy')"
-                    class="local-processing-help"
+                    class="local-processing-help info-mark"
                     :aria-label="tx('隐私说明')"
                     ><UIcon name="i-lucide-info"
                   /></NuxtLink>

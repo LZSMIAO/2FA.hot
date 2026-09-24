@@ -628,5 +628,5 @@
   "guideDetailRemaining": "コードの下のバーが残り時間です。経験値バーのように一目盛りずつ減り、なくなると新しいコードに変わって古いほうはすぐ使えなくなります。",
   "historySelectedOfTotal": "{total} 件中 {count} 件を選択",
   "batchUndoHint": "{undo} で今回の貼り付けを取り消し、{single} で 1 行ずつ取り消せます",
-  "batchUndoPraise": "おっ、ショートカットを使いこなしていますね！{undo} で貼り付け全体を、{single} で 1 行ずつ取り消せます"
+  "batchUndoPraise": "いいですね、ショートカットを使いこなしていますね！\n{undo} で貼り付け全体を、{single} で 1 行ずつ取り消せます"
 }
