@@ -610,7 +610,9 @@ async function expand() {
 .otp-slot-placeholder {
   font-size: 0.7em;
   line-height: 1;
-  transform: translateY(0.12em);
+  /* No nudge: VT323 already draws its asterisk on the middle of the line box,
+     and the old translateY(0.12em) - made for a font that sets it high - left
+     it 6.5px below the slot's centre at desktop size. */
   color: var(--ui-text-muted);
   opacity: 0;
   transition: opacity 180ms ease;
