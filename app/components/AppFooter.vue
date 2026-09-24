@@ -7,7 +7,9 @@ const { tx } = useMessages()
     <div class="footer-inner">
       <NuxtLink class="footer-brand" :to="localePath('/')"
         ><span class="footer-wordmark">2fa.hot</span
-        ><span class="footer-tagline"> - {{ tx('多功能 TOTP 验证码生成器') }}</span></NuxtLink
+        ><span class="footer-tagline"
+          ><span class="footer-dash"> - </span>{{ tx('多功能 TOTP 验证码生成器') }}</span
+        ></NuxtLink
       >
       <nav :aria-label="tx('页脚导航')">
         <div class="footer-pages">

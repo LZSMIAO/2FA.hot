@@ -1539,6 +1539,15 @@ html.size-transition .desert-art svg * {
     flex-shrink: 0;
     padding-bottom: env(safe-area-inset-bottom);
   }
+  /*
+   * iOS Safari changes the bottom inset as its toolbar collapses and expands
+   * (0 to about 34px), so at the end of the page the footer grew a strip and
+   * snapped back on the next tap or scroll. A fixed clearance past the home
+   * indicator keeps the page's length the same in every toolbar state.
+   */
+  html[data-ios] .site-footer {
+    padding-bottom: 2.25rem;
+  }
   .guide-layer.guide-inline {
     position: static;
     inset: auto;

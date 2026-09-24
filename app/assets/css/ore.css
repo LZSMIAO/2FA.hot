@@ -784,7 +784,20 @@
     max-width: calc(100% - 6rem);
     min-width: 2.75rem;
     min-height: 2.75rem;
-    justify-content: flex-start;
+    /* The description goes under the name and wraps rather than being cut
+       off, still clear of the icons. */
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.125rem;
+    white-space: normal;
+  }
+  html:root .site-footer .footer-tagline {
+    overflow: visible;
+    white-space: normal;
+  }
+  html:root .site-footer .footer-dash {
+    display: none;
   }
   html:root .site-footer .footer-inner nav {
     grid-row: 2;
