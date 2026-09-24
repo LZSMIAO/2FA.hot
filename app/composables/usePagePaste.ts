@@ -1,10 +1,10 @@
-import { transferText } from '../utils/transfer-text.ts'
+import { pastedImages, transferText } from '../utils/transfer-text.ts'
 /** Handle native paste outside editors without requesting clipboard permissions. */
 export function usePagePaste(options: {
   enabled: () => boolean
   input: () => HTMLInputElement | HTMLTextAreaElement | undefined
   text: (value: string) => void
-  image?: (file: File) => void
+  images?: (files: File[]) => void
 }) {
   function handlePaste(event: ClipboardEvent) {
     if (event.defaultPrevented || !options.enabled() || !event.clipboardData) return
@@ -19,20 +19,17 @@ export function usePagePaste(options: {
     const ownInput = options.input()
     if (editor && editor !== ownInput) return
 
+    const images = pastedImages(event.clipboardData)
+    if (images.length && options.images) {
+      event.preventDefault()
+      options.images(images)
+      return
+    }
     const text = transferText(event.clipboardData)
     if (text.trim()) {
       if (editor) return
       event.preventDefault()
       options.text(text)
-      return
-    }
-    const image = Array.from(event.clipboardData.items)
-      .find((item) => item.kind === 'file' && item.type.startsWith('image/'))
-      ?.getAsFile()
-    if (image && options.image) {
-      event.preventDefault()
-      options.image(image)
-      return
     }
   }
   onMounted(() => document.addEventListener('paste', handlePaste))

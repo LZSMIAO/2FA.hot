@@ -1,3 +1,27 @@
+type PastedData = Pick<DataTransfer, 'getData'> & {
+  items?: ArrayLike<Pick<DataTransferItem, 'kind' | 'type' | 'getAsFile'>>
+}
+
+/**
+ * The image files a paste carries. Finder and Explorer copies also offer the
+ * copied file names as text, which only describes the files. Office puts a
+ * rendered picture beside cell text, and there the text is the content.
+ */
+export function pastedImages(data: PastedData): File[] {
+  const files = Array.from(data.items || [])
+    .filter((item) => item.kind === 'file')
+    .map((item) => item.getAsFile())
+    .filter((file): file is File => !!file)
+  const images = files.filter((file) => file.type.startsWith('image/'))
+  const text = data.getData('text/plain').trim()
+  if (!images.length || !text) return images
+  const names = new Set(files.map((file) => file.name))
+  const namesOnly = text
+    .split(/[\r\n]+/)
+    .every((line) => names.has(line.trim().split(/[\\/]/).pop() || ''))
+  return namesOnly ? images : []
+}
+
 /** Office clipboards can include a bitmap alongside the actual cell contents. */
 export function transferText(data: Pick<DataTransfer, 'getData'>): string {
   const plain = data.getData('text/plain')

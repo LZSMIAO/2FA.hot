@@ -13,7 +13,7 @@ import {
 import { countdownState } from '~/utils/countdown-state'
 import { generateOtp, groupCode, remainingSeconds, toOtpUri, type BatchEntry } from '~/utils/otp'
 import { codeOutput } from '~/utils/code-output'
-import { transferText } from '~/utils/transfer-text'
+import { pastedImages, transferText } from '~/utils/transfer-text'
 const props = defineProps<{
   initial?: string
   importVersion?: number
@@ -73,8 +73,8 @@ usePagePaste({
   input: () =>
     batchRoot.value?.querySelector<HTMLTextAreaElement>('#batch-demo-input') || undefined,
   text: receivePaste,
-  image: (file) => {
-    void recognizeImages([file])
+  images: (files) => {
+    void recognizeImages(files)
   }
 })
 const qrOpen = shallowRef(false)
@@ -124,7 +124,8 @@ function receivePaste(value: string) {
   else importBatchSource(value)
 }
 let imageRevision = 0
-async function recognizeImages(files: File[]) {
+/** Pasted into the box itself, codes join its rows; elsewhere they start a new batch. */
+async function recognizeImages(files: File[], field?: HTMLTextAreaElement) {
   const revision = ++imageRevision
   qrIssue.value = ''
   if (files.length > 20) {
@@ -149,7 +150,8 @@ async function recognizeImages(files: File[]) {
   const result = collectQrChoices(values)
   const ordinary = result.choices.filter((value) => !isMigrationUri(value))
   const migration = result.choices.find(isMigrationUri)
-  if (ordinary.length) receivePaste(ordinary.join('\n'))
+  if (ordinary.length && field) insertPaste(field, ordinary.join('\n'))
+  else if (ordinary.length) receivePaste(ordinary.join('\n'))
   else if (migration) migrationSource.value = migration
   qrIssue.value =
     errors[0] ||
@@ -500,18 +502,29 @@ async function save() {
   }
 }
 function pasteBatch(event: ClipboardEvent) {
-  if (guiding.value) return
-  const text = event.clipboardData ? batchPasteText(transferText(event.clipboardData)) : ''
+  if (guiding.value || !event.clipboardData) return
+  const input = event.target as HTMLTextAreaElement
+  const images = pastedImages(event.clipboardData)
+  if (images.length) {
+    event.preventDefault()
+    void recognizeImages(images, input)
+    return
+  }
+  const text = batchPasteText(transferText(event.clipboardData))
   if (!text.trim()) return
+  event.preventDefault()
   imageRevision++
   qrIssue.value = ''
+  insertPaste(input, text)
+}
+/** Insert pasted text at the box's selection, as one undoable fill. */
+function insertPaste(input: HTMLTextAreaElement, value: string) {
+  const text = batchPasteText(value)
   const analysis = analyzePaste(text)
-  const input = event.target as HTMLTextAreaElement
   const normalized =
     analysis.candidates.length && analysis.accounts?.length
       ? pastedBatchText(analysis.candidates.map((candidate) => candidate.config))
       : text
-  event.preventDefault()
   const inserted = insertBatchText(raw.value, normalized, input.selectionStart, input.selectionEnd)
   const source =
     input.selectionStart === input.value.length && raw.value

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { transferText, clipboardText } from '~/utils/transfer-text'
+import { pastedImages, transferText, clipboardText } from '~/utils/transfer-text'
 import { historyTarget } from '~/utils/history-navigation'
 import PasskeyButton from '~/components/passkeys/PasskeyButton.vue'
 const clipboardHint = useClipboardHint()
@@ -160,8 +160,8 @@ usePagePaste({
     !!workspaceRoot.value?.getClientRects().length,
   input: () => field.value?.inputRef,
   text: pasteText,
-  image: (file) => {
-    void recognizeImages([file], true)
+  images: (files) => {
+    void recognizeImages(files, true)
   }
 })
 const { dragging: textDragging } = usePageTextDrop({
@@ -523,6 +523,8 @@ function finishComposition() {
 }
 function handlePaste(event: ClipboardEvent) {
   if (guiding.value || !event.clipboardData) return
+  // Copied image files go to QR recognition on the page, not in as file names.
+  if (pastedImages(event.clipboardData).length) return
   const text = transferText(event.clipboardData)
   if (!text) return
   event.preventDefault()
