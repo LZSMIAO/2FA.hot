@@ -648,5 +648,12 @@
   "safeLinkNotice": "Ein sicherer Link enthält den Schlüssel nicht im Klartext, wird lokal in deinem Browser verschlüsselt und läuft nie über den Server. Beide Links öffnen den Code direkt; teile sie mit Bedacht.",
   "safeLinkHow": "Wie entsteht ein sicherer Link?",
   "safeLinkLocal": "Dein Browser erstellt den sicheren Link lokal: Er verschlüsselt alles nach dem # mit einem einmaligen Zufallsschlüssel und fügt diesen Schlüssel dem Link hinzu; beim Öffnen entschlüsselt der Browser ihn ebenfalls lokal. Keiner der beiden Schritte braucht eine Netzwerkverbindung, und nichts nach dem # wird an den Server gesendet. Der Schlüssel erscheint nie im Klartext in der Adressleiste, im Browserverlauf oder auf Screenshots. Wer den vollständigen Link hat, kann ihn aber trotzdem öffnen, also teile ihn nie öffentlich.",
-  "safeLinkDefault": "Wenn du einen Code vergrößerst, zeigt die Adressleiste einen sicheren Link (/2fa#~…) statt des Schlüssels im Klartext. Links im Klartext, die du selbst öffnest, bleiben unverändert."
+  "safeLinkDefault": "Wenn du einen Code vergrößerst, zeigt die Adressleiste einen sicheren Link (/2fa#~…) statt des Schlüssels im Klartext. Links im Klartext, die du selbst öffnest, bleiben unverändert.",
+  "m8882954618f3": "Senren＊Banka",
+  "m6c345f78c1dc": "Lena",
+  "m32d200cbeb94": "Koharu",
+  "ma425bac3abc3": "Mako",
+  "mceea9901cddd": "Yoshino",
+  "m6c0a1df4a160": "Roka",
+  "md7c98e88a4ad": "Murasame"
 }

@@ -648,5 +648,12 @@
   "safeLinkNotice": "Le lien sécurisé ne contient pas la clé en clair : il est chiffré localement dans votre navigateur et ne passe jamais par le serveur. Les deux liens ouvrent directement le code ; partagez-les avec prudence.",
   "safeLinkHow": "Comment un lien sécurisé est-il créé ?",
   "safeLinkLocal": "Votre navigateur crée le lien sécurisé localement : il chiffre tout ce qui suit le # avec une clé aléatoire à usage unique, puis place aussi cette clé dans le lien ; à l’ouverture, le navigateur le déchiffre également en local. Aucune de ces étapes n’a besoin du réseau, et rien de ce qui suit le # n’est envoyé au serveur. La clé en clair n’apparaît jamais dans la barre d’adresse, l’historique du navigateur ni les captures d’écran, mais toute personne disposant du lien complet peut quand même l’ouvrir : ne le partagez jamais publiquement.",
-  "safeLinkDefault": "Lorsque vous agrandissez un code, la barre d’adresse affiche un lien sécurisé, /2fa#~…, au lieu de la clé en clair. Les liens en clair que vous ouvrez vous-même restent inchangés."
+  "safeLinkDefault": "Lorsque vous agrandissez un code, la barre d’adresse affiche un lien sécurisé, /2fa#~…, au lieu de la clé en clair. Les liens en clair que vous ouvrez vous-même restent inchangés.",
+  "m8882954618f3": "Senren＊Banka",
+  "m6c345f78c1dc": "Lena",
+  "m32d200cbeb94": "Koharu",
+  "ma425bac3abc3": "Mako",
+  "mceea9901cddd": "Yoshino",
+  "m6c0a1df4a160": "Roka",
+  "md7c98e88a4ad": "Murasame"
 }

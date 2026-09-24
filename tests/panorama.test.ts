@@ -3,7 +3,7 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { createHash } from 'node:crypto'
 import { existsSync, readFileSync } from 'node:fs'
-import { panoramaScenes } from '../app/composables/usePanoramaPreference.ts'
+import { panoramaScenes, senrenScenes } from '../app/composables/usePanoramaPreference.ts'
 import {
   customPanoramaFromFiles,
   loadCustomPanorama,
@@ -45,6 +45,40 @@ test('every scene ships six credited faces and a preview, listed in the pre-pain
         path
       )
     }
+  }
+})
+
+test('every still scene ships a credited image and preview, listed with its focus in the pre-paint script', () => {
+  const script = readFileSync(new URL('public/panorama-preference.js', root), 'utf8')
+  const listed = Object.fromEntries(
+    [...script.matchAll(/^\s+'(senren\/[a-z-]+)': '([^']+)',?$/gm)].map((match) => [
+      match[1],
+      match[2]
+    ])
+  )
+  assert.deepEqual(
+    listed,
+    Object.fromEntries(senrenScenes.map((scene) => [scene.id, scene.position]))
+  )
+  const credits = readFileSync(new URL('credits/PANORAMA-SOURCE.md', root), 'utf8')
+  for (const scene of senrenScenes) {
+    assert.ok(existsSync(new URL(`public/panorama/previews/${scene.id}.webp`, root)), scene.id)
+    const hash = createHash('sha1')
+      .update(readFileSync(new URL(`public/panorama/${scene.id}.webp`, root)))
+      .digest('hex')
+    // Credits name the source, the served file's SHA-1 and the focus the backdrop crops around.
+    assert.match(
+      credits,
+      new RegExp(
+        '`' +
+          scene.id.replaceAll('.', '\\.') +
+          '\\.webp`: from `[^`]+` \\(\\d+ bytes, SHA-1 `[0-9a-f]{40}`\\); \\d+×\\d+, \\d+ bytes, SHA-1 `' +
+          hash +
+          '`; focus ' +
+          scene.position
+      ),
+      scene.id
+    )
   }
 })
 

@@ -648,5 +648,12 @@
   "safeLinkNotice": "El enlace seguro no contiene la clave en texto plano: se cifra localmente en tu navegador y nunca pasa por el servidor. Ambos enlaces abren el código directamente; compártelos con cuidado.",
   "safeLinkHow": "¿Cómo se crea un enlace seguro?",
   "safeLinkLocal": "Tu navegador crea el enlace seguro localmente: cifra todo lo que va tras el # con una clave aleatoria de un solo uso y añade esa clave al propio enlace; al abrirlo, el navegador también lo descifra localmente. Ninguno de los dos pasos necesita conexión, y nada de lo que va tras el # se envía al servidor. La clave en texto plano nunca aparece en la barra de direcciones, el historial del navegador ni las capturas de pantalla, pero cualquiera con el enlace completo puede abrirlo, así que nunca lo compartas públicamente.",
-  "safeLinkDefault": "Al ampliar un código, la barra de direcciones muestra un enlace seguro, /2fa#~…, en lugar de la clave en texto plano. Los enlaces en texto plano que abras tú mismo no cambian."
+  "safeLinkDefault": "Al ampliar un código, la barra de direcciones muestra un enlace seguro, /2fa#~…, en lugar de la clave en texto plano. Los enlaces en texto plano que abras tú mismo no cambian.",
+  "m8882954618f3": "Senren＊Banka",
+  "m6c345f78c1dc": "Lena",
+  "m32d200cbeb94": "Koharu",
+  "ma425bac3abc3": "Mako",
+  "mceea9901cddd": "Yoshino",
+  "m6c0a1df4a160": "Roka",
+  "md7c98e88a4ad": "Murasame"
 }

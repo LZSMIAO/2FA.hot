@@ -9,22 +9,29 @@ import {
 import {
   customPanoramaScene,
   defaultPanoramaScene,
-  panoramaGroups,
-  previewOf,
-  type PanoramaScene
+  flatPanoramaOf,
+  flatPanoramaUrl,
+  isBuiltInScene,
+  panoramaGroups
 } from '~/composables/usePanoramaPreference'
 defineProps<{ bounded?: boolean }>()
 const { tx } = useMessages()
-const { scenes, selected, playbackPaused, custom } = usePanoramaPreference()
+const { selected, playbackPaused, custom } = usePanoramaPreference()
 const hydrated = shallowRef(false)
 const scene = computed(() => {
   if (!hydrated.value) return defaultPanoramaScene
   if (selected.value === customPanoramaScene) return customPanoramaScene
-  return scenes.includes(selected.value as PanoramaScene) ? selected.value : defaultPanoramaScene
+  return isBuiltInScene(selected.value) ? selected.value : defaultPanoramaScene
 })
 // Object URLs for the stored custom background, in face order.
 const customUrls = shallowRef<string[]>([])
-const flat = computed(() => scene.value === customPanoramaScene && custom.value?.layout === 'flat')
+/** Whether a scene is one still image rather than six cube faces. */
+const isFlat = (version: string) =>
+  version === customPanoramaScene ? custom.value?.layout === 'flat' : !!flatPanoramaOf(version)
+const flat = computed(() => isFlat(scene.value))
+function flatUrl(version: string) {
+  return version === customPanoramaScene ? customUrls.value[0] || '' : flatPanoramaUrl(version)
+}
 function faceUrl(version: string, face: number) {
   if (version === customPanoramaScene) return customUrls.value[face] || ''
   return `/panorama/${version === '1.20.1' ? '' : `${version}/`}panorama_${face}.webp`
@@ -34,8 +41,14 @@ function applyScene() {
   // The custom images are still being read; the head script already cleared the faces.
   if (scene.value === customPanoramaScene && !customUrls.value.length) return
   root.toggleAttribute('data-panorama-flat', flat.value)
-  if (flat.value) root.style.setProperty('--panorama-flat', `url(${customUrls.value[0]})`)
-  else
+  if (flat.value) {
+    root.style.setProperty('--panorama-flat', `url(${flatUrl(scene.value)})`)
+    // A visitor's own image has no known subject, so it stays centred.
+    root.style.setProperty(
+      '--panorama-flat-position',
+      flatPanoramaOf(scene.value)?.position ?? 'center'
+    )
+  } else
     for (let face = 0; face < 6; face++)
       root.style.setProperty(`--panorama-face-${face}`, `url(${faceUrl(scene.value, face)})`)
 }
@@ -59,8 +72,11 @@ async function changeScene(version: string) {
   loading.value = true
   issue.value = ''
   try {
-    const faces = version === customPanoramaScene && custom.value?.layout === 'flat' ? 1 : 6
-    await decodeAll(Array.from({ length: faces }, (_, face) => faceUrl(version, face)))
+    await decodeAll(
+      isFlat(version)
+        ? [flatUrl(version)]
+        : Array.from({ length: 6 }, (_, face) => faceUrl(version, face))
+    )
     if (!disposed) selected.value = version
   } catch {
     if (!disposed) issue.value = '无法完成操作，请重试。'
@@ -139,18 +155,18 @@ const sceneItems = computed(() => [
   // One entry per collection; its scenes open beside it. The entry shows the
   // scene in use when it belongs to that collection, so the choice stays visible.
   panoramaGroups.map((group) => {
-    const active = (group.scenes as readonly string[]).includes(scene.value)
+    const active = group.scenes.find((entry) => entry.id === scene.value)
     return {
-      label: group.label,
+      label: tx(group.label),
       icon: 'i-lucide-images',
-      preview: previewOf(active ? scene.value : group.scenes[0]),
-      children: group.scenes.map((version) => ({
-        label: version,
-        preview: previewOf(version),
+      preview: (active ?? group.scenes[0]!).preview,
+      children: group.scenes.map((entry) => ({
+        label: tx(entry.label),
+        preview: entry.preview,
         type: 'checkbox' as const,
-        checked: scene.value === version,
+        checked: scene.value === entry.id,
         disabled: loading.value,
-        onSelect: () => changeScene(version)
+        onSelect: () => changeScene(entry.id)
       }))
     }
   }),
@@ -504,7 +520,7 @@ onBeforeUnmount(() => {
   position: absolute;
   inset: 0;
   display: none;
-  background: var(--panorama-flat) center / cover no-repeat;
+  background: var(--panorama-flat) var(--panorama-flat-position, center) / cover no-repeat;
 }
 /* A single uploaded image is a still backdrop in place of the cube. */
 :global(html[data-panorama-flat] .title-panorama .panorama-flat) {

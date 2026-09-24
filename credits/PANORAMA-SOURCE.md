@@ -168,3 +168,20 @@ Official asset index: https://piston-meta.mojang.com/v1/packages/32a06dd28a0a8a9
 - `26.3/panorama_3.png`: 650997 bytes; SHA-1 `4e260704b88f2cd57fbc05abcd1a4264df733f91`; https://resources.download.minecraft.net/4e/4e260704b88f2cd57fbc05abcd1a4264df733f91; served as `26.3/panorama_3.webp` (WebP q85) SHA-1 `866721c38c0b695278b732f23e22a695a4fed9af`
 - `26.3/panorama_4.png`: 759750 bytes; SHA-1 `17229c85a056fa9e97e9b025fd76e1e081b36317`; https://resources.download.minecraft.net/17/17229c85a056fa9e97e9b025fd76e1e081b36317; served as `26.3/panorama_4.webp` (WebP q85) SHA-1 `37f5c0f01bd20c2ea6b75aa709c5d3c5535b8276`
 - `26.3/panorama_5.png`: 359529 bytes; SHA-1 `61331fc97f54d2f7500cdbb14d16bc1244539272`; https://resources.download.minecraft.net/61/61331fc97f54d2f7500cdbb14d16bc1244539272; served as `26.3/panorama_5.webp` (WebP q85) SHA-1 `4b7eba06284996276f9d2ed30a7f1b4484fceb78`
+
+## 千恋＊万花 (Senren＊Banka)
+
+Event CG from Senren＊Banka, © Yuzusoft, supplied by the site owner. Like the Minecraft textures, these are not covered by the project's code license. Each is scaled to fit 2560×1440 and re-encoded as WebP at quality 78. A still scene is drawn to fill the screen, so each carries a focal point on the character's face that the backdrop crops around; its 96×64 preview in `previews/senren/` is cut around the same point.
+
+- `senren/rena-stars.webp`: from `04_蕾娜_星空.jpg` (11812877 bytes, SHA-1 `63ed61326da99164b7266202d9a6ccaef9f7adbe`); 2560×1440, 109498 bytes, SHA-1 `65580202ff26fbdbf15bf959c693cb70220cda66`; focus 32% 30%
+- `senren/koharu-haori.webp`: from `05_小春_羽織.jpg` (10580888 bytes, SHA-1 `f9ed7f58e7332a8088056abc2b3b7349e1d3e867`); 2560×1440, 97746 bytes, SHA-1 `b0a86c133ae25086667aa5cff67c6689a946c2e3`; focus 21% 18%
+- `senren/mako-ninja.webp`: from `08_茉子_忍者.jpg` (11428559 bytes, SHA-1 `434e19a722e35af1ecddd58c92c07a628c9c9203`); 2560×1440, 100158 bytes, SHA-1 `6e56f60cbdbebfa82bdcdd6b1a9c8af0e2fe541e`; focus 30% 30%
+- `senren/yoshino-ears.webp`: from `14_芳乃_獸耳.jpg` (12393121 bytes, SHA-1 `cf883bf63965bb45084afc282dfdce7db64b4986`); 2560×1440, 145572 bytes, SHA-1 `49b39cf21f782d0cc6143c1a61d9431407c27af4`; focus 43% 50%
+- `senren/roka-teahouse.webp`: from `15_芦花_茶屋.jpg` (11612044 bytes, SHA-1 `20a85927d52f69601085cb27b8aec17d4e243dd3`); 2560×1440, 151616 bytes, SHA-1 `ee842b9ca7863489c8422d1ccf460dde7770ad5a`; focus 62% 24%
+- `senren/yoshino-kagura.webp`: from `17_芳乃_神樂舞.jpg` (11666478 bytes, SHA-1 `17bff1bc49fd5494af97c68727f2006abb3d31dc`); 1280×1440, 137988 bytes, SHA-1 `364ca1ca4d7c68d98ae4f75d6640b45a22b4ac77`; focus 52% 15%
+- `senren/mako-feeding.webp`: from `19_茉子_餵食.jpg` (8115351 bytes, SHA-1 `bf470dcc5190a0efc1083d8223abe4fe0909e75b`); 2560×1440, 92016 bytes, SHA-1 `02b570cf57fe97a9f5761b8df45026eb5206ea8c`; focus 50% 40%
+- `senren/murasame-sword.webp`: from `22_叢雨_拔刀.jpg` (11875930 bytes, SHA-1 `847d32562cb8effc7a389f4d447d70ffd4b8e443`); 2560×1440, 189438 bytes, SHA-1 `b3d15b8953ee61b0a60b16cbfcc8ef47488dc067`; focus 68% 30%
+- `senren/roka-parfait.webp`: from `25_芦花_聖代.jpg` (11527834 bytes, SHA-1 `6e46d4430fb61ef657fc33261979090aba120d5b`); 2560×1440, 150064 bytes, SHA-1 `36bced20092e1e654de7df39a4ff81354cfb450a`; focus 62% 24%
+- `senren/rena-yukata.webp`: from `31_蕾娜_祭典浴衣.jpg` (6204199 bytes, SHA-1 `d34a9e5f5629b485d1ec26672d839feda22c18b4`); 2560×1440, 171576 bytes, SHA-1 `07301e297f55c27c6d54a3be4614c052aad6fc8a`; focus 33% 24%
+- `senren/koharu-lean.webp`: from `35_小春_依偎.jpg` (6034328 bytes, SHA-1 `8fcbd15d71df7b9a26926c7040c47cc94e2ca165`); 2560×1440, 172998 bytes, SHA-1 `d70363f355045bf104529e73a9494109de4f374c`; focus 55% 30%
+- `senren/murasame-kiss.webp`: from `46_叢雨_吻.jpg` (5887164 bytes, SHA-1 `62c3b1d808f0cb32d8616aa833414c9cf91045a1`); 2560×1440, 125152 bytes, SHA-1 `25fff18355184fb60d64a19bfe98bd9a9acf9935`; focus 47% 45%

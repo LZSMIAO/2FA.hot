@@ -648,5 +648,12 @@
   "safeLinkNotice": "Een veilige link bevat de sleutel niet in platte tekst; hij wordt lokaal in je browser versleuteld en gaat nooit via de server. Beide links openen de code direct, dus deel ze voorzichtig.",
   "safeLinkHow": "Hoe wordt een veilige link gemaakt?",
   "safeLinkLocal": "Je browser maakt een veilige link lokaal: hij versleutelt alles na de # met een willekeurige sleutel voor eenmalig gebruik en zet die sleutel ook in de link; bij het openen ontsleutelt de browser hem eveneens lokaal. Geen van beide stappen heeft een netwerk nodig, en niets na de # wordt naar de server gestuurd. De sleutel in platte tekst verschijnt nooit in de adresbalk, de browsergeschiedenis of op screenshots, maar iedereen met de volledige link kan hem nog steeds openen, dus deel hem nooit openbaar.",
-  "safeLinkDefault": "Als je een code vergroot, toont de adresbalk een veilige link, /2fa#~…, in plaats van de sleutel in platte tekst. Links in platte tekst die je zelf opent, blijven zoals ze zijn."
+  "safeLinkDefault": "Als je een code vergroot, toont de adresbalk een veilige link, /2fa#~…, in plaats van de sleutel in platte tekst. Links in platte tekst die je zelf opent, blijven zoals ze zijn.",
+  "m8882954618f3": "Senren＊Banka",
+  "m6c345f78c1dc": "Lena",
+  "m32d200cbeb94": "Koharu",
+  "ma425bac3abc3": "Mako",
+  "mceea9901cddd": "Yoshino",
+  "m6c0a1df4a160": "Roka",
+  "md7c98e88a4ad": "Murasame"
 }

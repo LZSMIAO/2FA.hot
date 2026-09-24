@@ -648,5 +648,12 @@
   "safeLinkNotice": "A safe link hides the plain key and is encrypted locally in your browser, never passing through the server. Both links open the code directly; share them with care.",
   "safeLinkHow": "How is a safe link made?",
   "safeLinkLocal": "Your browser makes a safe link locally: it encrypts everything after # with a one-time random key and puts that key in the link too; when the link is opened, the browser decrypts it locally as well. Neither step needs the network, and nothing after # is sent to the server. The plain key never appears in the address bar, browser history or screenshots, but anyone with the full link can still open it, so never share it publicly.",
-  "safeLinkDefault": "After you expand a code, the address bar shows a safe link, /2fa#~…, instead of the plain key. Plain links you open yourself stay as they are."
+  "safeLinkDefault": "After you expand a code, the address bar shows a safe link, /2fa#~…, instead of the plain key. Plain links you open yourself stay as they are.",
+  "m8882954618f3": "Senren＊Banka",
+  "m6c345f78c1dc": "Lena",
+  "m32d200cbeb94": "Koharu",
+  "ma425bac3abc3": "Mako",
+  "mceea9901cddd": "Yoshino",
+  "m6c0a1df4a160": "Roka",
+  "md7c98e88a4ad": "Murasame"
 }

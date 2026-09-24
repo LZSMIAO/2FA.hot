@@ -648,5 +648,12 @@
   "safeLinkNotice": "Güvenli bağlantı anahtarı düz metin olarak içermez; tarayıcınızda yerel olarak şifrelenir ve asla sunucudan geçmez. İki bağlantı da kodu doğrudan açar; dikkatli paylaşın.",
   "safeLinkHow": "Güvenli bağlantı nasıl oluşturulur?",
   "safeLinkLocal": "Güvenli bağlantıyı tarayıcınız yerel olarak oluşturur: # sonrasındaki her şeyi tek kullanımlık rastgele bir anahtarla şifreler ve bu anahtarı da bağlantının içine koyar; bağlantı açıldığında şifreyi yine tarayıcı yerel olarak çözer. Her iki adım da ağ gerektirmez ve # sonrasındaki hiçbir şey sunucuya gönderilmez. Düz metin anahtar adres çubuğunda, tarayıcı geçmişinde veya ekran görüntülerinde asla görünmez, ancak tam bağlantıya sahip olan herkes onu yine de açabilir; bu yüzden asla herkese açık paylaşmayın.",
-  "safeLinkDefault": "Bir kodu büyüttüğünüzde adres çubuğu düz metin anahtar yerine güvenli bağlantıyı (/2fa#~…) gösterir. Kendi açtığınız düz metin bağlantılar olduğu gibi kalır."
+  "safeLinkDefault": "Bir kodu büyüttüğünüzde adres çubuğu düz metin anahtar yerine güvenli bağlantıyı (/2fa#~…) gösterir. Kendi açtığınız düz metin bağlantılar olduğu gibi kalır.",
+  "m8882954618f3": "Senren＊Banka",
+  "m6c345f78c1dc": "Lena",
+  "m32d200cbeb94": "Koharu",
+  "ma425bac3abc3": "Mako",
+  "mceea9901cddd": "Yoshino",
+  "m6c0a1df4a160": "Roka",
+  "md7c98e88a4ad": "Murasame"
 }

@@ -6,6 +6,7 @@ import vm from 'node:vm'
 const bootstrap = readFileSync(new URL('../public/panorama-preference.js', import.meta.url), 'utf8')
 function visit(cookie: string, stored: Record<string, string>, cookiesWork = true) {
   const styles = new Map<string, string>()
+  const attributes = new Set<string>()
   const jar = new Map(
     cookie
       .split('; ')
@@ -24,7 +25,8 @@ function visit(cookie: string, stored: Record<string, string>, cookiesWork = tru
           jar.set(pair.slice(0, pair.indexOf('=')), pair.slice(pair.indexOf('=') + 1))
       },
       documentElement: {
-        style: { setProperty: (key: string, value: string) => styles.set(key, value) }
+        style: { setProperty: (key: string, value: string) => styles.set(key, value) },
+        setAttribute: (name: string) => void attributes.add(name)
       }
     },
     localStorage: {
@@ -32,7 +34,7 @@ function visit(cookie: string, stored: Record<string, string>, cookiesWork = tru
       setItem: (key: string, value: string) => void data.set(key, String(value))
     }
   })
-  return { styles, jar, data }
+  return { styles, attributes, jar, data }
 }
 // A returning browser, as first-visit.js marks one, with a kept angle.
 const restore = (cookie: string, angle: string | null) =>
@@ -88,4 +90,20 @@ test('returning visitors and new visitors with settings keep what they had', () 
   const blocked = visit('', { '2fa-first-visit': String(Date.now()) }, false)
   assert.equal(blocked.styles.has('--panorama-face-0'), false)
   assert.equal(blocked.data.has('2fa-panorama-angle'), false)
+})
+
+test('a still scene is laid out before first paint, cropped around its subject', () => {
+  const { styles, attributes } = visit('2fa-panorama=senren%2Fyoshino-kagura', {
+    '2fa-first-visit': '0'
+  })
+  assert.ok(attributes.has('data-panorama-flat'))
+  assert.equal(styles.get('--panorama-flat'), 'url(/panorama/senren/yoshino-kagura.webp)')
+  assert.equal(styles.get('--panorama-flat-position'), '52% 15%')
+  // The cube's faces are not fetched for a still scene.
+  assert.equal(styles.get('--panorama-face-0'), 'none')
+  // A name outside the list is not treated as a still scene.
+  assert.equal(
+    visit('2fa-panorama=senren%2F..%2Fsecret', { '2fa-first-visit': '0' }).attributes.size,
+    0
+  )
 })

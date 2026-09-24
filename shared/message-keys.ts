@@ -913,5 +913,12 @@ export const sourceKeys = new Map<string, string>([
   [
     '放大验证码后，地址栏默认显示安全链接 /2fa#~…，不再显示明文密钥；你自己打开的明文链接保持不变。',
     'safeLinkDefault'
-  ]
+  ],
+  ['千恋＊万花', 'm8882954618f3'],
+  ['蕾娜', 'm6c345f78c1dc'],
+  ['小春', 'm32d200cbeb94'],
+  ['茉子', 'ma425bac3abc3'],
+  ['芳乃', 'mceea9901cddd'],
+  ['芦花', 'm6c0a1df4a160'],
+  ['丛雨', 'md7c98e88a4ad']
 ])

@@ -648,5 +648,12 @@
   "safeLinkNotice": "Il link sicuro non contiene la chiave in chiaro: viene cifrato localmente nel tuo browser e non passa mai dal server. Entrambi i link aprono direttamente il codice; condividili con cautela.",
   "safeLinkHow": "Come viene creato un link sicuro?",
   "safeLinkLocal": "Il tuo browser crea il link sicuro localmente: cifra tutto ciò che segue il # con una chiave casuale monouso e inserisce anche quella chiave nel link; all’apertura, anche la decifratura avviene localmente nel browser. Nessuno dei due passaggi richiede la rete e nulla di ciò che segue il # viene inviato al server. La chiave in chiaro non compare mai nella barra degli indirizzi, nella cronologia del browser o negli screenshot, ma chiunque abbia il link completo può comunque aprirlo, quindi non condividerlo mai pubblicamente.",
-  "safeLinkDefault": "Quando ingrandisci un codice, la barra degli indirizzi mostra un link sicuro, /2fa#~…, al posto della chiave in chiaro. I link in chiaro che apri tu restano invariati."
+  "safeLinkDefault": "Quando ingrandisci un codice, la barra degli indirizzi mostra un link sicuro, /2fa#~…, al posto della chiave in chiaro. I link in chiaro che apri tu restano invariati.",
+  "m8882954618f3": "Senren＊Banka",
+  "m6c345f78c1dc": "Lena",
+  "m32d200cbeb94": "Koharu",
+  "ma425bac3abc3": "Mako",
+  "mceea9901cddd": "Yoshino",
+  "m6c0a1df4a160": "Roka",
+  "md7c98e88a4ad": "Murasame"
 }

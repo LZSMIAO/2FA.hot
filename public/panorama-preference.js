@@ -28,12 +28,33 @@
   try {
     const scene = savedScene()
     const root = document.documentElement
+    // Keep in sync with senrenScenes in app/composables/usePanoramaPreference.ts.
+    const flat = {
+      'senren/rena-stars': '32% 30%',
+      'senren/koharu-haori': '21% 18%',
+      'senren/mako-ninja': '30% 30%',
+      'senren/yoshino-ears': '43% 50%',
+      'senren/roka-teahouse': '62% 24%',
+      'senren/yoshino-kagura': '52% 15%',
+      'senren/mako-feeding': '50% 40%',
+      'senren/murasame-sword': '68% 30%',
+      'senren/roka-parfait': '62% 24%',
+      'senren/rena-yukata': '33% 24%',
+      'senren/koharu-lean': '55% 30%',
+      'senren/murasame-kiss': '47% 45%'
+    }
     // A custom background lives in IndexedDB, which only the page can read. Keep the
     // default faces from loading meanwhile, and lay out a still image if it is one.
     if (scene === 'custom') {
       for (let face = 0; face < 6; face++) root.style.setProperty(`--panorama-face-${face}`, 'none')
       if (localStorage.getItem('2fa-panorama-custom-layout') === 'flat')
         root.setAttribute('data-panorama-flat', '')
+    } else if (Object.prototype.hasOwnProperty.call(flat, scene)) {
+      // A still built-in scene: one image in place of the cube, cropped around its subject.
+      for (let face = 0; face < 6; face++) root.style.setProperty(`--panorama-face-${face}`, 'none')
+      root.setAttribute('data-panorama-flat', '')
+      root.style.setProperty('--panorama-flat', `url(/panorama/${scene}.webp)`)
+      root.style.setProperty('--panorama-flat-position', flat[scene])
     } else {
       // Keep in sync with panoramaScenes in app/composables/usePanoramaPreference.ts.
       if (

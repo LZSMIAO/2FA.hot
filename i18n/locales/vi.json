@@ -648,5 +648,12 @@
   "safeLinkNotice": "Liên kết an toàn không chứa khóa dạng văn bản thuần, được mã hóa cục bộ trong trình duyệt của bạn và không bao giờ đi qua máy chủ. Cả hai loại liên kết đều mở thẳng mã, hãy chia sẻ cẩn thận.",
   "safeLinkHow": "Liên kết an toàn được tạo ra như thế nào?",
   "safeLinkLocal": "Trình duyệt của bạn tạo liên kết an toàn một cách cục bộ: mã hóa toàn bộ phần sau # bằng một khóa ngẫu nhiên dùng một lần rồi đặt luôn khóa đó vào liên kết; khi mở liên kết, trình duyệt cũng giải mã cục bộ. Cả hai bước đều không cần mạng, và không có gì sau # được gửi đến máy chủ. Khóa dạng văn bản thuần không xuất hiện trên thanh địa chỉ, lịch sử trình duyệt hay ảnh chụp màn hình, nhưng ai có liên kết đầy đủ vẫn mở được, vì vậy đừng bao giờ chia sẻ công khai.",
-  "safeLinkDefault": "Khi bạn phóng to mã, thanh địa chỉ hiển thị liên kết an toàn /2fa#~… thay vì khóa dạng văn bản thuần. Các liên kết dạng văn bản thuần do bạn tự mở vẫn giữ nguyên."
+  "safeLinkDefault": "Khi bạn phóng to mã, thanh địa chỉ hiển thị liên kết an toàn /2fa#~… thay vì khóa dạng văn bản thuần. Các liên kết dạng văn bản thuần do bạn tự mở vẫn giữ nguyên.",
+  "m8882954618f3": "Senren＊Banka",
+  "m6c345f78c1dc": "Lena",
+  "m32d200cbeb94": "Koharu",
+  "ma425bac3abc3": "Mako",
+  "mceea9901cddd": "Yoshino",
+  "m6c0a1df4a160": "Roka",
+  "md7c98e88a4ad": "Murasame"
 }

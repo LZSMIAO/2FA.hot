@@ -648,5 +648,12 @@
   "safeLinkNotice": "Bezpieczny link nie zawiera klucza w postaci jawnej: jest szyfrowany lokalnie w twojej przeglądarce i nigdy nie przechodzi przez serwer. Oba linki od razu otwierają kod, więc udostępniaj je ostrożnie.",
   "safeLinkHow": "Jak powstaje bezpieczny link?",
   "safeLinkLocal": "Bezpieczny link tworzy lokalnie twoja przeglądarka: szyfruje wszystko po # jednorazowym losowym kluczem i umieszcza ten klucz również w linku; przy otwieraniu przeglądarka także lokalnie go odszyfrowuje. Żaden z tych kroków nie wymaga sieci, a nic po # nie jest wysyłane do serwera. Klucz w postaci jawnej nie pojawia się na pasku adresu, w historii przeglądarki ani na zrzutach ekranu, ale każdy, kto ma pełny link, nadal może go otworzyć, więc nigdy nie udostępniaj go publicznie.",
-  "safeLinkDefault": "Po powiększeniu kodu pasek adresu pokazuje bezpieczny link /2fa#~… zamiast klucza w postaci jawnej. Jawne linki, które otwierasz sam, pozostają bez zmian."
+  "safeLinkDefault": "Po powiększeniu kodu pasek adresu pokazuje bezpieczny link /2fa#~… zamiast klucza w postaci jawnej. Jawne linki, które otwierasz sam, pozostają bez zmian.",
+  "m8882954618f3": "Senren＊Banka",
+  "m6c345f78c1dc": "Lena",
+  "m32d200cbeb94": "Koharu",
+  "ma425bac3abc3": "Mako",
+  "mceea9901cddd": "Yoshino",
+  "m6c0a1df4a160": "Roka",
+  "md7c98e88a4ad": "Murasame"
 }

@@ -2,7 +2,11 @@
 const localePath = useLocalePath()
 import { isPrivatePage, unlocalizedPath } from '~~/shared/seo/routes'
 import ButtonSoundToggle from './ButtonSoundToggle.vue'
-import { customPanoramaScene, panoramaGroups } from '~/composables/usePanoramaPreference'
+import {
+  customPanoramaScene,
+  flatPanoramaOf,
+  panoramaGroups
+} from '~/composables/usePanoramaPreference'
 
 const { tx, locale } = useMessages()
 const liteHref = computed(() => '/lite?lang=' + locale.value)
@@ -79,7 +83,8 @@ const backdrop = computed(() =>
           children: [
             /* On its own in the top menu this read as "pause" with no object.
                A still custom image has nothing to play. */
-            ...(selected.value === customPanoramaScene && custom.value?.layout === 'flat'
+            ...((selected.value === customPanoramaScene && custom.value?.layout === 'flat') ||
+            flatPanoramaOf(selected.value)
               ? []
               : [
                   {
@@ -93,13 +98,13 @@ const backdrop = computed(() =>
                 ]),
             // Each collection folds behind one entry, as in the backdrop's own menu.
             ...panoramaGroups.map((group) => ({
-              label: group.label,
-              children: group.scenes.map((version) => ({
-                label: version,
+              label: tx(group.label),
+              children: group.scenes.map((entry) => ({
+                label: tx(entry.label),
                 type: 'checkbox' as const,
-                checked: selected.value === version,
+                checked: selected.value === entry.id,
                 onSelect: () => {
-                  selected.value = version
+                  selected.value = entry.id
                 }
               }))
             })),
