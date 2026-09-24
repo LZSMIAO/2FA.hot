@@ -628,5 +628,6 @@
   "guideDetailRemaining": "Thanh dưới mã là thời gian còn lại, vơi dần từng nấc như thanh kinh nghiệm. Hết thanh là có mã mới thay thế, mã cũ lập tức không dùng được nữa.",
   "historySelectedOfTotal": "Đã chọn {count} trên {total}",
   "batchUndoHint": "Nhấn {undo} để hoàn tác lần dán này, hoặc {single} để hoàn tác từng dòng",
-  "batchUndoPraise": "Tuyệt, có vẻ bạn biết dùng phím tắt!\n{undo} hoàn tác cả lần dán, {single} hoàn tác từng dòng"
+  "batchUndoPraise": "Tuyệt, có vẻ bạn biết dùng phím tắt!\n{undo} hoàn tác cả lần dán, {single} hoàn tác từng dòng",
+  "qrSourceNotice": "Đã đọc khóa từ mã QR."
 }

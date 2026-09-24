@@ -628,5 +628,6 @@
   "guideDetailRemaining": "A barra abaixo do código é o tempo restante e desce em partes, como uma barra de experiência. Quando esvazia, entra um código novo e o antigo deixa de valer.",
   "historySelectedOfTotal": "{count} de {total} selecionados",
   "batchUndoHint": "Pressione {undo} para desfazer esta colagem ou {single} para desfazê-la linha por linha",
-  "batchUndoPraise": "Ótimo, parece que você conhece os atalhos!\n{undo} desfaz a colagem inteira e {single}, uma linha por vez"
+  "batchUndoPraise": "Ótimo, parece que você conhece os atalhos!\n{undo} desfaz a colagem inteira e {single}, uma linha por vez",
+  "qrSourceNotice": "Chave lida do código QR."
 }

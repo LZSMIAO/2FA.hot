@@ -628,5 +628,6 @@
   "guideDetailRemaining": "Bar di bawah kod ialah baki masa dan turun berperingkat, seperti bar pengalaman. Apabila habis, kod baharu mengambil alih dan yang lama terus tidak sah.",
   "historySelectedOfTotal": "{count} daripada {total} dipilih",
   "batchUndoHint": "Tekan {undo} untuk membuat asal tampalan ini, atau {single} untuk membuat asal baris demi baris",
-  "batchUndoPraise": "Bagus, nampaknya anda tahu pintasannya!\n{undo} membuat asal seluruh tampalan, {single} baris demi baris"
+  "batchUndoPraise": "Bagus, nampaknya anda tahu pintasannya!\n{undo} membuat asal seluruh tampalan, {single} baris demi baris",
+  "qrSourceNotice": "Kunci dibaca daripada kod QR."
 }

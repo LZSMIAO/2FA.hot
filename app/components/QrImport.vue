@@ -19,7 +19,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   close: []
   dismiss: []
-  import: [value: string]
+  import: [value: string, images: File[]]
   text: [value: string]
   batch: [value: string]
   migration: [value: string]
@@ -99,10 +99,12 @@ const video = useTemplateRef<HTMLVideoElement>('video'),
 let stream: MediaStream | undefined,
   timer: ReturnType<typeof setTimeout> | undefined,
   active = true
-let pendingResult: { kind: 'import' | 'batch' | 'migration' | 'text'; value: string } | undefined
+let pendingResult:
+  { kind: 'import' | 'batch' | 'migration' | 'text'; value: string; images?: File[] } | undefined
 function finishClose() {
   if (pendingResult?.kind === 'text') emit('text', pendingResult.value)
-  if (pendingResult?.kind === 'import') emit('import', pendingResult.value)
+  if (pendingResult?.kind === 'import')
+    emit('import', pendingResult.value, pendingResult.images || [])
   if (pendingResult?.kind === 'batch') emit('batch', pendingResult.value)
   if (pendingResult?.kind === 'migration') emit('migration', pendingResult.value)
   // Restore the same feedback on the home input after importing resets its value.
@@ -121,7 +123,8 @@ function openMigration(value = '') {
   pendingResult = { kind: 'migration', value }
   open.value = false
 }
-function accept(value: string) {
+/** `images` is the picture the code came from, so the home input can show it as the source. */
+function accept(value: string, images: File[] = []) {
   if (!active || !open.value) return
   if (isMigrationUri(value)) {
     openMigration(value)
@@ -130,7 +133,7 @@ function accept(value: string) {
   try {
     const c = parseOtp(value)
     if (!value.startsWith('otpauth://')) throw new Error('二维码不是 TOTP 配置。')
-    pendingResult = { kind: 'import', value: toOtpUri(c) }
+    pendingResult = { kind: 'import', value: toOtpUri(c), images }
     open.value = false
   } catch (e) {
     issue.value = (e as Error).message
@@ -184,7 +187,7 @@ async function images(files: File[], fromPaste = false) {
     const result = collectQrChoices(values)
     duplicateCount.value = result.duplicates
     if (files.length === 1 && result.choices.length === 1 && !fileIssues.value.length) {
-      accept(result.choices[0]!)
+      accept(result.choices[0]!, files)
     } else {
       choices.value = result.choices
       selectedChoices.value = result.choices.filter((value) => !isMigrationUri(value))

@@ -334,6 +334,40 @@ export function extractedSurroundingText(source: string): boolean {
   return !!source.trim() && !tryParse(source) && analyzePaste(source).candidates.length === 1
 }
 
+/** A paste that only needed reformatting: every line is already a key or an otpauth link. */
+export function formattedBatchSource(source: string): boolean {
+  const lines = source.split(/\r?\n/).filter((line) => line.trim())
+  return !!lines.length && lines.every((line) => !!tryParse(line.trim()))
+}
+
+/**
+ * Batch rows show an otpauth link the way single input does: as its bare key.
+ * The link itself is kept aside so the row's account and settings survive.
+ */
+export function tidyBatchLinks(text: string) {
+  const links = new Map<string, string>()
+  const tidy = text
+    .split('\n')
+    .map((line) => {
+      const value = line.trim()
+      const config = /^otpauth:\/\//i.test(value) ? tryParse(value) : null
+      if (!config) return line
+      links.set(config.secret, value)
+      return config.secret
+    })
+    .join('\n')
+  return { text: tidy, links }
+}
+
+/** Put kept links back on rows that still hold exactly their bare key. */
+export function restoreBatchLinks(text: string, links: ReadonlyMap<string, string>): string {
+  if (!links.size) return text
+  return text
+    .split('\n')
+    .map((line) => links.get(line.trim()) ?? line)
+    .join('\n')
+}
+
 /** Batch uses the same recognition rules, but preserves rejected rows instead of dropping them. */
 export function parseSmartBatch(text: string): BatchEntry[] {
   if (new TextEncoder().encode(text).length > 100_000)

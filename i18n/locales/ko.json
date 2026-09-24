@@ -628,5 +628,6 @@
   "guideDetailRemaining": "코드 아래 막대가 남은 시간입니다. 경험치 막대처럼 한 칸씩 줄고, 다 비면 새 코드로 바뀌며 이전 코드는 바로 쓸 수 없습니다.",
   "historySelectedOfTotal": "{total}개 중 {count}개 선택",
   "batchUndoHint": "{undo} 키로 이번 붙여넣기를 취소하고, {single} 키로 한 줄씩 취소할 수 있습니다",
-  "batchUndoPraise": "좋아요, 단축키를 쓸 줄 아시는군요!\n{undo} 키는 붙여넣기 전체를, {single} 키는 한 줄씩 취소합니다"
+  "batchUndoPraise": "좋아요, 단축키를 쓸 줄 아시는군요!\n{undo} 키는 붙여넣기 전체를, {single} 키는 한 줄씩 취소합니다",
+  "qrSourceNotice": "QR 코드에서 키를 읽었습니다."
 }

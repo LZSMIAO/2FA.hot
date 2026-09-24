@@ -79,6 +79,18 @@ const periodItems = computed(() => [
 ])
 const extracted = shallowRef('')
 const originalInput = shallowRef('')
+// A key read from a QR code has the code, not text, as its source: say so and show the image.
+const sourceImages = shallowRef<string[]>([])
+function showSourceImages(files: File[] = []) {
+  sourceImages.value.forEach((url) => URL.revokeObjectURL(url))
+  sourceImages.value = files.map((file) => URL.createObjectURL(file))
+}
+function markQrSource(source: string, images: File[]) {
+  if (originalInput.value !== source) return
+  extracted.value = '已从二维码识别密钥。'
+  showSourceImages(images)
+}
+onBeforeUnmount(() => showSourceImages())
 const pendingPaste = shallowRef<{ source: string; analysis: PasteAnalysis } | null>(null)
 const accountAnalysis = computed(() => analyzePaste(originalInput.value))
 const hasAccountSuggestion = computed(
@@ -445,8 +457,10 @@ async function recognizeImages(files: File[], fromPaste = false) {
   const result = collectQrChoices(values)
   const ordinary = result.choices.filter((value) => !isMigrationUri(value))
   const migration = result.choices.find(isMigrationUri)
-  if (ordinary.length) inspectPaste(ordinary.join('\n'))
-  else if (migration) migrationSource.value = migration
+  if (ordinary.length) {
+    inspectPaste(ordinary.join('\n'))
+    markQrSource(ordinary.join('\n'), files)
+  } else if (migration) migrationSource.value = migration
   pasteIssue.value =
     errors[0] ||
     (result.unsupported ? '二维码不是 TOTP 配置。' : '') ||
@@ -476,6 +490,7 @@ function inspectPaste(source: string) {
   historyCursor = undefined
   extracted.value = ''
   originalInput.value = ''
+  showSourceImages()
   pasteRevision++
   if (guiding.value) return
   pasteIssue.value = ''
@@ -540,10 +555,11 @@ function transferPaste(value: string) {
 
   emit('batch', value)
 }
-function importValue(value: string) {
+function importValue(value: string, images: File[] = []) {
   pendingPaste.value = null
   try {
     acceptPaste(parseOtp(value), value)
+    markQrSource(value, images)
   } catch {
     updateRaw(value)
   }
@@ -734,6 +750,7 @@ onBeforeUnmount(() => {
               v-if="extracted && !pendingPaste"
               :message="extracted"
               :source="originalInput"
+              :images="sourceImages"
             />
           </Transition>
           <AppHint

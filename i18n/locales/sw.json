@@ -628,5 +628,6 @@
   "guideDetailRemaining": "Upau ulio chini ya msimbo ni muda uliosalia, na hupungua hatua kwa hatua kama upau wa uzoefu. Ukiisha, msimbo mpya huchukua nafasi na ule wa zamani hukoma mara moja.",
   "historySelectedOfTotal": "{count} kati ya {total} zimechaguliwa",
   "batchUndoHint": "Bonyeza {undo} kutendua ubandikaji huu, au {single} kuutendua mstari mmoja baada ya mwingine",
-  "batchUndoPraise": "Vizuri, inaonekana unajua njia za mkato!\n{undo} hutendua ubandikaji wote, {single} mstari mmoja baada ya mwingine"
+  "batchUndoPraise": "Vizuri, inaonekana unajua njia za mkato!\n{undo} hutendua ubandikaji wote, {single} mstari mmoja baada ya mwingine",
+  "qrSourceNotice": "Ufunguo umesomwa kutoka kwenye msimbo wa QR."
 }

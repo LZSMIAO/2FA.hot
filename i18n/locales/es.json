@@ -628,5 +628,6 @@
   "guideDetailRemaining": "La barra bajo el código es el tiempo restante y baja por tramos, como una barra de experiencia. Al vaciarse entra un código nuevo y el anterior deja de servir.",
   "historySelectedOfTotal": "{count} de {total} seleccionados",
   "batchUndoHint": "Pulsa {undo} para deshacer este pegado o {single} para deshacerlo línea a línea",
-  "batchUndoPraise": "¡Genial, parece que dominas los atajos!\n{undo} deshace todo el pegado y {single}, una línea cada vez"
+  "batchUndoPraise": "¡Genial, parece que dominas los atajos!\n{undo} deshace todo el pegado y {single}, una línea cada vez",
+  "qrSourceNotice": "Clave leída del código QR."
 }

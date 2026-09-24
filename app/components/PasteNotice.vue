@@ -1,5 +1,6 @@
 <script setup lang="ts">
-defineProps<{ message: string; source: string }>()
+// Images, when given, are the original input and replace the text preview.
+defineProps<{ message: string; source: string; images?: string[] }>()
 const { tx } = useMessages()
 </script>
 <template>
@@ -13,7 +14,10 @@ const { tx } = useMessages()
     >
       <button type="button" class="paste-notice-trigger">{{ tx(message) }}</button>
       <template #content>
-        <pre class="paste-original-preview">{{ source }}</pre>
+        <div v-if="images?.length" class="paste-original-preview paste-original-images">
+          <img v-for="image in images" :key="image" :src="image" alt="" />
+        </div>
+        <pre v-else class="paste-original-preview">{{ source }}</pre>
       </template>
     </UPopover>
   </div>
@@ -38,5 +42,15 @@ const { tx } = useMessages()
   padding: 0.75rem 1rem;
   font-size: 0.875rem;
   color: var(--ui-text);
+}
+.paste-original-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.paste-original-images img {
+  width: 7.5rem;
+  height: 7.5rem;
+  object-fit: contain;
 }
 </style>

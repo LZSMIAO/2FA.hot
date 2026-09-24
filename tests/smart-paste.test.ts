@@ -10,7 +10,10 @@ import {
   insertBatchText,
   batchPasteText,
   batchFillRows,
-  keptBatchFill
+  keptBatchFill,
+  tidyBatchLinks,
+  restoreBatchLinks,
+  formattedBatchSource
 } from '../app/utils/smart-paste.ts'
 import { parseBatch, toOtpUri, parseOtp, DEMO_SECRET } from '../app/utils/otp.ts'
 const key = 'JBSWY3DPEHPK3PXP'
@@ -72,6 +75,46 @@ test('undoing a batch fill row by row rebuilds the text around the original sele
   assert.equal(place(keptBatchFill(fill, 2)), 'TOP\nA1\n\nB2\nBOTTOM')
   assert.equal(place(keptBatchFill(fill, 1)), 'TOP\nA1\nBOTTOM')
   assert.equal(place(keptBatchFill(fill, 0)), before)
+})
+test('batch shows otpauth links as bare keys and restores their details for parsing', () => {
+  const first =
+    'otpauth://totp/Google%3Adsparks804%40gmail.com?secret=IE5CCTRTMZ3CZZ7JUOI3CKYIRDIOBSU2&algorithm=SHA1&digits=6&period=30&issuer=Google'
+  const second =
+    'otpauth://totp/Work?secret=SDHBZQZI6GC3EMXOCMFGYNSMBIL3MYRB&algorithm=SHA256&digits=8&period=60'
+  const source = [first, 'Social A\t' + key, second].join('\n')
+  const { text, links } = tidyBatchLinks(source)
+  assert.equal(
+    text,
+    [
+      'IE5CCTRTMZ3CZZ7JUOI3CKYIRDIOBSU2',
+      'Social A\t' + key,
+      'SDHBZQZI6GC3EMXOCMFGYNSMBIL3MYRB'
+    ].join('\n')
+  )
+  const restored = restoreBatchLinks(text, links)
+  assert.equal(restored, source)
+  const rows = parseSmartBatch(restored)
+  assert.deepEqual(
+    rows.map((row) => [row.line, row.config?.label, row.config?.issuer]),
+    [
+      [1, 'dsparks804@gmail.com', 'Google'],
+      [2, 'Social A', ''],
+      [3, 'Work', '']
+    ]
+  )
+  assert.deepEqual(
+    [rows[2]!.config!.algorithm, rows[2]!.config!.digits, rows[2]!.config!.period],
+    ['SHA-256', 8, 60]
+  )
+  // An edited row no longer matches its key and is parsed as typed.
+  const edited = text.replace(
+    'IE5CCTRTMZ3CZZ7JUOI3CKYIRDIOBSU2',
+    'IE5CCTRTMZ3CZZ7JUOI3CKYIRDIOBSU3'
+  )
+  assert.equal(restoreBatchLinks(edited, links).split('\n')[0], 'IE5CCTRTMZ3CZZ7JUOI3CKYIRDIOBSU3')
+  // Only reformatting a key or link is not the same as dropping surrounding text.
+  assert.equal(formattedBatchSource(source.replace('Social A\t', '')), true)
+  assert.equal(formattedBatchSource('请用这个密钥 ' + key), false)
 })
 test('plain, grouped and named keys preserve their actual secret', () => {
   for (const source of [

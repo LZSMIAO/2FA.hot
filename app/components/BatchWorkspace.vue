@@ -8,7 +8,10 @@ import {
   insertBatchText,
   batchPasteText,
   batchFillRows,
-  keptBatchFill
+  keptBatchFill,
+  formattedBatchSource,
+  tidyBatchLinks,
+  restoreBatchLinks
 } from '~/utils/smart-paste'
 import { countdownState } from '~/utils/countdown-state'
 import { generateOtp, groupCode, remainingSeconds, toOtpUri, type BatchEntry } from '~/utils/otp'
@@ -58,9 +61,18 @@ const demoSecrets = [
 const displayRaw = computed(() =>
   guiding.value ? demoSecrets.slice(0, props.demo?.input || 0).join('\n') : raw.value
 )
+// otpauth links show as their bare key; each is restored before parsing, keeping its details.
+const batchLinks = shallowRef(new Map<string, string>())
 const parsedRaw = computed(() =>
-  guiding.value ? demoSecrets.slice(0, props.demo?.results || 0).join('\n') : raw.value
+  guiding.value
+    ? demoSecrets.slice(0, props.demo?.results || 0).join('\n')
+    : restoreBatchLinks(raw.value, batchLinks.value)
 )
+function tidyFill(text: string) {
+  const tidy = tidyBatchLinks(text)
+  if (tidy.links.size) batchLinks.value = new Map([...batchLinks.value, ...tidy.links])
+  return tidy.text
+}
 const matching = shallowRef(false)
 let pastedSecrets = new Set<string>()
 const batchRoot = useTemplateRef<HTMLElement>('batchRoot')
@@ -116,12 +128,12 @@ function closeQr() {
   qrIssue.value = ''
   cancelImageDrop()
 }
-function receivePaste(value: string) {
+function receivePaste(value: string, images: File[] = []) {
   const analysis = analyzePaste(value)
   const hadRows = !!raw.value.trim()
   clear()
   if (!hadRows && analysis.candidates.length === 1) emit('single', value)
-  else importBatchSource(value)
+  else importBatchSource(value, images)
 }
 let imageRevision = 0
 /** Pasted into the box itself, codes join its rows; elsewhere they start a new batch. */
@@ -150,8 +162,8 @@ async function recognizeImages(files: File[], field?: HTMLTextAreaElement) {
   const result = collectQrChoices(values)
   const ordinary = result.choices.filter((value) => !isMigrationUri(value))
   const migration = result.choices.find(isMigrationUri)
-  if (ordinary.length && field) insertPaste(field, ordinary.join('\n'))
-  else if (ordinary.length) receivePaste(ordinary.join('\n'))
+  if (ordinary.length && field) insertPaste(field, ordinary.join('\n'), files)
+  else if (ordinary.length) receivePaste(ordinary.join('\n'), files)
   else if (migration) migrationSource.value = migration
   qrIssue.value =
     errors[0] ||
@@ -165,26 +177,45 @@ const matchAssociations = shallowRef<Record<number, string>>({})
 const matchSource = shallowRef('')
 const matchSnapshot = shallowRef('')
 const reviewSource = computed(() =>
-  raw.value === matchSnapshot.value ? matchSource.value : raw.value
+  raw.value === matchSnapshot.value ? matchSource.value : parsedRaw.value
 )
 const reviewAnalysis = computed(() => analyzePaste(reviewSource.value))
 function finishMatching(value: string, source: string, associations: Record<number, string>) {
-  raw.value = value
+  raw.value = tidyFill(value)
   matchSource.value = source
   matchAssociations.value = associations
-  matchSnapshot.value = value
+  matchSnapshot.value = raw.value
   matching.value = false
 }
-function importBatchSource(value: string) {
+// The pasted images themselves are the original input, so the notice shows them.
+const fillImages = shallowRef<string[]>([])
+let fillFiles: File[] = []
+function showFillImages(files: File[] = []) {
+  fillImages.value.forEach((url) => URL.revokeObjectURL(url))
+  fillFiles = files
+  fillImages.value = files.map((file) => URL.createObjectURL(file))
+}
+onBeforeUnmount(() => showFillImages())
+const pasteNotice = computed(() => {
+  if (!raw.value || raw.value !== matchSnapshot.value) return ''
+  if (fillImages.value.length) return '已从二维码识别密钥。'
+  if (matchSource.value === raw.value) return ''
+  return formattedBatchSource(matchSource.value)
+    ? '已自动整理输入格式。'
+    : '已从粘贴内容中提取密钥，已忽略周围文字。'
+})
+function importBatchSource(value: string, images: File[] = []) {
   value = batchPasteText(value)
   const state = fillState()
   const source = [reviewSource.value.trimEnd(), value].filter(Boolean).join('\n')
   const analysis = analyzePaste(value)
   pastedSecrets = new Set(analysis.candidates.map((candidate) => candidate.config.secret))
-  const normalized =
+  const normalized = tidyFill(
     analysis.candidates.length && analysis.accounts?.length
       ? pastedBatchText(analysis.candidates.map((candidate) => candidate.config))
       : value
+  )
+  showFillImages(images)
   const kept = raw.value.trimEnd()
   raw.value = [kept, normalized].filter(Boolean).join('\n')
   matchSource.value = source
@@ -203,6 +234,7 @@ type FillState = {
   source: string
   snapshot: string
   associations: Record<number, string>
+  images: File[]
 }
 type BatchFill = {
   state: FillState
@@ -217,7 +249,8 @@ function fillState(): FillState {
     raw: raw.value,
     source: matchSource.value,
     snapshot: matchSnapshot.value,
-    associations: matchAssociations.value
+    associations: matchAssociations.value,
+    images: fillFiles
   }
 }
 function rememberFill(state: FillState, text: string, cursor: number, place: BatchFill['place']) {
@@ -233,6 +266,7 @@ function undoFill(single: boolean) {
     const placed = fill.place(keptBatchFill(fill.text, fill.rows))
     raw.value = matchSource.value = matchSnapshot.value = placed.text
     matchAssociations.value = {}
+    showFillImages()
     cursor = placed.cursor
   } else {
     fills.pop()
@@ -240,6 +274,7 @@ function undoFill(single: boolean) {
     matchSource.value = fill.state.source
     matchSnapshot.value = fill.state.snapshot
     matchAssociations.value = fill.state.associations
+    showFillImages(fill.state.images)
   }
   pastedSecrets.clear()
   const input = batchInput()
@@ -518,23 +553,29 @@ function pasteBatch(event: ClipboardEvent) {
   insertPaste(input, text)
 }
 /** Insert pasted text at the box's selection, as one undoable fill. */
-function insertPaste(input: HTMLTextAreaElement, value: string) {
+function insertPaste(input: HTMLTextAreaElement, value: string, images: File[] = []) {
+  const state = fillState()
   const text = batchPasteText(value)
   const analysis = analyzePaste(text)
-  const normalized =
+  const normalized = tidyFill(
     analysis.candidates.length && analysis.accounts?.length
       ? pastedBatchText(analysis.candidates.map((candidate) => candidate.config))
       : text
+  )
+  showFillImages(images)
   const inserted = insertBatchText(raw.value, normalized, input.selectionStart, input.selectionEnd)
   const source =
     input.selectionStart === input.value.length && raw.value
       ? reviewSource.value + '\n' + text
-      : insertBatchText(raw.value, text, input.selectionStart, input.selectionEnd).text
+      : restoreBatchLinks(
+          insertBatchText(raw.value, text, input.selectionStart, input.selectionEnd).text,
+          batchLinks.value
+        )
   pastedSecrets = new Set(analysis.candidates.map((candidate) => candidate.config.secret))
   const before = raw.value,
     start = input.selectionStart,
     end = input.selectionEnd
-  rememberFill(fillState(), normalized, start, (rows) =>
+  rememberFill(state, normalized, start, (rows) =>
     rows ? insertBatchText(before, rows, start, end) : { text: before, cursor: start }
   )
   raw.value = inserted.text
@@ -548,6 +589,8 @@ function insertPaste(input: HTMLTextAreaElement, value: string) {
 }
 function clear() {
   pastedSecrets.clear()
+  batchLinks.value = new Map()
+  showFillImages()
   fills = []
   finishUndoHint()
   imageRevision++
@@ -662,9 +705,10 @@ onBeforeUnmount(() => {
       />
       <div v-if="!standalone && !matching && !guiding && valid.length" class="batch-paste-notice">
         <PasteNotice
-          v-if="raw && raw === matchSnapshot && matchSource !== raw"
-          message="已从粘贴内容中提取密钥，已忽略周围文字。"
+          v-if="pasteNotice"
+          :message="pasteNotice"
           :source="matchSource"
+          :images="fillImages"
         />
         <AppHint :text="associationHint">
           <button
