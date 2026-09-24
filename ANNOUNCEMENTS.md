@@ -21,11 +21,10 @@ en: English text        ← 沒寫的語言會顯示英文；也可以加 ja、k
 -->
 
 ## custom-background
-
 日期: 2026-09-25
 對象: 老用戶
 圖標: image-up
-zh-TW: 新功能：背景可以換成自己的圖片了。\n在背景選單（電腦在右下角，手機在右上角選單）選「上傳背景圖片…」：1 張是靜態背景，6 張組成可旋轉的全景。
-zh-CN: 新功能：背景可以换成自己的图片了。\n在背景菜单（电脑在右下角，手机在右上角菜单）选「上传背景图片…」：1 张是静态背景，6 张组成可旋转的全景。
-en: New: use your own background.\nOpen the background menu (bottom right on a computer, the top-right menu on a phone) and choose "Upload background image…": one image for a still backdrop, six for a rotating panorama.
-ja: 新機能：背景を自分の画像にできるようになりました。\n背景メニュー（PC は右下、スマートフォンは右上のメニュー）で「背景画像をアップロード…」を選びます。1 枚で静止背景、6 枚で回転するパノラマになります。
+zh-TW: 背景可以換成自己的圖片了。\n快來試試吧:))
+zh-CN: 背景可以换成自己的图片了。\n快来试试吧:))
+en: You can now use your own image as the background.\nCome give it a try :))
+ja: 背景を自分の画像に変更できるようになりました。\nぜひ試してみてください :))
