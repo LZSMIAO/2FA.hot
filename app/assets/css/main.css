@@ -1545,11 +1545,11 @@ html.size-transition .desert-art svg * {
   /*
    * iOS Safari changes the bottom inset as its toolbar collapses and expands,
    * which made the footer's length change mid-scroll. Safari already scrolls
-   * the page's end clear of its bar and the home indicator, so a small fixed
-   * margin is all the footer adds.
+   * the page's end clear of its bar and the home indicator, so the footer
+   * adds nothing of its own.
    */
   html[data-ios] .site-footer {
-    padding-bottom: 0.75rem;
+    padding-bottom: 0;
   }
   .guide-layer.guide-inline {
     position: static;

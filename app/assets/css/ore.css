@@ -773,23 +773,26 @@
     height: auto;
     min-height: 0;
     gap: 0;
-    padding: 0.25rem 1.25rem;
+    /* Text sits by its own line height, not in 44px boxes, so the footer stays
+       compact; the touch targets reach past the text instead. */
+    padding: 0.625rem 1.25rem 0.75rem;
   }
   html:root .site-footer .footer-brand {
     grid-row: 1;
     justify-self: start;
     width: auto;
     /* The icons are absolute at the row's end, so the brand has to stop short of
-       them itself; the tagline then gives way with an ellipsis. */
+       them itself. */
     max-width: calc(100% - 6rem);
     min-width: 2.75rem;
-    min-height: 2.75rem;
+    min-height: 0;
     /* The description goes under the name and wraps rather than being cut
        off, still clear of the icons. */
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
     gap: 0.125rem;
+    line-height: 1.25rem;
     white-space: normal;
   }
   html:root .site-footer .footer-tagline {
@@ -804,34 +807,37 @@
     display: block;
     min-width: 0;
     width: 100%;
-    margin: 0;
+    margin: 0.5rem 0 0;
   }
   html:root .site-footer .footer-pages {
     /* Grouped at the start; spread across the width, four short links sat a
-       column apart. */
+       column apart. A wrapped row leaves room for both rows' targets. */
     justify-content: flex-start;
-    gap: 0.25rem 1.25rem;
+    gap: 1.25rem;
   }
   html:root .site-footer .footer-pages a {
     /* A short word like "About" padded to 44px left a wider gap after it. The
-       links keep their own width and reach into the gap for the touch target. */
+       links keep their own size and reach into the space around them. */
     position: relative;
     min-width: 0;
-    min-height: 2.75rem;
+    min-height: 0;
     max-width: 100%;
     justify-content: flex-start;
+    line-height: 1.25rem;
     white-space: normal;
     overflow-wrap: anywhere;
   }
   html:root .site-footer .footer-pages a::before {
     content: '';
     position: absolute;
-    /* Half the 1.25rem column gap each side, so neighbours never overlap. */
-    inset: 0 -0.625rem;
+    /* Up to the brand, down to the footer's end, and half the column gap each
+       side, so neighbours never overlap. */
+    inset: -0.5rem -0.625rem -0.75rem;
   }
   html:root .site-footer .footer-contacts {
     position: absolute;
-    inset-block-start: 0.25rem;
+    /* Centred on the two-line brand: 2.625rem tall from the same top. */
+    inset-block-start: calc(0.625rem - 0.0625rem);
     inset-inline-end: 1.25rem;
   }
   html:root .site-footer .footer-contacts a {
