@@ -48,7 +48,10 @@ function alignGuide() {
   const rect = trigger.getBoundingClientRect()
   // The card is anchored to the trigger. Where it would reach across the
   // button, start below it instead so the button stays visible and clickable.
-  guideTop.value = `${Math.max(16, drawerLeft < rect.right + 12 ? rect.bottom + 12 : rect.top)}px`
+  // Scrolled past, it stops under the sticky header rather than riding up
+  // over it.
+  const header = document.querySelector('.site-header')?.getBoundingClientRect().bottom ?? 0
+  guideTop.value = `${Math.max(header + 12, drawerLeft < rect.right + 12 ? rect.bottom + 12 : rect.top)}px`
 }
 /*
  * "Got it" at the end of a walkthrough hides its entry, for that kind of code
