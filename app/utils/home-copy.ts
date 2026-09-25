@@ -24,7 +24,9 @@ export const homeIntro = {
       '适用于支持验证器 App 的服务，例如 Google、Microsoft、GitHub、Discord、X、Facebook、Instagram、Amazon 和币安。'
     ]
   },
-  faqTitle: '常见问题',
+  // A new visitor's welcome; the questions follow it.
+  welcomeTitle: '欢迎来到 2fa.hot',
+  welcomeLead: '开始使用前，你或许想了解……',
   guidesLink: '阅读 2FA 与 TOTP 指南'
 } as const
 

@@ -647,7 +647,6 @@
   "homeFormatsTitle": "Obsługiwane formaty i serwisy",
   "homeFormatsBody1": "Obsługuje klucze tajne Base32, linki konfiguracyjne otpauth://, standardowe kody QR 2FA oraz kody QR eksportu z Google Authenticator. TOTP obsługuje SHA-1, SHA-256 i SHA-512 oraz kody 6- lub 8-cyfrowe.",
   "homeFormatsBody2": "Działa z serwisami, które obsługują aplikacje uwierzytelniające, takimi jak Google, Microsoft, GitHub, Discord, X, Facebook, Instagram, Amazon i Binance.",
-  "homeFaqTitle": "Najczęściej zadawane pytania",
   "homeFaqSafeQ": "Czy generowanie kodów 2FA online jest bezpieczne?",
   "homeFaqSafeA": "Kody i odczyt kodów QR są obliczane lokalnie w twojej przeglądarce. Klucze tajne nie są wysyłane na serwer 2fa.hot, a historia jest domyślnie wyłączona. Każdy, kto zna twój klucz tajny, może jednak generować twoje kody, dlatego używaj narzędzia tylko na zaufanych urządzeniach i nigdy nie udostępniaj linków zawierających klucz.",
   "homeFaqInvalidQ": "Dlaczego mój kod 2FA jest odrzucany?",
@@ -678,5 +677,7 @@
   "offlinePraise": "Świetnie, jesteś offline! Kody nadal działają.",
   "appInstall": "Zainstaluj aplikację",
   "appInstallTip": "Zainstaluj jako aplikację, aby otwierać z pulpitu lub ekranu początkowego, także offline.",
-  "appInstalled": "Zainstalowano. Otwieraj z pulpitu lub ekranu początkowego."
+  "appInstalled": "Zainstalowano. Otwieraj z pulpitu lub ekranu początkowego.",
+  "homeWelcomeTitle": "Witamy w 2fa.hot",
+  "homeWelcomeLead": "Zanim zaczniesz, być może zechcesz wiedzieć…"
 }

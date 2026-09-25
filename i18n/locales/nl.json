@@ -647,7 +647,6 @@
   "homeFormatsTitle": "Ondersteunde formaten en diensten",
   "homeFormatsBody1": "Ondersteunt Base32-sleutels, otpauth://-instellinks, standaard 2FA-QR-codes en export-QR-codes van Google Authenticator. TOTP werkt met SHA-1, SHA-256 en SHA-512 en met 6 of 8 cijfers.",
   "homeFormatsBody2": "Werkt met diensten die authenticator-apps ondersteunen, zoals Google, Microsoft, GitHub, Discord, X, Facebook, Instagram, Amazon en Binance.",
-  "homeFaqTitle": "Veelgestelde vragen",
   "homeFaqSafeQ": "Is het veilig om 2FA-codes online te genereren?",
   "homeFaqSafeA": "Codes en het uitlezen van QR-codes worden lokaal in je browser berekend. Geheime sleutels worden niet naar de server van 2fa.hot gestuurd en de geschiedenis staat standaard uit. Wie je geheime sleutel heeft, kan wel je codes genereren. Gebruik de tool daarom alleen op apparaten die je vertrouwt en deel nooit links waar een sleutel in staat.",
   "homeFaqInvalidQ": "Waarom wordt mijn 2FA-code geweigerd?",
@@ -678,5 +677,7 @@
   "offlinePraise": "Top, je bent offline! De codes werken gewoon.",
   "appInstall": "App installeren",
   "appInstallTip": "Installeer het als app om het vanaf je bureaublad of beginscherm te openen, ook offline.",
-  "appInstalled": "Geïnstalleerd. Open het vanaf je bureaublad of beginscherm."
+  "appInstalled": "Geïnstalleerd. Open het vanaf je bureaublad of beginscherm.",
+  "homeWelcomeTitle": "Welkom bij 2fa.hot",
+  "homeWelcomeLead": "Voordat je begint, wil je misschien weten…"
 }

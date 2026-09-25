@@ -647,7 +647,6 @@
   "homeFormatsTitle": "支援的格式與服務",
   "homeFormatsBody1": "支援 Base32 金鑰、otpauth:// 設定連結、一般 2FA QR Code，以及 Google Authenticator 匯出的 QR Code。TOTP 可選 SHA-1、SHA-256、SHA-512，6 位數或 8 位數。",
   "homeFormatsBody2": "適用於支援驗證器 App 的服務，例如 Google、Microsoft、GitHub、Discord、X、Facebook、Instagram、Amazon 和幣安。",
-  "homeFaqTitle": "常見問題",
   "homeFaqSafeQ": "線上產生 2FA 驗證碼安全嗎？",
   "homeFaqSafeA": "驗證碼計算和 QR Code 解碼都在瀏覽器本機完成，金鑰不會傳到 2fa.hot 的伺服器，歷史紀錄預設為關閉。不過，任何拿到金鑰的人都能算出驗證碼，請只在信任的裝置上使用，也不要公開分享含有金鑰的連結。",
   "homeFaqInvalidQ": "為什麼驗證碼顯示無效？",
@@ -678,5 +677,7 @@
   "offlinePraise": "太好了，已斷網！驗證碼照常產生。",
   "appInstall": "安裝 App",
   "appInstallTip": "安裝成 App 後，可以從桌面或主畫面直接開啟，斷網也能用。",
-  "appInstalled": "已安裝，可以從桌面或主畫面直接開啟。"
+  "appInstalled": "已安裝，可以從桌面或主畫面直接開啟。",
+  "homeWelcomeTitle": "歡迎來到 2fa.hot",
+  "homeWelcomeLead": "開始使用前，你或許想了解……"
 }

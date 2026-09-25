@@ -180,6 +180,16 @@ onBeforeUnmount(() => {
   border: 0;
   background: transparent;
   transform: translateX(-50%);
+  /*
+   * While a notice shows above it (the parent sets --desert-yielding to 1), the
+   * scene shrinks about its foot until the cactus stays inside its own box,
+   * clear of the words: --desert-clear is that box over the drawing's height.
+   * The origin sits at the box's left foot because the translate runs first.
+   */
+  --desert-clear: calc(18 / 23);
+  transform-origin: 0 100%;
+  scale: calc(1 - var(--desert-yielding, 0) * (1 - var(--desert-clear)));
+  transition: scale 200ms var(--ease-out);
   pointer-events: none;
   cursor: default;
 }
@@ -259,6 +269,7 @@ onBeforeUnmount(() => {
   .desert-scene {
     bottom: 0;
     height: calc(13.5rem * var(--desert-fit, 1));
+    --desert-clear: calc(10 / 13.5);
   }
   .desert-tip {
     top: calc(4.75rem * var(--desert-fit, 1));
@@ -278,6 +289,7 @@ onBeforeUnmount(() => {
 @media (prefers-reduced-motion: reduce) {
   .desert-accent,
   .desert-accent.is-open,
+  .desert-scene,
   .desert-tip {
     transition: none;
   }

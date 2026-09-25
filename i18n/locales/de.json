@@ -647,7 +647,6 @@
   "homeFormatsTitle": "Unterstützte Formate und Dienste",
   "homeFormatsBody1": "Unterstützt Base32-Schlüssel, otpauth://-Einrichtungslinks, normale 2FA-QR-Codes und Export-QR-Codes aus Google Authenticator. TOTP funktioniert mit SHA-1, SHA-256 und SHA-512 sowie mit 6 oder 8 Stellen.",
   "homeFormatsBody2": "Funktioniert mit Diensten, die Authenticator-Apps unterstützen, etwa Google, Microsoft, GitHub, Discord, X, Facebook, Instagram, Amazon und Binance.",
-  "homeFaqTitle": "Häufige Fragen",
   "homeFaqSafeQ": "Ist es sicher, 2FA-Codes online zu erzeugen?",
   "homeFaqSafeA": "Codes und das Auslesen von QR-Codes werden lokal in deinem Browser berechnet. Schlüssel werden nicht an den Server von 2fa.hot gesendet, und der Verlauf ist standardmäßig ausgeschaltet. Wer deinen Schlüssel hat, kann allerdings deine Codes erzeugen. Nutze das Tool daher nur auf vertrauenswürdigen Geräten und teile nie Links, die einen Schlüssel enthalten.",
   "homeFaqInvalidQ": "Warum wird mein 2FA-Code abgelehnt?",
@@ -678,5 +677,7 @@
   "offlinePraise": "Super, du bist offline! Die Codes funktionieren weiter.",
   "appInstall": "App installieren",
   "appInstallTip": "Als App installiert, öffnest du sie direkt vom Desktop oder Home-Bildschirm, auch offline.",
-  "appInstalled": "Installiert. Öffne die App direkt vom Desktop oder Home-Bildschirm."
+  "appInstalled": "Installiert. Öffne die App direkt vom Desktop oder Home-Bildschirm.",
+  "homeWelcomeTitle": "Willkommen bei 2fa.hot",
+  "homeWelcomeLead": "Bevor du loslegst, möchtest du vielleicht wissen …"
 }

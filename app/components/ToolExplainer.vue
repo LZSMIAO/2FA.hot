@@ -23,8 +23,8 @@ interface ExplainerItem {
   steps?: readonly string[]
   link?: { to: string; title: string }
 }
+// What 2fa.hot is reads as the welcome's own text; the rest fold beside it.
 const items = computed<ExplainerItem[]>(() => [
-  { question: homeIntro.what.title, paragraphs: homeIntro.what.paragraphs },
   { question: homeIntro.steps.title, steps: homeIntro.steps.items },
   { question: homeIntro.formats.title, paragraphs: homeIntro.formats.paragraphs },
   ...homeFaq.map((item) => ({
@@ -33,12 +33,6 @@ const items = computed<ExplainerItem[]>(() => [
     link: guideLink(item.guide)
   }))
 ])
-// Two independent stacks: opening an answer only moves the questions below it
-// in the same column, never leaving a gap beside it in the other.
-const columns = computed(() => {
-  const middle = Math.ceil(items.value.length / 2)
-  return [items.value.slice(0, middle), items.value.slice(middle)]
-})
 </script>
 
 <template>
@@ -48,10 +42,35 @@ const columns = computed(() => {
     so they always read it as a new visitor would.
   -->
   <section class="tool-explainer" aria-labelledby="tool-explainer-title">
-    <h2 id="tool-explainer-title">{{ tx(homeIntro.faqTitle) }}</h2>
-    <div class="explainer-list">
-      <div v-for="(column, index) in columns" :key="index" class="explainer-column">
-        <details v-for="item in column" :key="item.question" name="tool-explainer">
+    <div class="explainer-welcome">
+      <!-- Murasame, the site's mascot, waving the welcome; drawn by
+           scripts/render-mascot.py from the same skin as the desert scene.
+           Lazy, so a returning visitor, who never sees this, never loads it. -->
+      <img
+        class="explainer-mascot"
+        src="/art/murasame-wave.svg"
+        alt=""
+        width="39"
+        height="72"
+        loading="lazy"
+      />
+      <div>
+        <h2 id="tool-explainer-title">{{ tx(homeIntro.welcomeTitle) }}</h2>
+        <p>{{ tx(homeIntro.welcomeLead) }}</p>
+      </div>
+    </div>
+    <div class="explainer-body">
+      <div class="explainer-intro">
+        <h3>{{ tx(homeIntro.what.title) }}</h3>
+        <p v-for="paragraph in homeIntro.what.paragraphs" :key="paragraph">{{ tx(paragraph) }}</p>
+        <p class="explainer-links">
+          <NuxtLink :to="localePath('/guides')">{{ tx(homeIntro.guidesLink) }}</NuxtLink>
+          <span aria-hidden="true">·</span>
+          <NuxtLink :to="localePath('/help')">{{ tx('使用说明') }}</NuxtLink>
+        </p>
+      </div>
+      <div class="explainer-list">
+        <details v-for="item in items" :key="item.question" name="tool-explainer">
           <summary>
             <h3>{{ tx(item.question) }}</h3>
             <UIcon name="i-lucide-chevron-down" class="explainer-chevron" aria-hidden="true" />
@@ -68,11 +87,6 @@ const columns = computed(() => {
         </details>
       </div>
     </div>
-    <p class="explainer-links">
-      <NuxtLink :to="localePath('/guides')">{{ tx(homeIntro.guidesLink) }}</NuxtLink>
-      <span aria-hidden="true">·</span>
-      <NuxtLink :to="localePath('/help')">{{ tx('使用说明') }}</NuxtLink>
-    </p>
   </section>
 </template>
 
@@ -86,26 +100,55 @@ const columns = computed(() => {
   --font-sans: system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
   font-family: var(--font-sans);
   margin-top: 1rem;
-  padding: 1rem 2rem 0.75rem;
+  padding: 1.25rem 2rem 1rem;
   border: 2px solid var(--ore-outline);
   box-shadow: var(--ore-window-shadow);
   background: var(--panel);
   color: var(--ui-text);
 }
-h2 {
-  font-size: var(--text-body);
-  font-weight: 600;
+.explainer-welcome {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.explainer-mascot {
+  flex: none;
+  width: auto;
+  height: 4.5rem;
+}
+.explainer-welcome h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--ui-text-highlighted);
+}
+.explainer-welcome p {
+  margin: 0.125rem 0 0;
+  font-size: var(--text-label);
   line-height: 1.6;
-  margin: 0 0 0.25rem;
   color: var(--ui-text-muted);
 }
-.explainer-list {
+.explainer-body {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0 2.5rem;
   align-items: start;
+  margin-top: 0.5rem;
 }
-.explainer-column {
+/* Level with the first question's text beside it. */
+.explainer-intro h3 {
+  margin: 0.625rem 0 0.5rem;
+  font-weight: 600;
+  color: var(--ui-text-highlighted);
+}
+.explainer-intro p:not(.explainer-links) {
+  margin: 0 0 0.75rem;
+  font-size: var(--text-body);
+  line-height: 1.8;
+  color: var(--ui-text-muted);
+}
+.explainer-list {
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -179,12 +222,15 @@ a {
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem 0.5rem;
-  margin: 0.75rem 0 0;
+  margin: 0.25rem 0 0;
   font-size: var(--text-label, 0.875rem);
 }
 @media (width <= 900px) {
-  .explainer-list {
+  .explainer-body {
     grid-template-columns: minmax(0, 1fr);
+  }
+  .explainer-intro {
+    margin-bottom: 0.5rem;
   }
 }
 @media (width <= 700px) {

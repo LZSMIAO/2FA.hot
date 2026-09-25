@@ -647,7 +647,6 @@
   "homeFormatsTitle": "対応形式とサービス",
   "homeFormatsBody1": "Base32シークレット、otpauth://設定リンク、通常の2FA用QRコード、Google Authenticatorのエクスポート用QRコードに対応。TOTPはSHA-1・SHA-256・SHA-512、6桁または8桁を選べます。",
   "homeFormatsBody2": "Google、Microsoft、GitHub、Discord、X、Facebook、Instagram、Amazon、Binanceなど、認証アプリに対応したサービスで使えます。",
-  "homeFaqTitle": "よくある質問",
   "homeFaqSafeQ": "オンラインで2FAコードを生成しても安全ですか？",
   "homeFaqSafeA": "コードの計算とQRコードの読み取りはブラウザ内で完結し、シークレットキーが2fa.hotのサーバーに送られることはありません。履歴はデフォルトでオフです。ただし、キーを知っている人は誰でもコードを生成できるため、信頼できる端末でのみ使い、キーを含むリンクを公開しないでください。",
   "homeFaqInvalidQ": "認証コードが無効と表示されるのはなぜですか？",
@@ -678,5 +677,7 @@
   "offlinePraise": "いいですね、オフラインです！コードはそのまま生成されます。",
   "appInstall": "アプリをインストール",
   "appInstallTip": "アプリとしてインストールすると、デスクトップやホーム画面から直接開けます。オフラインでも使えます。",
-  "appInstalled": "インストールしました。デスクトップやホーム画面から直接開けます。"
+  "appInstalled": "インストールしました。デスクトップやホーム画面から直接開けます。",
+  "homeWelcomeTitle": "2fa.hot へようこそ",
+  "homeWelcomeLead": "使い始める前に、知っておくと役立つこと"
 }

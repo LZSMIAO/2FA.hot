@@ -647,7 +647,6 @@
   "homeFormatsTitle": "Desteklenen biçimler ve hizmetler",
   "homeFormatsBody1": "Base32 gizli anahtarlarını, otpauth:// kurulum bağlantılarını, standart 2FA QR kodlarını ve Google Authenticator dışa aktarma QR kodlarını kabul eder. TOTP; SHA-1, SHA-256 ve SHA-512 algoritmalarını 6 veya 8 haneli kodlarla destekler.",
   "homeFormatsBody2": "Google, Microsoft, GitHub, Discord, X, Facebook, Instagram, Amazon ve Binance gibi doğrulayıcı uygulamaları destekleyen hizmetlerle çalışır.",
-  "homeFaqTitle": "Sıkça sorulan sorular",
   "homeFaqSafeQ": "2FA kodunu çevrimiçi oluşturmak güvenli mi?",
   "homeFaqSafeA": "Kod hesaplama ve QR kod çözme tarayıcınızda yerel olarak yapılır. Gizli anahtarlar 2fa.hot sunucusuna gönderilmez ve geçmiş varsayılan olarak kapalıdır. Yine de gizli anahtarınıza sahip olan herkes kodlarınızı üretebilir; bu yüzden aracı yalnızca güvendiğiniz cihazlarda kullanın ve gizli anahtar içeren bağlantıları asla paylaşmayın.",
   "homeFaqInvalidQ": "2FA kodum neden kabul edilmiyor?",
@@ -678,5 +677,7 @@
   "offlinePraise": "Harika, çevrimdışısınız! Kodlar çalışmaya devam ediyor.",
   "appInstall": "Uygulamayı yükle",
   "appInstallTip": "Uygulama olarak yükleyin; masaüstünden veya ana ekrandan, çevrimdışıyken bile doğrudan açın.",
-  "appInstalled": "Yüklendi. Masaüstünden veya ana ekrandan doğrudan açın."
+  "appInstalled": "Yüklendi. Masaüstünden veya ana ekrandan doğrudan açın.",
+  "homeWelcomeTitle": "2fa.hot'a hoş geldiniz",
+  "homeWelcomeLead": "Başlamadan önce bilmek isteyebilecekleriniz…"
 }

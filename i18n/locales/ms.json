@@ -647,7 +647,6 @@
   "homeFormatsTitle": "Format dan perkhidmatan yang disokong",
   "homeFormatsBody1": "Menerima kunci rahsia Base32, pautan persediaan otpauth://, kod QR 2FA standard dan kod QR eksport Google Authenticator. TOTP menyokong SHA-1, SHA-256 dan SHA-512 dengan 6 atau 8 digit.",
   "homeFormatsBody2": "Berfungsi dengan perkhidmatan yang menyokong aplikasi pengesah, seperti Google, Microsoft, GitHub, Discord, X, Facebook, Instagram, Amazon dan Binance.",
-  "homeFaqTitle": "Soalan lazim",
   "homeFaqSafeQ": "Adakah selamat menjana kod 2FA dalam talian?",
   "homeFaqSafeA": "Kod dan penyahkodan kod QR dikira secara setempat dalam pelayar anda. Kunci rahsia tidak dihantar ke pelayan 2fa.hot, dan sejarah dimatikan secara lalai. Namun, sesiapa yang memiliki kunci rahsia anda boleh menjana kod anda, jadi gunakan alat ini hanya pada peranti yang dipercayai dan jangan sekali-kali berkongsi pautan yang mengandungi kunci rahsia.",
   "homeFaqInvalidQ": "Mengapakah kod 2FA saya ditolak?",
@@ -678,5 +677,7 @@
   "offlinePraise": "Bagus, anda di luar talian! Kod tetap berfungsi.",
   "appInstall": "Pasang apl",
   "appInstallTip": "Pasang sebagai apl untuk membukanya dari desktop atau skrin utama, walaupun di luar talian.",
-  "appInstalled": "Sudah dipasang. Bukanya dari desktop atau skrin utama."
+  "appInstalled": "Sudah dipasang. Bukanya dari desktop atau skrin utama.",
+  "homeWelcomeTitle": "Selamat datang ke 2fa.hot",
+  "homeWelcomeLead": "Sebelum bermula, mungkin anda ingin tahu…"
 }

@@ -647,7 +647,6 @@
   "homeFormatsTitle": "Format dan layanan yang didukung",
   "homeFormatsBody1": "Menerima kunci rahasia Base32, tautan pengaturan otpauth://, kode QR 2FA standar, dan kode QR ekspor Google Authenticator. TOTP mendukung SHA-1, SHA-256, dan SHA-512 dengan 6 atau 8 digit.",
   "homeFormatsBody2": "Bisa dipakai untuk layanan yang mendukung aplikasi autentikator, seperti Google, Microsoft, GitHub, Discord, X, Facebook, Instagram, Amazon, dan Binance.",
-  "homeFaqTitle": "Pertanyaan umum",
   "homeFaqSafeQ": "Apakah aman membuat kode 2FA secara online?",
   "homeFaqSafeA": "Kode dan pembacaan kode QR dihitung secara lokal di browser Anda. Kunci rahasia tidak dikirim ke server 2fa.hot, dan riwayat nonaktif secara default. Namun, siapa pun yang memiliki kunci rahasia Anda bisa membuat kode Anda, jadi gunakan alat ini hanya di perangkat tepercaya dan jangan pernah membagikan tautan yang berisi kunci rahasia.",
   "homeFaqInvalidQ": "Mengapa kode 2FA saya ditolak?",
@@ -678,5 +677,7 @@
   "offlinePraise": "Mantap, Anda sedang offline! Kode tetap berjalan.",
   "appInstall": "Pasang aplikasi",
   "appInstallTip": "Pasang sebagai aplikasi agar bisa dibuka dari desktop atau layar utama, bahkan saat offline.",
-  "appInstalled": "Terpasang. Buka dari desktop atau layar utama."
+  "appInstalled": "Terpasang. Buka dari desktop atau layar utama.",
+  "homeWelcomeTitle": "Selamat datang di 2fa.hot",
+  "homeWelcomeLead": "Sebelum mulai, mungkin Anda ingin tahu…"
 }

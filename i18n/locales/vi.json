@@ -647,7 +647,6 @@
   "homeFormatsTitle": "Định dạng và dịch vụ được hỗ trợ",
   "homeFormatsBody1": "Hỗ trợ khóa bí mật Base32, liên kết thiết lập otpauth://, mã QR 2FA tiêu chuẩn và mã QR xuất từ Google Authenticator. TOTP hỗ trợ SHA-1, SHA-256 và SHA-512 với 6 hoặc 8 chữ số.",
   "homeFormatsBody2": "Dùng được với các dịch vụ hỗ trợ ứng dụng xác thực như Google, Microsoft, GitHub, Discord, X, Facebook, Instagram, Amazon và Binance.",
-  "homeFaqTitle": "Câu hỏi thường gặp",
   "homeFaqSafeQ": "Tạo mã 2FA trực tuyến có an toàn không?",
   "homeFaqSafeA": "Việc tính mã và giải mã QR đều diễn ra cục bộ trong trình duyệt của bạn. Khóa bí mật không được gửi đến máy chủ của 2fa.hot, và lịch sử được tắt theo mặc định. Tuy nhiên, bất kỳ ai có khóa bí mật của bạn đều có thể tạo mã của bạn, vì vậy chỉ dùng công cụ này trên thiết bị đáng tin cậy và đừng bao giờ chia sẻ liên kết có chứa khóa bí mật.",
   "homeFaqInvalidQ": "Vì sao mã 2FA của tôi bị từ chối?",
@@ -678,5 +677,7 @@
   "offlinePraise": "Tuyệt, bạn đang ngoại tuyến! Mã vẫn tạo bình thường.",
   "appInstall": "Cài đặt ứng dụng",
   "appInstallTip": "Cài thành ứng dụng để mở thẳng từ màn hình máy tính hoặc MH chính, kể cả khi ngoại tuyến.",
-  "appInstalled": "Đã cài đặt. Mở thẳng từ màn hình máy tính hoặc MH chính."
+  "appInstalled": "Đã cài đặt. Mở thẳng từ màn hình máy tính hoặc MH chính.",
+  "homeWelcomeTitle": "Chào mừng bạn đến với 2fa.hot",
+  "homeWelcomeLead": "Trước khi bắt đầu, có thể bạn muốn biết…"
 }

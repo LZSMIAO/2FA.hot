@@ -647,7 +647,6 @@
   "homeFormatsTitle": "Formatos e serviços compatíveis",
   "homeFormatsBody1": "Aceita chaves secretas Base32, links de configuração otpauth://, QR codes 2FA padrão e QR codes de exportação do Google Authenticator. O TOTP suporta SHA-1, SHA-256 e SHA-512, com 6 ou 8 dígitos.",
   "homeFormatsBody2": "Funciona com serviços que aceitam aplicativos autenticadores, como Google, Microsoft, GitHub, Discord, X, Facebook, Instagram, Amazon e Binance.",
-  "homeFaqTitle": "Perguntas frequentes",
   "homeFaqSafeQ": "É seguro gerar códigos 2FA online?",
   "homeFaqSafeA": "Os códigos e a leitura de QR codes são calculados localmente no seu navegador. As chaves secretas não são enviadas ao servidor do 2fa.hot, e o histórico vem desativado por padrão. Mesmo assim, quem tiver a sua chave secreta pode gerar os seus códigos; por isso, use a ferramenta apenas em dispositivos de confiança e nunca compartilhe links que contenham uma chave secreta.",
   "homeFaqInvalidQ": "Por que meu código 2FA não é aceito?",
@@ -678,5 +677,7 @@
   "offlinePraise": "Boa, você está offline! Os códigos continuam funcionando.",
   "appInstall": "Instalar app",
   "appInstallTip": "Instale como app para abrir direto da área de trabalho ou da tela de início, mesmo offline.",
-  "appInstalled": "Instalado. Abra direto da área de trabalho ou da tela de início."
+  "appInstalled": "Instalado. Abra direto da área de trabalho ou da tela de início.",
+  "homeWelcomeTitle": "Boas-vindas ao 2fa.hot",
+  "homeWelcomeLead": "Antes de começar, talvez você queira saber…"
 }

@@ -647,7 +647,6 @@
   "homeFormatsTitle": "Miundo na huduma zinazotumika",
   "homeFormatsBody1": "Hukubali funguo za siri za Base32, viungo vya usanidi vya otpauth://, misimbo ya kawaida ya QR ya 2FA na misimbo ya QR iliyohamishwa kutoka Google Authenticator. TOTP inaweza kutumia SHA-1, SHA-256 na SHA-512, kwa tarakimu 6 au 8.",
   "homeFormatsBody2": "Hufanya kazi na huduma zinazotumia programu za uthibitishaji, kama vile Google, Microsoft, GitHub, Discord, X, Facebook, Instagram, Amazon na Binance.",
-  "homeFaqTitle": "Maswali yanayoulizwa mara kwa mara",
   "homeFaqSafeQ": "Je, ni salama kuzalisha misimbo ya 2FA mtandaoni?",
   "homeFaqSafeA": "Misimbo na usomaji wa misimbo ya QR hukokotolewa ndani ya kivinjari chako. Funguo za siri hazitumwi kwenye seva ya 2fa.hot, na historia imezimwa kwa chaguomsingi. Hata hivyo, mtu yeyote aliye na ufunguo wako wa siri anaweza kuzalisha misimbo yako, kwa hivyo tumia zana hii kwenye vifaa unavyoviamini pekee na usishiriki kamwe viungo vilivyo na ufunguo wa siri.",
   "homeFaqInvalidQ": "Kwa nini msimbo wangu wa 2FA unakataliwa?",
@@ -678,5 +677,7 @@
   "offlinePraise": "Safi, uko nje ya mtandao! Misimbo inaendelea kufanya kazi.",
   "appInstall": "Sakinisha programu",
   "appInstallTip": "Isakinishe kama programu ili uifungue kutoka kwenye eneo-kazi au skrini ya nyumbani, hata nje ya mtandao.",
-  "appInstalled": "Imesakinishwa. Ifungue kutoka kwenye eneo-kazi au skrini ya nyumbani."
+  "appInstalled": "Imesakinishwa. Ifungue kutoka kwenye eneo-kazi au skrini ya nyumbani.",
+  "homeWelcomeTitle": "Karibu 2fa.hot",
+  "homeWelcomeLead": "Kabla ya kuanza, huenda ungependa kujua…"
 }

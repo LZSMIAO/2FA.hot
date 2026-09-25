@@ -103,7 +103,11 @@ onBeforeUnmount(() => {
             :content="{ side: 'top', align: 'end', sideOffset: 2 }"
             :ui="{ content: 'parameter-help-tooltip', arrow: 'parameter-help-arrow' }"
           >
-            <button type="button" class="info-mark" :aria-label="tx('为什么使用 #？')">
+            <button
+              type="button"
+              class="info-mark info-mark-essential"
+              :aria-label="tx('为什么使用 #？')"
+            >
               <UIcon name="i-lucide-info" aria-hidden="true" />
             </button>
             <template #content>

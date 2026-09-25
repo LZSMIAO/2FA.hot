@@ -720,7 +720,7 @@ onBeforeUnmount(() => {
           <PasskeyButton :disabled="guiding" />
         </div>
       </div>
-      <div class="input-details">
+      <div class="input-details" :class="{ 'is-desert-shown': !advanced || guiding }">
         <div class="input-notices">
           <p v-if="pendingPaste" class="field-hint" role="status">
             {{ reviewHint || tx('密钥：Base32 / otpauth://') }}
@@ -957,6 +957,18 @@ onBeforeUnmount(() => {
 }
 .input-details {
   min-width: 0;
+}
+/*
+ * While the desert shows, a paste that failed gets no line here, where it sat
+ * over the cactus; the floating hint about clipboard permission still shows.
+ * The notices that stay (a key error, what a paste picked out, the account
+ * link) have the scene draw back from them instead.
+ */
+.input-details.is-desert-shown .inline-notice {
+  display: none;
+}
+.input-details:has(.input-notices > :not(.sr-only, .inline-notice)) :deep(.desert-accent) {
+  --desert-yielding: 1;
 }
 .input-notices {
   /* The account-link button belongs beside the notice, not on its own line. */

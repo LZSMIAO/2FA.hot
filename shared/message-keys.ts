@@ -885,7 +885,6 @@ export const sourceKeys = new Map<string, string>([
     '适用于支持验证器 App 的服务，例如 Google、Microsoft、GitHub、Discord、X、Facebook、Instagram、Amazon 和币安。',
     'homeFormatsBody2'
   ],
-  ['常见问题', 'homeFaqTitle'],
   ['在线生成 2FA 验证码安全吗？', 'homeFaqSafeQ'],
   [
     '验证码计算和二维码解码都在浏览器本地完成，密钥不会发送到 2fa.hot 的服务器，历史记录默认关闭。但任何拿到密钥的人都能算出验证码，请只在可信的设备上使用，也不要公开分享包含密钥的链接。',
@@ -934,5 +933,7 @@ export const sourceKeys = new Map<string, string>([
   ['太好了，已断网！验证码照常产生。', 'offlinePraise'],
   ['安装 App', 'appInstall'],
   ['安装成 App 后，可以从桌面或主屏幕直接打开，断网也能用。', 'appInstallTip'],
-  ['已安装，可以从桌面或主屏幕直接打开。', 'appInstalled']
+  ['已安装，可以从桌面或主屏幕直接打开。', 'appInstalled'],
+  ['欢迎来到 2fa.hot', 'homeWelcomeTitle'],
+  ['开始使用前，你或许想了解……', 'homeWelcomeLead']
 ])

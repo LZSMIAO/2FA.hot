@@ -647,7 +647,6 @@
   "homeFormatsTitle": "지원 형식 및 서비스",
   "homeFormatsBody1": "Base32 비밀 키, otpauth:// 설정 링크, 일반 2FA QR 코드, Google Authenticator 내보내기 QR 코드를 지원합니다. TOTP는 SHA-1, SHA-256, SHA-512 알고리즘과 6자리 또는 8자리 코드를 지원합니다.",
   "homeFormatsBody2": "Google, Microsoft, GitHub, Discord, X, Facebook, Instagram, Amazon, Binance 등 인증 앱을 지원하는 서비스에서 사용할 수 있습니다.",
-  "homeFaqTitle": "자주 묻는 질문",
   "homeFaqSafeQ": "온라인에서 2FA 코드를 생성해도 안전한가요?",
   "homeFaqSafeA": "코드 계산과 QR 코드 해독은 모두 브라우저에서 로컬로 처리됩니다. 비밀 키는 2fa.hot 서버로 전송되지 않으며, 기록 기능은 기본적으로 꺼져 있습니다. 다만 비밀 키를 가진 사람은 누구나 코드를 생성할 수 있으므로, 신뢰할 수 있는 기기에서만 사용하고 비밀 키가 포함된 링크는 절대 공유하지 마세요.",
   "homeFaqInvalidQ": "2FA 인증 코드가 맞지 않다고 나오는 이유는 무엇인가요?",
@@ -678,5 +677,7 @@
   "offlinePraise": "좋아요, 오프라인입니다! 코드는 그대로 생성됩니다.",
   "appInstall": "앱 설치",
   "appInstallTip": "앱으로 설치하면 데스크톱이나 홈 화면에서 바로 열 수 있고, 오프라인에서도 쓸 수 있습니다.",
-  "appInstalled": "설치했습니다. 데스크톱이나 홈 화면에서 바로 여세요."
+  "appInstalled": "설치했습니다. 데스크톱이나 홈 화면에서 바로 여세요.",
+  "homeWelcomeTitle": "2fa.hot에 오신 것을 환영합니다",
+  "homeWelcomeLead": "시작하기 전에 알아 두면 좋은 내용"
 }

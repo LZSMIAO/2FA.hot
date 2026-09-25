@@ -290,6 +290,38 @@ function updateVisibility() {
 function updatePreference() {
   reduced.value = preference?.matches || false
 }
+/*
+ * The controls are fixed to the window's corner, which at the page's end is
+ * where the footer's own icons sit. They rise with the footer as it scrolls
+ * into view, and settle back as it leaves.
+ */
+const controls = useTemplateRef<HTMLElement>('controls')
+let liftFrame = 0
+let liftObserver: ResizeObserver | undefined
+function liftControls() {
+  liftFrame = 0
+  const footer = document.querySelector('.site-footer')
+  if (!footer || !controls.value) return
+  const overlap = Math.max(0, window.innerHeight - footer.getBoundingClientRect().top)
+  controls.value.style.setProperty('--panorama-lift', `${Math.round(overlap)}px`)
+}
+function scheduleLift() {
+  if (!liftFrame) liftFrame = requestAnimationFrame(liftControls)
+}
+onMounted(() => {
+  window.addEventListener('scroll', scheduleLift, { passive: true })
+  window.addEventListener('resize', scheduleLift)
+  // Content opening or closing moves the footer without a scroll.
+  liftObserver = new ResizeObserver(scheduleLift)
+  liftObserver.observe(document.body)
+  scheduleLift()
+})
+onBeforeUnmount(() => {
+  cancelAnimationFrame(liftFrame)
+  window.removeEventListener('scroll', scheduleLift)
+  window.removeEventListener('resize', scheduleLift)
+  liftObserver?.disconnect()
+})
 onMounted(() => {
   initialAngle =
     Number.parseFloat(document.documentElement.style.getPropertyValue('--panorama-angle')) || 0
@@ -376,7 +408,7 @@ onBeforeUnmount(() => {
       </div>
     </div>
   </div>
-  <div class="panorama-controls">
+  <div ref="controls" class="panorama-controls">
     <span class="panorama-menu-anchor">
       <UDropdownMenu
         :items="sceneItems"
@@ -617,7 +649,7 @@ onBeforeUnmount(() => {
    * width back only once the scrollbar is gone so they stay put.
    */
   right: max(1rem, calc(1rem + 100% - 100vw + var(--page-scrollbar-width, 0px)));
-  bottom: 1rem;
+  bottom: calc(1rem + var(--panorama-lift, 0px));
   z-index: 10;
   display: flex;
   gap: 0.375rem;
