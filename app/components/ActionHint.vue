@@ -12,7 +12,7 @@ function entranceSound() {
       <aside v-if="open" class="action-hint ore-theme" role="status" aria-live="polite">
         <UIcon :name="icon" class="hint-icon" />
         <span class="hint-message">{{ message }}</span>
-        <button type="button" :aria-label="tx('关闭')" @click="$emit('close')">
+        <button type="button" class="touch-reach" :aria-label="tx('关闭')" @click="$emit('close')">
           <UIcon name="i-lucide-x" />
         </button>
       </aside>

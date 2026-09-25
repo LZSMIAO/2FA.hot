@@ -1317,6 +1317,47 @@ html[data-guide-learned~='batch'][data-workspace-mode='batch'] .guide-trigger-in
   background: var(--wash);
   text-align: center;
 }
+/*
+ * On touch, these stay as drawn and their target reaches 44px across, as the
+ * info marks, the switches and the session icons already do: a 32px or 40px
+ * button is easy to miss with a finger, and growing the button itself would
+ * move everything around it. Only the short side grows (min() keeps a side
+ * that is already 44px or more as it is), on ::before, which none of these
+ * use. .touch-reach marks the ones a selector cannot reach.
+ */
+@media (pointer: coarse) {
+  .touch-reach,
+  .mode-tabs [data-slot='trigger'],
+  .mode-tabs .guide-trigger-inline,
+  .explainer-links a,
+  .explainer-answer p > a,
+  .batch-selection-actions > button,
+  .batch-toolbar > button,
+  .batch-row > button,
+  .session-label,
+  .tutorial-title button,
+  .paste-actions button,
+  .history-remove {
+    position: relative;
+  }
+  .touch-reach::before,
+  .mode-tabs [data-slot='trigger']::before,
+  .mode-tabs .guide-trigger-inline::before,
+  .explainer-links a::before,
+  .explainer-answer p > a::before,
+  .batch-selection-actions > button::before,
+  .batch-toolbar > button::before,
+  .batch-row > button::before,
+  .session-label::before,
+  .tutorial-title button::before,
+  .paste-actions button::before,
+  .history-remove::before {
+    content: '';
+    position: absolute;
+    inset-block: min(0px, calc((100% - 44px) / 2));
+    inset-inline: min(0px, calc((100% - 44px) / 2));
+  }
+}
 @media (pointer: coarse) {
   .ore-theme .icon-action,
   .ore-theme .batch-match-icon,
