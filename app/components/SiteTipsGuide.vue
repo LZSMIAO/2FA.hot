@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const localePath = useLocalePath()
 const { tx } = useMessages()
-const emit = defineEmits<{ close: []; back: [] }>()
+const emit = defineEmits<{ close: []; back: []; understood: [] }>()
 const panel = useTemplateRef<HTMLElement>('panel')
 
 /** Feature discovery, kept separate from the step-by-step tutorials. */
@@ -128,7 +128,9 @@ onMounted(() => panel.value?.focus({ preventScroll: true }))
       <UButton v-if="!last" class="primary-button" @click="show(index + 1)">{{
         tx('下一步')
       }}</UButton>
-      <UButton v-else class="primary-button" @click="emit('close')">{{ tx('我会用了') }}</UButton>
+      <UButton v-else class="primary-button" @click="emit('understood')">{{
+        tx('我明白了')
+      }}</UButton>
     </div>
   </aside>
 </template>

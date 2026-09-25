@@ -11,6 +11,7 @@ const { tx } = useMessages()
 const props = defineProps<{ code: string; compact?: boolean }>()
 const emit = defineEmits<{
   close: []
+  understood: []
   switchMode: []
   tips: []
   step: [value: number]
@@ -480,8 +481,8 @@ onBeforeUnmount(() => {
             class="primary-button tutorial-next"
             @click="chooseStep(activeStep + 1)"
             >{{ tx('下一步') }}</UButton
-          ><UButton v-else-if="finished" class="primary-button" @click="emit('close')">{{
-            tx('我会用了')
+          ><UButton v-else-if="finished" class="primary-button" @click="emit('understood')">{{
+            tx('我明白了')
           }}</UButton>
         </div>
       </div>

@@ -50,6 +50,30 @@ function alignGuide() {
   // button, start below it instead so the button stays visible and clickable.
   guideTop.value = `${Math.max(16, drawerLeft < rect.right + 12 ? rect.bottom + 12 : rect.top)}px`
 }
+/*
+ * "Got it" at the end of a walkthrough hides its entry, for that kind of code
+ * alone: knowing single codes says nothing about batches. Closing it with the
+ * cross does not count. public/workspace-mode.js hides a learned entry before
+ * the first paint; the page takes over once mounted.
+ */
+const learnedKey = '2fa-guide-learned'
+const learned = shallowReactive({ single: false, batch: false })
+function understood() {
+  learned[mode.value === 'batch' ? 'batch' : 'single'] = true
+  try {
+    localStorage.setItem(
+      learnedKey,
+      (['single', 'batch'] as const).filter((kind) => learned[kind]).join(' ')
+    )
+  } catch {}
+  // Its entry goes with it, so focus moves to the tab it was about.
+  closeGuide(false)
+  nextTick(() =>
+    document
+      .querySelector<HTMLElement>(".mode-tabs [role='tab'][aria-selected='true']")
+      ?.focus({ preventScroll: true })
+  )
+}
 let guideReturnFocus: HTMLButtonElement | null = null
 const guideView = shallowRef<'tutorial' | 'tips'>('tutorial')
 const guideStep = shallowRef<number | undefined>()
@@ -152,10 +176,13 @@ watch(() => route.query.shortcut, followShortcut)
 onMounted(async () => {
   try {
     if (localStorage.getItem(modeKey) === 'batch') mode.value = 'batch'
+    for (const kind of (localStorage.getItem(learnedKey) ?? '').split(' '))
+      if (kind === 'single' || kind === 'batch') learned[kind] = true
   } catch {}
   followShortcut()
   await nextTick()
   document.documentElement.removeAttribute('data-workspace-mode')
+  document.documentElement.removeAttribute('data-guide-learned')
 })
 watch(
   mode,
@@ -214,6 +241,7 @@ watch(
                 v-if="guideView === 'tips'"
                 @back="showGuideTutorial"
                 @close="closeGuide"
+                @understood="understood"
               />
               <BatchUsageGuide
                 v-else-if="mode === 'batch'"
@@ -222,6 +250,7 @@ watch(
                 @step="guideStep = $event"
                 @tips="showGuideTips"
                 @close="closeGuide"
+                @understood="understood"
               />
               <UsageGuide
                 :compact="mobileGuide"
@@ -232,6 +261,7 @@ watch(
                 @stage="guideOpen && (guideStage = $event)"
                 @tips="showGuideTips"
                 @close="closeGuide"
+                @understood="understood"
               />
             </div>
           </Transition>
@@ -254,6 +284,7 @@ watch(
         >
           <template #list-trailing>
             <button
+              v-if="guideOpen || !learned[mode === 'batch' ? 'batch' : 'single']"
               ref="guideTrigger"
               class="guide-trigger guide-trigger-inline"
               :aria-expanded="guideOpen"

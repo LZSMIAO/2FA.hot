@@ -233,7 +233,7 @@ export const sourceKeys = new Map<string, string>([
   ['暂停', 'm8d12fc0d4eb2'],
   ['重看', 'm21bcdc1840e1'],
   ['下一步', 'macfc4e74a650'],
-  ['我会用了', 'm20600b39db26'],
+  ['我明白了', 'guideUnderstood'],
   ['操作演示，不会登录真实账号。', 'm376000be00c0'],
   ['这个页面不存在', 'md7e1bf624c3b'],
   ['页面暂时无法打开', 'm695095eaf987'],

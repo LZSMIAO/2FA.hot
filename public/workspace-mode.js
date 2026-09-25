@@ -3,6 +3,10 @@
 // The installed app's shortcuts (?shortcut=single or batch) choose the tab too.
 ;(() => {
   try {
+    // Walkthroughs finished with "Got it" ("single", "batch"): their entry
+    // stays hidden from the first paint (see app/pages/index.vue).
+    const learned = localStorage.getItem('2fa-guide-learned')
+    if (learned) document.documentElement.setAttribute('data-guide-learned', learned)
     const shortcut = new URLSearchParams(location.search).get('shortcut')
     if (shortcut === 'batch') localStorage.setItem('2fa-workspace-mode', 'batch')
     else if (shortcut === 'single') localStorage.removeItem('2fa-workspace-mode')

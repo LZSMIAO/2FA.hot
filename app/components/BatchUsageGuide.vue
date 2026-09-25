@@ -4,6 +4,7 @@ const { tx } = useMessages()
 const emit = defineEmits<{
   step: [value: number]
   close: []
+  understood: []
   switchMode: []
   tips: []
   demo: [value: { input: number; results: number; copied: string }]
@@ -104,6 +105,9 @@ const events: [number, () => void][] = [
   [13900, () => move('batch-demo-copy', 5)],
   [14600, () => click({ copied: 'all' })]
 ]
+// Where steps 2 to 5 begin, for "Next"; the walkthrough ends just after the last click.
+const stepStarts = [3300, 5700, 10200, 13900]
+const end = 14800
 function start() {
   clearInterval(timer)
   paused.value = false
@@ -121,28 +125,34 @@ function start() {
   window.dispatchEvent(new CustomEvent('2fa-ui-sound', { detail: 'demo' }))
   timer = setInterval(() => {
     if (paused.value || document.hidden) return
-    elapsed = advanceGuideTime(
+    const time = advanceGuideTime(
       elapsed,
       narration.enabled.value ? 27.5 : 50,
-      [3300, 5700, 10200, 13900, 14800],
+      [...stepStarts, end],
       narration.speaking.value
     )
     clicking.value = false
-    while (events[eventIndex] && elapsed >= events[eventIndex]![0]) events[eventIndex++]![1]()
-    if (elapsed > 14800) {
-      complete.value = true
-      targetId = ''
-      clicking.value = false
-      cursor.value = { ...cursor.value, visible: false }
-      if (
-        window.matchMedia('(max-width: 700px), (max-height: 500px) and (pointer: coarse)').matches
-      )
-        document
-          .getElementById('usage-guide')
-          ?.scrollIntoView({ block: 'start', behavior: 'instant' })
-      clearInterval(timer)
-    }
+    playUntil(time)
   }, 50)
+}
+function playUntil(time: number) {
+  elapsed = time
+  while (events[eventIndex] && elapsed >= events[eventIndex]![0]) events[eventIndex++]![1]()
+  if (elapsed > end) finish()
+}
+function finish() {
+  complete.value = true
+  targetId = ''
+  clicking.value = false
+  cursor.value = { ...cursor.value, visible: false }
+  if (window.matchMedia('(max-width: 700px), (max-height: 500px) and (pointer: coarse)').matches)
+    document.getElementById('usage-guide')?.scrollIntoView({ block: 'start', behavior: 'instant' })
+  clearInterval(timer)
+}
+/** Plays the rest of this step at once and moves to the start of the next. */
+function next() {
+  if (complete.value) return
+  playUntil(stepStarts.find((time) => time > elapsed) ?? end + 1)
 }
 onMounted(() => {
   panel.value?.focus({ preventScroll: true })
@@ -235,9 +245,14 @@ onBeforeUnmount(() => {
               @click="start"
           /></AppHint>
         </div>
+        <!-- As in the single-code walkthrough: "Next" while it plays, skipping to
+             the next step at once, and "Got it" at the end. -->
         <div class="batch-guide-actions">
-          <UButton class="primary-button" @click="emit('close')">{{
-            tx(complete ? '我会用了' : '关闭教学')
+          <UButton v-if="!complete" class="primary-button" @click="next">{{
+            tx('下一步')
+          }}</UButton>
+          <UButton v-else class="primary-button" @click="emit('understood')">{{
+            tx('我明白了')
           }}</UButton>
         </div>
       </div>
