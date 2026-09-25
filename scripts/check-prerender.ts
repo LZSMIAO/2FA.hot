@@ -32,6 +32,9 @@ for (const header of [
   'Referrer-Policy: no-referrer'
 ])
   assert.ok(headers.includes(header), `Static assets missing ${header}`)
+// Cloudflare refuses the whole deploy past 100 rules, after the build has passed.
+const headerRules = headers.split('\n').filter((line) => line.startsWith('/')).length
+assert.ok(headerRules <= 100, `_headers has ${headerRules} rules; Cloudflare allows 100`)
 console.log(
   `Prerender verified: ${count} public pages across ${supportedLocales.length} languages; private pages excluded; static security headers present.`
 )

@@ -92,5 +92,17 @@ test('root language variations are not cached and transport headers stay scoped'
   )
   assert.equal(transportHeaders('/', 'https', '*').Vary, '*')
   assert.equal(transportHeaders('/2fa', 'https')['Strict-Transport-Security'], 'max-age=31536000')
-  assert.deepEqual(transportHeaders('/2fa', 'http'), {})
+  const privatePage = {
+    'Cache-Control': 'no-store',
+    'X-Robots-Tag': 'noindex, nofollow, noarchive'
+  }
+  for (const path of [
+    '/2fa',
+    '/2fa/JBSWY3DPEHPK3PXP',
+    '/zh-CN/2fa/batch',
+    '/history',
+    '/ja/history/'
+  ])
+    assert.deepEqual(transportHeaders(path, 'http'), privatePage, path)
+  assert.deepEqual(transportHeaders('/guides', 'http'), {})
 })

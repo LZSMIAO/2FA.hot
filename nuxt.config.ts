@@ -106,12 +106,8 @@ export default defineNuxtConfig({
              * has none, and rendered on the server its header, backdrop and
              * placeholder paint at once instead of after the app's code loads.
              */
-            ssr: path === '/history',
-            headers: {
-              'Cache-Control': 'no-store',
-              'Referrer-Policy': 'no-referrer',
-              'X-Robots-Tag': 'noindex, nofollow, noarchive'
-            }
+            ssr: path === '/history'
+            // no-store and noindex come from transportHeaders in shared/security-headers.ts.
           }
         ])
       })
