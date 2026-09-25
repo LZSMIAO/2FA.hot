@@ -23,6 +23,28 @@ const playable = computed(
     )
 )
 const playing = computed(() => playbackPaused.value === false)
+/*
+ * All 27 scenes open at once made a long scroll. Each collection folds to one
+ * row showing its scene in use, or its first; the one holding the scene in
+ * use opens by itself each time the sheet does.
+ */
+const expanded = ref(new Set<string>())
+const activeIn = (group: (typeof panoramaGroups)[number]) =>
+  group.scenes.find((entry) => entry.id === selected.value)
+watch(
+  open,
+  (value) => {
+    if (!value) return
+    const group = panoramaGroups.find(activeIn)
+    expanded.value = new Set(group ? [group.label] : [])
+  },
+  { immediate: true }
+)
+function toggle(label: string) {
+  const next = new Set(expanded.value)
+  if (!next.delete(label)) next.add(label)
+  expanded.value = next
+}
 function choose(scene: string) {
   selected.value = scene
 }
@@ -53,9 +75,32 @@ const remove = () => window.dispatchEvent(new Event('2fa-panorama-remove'))
       >
     </template>
     <template #body>
-      <section v-for="group in panoramaGroups" :key="group.label" class="backdrop-group">
-        <h3>{{ tx(group.label) }}</h3>
-        <div class="backdrop-grid">
+      <section v-for="(group, index) in panoramaGroups" :key="group.label" class="backdrop-group">
+        <h3>
+          <button
+            type="button"
+            class="backdrop-group-toggle"
+            :class="{ 'has-active': activeIn(group) }"
+            :aria-expanded="expanded.has(group.label)"
+            :aria-controls="`backdrop-group-${index}`"
+            @click="toggle(group.label)"
+          >
+            <img
+              :src="(activeIn(group) ?? group.scenes[0]!).preview"
+              alt=""
+              width="48"
+              height="32"
+            />
+            <span class="backdrop-group-name">{{ tx(group.label) }}</span>
+            <span class="backdrop-group-count">{{ group.scenes.length }}</span>
+            <UIcon name="i-lucide-chevron-down" class="backdrop-group-chevron" />
+          </button>
+        </h3>
+        <div
+          v-show="expanded.has(group.label)"
+          :id="`backdrop-group-${index}`"
+          class="backdrop-grid"
+        >
           <button
             v-for="entry in group.scenes"
             :key="entry.id"
@@ -107,7 +152,8 @@ const remove = () => window.dispatchEvent(new Event('2fa-panorama-remove'))
 }
 .backdrop-sheet-body {
   display: grid;
-  gap: 1.25rem;
+  align-content: start;
+  gap: 0.75rem;
   overscroll-behavior: contain;
 }
 .backdrop-group {
@@ -119,6 +165,54 @@ const remove = () => window.dispatchEvent(new Event('2fa-panorama-remove'))
   color: var(--ui-text-muted);
   font-size: var(--text-caption);
   font-weight: 600;
+}
+.backdrop-group-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.375rem 0.5rem 0.375rem 0.375rem;
+  border: 2px solid transparent;
+  background: var(--wash);
+  color: var(--ui-text-highlighted);
+  font-size: var(--text-label);
+  text-align: start;
+  cursor: pointer;
+}
+.backdrop-group-toggle img {
+  width: 48px;
+  height: 32px;
+  flex-shrink: 0;
+  object-fit: cover;
+  border: 1px solid var(--ui-border);
+  image-rendering: pixelated;
+}
+/* Folded, the collection holding the scene in use still shows it is chosen. */
+.backdrop-group-toggle.has-active[aria-expanded='false'] img {
+  outline: 2px solid #3c8527;
+}
+.backdrop-group-name {
+  flex: 1;
+  min-width: 0;
+}
+.backdrop-group-count {
+  color: var(--ui-text-muted);
+  font-size: var(--text-caption);
+  font-weight: 400;
+}
+.backdrop-group-chevron {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--ui-text-muted);
+  transition: rotate 0.15s;
+}
+.backdrop-group-toggle[aria-expanded='true'] .backdrop-group-chevron {
+  rotate: 180deg;
+}
+.backdrop-group-toggle:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 2px;
 }
 .backdrop-grid {
   display: grid;

@@ -36,6 +36,8 @@
   --text-body: 1rem;
   --text-section: 1.125rem;
   --text-title: 2rem;
+  /* The sticky header's height, which anything scrolled to the top must clear. */
+  --site-header-height: 4.75rem;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ore-enter-duration: 420ms;
   --ore-exit-duration: 240ms;
@@ -243,7 +245,7 @@ code {
   /* Navigation must not reflow when a downloaded font becomes available. */
   --font-sans: system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
   --font-mono: var(--font-sans);
-  height: 4.75rem;
+  height: var(--site-header-height);
   flex-shrink: 0;
 }
 .dark .site-header {
@@ -425,7 +427,9 @@ code {
   max-height: none;
   margin: 0 0 1rem;
   overflow: visible;
-  scroll-margin-top: 0.75rem;
+  /* Opened, it scrolls to the top of the page, clear of the sticky header;
+     under it, the card's own title bar and close button were hidden. */
+  scroll-margin-top: calc(var(--site-header-height) + 0.75rem);
 }
 .guide-inline .guide-drawer-enter-active,
 .guide-inline .guide-drawer-leave-active {
@@ -1224,9 +1228,7 @@ html.size-transition .desert-art svg * {
 @media (max-width: 700px), (max-height: 500px) and (pointer: coarse) {
   :root {
     --text-title: 1.75rem;
-  }
-  .site-header {
-    height: 4rem;
+    --site-header-height: 4rem;
   }
   .header-inner {
     padding-inline: 1.25rem;
@@ -1563,7 +1565,7 @@ html.size-transition .desert-art svg * {
     max-height: none;
     margin: 0 0 1rem;
     overflow: visible;
-    scroll-margin-top: 0.75rem;
+    scroll-margin-top: calc(var(--site-header-height) + 0.75rem);
   }
   .guide-inline .guide-drawer-enter-active,
   .guide-inline .guide-drawer-leave-active {
@@ -1591,6 +1593,17 @@ html.size-transition .desert-art svg * {
 }
 
 @media (max-width: 700px), (max-height: 500px) and (pointer: coarse) {
+  /* An article starts right under the header, the way back and its title close
+     over the text; the gaps above had pushed the first line well down. */
+  #main-content:has(> .content-page) {
+    padding-top: 0;
+  }
+  .content-page {
+    padding-top: 0.5rem;
+  }
+  .content-page h1 {
+    margin: 0.5rem 0 0.75rem;
+  }
   .result-panel {
     container-type: inline-size;
   }

@@ -131,9 +131,10 @@ async function change(next: SupportedLocale) {
   width: 10rem;
 }
 @media (max-width: 600px) {
-  /* The button is only an icon here; the list keeps room for the names. */
+  /* The button is only an icon here, so the list sizes to the longest name
+     ("Bahasa Indonesia") rather than to the button. */
   .language-menu {
-    width: 16rem;
+    width: 12rem;
   }
   .language-picker .language-trigger {
     width: 2.75rem;
