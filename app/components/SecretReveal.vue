@@ -25,7 +25,7 @@ const reducedMotion = useReducedMotion()
       dir="ltr"
       size="xl"
       class="w-full"
-      :ui="{ base: `h-11 pr-14 ${revealed ? 'font-mono' : 'secret-pixel-mask'}` }"
+      :ui="{ base: `h-11 pr-14 ${revealed ? 'secret-pixel-text' : 'secret-pixel-mask'}` }"
     >
       <template #trailing>
         <button

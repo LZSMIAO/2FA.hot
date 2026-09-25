@@ -26,7 +26,7 @@ async function copyCode() {
       :aria-label="tx('复制验证码')"
       @click="copyCode"
     >
-      <span class="mono" :style="{ width: `${config.digits + 1}ch` }">{{
+      <span class="history-code-digits" :style="{ width: `${config.digits + 1}ch` }">{{
         code ? groupCode(code) : '— — —'
       }}</span>
       <UIcon :name="copied ? 'i-mc-check' : 'i-lucide-copy'" />
@@ -76,11 +76,11 @@ async function copyCode() {
   height: 1rem;
   color: var(--ui-text-muted);
 }
-.history-code .mono {
+.history-code .history-code-digits {
   display: block;
-  font-size: 1.5rem;
+  font-family: var(--font-code);
+  font-size: 1.875rem;
   line-height: 1.2;
-  font-variant-numeric: tabular-nums;
   white-space: pre;
   text-align: center;
 }
@@ -100,8 +100,8 @@ async function copyCode() {
   overflow-wrap: anywhere;
 }
 @media (max-width: 600px) {
-  .history-code .mono {
-    font-size: 1.25rem;
+  .history-code .history-code-digits {
+    font-size: 1.5625rem;
   }
   .history-code-copy {
     gap: 0.5rem;

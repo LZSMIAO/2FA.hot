@@ -907,7 +907,7 @@ onBeforeUnmount(() => {
               }}</small>
             </div>
             <template v-if="entry.config"
-              ><span class="batch-code mono">{{
+              ><span class="batch-code">{{
                 tx(codes[entry.line] ? groupCode(codes[entry.line]!) : '— — —')
               }}</span
               ><span
@@ -1237,7 +1237,9 @@ onBeforeUnmount(() => {
   color: var(--ui-text-muted);
 }
 .batch-code {
-  font-size: 1.5rem;
+  font-family: var(--font-code);
+  font-size: 1.875rem;
+  line-height: 1.2;
   white-space: nowrap;
 }
 .batch-error-marker {
@@ -1276,7 +1278,7 @@ onBeforeUnmount(() => {
   }
   .batch-code {
     margin-inline-start: 25px;
-    font-size: 1.5rem;
+    font-size: 1.875rem;
   }
 }
 

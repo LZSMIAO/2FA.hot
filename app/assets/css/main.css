@@ -6,6 +6,8 @@
   --font-sans:
     'Inter Variable', system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
   --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+  /* Every one-time code, in the pixel face its numerals were chosen for (fonts.css). */
+  --font-code: 'VT323', ui-monospace, monospace;
 }
 :root {
   color-scheme: light;
@@ -922,10 +924,7 @@ html.size-transition .desert-art svg * {
   }
 }
 .otp-digits {
-  font-family: var(--font-sans);
   font-size: 4.5rem;
-  font-weight: 500;
-  letter-spacing: -0.055em;
   line-height: 1.3;
   color: var(--ui-text-highlighted);
   text-align: center;
@@ -940,7 +939,6 @@ html.size-transition .desert-art svg * {
 .otp-digits.empty {
   color: var(--ui-text-muted);
   opacity: 0.5;
-  letter-spacing: 0.06em;
 }
 .countdown-meta {
   display: flex;
@@ -1613,4 +1611,11 @@ html.size-transition .desert-art svg * {
   font-family: 'VT323', monospace;
   font-size: 1.75rem;
   letter-spacing: 0.15em;
+}
+/* Revealed, the key stays in the pixel face its mask was drawn in; a key runs
+   up to 32 characters, so it is set smaller than the asterisks. */
+.secret-pixel-text {
+  font-family: var(--font-code);
+  font-size: 1.375rem;
+  letter-spacing: 0.04em;
 }

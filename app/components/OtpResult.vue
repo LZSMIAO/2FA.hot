@@ -552,7 +552,7 @@ async function expand() {
   display: grid;
   place-items: center;
   letter-spacing: 0;
-  font-family: 'VT323', monospace;
+  font-family: var(--font-code);
   font-weight: 400;
 }
 .otp-digits.empty {

@@ -613,8 +613,6 @@ html[data-workspace-mode='batch'] .mode-tabs [id$='-trigger-batch'] {
   padding-bottom: 0.75rem;
 }
 .otp-digits {
-  font-weight: 600;
-  letter-spacing: -0.04em;
   padding-block: 0.5rem;
 }
 .otp-digits.empty {
