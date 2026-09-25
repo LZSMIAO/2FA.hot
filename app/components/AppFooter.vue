@@ -58,6 +58,16 @@ const { tx } = useMessages()
 .footer-wordmark {
   flex-shrink: 0;
 }
+/*
+ * Chinese, Japanese and Korean glyphs fill more of the em than Latin letters,
+ * so at the same font size the name looked smaller than the words after it.
+ * This brings the height of its letters level with theirs.
+ */
+.footer-wordmark:lang(zh),
+.footer-wordmark:lang(ja),
+.footer-wordmark:lang(ko) {
+  font-size: 1.12em;
+}
 .footer-tagline {
   min-width: 0;
   overflow: hidden;

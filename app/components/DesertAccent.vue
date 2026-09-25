@@ -28,9 +28,83 @@ function leave(event: PointerEvent) {
   // Touch emits pointerleave on release: keep its newly opened bubble readable.
   if (event.pointerType === 'mouse') dismiss()
 }
+/*
+ * Opening the scene must not be what gives the page a scrollbar. When the page
+ * fits the window with the settings showing, the scene takes only the room
+ * that is left and is drawn that much smaller. A page that scrolls anyway, or
+ * leaves too little room for a legible drawing, keeps the full size.
+ */
+const accent = useTemplateRef<HTMLElement>('accent')
+const fit = shallowRef(1)
+function measureFit() {
+  const el = accent.value
+  const main = document.getElementById('main-content')
+  const stage = el?.parentElement
+  if (!el || !main || !stage) return
+  const root = document.documentElement
+  const fullValue = getComputedStyle(el).getPropertyValue('--desert-full').trim()
+  const full = fullValue.endsWith('rem')
+    ? parseFloat(fullValue) * parseFloat(getComputedStyle(root).fontSize)
+    : parseFloat(fullValue)
+  if (!full) return
+  // The settings share the scene's cell; the cell never gets shorter than them.
+  let base = 0
+  for (const child of stage.children)
+    if (child !== el) base = Math.max(base, (child as HTMLElement).offsetHeight)
+  const extra = Math.max(0, el.offsetHeight - base)
+  // The main area stretches to the window; what its content leaves empty is free.
+  const box = main.getBoundingClientRect()
+  let bottom = box.top
+  for (const child of main.children) {
+    const style = getComputedStyle(child)
+    if (style.display === 'none' || style.position === 'fixed' || style.position === 'absolute')
+      continue
+    bottom = Math.max(bottom, child.getBoundingClientRect().bottom + parseFloat(style.marginBottom))
+  }
+  const free = Math.max(0, box.bottom - bottom - parseFloat(getComputedStyle(main).paddingBottom))
+  const overflow = Math.max(0, root.scrollHeight - root.clientHeight)
+  // The same page with the scene closed.
+  if (overflow > extra) {
+    fit.value = 1
+    return
+  }
+  const room = Math.floor(base + free + extra - overflow) - 1
+  const ratio = Math.min(1, room / full)
+  fit.value = ratio < 0.45 ? 1 : ratio
+}
+// Measure before the scene opens, while the page still has its closed height.
+watch(
+  () => props.open,
+  (open) => {
+    if (open) measureFit()
+  },
+  { flush: 'pre' }
+)
+let resizeFrame = 0
+function onResize() {
+  cancelAnimationFrame(resizeFrame)
+  resizeFrame = requestAnimationFrame(() => {
+    if (props.open) measureFit()
+  })
+}
+onMounted(() => {
+  if (props.open) measureFit()
+  window.addEventListener('resize', onResize, { passive: true })
+})
+onBeforeUnmount(() => {
+  cancelAnimationFrame(resizeFrame)
+  window.removeEventListener('resize', onResize)
+})
 </script>
 <template>
-  <div class="desert-accent" :class="{ 'is-open': open }" :inert="!open" :aria-hidden="!open">
+  <div
+    ref="accent"
+    class="desert-accent"
+    :class="{ 'is-open': open }"
+    :style="{ '--desert-fit': fit }"
+    :inert="!open"
+    :aria-hidden="!open"
+  >
     <button
       type="button"
       class="desert-scene"
@@ -63,6 +137,8 @@ function leave(event: PointerEvent) {
 </template>
 <style scoped>
 .desert-accent {
+  /* The reserve when there is room for all of it; --desert-fit scales it down. */
+  --desert-full: 17rem;
   position: relative;
   /* Closed, it takes no room: the settings beside it set the panel's height. */
   height: 0;
@@ -83,7 +159,7 @@ function leave(event: PointerEvent) {
     opacity 200ms ease;
 }
 .desert-accent.is-open {
-  height: 17rem;
+  height: calc(var(--desert-full) * var(--desert-fit, 1));
   opacity: 1;
   transition:
     height 320ms var(--ease-out),
@@ -92,13 +168,14 @@ function leave(event: PointerEvent) {
 .desert-scene {
   position: absolute;
   /*
-   * Anchored to the panel's foot and drawn taller than it, so the scene keeps
-   * its size while the cactus reaches well past the rule above the panel.
+   * Anchored to the panel's foot and drawn taller than it, so the cactus
+   * reaches well past the rule above the panel. The drawing is as tall as the
+   * box, so a shorter box scales it down around the same foot.
    */
-  top: -5rem;
+  bottom: -1rem;
   left: 50%;
   width: 100%;
-  height: 23rem;
+  height: calc(23rem * var(--desert-fit, 1));
   padding: 0;
   border: 0;
   background: transparent;
@@ -127,7 +204,7 @@ function leave(event: PointerEvent) {
 .desert-tip {
   position: absolute;
   /* Anchor the top, so longer translations grow down without moving the bubble. */
-  top: 7rem;
+  top: calc(7rem * var(--desert-fit, 1));
   right: 0;
   z-index: 2;
   width: 48%;
@@ -176,15 +253,15 @@ function leave(event: PointerEvent) {
   }
 }
 @media (max-width: 700px) {
-  .desert-accent.is-open {
-    height: 10rem;
+  .desert-accent {
+    --desert-full: 10rem;
   }
   .desert-scene {
-    top: -3.5rem;
-    height: 13.5rem;
+    bottom: 0;
+    height: calc(13.5rem * var(--desert-fit, 1));
   }
   .desert-tip {
-    top: 4.75rem;
+    top: calc(4.75rem * var(--desert-fit, 1));
     width: 52%;
   }
 }

@@ -220,7 +220,11 @@ test('pointer focus, touch release and nested hover do not double-trigger or dis
       }
     }),
     matchMedia: () => ({ matches: true }),
-    watch: () => {}
+    watch: () => {},
+    shallowRef,
+    useTemplateRef: () => shallowRef(null),
+    onMounted: () => {},
+    onBeforeUnmount: () => {}
   })
   const { focusGreet, hoverGreet, leave, greet } = vm.runInContext(
     ts.transpileModule(source + '\n;({focusGreet, hoverGreet, leave, greet})', {
@@ -262,7 +266,10 @@ test('all bubble variants share a top anchor and retain their text while fading'
   )
   const css = parse(component).descriptor.styles[0]!.content
   const bubbleRules = [...css.matchAll(/\.desert-tip\s*\{([^}]+)\}/g)].map((match) => match[1]!)
-  const fixedTopAnchors = bubbleRules.filter((rule) => /top:\s*-?[\d.]+(?:rem|px)?;/.test(rule))
+  // A top offset may be scaled with the scene, but it stays a top anchor.
+  const fixedTopAnchors = bubbleRules.filter((rule) =>
+    /top:\s*(?:-?[\d.]+(?:rem|px)?|calc\(-?[\d.]+rem \* var\(--desert-fit, 1\)\));/.test(rule)
+  )
   assert.equal(
     fixedTopAnchors.length,
     2,
