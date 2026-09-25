@@ -364,6 +364,9 @@ function time(value: number) {
   height: calc(var(--session-count) * var(--session-row-height));
   overflow-y: auto;
   overflow-x: hidden;
+  /* The scrollbar's room is kept from the first row, so when enough rows
+     arrive to need it the times and arrows do not step left. */
+  scrollbar-gutter: stable;
   scrollbar-width: thin;
   scrollbar-color: var(--control-line) transparent;
 }
