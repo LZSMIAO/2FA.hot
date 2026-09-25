@@ -128,7 +128,7 @@ const tabItems = computed(() => [
  * showed it before the app started; once the tabs follow, its mark goes.
  */
 const modeKey = '2fa-workspace-mode'
-const { inviting, inviteHeld, install } = useAppInstall()
+const { available: installable, inviting, inviteHeld, install } = useAppInstall()
 watch(mode, (value) => {
   try {
     if (value === 'batch') localStorage.setItem(modeKey, value)
@@ -290,8 +290,8 @@ watch(
           <div class="workspace-summary-copy">
             <span class="info-reveal">
               <AppInstallButton />
-              <!-- Both lines share one cell, sized from the first paint, so the
-                   invitation fades in over the other without moving anything. -->
+              <!-- Both lines share one cell, so the invitation fades in over the
+                   other without moving anything. -->
               <span class="summary-faces" :class="{ 'is-inviting': inviting }">
                 <span class="local-processing-label" :inert="inviting">
                   {{ tx('所有数据由本地浏览器处理') }}
@@ -310,7 +310,10 @@ watch(
                     /></NuxtLink>
                   </UTooltip>
                 </span>
+                <!-- Only where the browser can install: kept hidden elsewhere, a longer
+                     invitation still sized the cell and left a blank line. -->
                 <button
+                  v-if="installable"
                   type="button"
                   class="install-invite"
                   :inert="!inviting"

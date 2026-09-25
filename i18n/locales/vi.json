@@ -673,7 +673,7 @@
   "m04c231282e5b": "Dùng ngoại tuyến: tệp của trang trên thiết bị của bạn",
   "m16c3059ac799": "Khi bạn bật “Dùng ngoại tuyến” bên dưới công cụ ở trang chủ, trình duyệt này sẽ lưu mã nguồn, kiểu dáng, phông chữ, bản dịch và hình nền hiện tại của trang trên thiết bị này, để trang vẫn mở và tạo mã khi không có mạng. Chỉ các tệp công khai của chính trang được lưu, giống nhau với mọi khách truy cập; khóa bí mật, mã và lịch sử cục bộ không bao giờ được ghi vào đó, và cũng không có gì được tải lên vì việc này. Khi tắt, mô-đun ngoại tuyến sẽ bị gỡ và các tệp này sẽ bị xóa.",
   "offlineDisconnected": "Đang ngoại tuyến; mã vẫn tạo bình thường",
-  "offlineTryTip": "Đã sẵn sàng dùng ngoại tuyến. Thử tắt Wi-Fi xem, mã vẫn tạo bình thường.",
+  "offlineTryTip": "Đã sẵn sàng dùng ngoại tuyến. Không có mạng vẫn lấy được mã bình thường.",
   "offlinePraise": "Tuyệt, bạn đang ngoại tuyến! Mã vẫn tạo bình thường.",
   "appInstall": "Cài đặt ứng dụng",
   "appInstallTip": "Cài thành ứng dụng, dùng được cả khi ngoại tuyến",

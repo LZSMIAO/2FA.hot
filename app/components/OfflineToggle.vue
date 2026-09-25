@@ -38,8 +38,8 @@ async function toggle() {
   else await offline.enable()
 }
 /*
- * The first time the files are kept, the confirmation invites a try with the
- * network off; it stays long enough to read, the longer tips longer.
+ * The first time the files are kept, the confirmation adds that codes still
+ * come with no network; it stays long enough to read, the longer tips longer.
  */
 const inviteTry = shallowRef(false)
 watch(offline.justSaved, (saved) => {
@@ -83,7 +83,7 @@ const notice = computed(() => {
         homeScreenHint.value
           ? '已可离线使用。在 Safari 分享菜单选“添加到主屏幕”，就能像 App 一样打开。'
           : inviteTry.value
-            ? '已可离线使用。可以关掉 Wi-Fi 试试，验证码照常产生。'
+            ? '已可离线使用。断网也能照常获取验证码。'
             : '已可离线使用。'
       )
     }

@@ -673,7 +673,7 @@
   "m04c231282e5b": "Penggunaan luar talian: fail laman di peranti anda",
   "m16c3059ac799": "Apabila anda menghidupkan “Penggunaan luar talian” di bawah alat pada halaman utama, pelayar ini menyimpan kod, gaya, fon, terjemahan dan latar belakang semasa laman pada peranti ini, supaya laman boleh dibuka dan menjana kod tanpa rangkaian. Hanya fail awam laman itu sendiri disimpan, sama bagi setiap pelawat; rahsia, kod dan sejarah setempat tidak pernah ditulis ke dalamnya, dan tiada apa-apa dimuat naik kerananya. Mematikannya akan membuang modul luar talian dan memadamkan fail-fail ini.",
   "offlineDisconnected": "Di luar talian; kod tetap berfungsi",
-  "offlineTryTip": "Sedia digunakan di luar talian. Cuba matikan Wi-Fi; kod tetap berfungsi.",
+  "offlineTryTip": "Sedia digunakan di luar talian. Anda tetap boleh mendapatkan kod tanpa internet.",
   "offlinePraise": "Bagus, anda di luar talian! Kod tetap berfungsi.",
   "appInstall": "Pasang apl",
   "appInstallTip": "Pasang sebagai apl; berfungsi walaupun di luar talian",

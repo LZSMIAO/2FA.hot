@@ -673,7 +673,7 @@
   "m04c231282e5b": "Użycie offline: pliki strony na Twoim urządzeniu",
   "m16c3059ac799": "Po włączeniu „Użycia offline” pod narzędziem na stronie głównej ta przeglądarka zapisuje na tym urządzeniu kod, style, czcionki, tłumaczenia i bieżące tło strony, dzięki czemu otwiera się ona i generuje kody bez sieci. Zapisywane są tylko publiczne pliki samej strony, takie same dla każdego odwiedzającego; klucze, kody i historia lokalna nigdy nie są w nich zapisywane, a przez to nic nie jest wysyłane. Wyłączenie usuwa moduł offline i kasuje te pliki.",
   "offlineDisconnected": "Offline; kody nadal działają",
-  "offlineTryTip": "Gotowe do użycia offline. Spróbuj wyłączyć Wi-Fi: kody nadal będą działać.",
+  "offlineTryTip": "Gotowe do użycia offline. Kody otrzymasz nawet bez internetu.",
   "offlinePraise": "Świetnie, jesteś offline! Kody nadal działają.",
   "appInstall": "Zainstaluj aplikację",
   "appInstallTip": "Zainstaluj jako aplikację – działa też offline",

@@ -673,7 +673,7 @@
   "m04c231282e5b": "Offline use: the site's files on your device",
   "m16c3059ac799": "When you turn on “Offline use” below the tool on the home page, this browser keeps the site's code, styles, fonts, translations and current background on this device, so it opens and generates codes without a network. Only the site's own public files are kept, the same for every visitor; secrets, codes and local history are never written to them, and nothing is uploaded because of it. Turning it off removes the offline helper and deletes these files.",
   "offlineDisconnected": "Offline now; codes still work",
-  "offlineTryTip": "Ready to use offline. Try turning off Wi-Fi; codes keep working.",
+  "offlineTryTip": "Ready to use offline. You can still get codes with no connection.",
   "offlinePraise": "Nice, you're offline! Codes still work.",
   "appInstall": "Install app",
   "appInstallTip": "Install it as an app; it works offline too",

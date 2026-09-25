@@ -929,7 +929,7 @@ export const sourceKeys = new Map<string, string>([
     'm16c3059ac799'
   ],
   ['已断网，验证码照常产生', 'offlineDisconnected'],
-  ['已可离线使用。可以关掉 Wi-Fi 试试，验证码照常产生。', 'offlineTryTip'],
+  ['已可离线使用。断网也能照常获取验证码。', 'offlineTryTip'],
   ['太好了，已断网！验证码照常产生。', 'offlinePraise'],
   ['安装 App', 'appInstall'],
   ['可以安装成 App，断网也能用', 'appInstallTip'],

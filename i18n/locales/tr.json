@@ -673,7 +673,7 @@
   "m04c231282e5b": "Çevrimdışı kullanım: sitenin dosyaları cihazınızda",
   "m16c3059ac799": "Ana sayfadaki aracın altında “Çevrimdışı kullanım”ı açtığınızda bu tarayıcı sitenin kodunu, stillerini, yazı tiplerini, çevirilerini ve mevcut arka planını bu cihaza kaydeder; böylece site ağ olmadan da açılır ve kod üretir. Yalnızca sitenin kendi herkese açık dosyaları kaydedilir ve bunlar her ziyaretçi için aynıdır; gizli anahtarlar, kodlar ve yerel geçmiş asla bunlara yazılmaz ve bu yüzden hiçbir şey yüklenmez. Kapatıldığında çevrimdışı modül kaldırılır ve bu dosyalar silinir.",
   "offlineDisconnected": "Çevrimdışı; kodlar çalışmaya devam ediyor",
-  "offlineTryTip": "Çevrimdışı kullanıma hazır. Wi-Fi'yi kapatıp deneyin; kodlar çalışmaya devam eder.",
+  "offlineTryTip": "Çevrimdışı kullanıma hazır. İnternet olmadan da kodları alabilirsiniz.",
   "offlinePraise": "Harika, çevrimdışısınız! Kodlar çalışmaya devam ediyor.",
   "appInstall": "Uygulamayı yükle",
   "appInstallTip": "Uygulamayı yükleyin; çevrimdışı da çalışır",

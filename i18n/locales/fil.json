@@ -673,7 +673,7 @@
   "m04c231282e5b": "Offline na paggamit: ang mga file ng site sa iyong device",
   "m16c3059ac799": "Kapag in-on mo ang “Offline na paggamit” sa ilalim ng tool sa home page, itinatabi ng browser na ito sa device na ito ang code, mga istilo, font, pagsasalin at kasalukuyang background ng site, kaya bumubukas ito at gumagawa ng mga code kahit walang network. Ang mga pampublikong file lang ng site mismo ang itinatabi, pareho para sa bawat bisita; hindi kailanman isinusulat dito ang mga secret key, code at lokal na kasaysayan, at walang ina-upload dahil dito. Kapag in-off, aalisin ang offline na module at buburahin ang mga file na ito.",
   "offlineDisconnected": "Offline ka na; gumagana pa rin ang mga code",
-  "offlineTryTip": "Handa nang gamitin offline. Subukang patayin ang Wi-Fi; gagana pa rin ang mga code.",
+  "offlineTryTip": "Handa nang gamitin offline. Makakakuha ka pa rin ng code kahit walang internet.",
   "offlinePraise": "Ayos, offline ka na! Gumagana pa rin ang mga code.",
   "appInstall": "I-install ang app",
   "appInstallTip": "I-install bilang app; gumagana kahit offline",

@@ -673,7 +673,7 @@
   "m04c231282e5b": "Offline-Nutzung: die Dateien der Website auf dem Gerät",
   "m16c3059ac799": "Ist „Offline-Nutzung“ unter dem Werkzeug auf der Startseite eingeschaltet, speichert dieser Browser Code, Stile, Schriften, Übersetzungen und den aktuellen Hintergrund der Website auf diesem Gerät, sodass sie sich ohne Netz öffnen lässt und Codes erzeugt. Gespeichert werden nur die öffentlichen Dateien der Website selbst, für alle Besucher gleich; Schlüssel, Codes und der lokale Verlauf werden nie darin abgelegt, und dadurch wird nichts hochgeladen. Beim Ausschalten wird das Offline-Modul entfernt und diese Dateien werden gelöscht.",
   "offlineDisconnected": "Offline – Codes funktionieren weiter",
-  "offlineTryTip": "Bereit für die Offline-Nutzung. Schalte zum Test das WLAN aus – die Codes funktionieren weiter.",
+  "offlineTryTip": "Bereit für die Offline-Nutzung. Auch ohne Internet bekommst du weiter deine Codes.",
   "offlinePraise": "Super, du bist offline! Die Codes funktionieren weiter.",
   "appInstall": "App installieren",
   "appInstallTip": "Als App installieren – läuft auch offline",

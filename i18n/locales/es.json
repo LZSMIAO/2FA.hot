@@ -673,7 +673,7 @@
   "m04c231282e5b": "Uso sin conexión: los archivos del sitio en tu dispositivo",
   "m16c3059ac799": "Al activar «Uso sin conexión» debajo de la herramienta en la página de inicio, este navegador guarda en este dispositivo el código, los estilos, las fuentes, las traducciones y el fondo actual del sitio, para que se abra y genere códigos sin red. Solo se guardan los archivos públicos del propio sitio, iguales para todos los visitantes; los secretos, los códigos y el historial local nunca se escriben en ellos, y no se sube nada por ello. Al desactivarlo se quita el componente sin conexión y se borran estos archivos.",
   "offlineDisconnected": "Sin conexión; los códigos siguen funcionando",
-  "offlineTryTip": "Listo para usar sin conexión. Prueba a apagar el Wi-Fi: los códigos siguen funcionando.",
+  "offlineTryTip": "Listo para usar sin conexión. Puedes obtener códigos aunque no tengas internet.",
   "offlinePraise": "¡Genial, estás sin conexión! Los códigos siguen funcionando.",
   "appInstall": "Instalar app",
   "appInstallTip": "Instálalo como app; funciona sin conexión",

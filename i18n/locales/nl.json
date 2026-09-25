@@ -673,7 +673,7 @@
   "m04c231282e5b": "Offline gebruik: de bestanden van de site op je apparaat",
   "m16c3059ac799": "Als je ‘Offline gebruik’ onder de tool op de startpagina inschakelt, bewaart deze browser de code, stijlen, lettertypen, vertalingen en huidige achtergrond van de site op dit apparaat, zodat de site ook zonder netwerk opent en codes maakt. Alleen de eigen openbare bestanden van de site worden bewaard, voor elke bezoeker hetzelfde; sleutels, codes en lokale geschiedenis worden er nooit in geschreven, en daardoor wordt niets geüpload. Uitschakelen verwijdert de offline module en wist deze bestanden.",
   "offlineDisconnected": "Offline; codes werken gewoon",
-  "offlineTryTip": "Klaar voor offline gebruik. Zet je wifi eens uit: de codes blijven werken.",
+  "offlineTryTip": "Klaar voor offline gebruik. Ook zonder internet krijg je gewoon je codes.",
   "offlinePraise": "Top, je bent offline! De codes werken gewoon.",
   "appInstall": "App installeren",
   "appInstallTip": "Installeer het als app; werkt ook offline",

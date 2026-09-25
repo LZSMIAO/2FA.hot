@@ -673,7 +673,7 @@
   "m04c231282e5b": "Uso offline: os arquivos do site no seu dispositivo",
   "m16c3059ac799": "Ao ativar “Uso offline” abaixo da ferramenta na página inicial, este navegador guarda neste dispositivo o código, os estilos, as fontes, as traduções e o fundo atual do site, para que ele abra e gere códigos sem rede. Só são guardados os arquivos públicos do próprio site, iguais para todos os visitantes; segredos, códigos e o histórico local nunca são gravados neles, e nada é enviado por causa disso. Ao desativar, o componente offline é removido e esses arquivos são apagados.",
   "offlineDisconnected": "Offline; os códigos continuam funcionando",
-  "offlineTryTip": "Pronto para usar offline. Experimente desligar o Wi-Fi: os códigos continuam funcionando.",
+  "offlineTryTip": "Pronto para usar offline. Você recebe os códigos mesmo sem internet.",
   "offlinePraise": "Boa, você está offline! Os códigos continuam funcionando.",
   "appInstall": "Instalar app",
   "appInstallTip": "Instale como app; funciona offline também",

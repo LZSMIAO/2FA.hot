@@ -673,7 +673,7 @@
   "m04c231282e5b": "Penggunaan offline: file situs di perangkat Anda",
   "m16c3059ac799": "Saat Anda mengaktifkan “Penggunaan offline” di bawah alat pada halaman beranda, browser ini menyimpan kode, gaya, font, terjemahan, dan latar belakang situs saat ini di perangkat ini, sehingga situs tetap terbuka dan membuat kode tanpa jaringan. Yang disimpan hanya file publik milik situs sendiri, sama untuk setiap pengunjung; kunci rahasia, kode, dan riwayat lokal tidak pernah ditulis ke dalamnya, dan tidak ada yang diunggah karenanya. Menonaktifkannya akan menghapus modul offline beserta file-file ini.",
   "offlineDisconnected": "Sedang offline; kode tetap berjalan",
-  "offlineTryTip": "Siap dipakai secara offline. Coba matikan Wi-Fi; kode tetap berjalan.",
+  "offlineTryTip": "Siap dipakai secara offline. Kode tetap bisa didapat tanpa internet.",
   "offlinePraise": "Mantap, Anda sedang offline! Kode tetap berjalan.",
   "appInstall": "Pasang aplikasi",
   "appInstallTip": "Pasang sebagai aplikasi; tetap jalan saat offline",

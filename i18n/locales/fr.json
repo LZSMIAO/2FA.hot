@@ -673,7 +673,7 @@
   "m04c231282e5b": "Utilisation hors ligne : les fichiers du site sur votre appareil",
   "m16c3059ac799": "Lorsque vous activez « Utilisation hors ligne » sous l'outil de la page d'accueil, ce navigateur conserve sur cet appareil le code, les styles, les polices, les traductions et l'arrière-plan actuel du site, pour qu'il s'ouvre et génère des codes sans réseau. Seuls les fichiers publics du site sont conservés, identiques pour chaque visiteur ; les secrets, les codes et l'historique local n'y sont jamais écrits, et rien n'est envoyé pour autant. La désactivation retire le module hors ligne et efface ces fichiers.",
   "offlineDisconnected": "Hors ligne : les codes fonctionnent toujours",
-  "offlineTryTip": "Prêt pour une utilisation hors ligne. Essayez de couper le Wi-Fi : les codes fonctionnent toujours.",
+  "offlineTryTip": "Prêt pour une utilisation hors ligne. Vous obtenez vos codes même sans connexion.",
   "offlinePraise": "Parfait, vous êtes hors ligne ! Les codes fonctionnent toujours.",
   "appInstall": "Installer l’app",
   "appInstallTip": "Installez-le comme app : il marche hors ligne",

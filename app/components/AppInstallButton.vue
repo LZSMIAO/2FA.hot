@@ -93,10 +93,7 @@ onBeforeUnmount(() => {
         :aria-label="tx('安装 App')"
         @click="install"
       >
-        <UIcon name="i-lucide-monitor" class="app-install-rest" /><UIcon
-          name="i-lucide-monitor-down"
-          class="app-install-offer"
-        /></button
+        <UIcon name="i-lucide-monitor-down" /></button
     ></AppHint>
     <UIcon v-else name="i-lucide-monitor" />
     <ActionHint
@@ -112,7 +109,8 @@ onBeforeUnmount(() => {
   display: inline-grid;
   flex-shrink: 0;
 }
-/* The same glyph as the plain icon, so nothing moves when the offer arrives. */
+/* Where the browser offers installing, the computer shows the download in it
+   from the start; hovering only brightens it, as the other icons do. */
 .app-install-button {
   position: relative;
   display: grid;
@@ -121,9 +119,7 @@ onBeforeUnmount(() => {
   background: transparent;
   color: inherit;
   cursor: pointer;
-}
-.app-install-button > .iconify {
-  grid-area: 1 / 1;
+  transition: color 400ms ease;
 }
 /* A usable target around the small glyph, as the info marks have. */
 .app-install-button::after {
@@ -131,32 +127,20 @@ onBeforeUnmount(() => {
   position: absolute;
   inset: -0.5rem;
 }
-.app-install-button > .iconify,
-.app-install-button {
-  transition:
-    opacity 400ms ease,
-    color 400ms ease;
-}
-.app-install-offer {
-  opacity: 0;
+@media (pointer: coarse) {
+  .app-install-button::after {
+    inset: -0.875rem;
+  }
 }
 .app-install-button:hover,
-.app-install-button:focus-visible,
+.app-install-button:focus-visible {
+  color: var(--ui-text-highlighted);
+}
+/* While the line beside it invites installing, the icon joins in. */
 .app-install-button.is-inviting {
   color: var(--accent-ink);
 }
-.app-install-button:hover .app-install-rest,
-.app-install-button:focus-visible .app-install-rest,
-.is-inviting .app-install-rest {
-  opacity: 0;
-}
-.app-install-button:hover .app-install-offer,
-.app-install-button:focus-visible .app-install-offer,
-.is-inviting .app-install-offer {
-  opacity: 1;
-}
 @media (prefers-reduced-motion: reduce) {
-  .app-install-button > .iconify,
   .app-install-button {
     transition: none;
   }

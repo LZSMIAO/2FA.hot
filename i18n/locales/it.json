@@ -673,7 +673,7 @@
   "m04c231282e5b": "Uso offline: i file del sito sul tuo dispositivo",
   "m16c3059ac799": "Quando attivi «Uso offline» sotto lo strumento nella pagina iniziale, questo browser salva su questo dispositivo il codice, gli stili, i caratteri, le traduzioni e lo sfondo attuale del sito, così si apre e genera codici anche senza rete. Vengono salvati solo i file pubblici del sito stesso, uguali per ogni visitatore; segreti, codici e cronologia locale non vi vengono mai scritti, e per questo non viene caricato nulla. Disattivandolo, il modulo offline viene rimosso e questi file vengono eliminati.",
   "offlineDisconnected": "Offline: i codici funzionano comunque",
-  "offlineTryTip": "Pronto per l'uso offline. Prova a spegnere il Wi-Fi: i codici continuano a funzionare.",
+  "offlineTryTip": "Pronto per l'uso offline. Ottieni i codici anche senza connessione.",
   "offlinePraise": "Ottimo, sei offline! I codici funzionano comunque.",
   "appInstall": "Installa l'app",
   "appInstallTip": "Installalo come app: funziona anche offline",
