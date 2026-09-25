@@ -301,9 +301,10 @@ function time(value: number) {
   box-shadow: none;
   color: var(--ui-text-muted);
   transform: none;
-  font-size: var(--text-label);
+  /* The action reads at the heading's size beside it, here and on a phone. */
+  font-size: var(--text-section);
 }
-/* The icon at its label's size, rather than a fixed 20px beside 14px text. */
+/* The icon at its label's size, rather than a fixed 20px. */
 .session-heading .session-clear :deep([data-slot='leadingIcon']) {
   width: 1.125em;
   height: 1.125em;
@@ -556,7 +557,6 @@ function time(value: number) {
   .session-heading h2 {
     font-size: var(--text-body);
   }
-  /* On a phone the action reads at the heading's size beside it. */
   .session-heading .session-clear {
     font-size: var(--text-body);
   }
