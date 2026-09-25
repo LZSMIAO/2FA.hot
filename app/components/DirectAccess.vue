@@ -498,6 +498,16 @@ useHead({ meta: [{ name: 'referrer', content: 'no-referrer' }] })
 .direct-result :deep(.otp-digits.eight) {
   font-size: clamp(3.5rem, 7.5vw, 6.5rem);
 }
+/* As in the tool's result panel, the slots share the full width, so the row
+   lines up with the heading, countdown, track and buttons. */
+.direct-result :deep(.otp-slots) {
+  width: 100%;
+}
+.direct-result :deep(.otp-slot) {
+  flex: 1;
+  min-width: 0;
+  width: auto;
+}
 .direct-result :deep(.result-head) {
   align-items: center;
   border-bottom: 0;

@@ -25,7 +25,7 @@ const reducedMotion = useReducedMotion()
       dir="ltr"
       size="xl"
       class="w-full"
-      :ui="{ base: revealed ? 'font-mono pr-14' : 'secret-pixel-mask pr-14' }"
+      :ui="{ base: `h-11 pr-14 ${revealed ? 'font-mono' : 'secret-pixel-mask'}` }"
     >
       <template #trailing>
         <button
@@ -43,6 +43,8 @@ const reducedMotion = useReducedMotion()
 </template>
 
 <style scoped>
+/* The field keeps one height (h-11): the larger pixel-font asterisks used to
+   stretch it taller than the revealed secret. */
 .secret-reveal {
   margin-top: 1rem;
   min-width: 0;
