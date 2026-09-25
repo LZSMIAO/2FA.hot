@@ -1,6 +1,3 @@
-// A reload opens at the top; see app/plugins/scroll-restoration.client.ts.
-if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
-
 // Reserve the native scrollbar width before the page's first paint.
 ;(function () {
   var probe = document.createElement('div')
