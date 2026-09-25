@@ -176,8 +176,7 @@ export const sourceKeys = new Map<string, string>([
   ['密钥或 otpauth:// 链接', 'm662049eef6f8'],
   ['显示密钥', 'm6b88fb20a373'],
   ['支持 Base32 密钥和验证器配置链接。', 'm54182ddbf8c7'],
-  ['密钥：Base32 / otpauth:// / Steam', 'm7e2c9f4a1b6d'],
-  ['验证方式', 'm4c8d2e6f1a9'],
+  ['密钥：Base32 / otpauth://', 'm7e2c9f4a1b6d'],
   ['粘贴', 'm335179267471'],
   ['验证参数', 'm45b1451d00e0'],
   ['{count} 位', 'm921011d4494e'],
@@ -273,10 +272,6 @@ export const sourceKeys = new Map<string, string>([
     'm5aeadd3c0e7d'
   ],
   ['二维码与配置链接', 'mfff3b626e660'],
-  [
-    '支持标准 TOTP 配置二维码与 otpauth://totp/ 链接。当前不支持 HOTP、Steam 专有格式和 Google Authenticator 多账户迁移二维码。图片包含多个二维码时，可以从识别结果中选择需要的配置。',
-    'm9b09b5c096fe'
-  ],
   ['本地历史与备份', 'm6ed3d6dfcee4'],
   [
     '默认不保存。你可以主动开启本地历史并设置解锁口令，成功复制的单条密钥会在解锁状态下加密保存。批量需要明确选择保存；公开演示密钥不保存。',
@@ -548,10 +543,6 @@ export const sourceKeys = new Map<string, string>([
   ['验证码长度', 'm6b8c90c03329'],
   ['更新周期', 'm0f5cd413f1fe'],
   ['切换背景', 'm2c025edbe6c6'],
-  [
-    '用于已有 Steam 密钥备份的账号：粘贴 shared_secret 或 maFile 内容，即可在浏览器生成登录验证码。本站不能从官方手机 App 导出密钥，也不能替代扫码登录或交易确认。',
-    'steamPurpose'
-  ],
   ['别挖了，这里连基岩都没有。回首页重新开局吧。', 'md4504badde22'],
   ['每次最多选择 20 张图片，请分批导入。', 'm85fe81c24edf'],
   ['正在识别图片：{done}/{total}', 'm4acc4efcc0da'],
@@ -559,34 +550,8 @@ export const sourceKeys = new Map<string, string>([
   ['导入所选（{count}）', 'm440de94b6df5'],
   ['支持多张图片，每张不超过 10MB。', 'me070a2a44d9b'],
   ['通行密钥', 'm102824e51a9d'],
-  ['从导入密钥到获取验证码，了解 TOTP 与 Steam Guard 的用法。', 'm5a1a7367587c'],
-  ['Steam Guard 如何取码？', 'm1171ad13ecb9'],
-  [
-    '在首页将“验证方式”设为 Steam Guard，粘贴账号的 shared_secret（Base64 共享密钥）。也可以直接粘贴 maFile 的 JSON 内容，网站会自动识别其中的 shared_secret。',
-    'm5fa460c6de4f'
-  ],
-  [
-    'Steam 验证码为 5 位字母和数字，每 30 秒更新；算法、位数和周期自动固定，无需调整。请勿输入登录密码、恢复码或 identity_secret。',
-    'm26598ff2ec8d'
-  ],
-  ['如何确认生成正确？', 'm061df889e45d'],
-  [
-    '先用测试密钥检查：选择 Steam Guard，粘贴下面的公开测试数据，应显示 5 位验证码并随倒计时更新。此密钥不能用于真实账号登录。',
-    'ma9cd42000e54'
-  ],
-  [
-    '验证自己的账号时，使用该账号已有的 shared_secret，在同一个 30 秒周期内与原验证器对比；连续两轮相同后，再到 Steam 官方登录页尝试当前验证码。',
-    'mb84b455a92ad'
-  ],
-  [
-    '没有 shared_secret 或 maFile 时，只能做演示测试。不要为测试移除原验证器，也不要向任何人发送真实密钥或完整 maFile。',
-    'mfe5984e2db55'
-  ],
-  [
-    'TOTP 的算法、位数和周期需与原服务一致，默认 SHA-1、6 位、30 秒；Steam 账号请选择 Steam Guard。',
-    'mf5d4a7eee74b'
-  ],
-  ['以下链接功能适用于 TOTP；Steam Guard 当前不提供取码链接或配置二维码。', 'm76f601f5e396'],
+  ['从导入密钥到获取验证码，了解 TOTP 的用法。', 'm5a1a7367587c'],
+  ['TOTP 的算法、位数和周期需与原服务一致，默认 SHA-1、6 位、30 秒。', 'mf5d4a7eee74b'],
   [
     '默认不保存。你可以主动开启本地历史并设置解锁口令，有效输入会在开启并解锁后自动加密保存，单条和批量均支持；教学演示过程不保存。闲置 30 分钟后自动锁定，解锁后继续自动保存。',
     'm613b63387684'
@@ -614,11 +579,6 @@ export const sourceKeys = new Map<string, string>([
   ['啊，天气好热啊，果然是夏天。', 'm6ded45734509'],
   ['啊，天气好热啊，明明是秋天。', 'm16ca5e426b8a'],
   ['啊，天气好热啊，明明是冬天。', 'm57aab893a9d3'],
-  ['Steam 密钥格式不正确，请粘贴 shared_secret 或 maFile。', 'm9084dc905789'],
-  ['Steam 密钥格式不正确，请检查 shared_secret。', 'm347e6bfbff44'],
-  ['Steam 密钥不能为空。', 'me3a5c5bf0fbf'],
-  ['Steam 密钥过短，请使用完整的 shared_secret。', 'm8b1378d1c5ff'],
-  ['Steam maFile 格式不正确。', 'm3af250cdbef8'],
   ['把通行密钥，保存在你的浏览器', 'm0a2ef0beaeb3'],
   [
     '为其他网站创建和使用通行密钥，由 2fa.hot 扩展在本机加密保存。换设备时，用备份带走。',
@@ -750,7 +710,6 @@ export const sourceKeys = new Map<string, string>([
   ],
   ['Google：转移 Google 身份验证器验证码', 'm45728bf48477'],
   ['2fa.hot 项目介绍与支持功能', 'm8677d87b4c32'],
-  ['新增', 'm0006d696d8e1'],
   ['指南', 'm6eadeddb7e70'],
   ['重试', 'mb8784c8dd563'],
   ['前往关联账号', 'accountLinkingOpen'],
@@ -796,10 +755,6 @@ export const sourceKeys = new Map<string, string>([
   [
     '批量结果右上角的展开图标，会把验证码放到独立页面，一屏显示全部，适合一边核对一边输入。',
     'tipStandaloneBody'
-  ],
-  [
-    '把 Steam 的 shared_secret 或 maFile 内容直接粘贴进来，会按 5 位、30 秒的规则取码。',
-    'tipSteamBody'
   ],
   ['Lite 轻量版', 'tipLiteTitle'],
   [
@@ -920,5 +875,59 @@ export const sourceKeys = new Map<string, string>([
   ['茉子', 'ma425bac3abc3'],
   ['芳乃', 'mceea9901cddd'],
   ['芦花', 'm6c0a1df4a160'],
-  ['丛雨', 'md7c98e88a4ad']
+  ['丛雨', 'md7c98e88a4ad'],
+  ['什么是 2FA 验证码？', 'homeWhatTitle'],
+  [
+    '2FA（双重验证）在密码之外，再要求一组会变化的验证码。大多数网站采用 TOTP 标准：开启验证器 App 时，服务会给你一串密钥，密钥结合当前时间，每 30 秒算出一组新的 6 位验证码。谷歌身份验证器（Google Authenticator）、Microsoft Authenticator 等验证器都是这样工作的。',
+    'homeWhatBody1'
+  ],
+  [
+    '2fa.hot 做同样的计算，但不需要安装 App。粘贴密钥就能看到当前验证码，同一个密钥在任何标准验证器中算出的结果都相同。计算全程在你的浏览器中完成，密钥不会上传到服务器。',
+    'homeWhatBody2'
+  ],
+  ['如何获取 2FA 验证码', 'homeStepsTitle'],
+  ['复制服务提供的 2FA 密钥（Base32 字符串或 otpauth:// 链接），或准备好二维码截图。', 'homeStep1'],
+  ['粘贴到上方输入框，或点击“导入二维码”选择图片、拖入文件，或用摄像头扫描。', 'homeStep2'],
+  [
+    '复制显示的 6 位验证码，在倒计时结束前提交。账号较多时，切换到“批量取码”，一次最多处理 100 条。',
+    'homeStep3'
+  ],
+  ['支持的格式与服务', 'homeFormatsTitle'],
+  [
+    '支持 Base32 密钥、otpauth:// 配置链接、普通 2FA 二维码和 Google Authenticator 导出二维码。TOTP 可选 SHA-1、SHA-256、SHA-512，6 位或 8 位。',
+    'homeFormatsBody1'
+  ],
+  [
+    '适用于支持验证器 App 的服务，例如 Google、Microsoft、GitHub、Discord、X、Facebook、Instagram、Amazon 和币安。',
+    'homeFormatsBody2'
+  ],
+  ['常见问题', 'homeFaqTitle'],
+  ['在线生成 2FA 验证码安全吗？', 'homeFaqSafeQ'],
+  [
+    '验证码计算和二维码解码都在浏览器本地完成，密钥不会发送到 2fa.hot 的服务器，历史记录默认关闭。但任何拿到密钥的人都能算出验证码，请只在可信的设备上使用，也不要公开分享包含密钥的链接。',
+    'homeFaqSafeA'
+  ],
+  ['为什么验证码提示无效？', 'homeFaqInvalidQ'],
+  [
+    '最常见的原因是设备时间不准、验证码已过期，或密钥复制不完整。也请确认服务使用的位数、周期和算法与这里的设置一致。',
+    'homeFaqInvalidA'
+  ],
+  ['2FA 密钥在哪里找？', 'homeFaqFindQ'],
+  [
+    '在网站的安全设置中开启“验证器 App”时，页面会显示二维码，通常还有“无法扫描？”或“手动输入”选项，点开后出现的字母数字串就是密钥。多数服务在设置完成后不会再显示密钥，需要重新设置 2FA 才能获取。',
+    'homeFaqFindA'
+  ],
+  ['这是谷歌身份验证器网页版吗？', 'homeFaqGoogleQ'],
+  [
+    '这不是 Google 的官方产品，但算法相同：同一个密钥在这里和在 Google Authenticator 中会显示相同的验证码。你可以导入 Google Authenticator 导出的二维码，在电脑上查看验证码。建议保留手机上的验证器作为备份。',
+    'homeFaqGoogleA'
+  ],
+  ['能同时获取多个账号的验证码吗？', 'homeFaqBatchQ'],
+  [
+    '可以。切换到“批量取码”后，每行粘贴一个密钥，或直接粘贴从 Excel 复制的表格、混有账号密码的文本，工具会自动识别密钥，一次最多处理 100 条，并可一键复制全部验证码。',
+    'homeFaqBatchA'
+  ],
+  ['需要注册或付费吗？', 'homeFaqFreeQ'],
+  ['不需要。2fa.hot 免费使用，无需注册，源代码以 AGPL-3.0 协议在 GitHub 开源。', 'homeFaqFreeA'],
+  ['阅读 2FA 与 TOTP 指南', 'homeGuidesLink']
 ])

@@ -282,6 +282,7 @@ watch(
         </div>
       </div>
     </div>
+    <ToolExplainer />
     <SiteAnnouncement :paused="guideOpen" />
   </div>
 </template>

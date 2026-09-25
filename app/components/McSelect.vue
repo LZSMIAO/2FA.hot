@@ -12,7 +12,6 @@ defineProps<{
 }>()
 
 const model = defineModel<string | number>()
-const { tx } = useMessages()
 const menuOpen = shallowRef(false)
 
 function select(value: string | number) {
@@ -62,35 +61,13 @@ function select(value: string | number) {
       }"
       :ui="{
         base: 'mc-select-button',
-        content: id === 'otp-kind' ? 'mc-select-menu mc-select-menu-kind' : 'mc-select-menu',
+        content: 'mc-select-menu',
         item: 'mc-select-item',
         itemLabel: 'mc-select-item-label',
         trailingIcon: 'mc-select-trailing'
       }"
       selected-icon="i-mc-check"
       trailing-icon="i-lucide-chevron-down"
-    >
-      <template #item-label="{ item }">
-        {{ item.label }}
-        <span v-if="id === 'otp-kind' && item.value === 'steam'" class="mc-new-badge">{{
-          tx('新增')
-        }}</span>
-      </template>
-    </USelectMenu>
+    />
   </UTooltip>
 </template>
-
-<style scoped>
-.mc-new-badge {
-  display: table;
-  margin-top: 0.125rem;
-  padding: 0.0625rem 0.25rem;
-  background: #c8edac;
-  color: #193c11;
-  box-shadow: inset 0 -1px 0 #86b667;
-  font:
-    700 0.5625rem/1.25 system-ui,
-    sans-serif;
-  letter-spacing: 0.025em;
-}
-</style>

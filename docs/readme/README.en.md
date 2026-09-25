@@ -40,7 +40,7 @@ More features are being integrated…
 - Local history: off by default, with opt-in storage, optional encryption, backup and restore.
 - 30 languages: mobile layouts and light/dark themes. Built-in mistake-prevention guides provide step-by-step, fully guided tutorials for your customers.
 
-Supports TOTP (SHA-1/SHA-256/SHA-512, 6/8 digits) and Steam Guard (5 characters, 30 seconds). For Steam, enter a shared_secret or paste maFile JSON content. HOTP code generation is not supported; HOTP/MD5 accounts in migration files can be parsed and exported.
+Supports TOTP (SHA-1/SHA-256/SHA-512, 6/8 digits). HOTP code generation is not supported; HOTP/MD5 accounts in migration files can be parsed and exported.
 
 Have a feature in mind? Explore the [wishlist](https://2fa.hot/waitlist) and share your ideas on GitHub.
 

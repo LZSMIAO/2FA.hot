@@ -60,7 +60,7 @@ test('named and single-row copying preserve the existing output contract', async
   await context.copyRows(1)
   assert.equal(captured[1], '287082')
   assert.equal(codeOutput('', '000042'), '000042')
-  assert.equal(codeOutput('Steam', '2ABCD'), 'Steam\t2ABCD')
+  assert.equal(codeOutput('Acme', '123456'), 'Acme\t123456')
   context.guiding.value = true
   await context.copyRows()
   assert.equal(captured.length, 2)

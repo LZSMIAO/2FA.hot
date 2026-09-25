@@ -38,7 +38,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Supporta TOTP (SHA-1/SHA-256/SHA-512, 6/8 cifre) e Steam Guard (5 caratteri, 30 secondi). Per Steam, inserisci uno shared_secret o incolla il contenuto JSON di un maFile. La generazione di codici HOTP non è supportata; gli account HOTP/MD5 nei file di migrazione possono essere analizzati ed esportati."
+              "Supporta TOTP (SHA-1/SHA-256/SHA-512, 6/8 cifre). La generazione di codici HOTP non è supportata; gli account HOTP/MD5 nei file di migrazione possono essere analizzati ed esportati."
             ]
           },
           {
@@ -214,7 +214,7 @@
           "title": "Confronta segreto e configurazione",
           "paragraphs": [
             "2fa.hot supporta TOTP con SHA-1, SHA-256 o SHA-512, sei o otto cifre e il periodo configurato. I valori predefiniti sono SHA-1, sei cifre e 30 secondi. Un URI otpauth importato può contenere valori diversi. Conservali invece di imporre i valori predefiniti a ogni account.",
-            "Un carattere mancante nel segreto, una registrazione dell’autenticatore appena reimpostata o un tipo di codice diverso possono spiegare errori ripetuti. Per gli account Steam, seleziona Steam Guard e usa lo shared_secret dell’account. Qui non vengono generati codici HOTP basati su contatore. Un risultato che sembra valido non dimostra che il servizio originale lo accetterà."
+            "Un carattere mancante nel segreto, una registrazione dell’autenticatore appena reimpostata o un tipo di codice diverso possono spiegare errori ripetuti. Qui non vengono generati codici HOTP basati su contatore. Un risultato che sembra valido non dimostra che il servizio originale lo accetterà."
           ],
           "steps": [
             "Confronta la chiave di configurazione salvata con i dati di registrazione originali sul dispositivo affidabile.",

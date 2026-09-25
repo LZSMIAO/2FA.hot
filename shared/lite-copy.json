@@ -73,7 +73,7 @@
         ],
         [
           "验证码不正确？",
-          "先确认密钥、算法、位数和周期与原服务相同，再检查设备时间。快到期时等下一组。Lite 不支持 HOTP 或 Steam 专用验证码。"
+          "先确认密钥、算法、位数和周期与原服务相同，再检查设备时间。快到期时等下一组。Lite 不支持 HOTP 验证码。"
         ]
       ]
     }
@@ -81,36 +81,36 @@
   "zh-TW": {
     "ui": {
       "title": "2FA 驗證碼",
-      "secretLabel": "密鑰或 otpauth:// 連結",
-      "hint": "Base32 密鑰或 TOTP 連結，可貼上多條",
-      "choose": "選擇密鑰",
-      "review": "請核對各條密鑰；附近文字不會自動視為所屬帳號。",
+      "secretLabel": "金鑰或 otpauth:// 連結",
+      "hint": "Base32 金鑰或 TOTP 連結，可貼上多筆",
+      "choose": "選擇金鑰",
+      "review": "請核對各個金鑰；附近的文字不會自動視為所屬帳號。",
       "limit": "每次最多 100 行，請分批貼上。",
-      "reveal": "顯示密鑰",
+      "reveal": "顯示金鑰",
       "algorithm": "演算法",
       "digits": "位數",
       "period": "週期（秒）",
       "generate": "貼上",
-      "pasteHelp": "無法讀取剪貼簿，請在密鑰欄按 Ctrl+V 或長按貼上。",
+      "pasteHelp": "無法讀取剪貼簿，請在金鑰欄位按 Ctrl+V 或長按貼上。",
       "clear": "清空",
       "current": "目前驗證碼",
       "copy": "複製驗證碼",
       "link": "複製連結",
       "manual": "請選取後手動複製",
-      "privacy": "密鑰在此瀏覽器內處理，不儲存歷史紀錄。分享連結仍含密鑰，請妥善保管。",
+      "privacy": "金鑰在此瀏覽器內處理，不儲存歷史紀錄。分享連結仍含有金鑰，請妥善保管。",
       "full": "完整版本",
       "help": "使用說明",
       "compatibility": "支援 Internet Explorer！",
       "left": "{n} 秒後更新",
       "copied": "已複製。",
-      "secret": "請輸入一條完整的 Base32 密鑰。",
-      "multiple": "Lite 一次處理一條密鑰，不支援多行輸入。",
+      "secret": "請輸入一個完整的 Base32 金鑰。",
+      "multiple": "Lite 一次只處理一個金鑰，不支援多行輸入。",
       "invalid": "連結格式不正確。",
-      "unsupported": "請使用 Base32 密鑰、TOTP 設定連結或 2fa.hot 片段連結；此格式不受支援。",
+      "unsupported": "請使用 Base32 金鑰、TOTP 設定連結或 2fa.hot 片段連結；此格式不受支援。",
       "duplicate": "連結包含重複參數。",
       "parameters": "請使用 SHA-1/256/512、6 或 8 位，以及 15 至 120 秒的週期。",
-      "unavailable": "取碼元件未能載入，請重新整理後再試。",
-      "query": "請用 # 片段放置密鑰，不要放在網址路徑或查詢參數中。",
+      "unavailable": "取碼元件無法載入，請重新整理後再試。",
+      "query": "請用 # 片段放置金鑰，不要放在網址路徑或查詢參數中。",
       "navigation": "導覽",
       "language": "語言",
       "source": "原始碼 · AGPL-3.0",
@@ -124,19 +124,19 @@
       "sections": [
         [
           "為什麼需要 Lite？",
-          "Lite 為只需快速取得 TOTP 驗證碼的情況而設：頁面更小、載入更快、依賴更少，在慢速網路、舊裝置或完整版本無法正常載入時仍可使用。它保留瀏覽器內計算、多密鑰識別和快捷取碼；QR 匯入、本機紀錄等完整功能則由完整版本提供。"
+          "Lite 專為只需快速取得 TOTP 驗證碼的情況而設計：頁面更小、載入更快、依賴更少，在網路緩慢、裝置老舊或完整版本無法正常載入時仍可使用。它保留瀏覽器內計算、多金鑰辨識和快速取碼；QR Code 匯入、本機紀錄等完整功能則由完整版本提供。"
         ],
         [
           "如何取碼",
-          "貼上已有的 Base32 密鑰或 otpauth://totp/ 設定連結，驗證碼會自動顯示。點「複製驗證碼」後，填入需要驗證的網站。倒計時結束時會自動更新。"
+          "貼上現有的 Base32 金鑰或 otpauth://totp/ 設定連結，驗證碼會自動顯示。點選「複製驗證碼」後，填入需要驗證的網站。倒數結束時會自動更新。"
         ],
         [
-          "快捷取碼連結",
-          "使用 /lite#密鑰 可直接開啟取碼頁。這是瀏覽器頁面，不是回傳 JSON 或驗證碼的伺服器 API；curl 等 HTTP 客戶端只會取得頁面。請使用頁面的「複製連結」產生完整連結。"
+          "快速取碼連結",
+          "使用 /lite#金鑰 可直接開啟取碼頁。這是瀏覽器頁面，不是回傳 JSON 或驗證碼的伺服器 API；curl 等 HTTP 用戶端只會取得頁面。請使用頁面上的「複製連結」產生完整連結。"
         ],
         [
           "自訂參數",
-          "密鑰後可加 ?algorithm=SHA256&digits=8&period=30，整段必須放在 # 後。algorithm 支援 SHA1、SHA256、SHA512；digits 為 6 或 8；period 為 15–120 秒的整數。預設是 SHA1、6 位、30 秒。參數需與原服務一致。"
+          "金鑰後可加上 ?algorithm=SHA256&digits=8&period=30，整段必須放在 # 後面。algorithm 支援 SHA1、SHA256、SHA512；digits 為 6 或 8；period 為 15–120 秒的整數。預設是 SHA1、6 位、30 秒。參數需與原服務一致。"
         ],
         [
           "複製與貼上",
@@ -144,15 +144,15 @@
         ],
         [
           "功能範圍與舊瀏覽器",
-          "Lite 可辨識多條密鑰，在本頁選擇並取碼；箭頭可開啟獨立取碼頁。不提供 QR 匯入或本機紀錄。需要這些功能時請使用完整版本。Lite 以 IE11 為相容目標，尚未通過 IE11 實機驗證；舊系統的 HTTPS 連線能力也可能影響使用。"
+          "Lite 可辨識多個金鑰，在本頁選擇並取碼；點選箭頭可開啟獨立取碼頁。不提供 QR Code 匯入或本機紀錄，需要這些功能時請使用完整版本。Lite 以 IE11 為相容目標，尚未通過 IE11 實機驗證；舊系統的 HTTPS 連線能力也可能影響使用。"
         ],
         [
-          "密鑰與隱私",
-          "密鑰及驗證碼計算在瀏覽器內完成，Lite 不儲存歷史紀錄。# 後的內容不隨 HTTP 頁面請求傳送；完整連結仍含密鑰，可能留在瀏覽器歷史、剪貼簿或截圖中，請勿公開分享。"
+          "金鑰與隱私",
+          "金鑰及驗證碼計算在瀏覽器內完成，Lite 不儲存歷史紀錄。# 後的內容不會隨 HTTP 頁面請求傳送；完整連結仍含有金鑰，可能留在瀏覽器歷史紀錄、剪貼簿或截圖中，請勿公開分享。"
         ],
         [
           "驗證碼不正確？",
-          "先確認密鑰、演算法、位數和週期與原服務相同，再檢查裝置時間。快到期時等下一組。Lite 不支援 HOTP 或 Steam 專用驗證碼。"
+          "先確認金鑰、演算法、位數和週期與原服務相同，再檢查裝置時間。快到期時請等下一組。Lite 不支援 HOTP 驗證碼。"
         ]
       ]
     }
@@ -231,7 +231,7 @@
         ],
         [
           "Incorrect code?",
-          "Check the secret, algorithm, digits and period against the original service, then check your device clock. Wait for the next code if it is about to expire. Lite does not support HOTP or Steam-specific codes."
+          "Check the secret, algorithm, digits and period against the original service, then check your device clock. Wait for the next code if it is about to expire. Lite does not support HOTP codes."
         ]
       ]
     }
@@ -310,7 +310,7 @@
         ],
         [
           "¿Código incorrecto?",
-          "Comprueba el secreto, algoritmo, dígitos y período con el servicio original, y después el reloj de tu dispositivo. Espera al siguiente código si está a punto de caducar. Lite no admite HOTP ni códigos específicos de Steam."
+          "Comprueba el secreto, algoritmo, dígitos y período con el servicio original, y después el reloj de tu dispositivo. Espera al siguiente código si está a punto de caducar. Lite no admite HOTP."
         ]
       ]
     }
@@ -389,7 +389,7 @@
         ],
         [
           "Code incorrect ?",
-          "Comparez le secret, l’algorithme, les chiffres et la période au service d’origine, puis vérifiez l’horloge de votre appareil. Attendez le code suivant s’il est sur le point d’expirer. Lite ne prend pas en charge HOTP ni les codes spécifiques à Steam."
+          "Comparez le secret, l’algorithme, les chiffres et la période au service d’origine, puis vérifiez l’horloge de votre appareil. Attendez le code suivant s’il est sur le point d’expirer. Lite ne prend pas en charge HOTP."
         ]
       ]
     }
@@ -468,7 +468,7 @@
         ],
         [
           "Falscher Code?",
-          "Vergleiche Schlüssel, Algorithmus, Ziffernzahl und Intervall mit dem ursprünglichen Dienst und prüfe dann die Geräteuhr. Warte auf den nächsten Code, wenn der aktuelle gleich abläuft. Lite unterstützt weder HOTP noch Steam-spezifische Codes."
+          "Vergleiche Schlüssel, Algorithmus, Ziffernzahl und Intervall mit dem ursprünglichen Dienst und prüfe dann die Geräteuhr. Warte auf den nächsten Code, wenn der aktuelle gleich abläuft. Lite unterstützt HOTP nicht."
         ]
       ]
     }
@@ -547,7 +547,7 @@
         ],
         [
           "Código incorreto?",
-          "Confira segredo, algoritmo, dígitos e período com o serviço original e depois verifique o relógio do dispositivo. Espere o próximo código se ele estiver prestes a expirar. O Lite não aceita HOTP nem códigos específicos do Steam."
+          "Confira segredo, algoritmo, dígitos e período com o serviço original e depois verifique o relógio do dispositivo. Espere o próximo código se ele estiver prestes a expirar. O Lite não aceita HOTP."
         ]
       ]
     }
@@ -626,7 +626,7 @@
         ],
         [
           "Неправильный код?",
-          "Сверьте секрет, алгоритм, число цифр и период с исходным сервисом, затем проверьте часы устройства. Дождитесь следующего кода, если текущий скоро истечёт. Lite не поддерживает HOTP и специальные коды Steam."
+          "Сверьте секрет, алгоритм, число цифр и период с исходным сервисом, затем проверьте часы устройства. Дождитесь следующего кода, если текущий скоро истечёт. Lite не поддерживает HOTP."
         ]
       ]
     }
@@ -705,7 +705,7 @@
         ],
         [
           "コードが違う？",
-          "シークレット・アルゴリズム・桁数・期間を元のサービスと照合し、端末の時計も確認してください。期限が近ければ次のコードを待ちます。LiteはHOTPやSteam専用コードに対応しません。"
+          "シークレット・アルゴリズム・桁数・期間を元のサービスと照合し、端末の時計も確認してください。期限が近ければ次のコードを待ちます。LiteはHOTPコードに対応しません。"
         ]
       ]
     }
@@ -784,7 +784,7 @@
         ],
         [
           "코드가 틀렸나요?",
-          "비밀 키, 알고리즘, 자릿수, 주기를 원래 서비스와 비교한 다음 기기 시계를 확인하세요. 만료가 가까우면 다음 코드를 기다리세요. Lite는 HOTP나 Steam 전용 코드를 지원하지 않습니다."
+          "비밀 키, 알고리즘, 자릿수, 주기를 원래 서비스와 비교한 다음 기기 시계를 확인하세요. 만료가 가까우면 다음 코드를 기다리세요. Lite는 HOTP 코드를 지원하지 않습니다."
         ]
       ]
     }
@@ -863,7 +863,7 @@
         ],
         [
           "الرمز غير صحيح؟",
-          "قارن المفتاح والخوارزمية وعدد الأرقام والفترة بالخدمة الأصلية، ثم تحقّق من ساعة جهازك. انتظر الرمز التالي إذا أوشك الحالي على الانتهاء. لا تدعم Lite ‏HOTP أو رموز Steam الخاصة."
+          "قارن المفتاح والخوارزمية وعدد الأرقام والفترة بالخدمة الأصلية، ثم تحقّق من ساعة جهازك. انتظر الرمز التالي إذا أوشك الحالي على الانتهاء. لا تدعم Lite ‏HOTP."
         ]
       ]
     }
@@ -942,7 +942,7 @@
         ],
         [
           "कोड गलत है?",
-          "सीक्रेट, एल्गोरिदम, अंक और अवधि मूल सेवा से मिलाएँ, फिर डिवाइस घड़ी जाँचें। कोड खत्म होने वाला हो तो अगले का इंतज़ार करें। Lite HOTP या Steam के खास कोड सपोर्ट नहीं करता।"
+          "सीक्रेट, एल्गोरिदम, अंक और अवधि मूल सेवा से मिलाएँ, फिर डिवाइस घड़ी जाँचें। कोड खत्म होने वाला हो तो अगले का इंतज़ार करें। Lite HOTP कोड सपोर्ट नहीं करता।"
         ]
       ]
     }
@@ -1021,7 +1021,7 @@
         ],
         [
           "কোড ভুল?",
-          "কী, অ্যালগরিদম, অঙ্ক ও সময়কাল মূল পরিষেবার সঙ্গে মেলান, তারপর ডিভাইসের ঘড়ি দেখুন। মেয়াদ শেষের কাছে হলে পরের কোডের অপেক্ষা করুন। Lite HOTP বা Steam-এর বিশেষ কোড সমর্থন করে না।"
+          "কী, অ্যালগরিদম, অঙ্ক ও সময়কাল মূল পরিষেবার সঙ্গে মেলান, তারপর ডিভাইসের ঘড়ি দেখুন। মেয়াদ শেষের কাছে হলে পরের কোডের অপেক্ষা করুন। Lite HOTP কোড সমর্থন করে না।"
         ]
       ]
     }
@@ -1100,7 +1100,7 @@
         ],
         [
           "کوڈ غلط ہے؟",
-          "کلید، الگورتھم، ہندسے اور وقفہ اصل سروس سے ملائیں، پھر آلے کی گھڑی جانچیں۔ میعاد ختم ہونے والی ہو تو اگلا کوڈ آنے دیں۔ Lite ‏HOTP یا Steam کے مخصوص کوڈ نہیں بناتا۔"
+          "کلید، الگورتھم، ہندسے اور وقفہ اصل سروس سے ملائیں، پھر آلے کی گھڑی جانچیں۔ میعاد ختم ہونے والی ہو تو اگلا کوڈ آنے دیں۔ Lite ‏HOTP کوڈ نہیں بناتا۔"
         ]
       ]
     }
@@ -1179,7 +1179,7 @@
         ],
         [
           "Kode salah?",
-          "Cocokkan rahasia, algoritme, digit, dan periode dengan layanan asal, lalu periksa jam perangkat. Tunggu kode berikutnya jika hampir kedaluwarsa. Lite tidak mendukung HOTP atau kode khusus Steam."
+          "Cocokkan rahasia, algoritme, digit, dan periode dengan layanan asal, lalu periksa jam perangkat. Tunggu kode berikutnya jika hampir kedaluwarsa. Lite tidak mendukung HOTP."
         ]
       ]
     }
@@ -1258,7 +1258,7 @@
         ],
         [
           "Kod salah?",
-          "Padankan rahsia, algoritma, digit dan tempoh dengan perkhidmatan asal, kemudian semak jam peranti. Tunggu kod seterusnya jika hampir tamat tempoh. Lite tidak menyokong HOTP atau kod khusus Steam."
+          "Padankan rahsia, algoritma, digit dan tempoh dengan perkhidmatan asal, kemudian semak jam peranti. Tunggu kod seterusnya jika hampir tamat tempoh. Lite tidak menyokong HOTP."
         ]
       ]
     }
@@ -1337,7 +1337,7 @@
         ],
         [
           "Mã sai?",
-          "Đối chiếu khóa, thuật toán, số chữ số và chu kỳ với dịch vụ gốc, rồi kiểm tra đồng hồ thiết bị. Chờ mã tiếp nếu sắp hết hạn. Lite không hỗ trợ HOTP hay mã riêng của Steam."
+          "Đối chiếu khóa, thuật toán, số chữ số và chu kỳ với dịch vụ gốc, rồi kiểm tra đồng hồ thiết bị. Chờ mã tiếp nếu sắp hết hạn. Lite không hỗ trợ HOTP."
         ]
       ]
     }
@@ -1416,7 +1416,7 @@
         ],
         [
           "รหัสผิด?",
-          "เทียบคีย์ อัลกอริทึม จำนวนหลักและช่วงเวลากับบริการต้นทาง แล้วตรวจนาฬิกาเครื่อง หากใกล้หมดอายุให้รอรหัสถัดไป Lite ไม่รองรับ HOTP หรือรหัสเฉพาะ Steam"
+          "เทียบคีย์ อัลกอริทึม จำนวนหลักและช่วงเวลากับบริการต้นทาง แล้วตรวจนาฬิกาเครื่อง หากใกล้หมดอายุให้รอรหัสถัดไป Lite ไม่รองรับ HOTP"
         ]
       ]
     }
@@ -1495,7 +1495,7 @@
         ],
         [
           "Kod yanlış mı?",
-          "Anahtarı, algoritmayı, haneyi ve süreyi özgün hizmetle karşılaştırın, sonra cihaz saatine bakın. Süre bitmek üzereyse sonraki kodu bekleyin. Lite HOTP veya Steam'e özel kodları desteklemez."
+          "Anahtarı, algoritmayı, haneyi ve süreyi özgün hizmetle karşılaştırın, sonra cihaz saatine bakın. Süre bitmek üzereyse sonraki kodu bekleyin. Lite HOTP desteklemez."
         ]
       ]
     }
@@ -1574,7 +1574,7 @@
         ],
         [
           "Codice errato?",
-          "Confronta segreto, algoritmo, cifre e periodo con il servizio originale, quindi controlla l’orologio del dispositivo. Attendi il codice successivo se sta per scadere. Lite non supporta HOTP né codici specifici di Steam."
+          "Confronta segreto, algoritmo, cifre e periodo con il servizio originale, quindi controlla l’orologio del dispositivo. Attendi il codice successivo se sta per scadere. Lite non supporta HOTP."
         ]
       ]
     }
@@ -1653,7 +1653,7 @@
         ],
         [
           "Verkeerde code?",
-          "Controleer geheim, algoritme, aantal cijfers en periode bij de oorspronkelijke dienst en controleer daarna de apparaatklok. Wacht op de volgende code als de huidige bijna verloopt. Lite ondersteunt geen HOTP of Steam-specifieke codes."
+          "Controleer geheim, algoritme, aantal cijfers en periode bij de oorspronkelijke dienst en controleer daarna de apparaatklok. Wacht op de volgende code als de huidige bijna verloopt. Lite ondersteunt geen HOTP."
         ]
       ]
     }
@@ -1732,7 +1732,7 @@
         ],
         [
           "Niepoprawny kod?",
-          "Porównaj sekret, algorytm, liczbę cyfr i okres z pierwotną usługą, a następnie sprawdź zegar urządzenia. Poczekaj na następny kod, jeśli bieżący zaraz wygaśnie. Lite nie obsługuje HOTP ani kodów specyficznych dla Steam."
+          "Porównaj sekret, algorytm, liczbę cyfr i okres z pierwotną usługą, a następnie sprawdź zegar urządzenia. Poczekaj na następny kod, jeśli bieżący zaraz wygaśnie. Lite nie obsługuje HOTP."
         ]
       ]
     }
@@ -1811,7 +1811,7 @@
         ],
         [
           "Неправильний код?",
-          "Звірте секрет, алгоритм, кількість цифр і період із початковим сервісом, а потім перевірте годинник пристрою. Дочекайтеся наступного коду, якщо поточний скоро втратить чинність. Lite не підтримує HOTP і спеціальні коди Steam."
+          "Звірте секрет, алгоритм, кількість цифр і період із початковим сервісом, а потім перевірте годинник пристрою. Дочекайтеся наступного коду, якщо поточний скоро втратить чинність. Lite не підтримує HOTP."
         ]
       ]
     }
@@ -1890,7 +1890,7 @@
         ],
         [
           "کد اشتباه است؟",
-          "کلید، الگوریتم، تعداد ارقام و دوره را با سرویس اصلی تطبیق دهید و سپس ساعت دستگاه را بررسی کنید. اگر کد نزدیک انقضاست منتظر بعدی بمانید. Lite از HOTP یا کد مخصوص Steam پشتیبانی نمی‌کند."
+          "کلید، الگوریتم، تعداد ارقام و دوره را با سرویس اصلی تطبیق دهید و سپس ساعت دستگاه را بررسی کنید. اگر کد نزدیک انقضاست منتظر بعدی بمانید. Lite از HOTP پشتیبانی نمی‌کند."
         ]
       ]
     }
@@ -1969,7 +1969,7 @@
         ],
         [
           "קוד שגוי?",
-          "בדקו סוד, אלגוריתם, ספרות ומחזור מול השירות המקורי, ואז בדקו את שעון המכשיר. חכו לקוד הבא אם הנוכחי עומד לפוג. Lite לא תומך ב-HOTP או בקודים ייעודיים ל-Steam."
+          "בדקו סוד, אלגוריתם, ספרות ומחזור מול השירות המקורי, ואז בדקו את שעון המכשיר. חכו לקוד הבא אם הנוכחי עומד לפוג. Lite לא תומך ב-HOTP."
         ]
       ]
     }
@@ -2048,7 +2048,7 @@
         ],
         [
           "Msimbo si sahihi?",
-          "Linganisha siri, algoriti, tarakimu na kipindi na huduma ya awali, kisha kagua saa ya kifaa. Subiri msimbo mwingine ikiwa muda unakaribia kuisha. Lite haikubali HOTP au misimbo maalumu ya Steam."
+          "Linganisha siri, algoriti, tarakimu na kipindi na huduma ya awali, kisha kagua saa ya kifaa. Subiri msimbo mwingine ikiwa muda unakaribia kuisha. Lite haikubali HOTP."
         ]
       ]
     }
@@ -2127,7 +2127,7 @@
         ],
         [
           "Maling code?",
-          "Ihambing ang secret, algorithm, digit at panahon sa orihinal na serbisyo, saka suriin ang orasan ng device. Hintayin ang susunod na code kung malapit nang mag-expire. Hindi suportado ng Lite ang HOTP o Steam-specific na code."
+          "Ihambing ang secret, algorithm, digit at panahon sa orihinal na serbisyo, saka suriin ang orasan ng device. Hintayin ang susunod na code kung malapit nang mag-expire. Hindi suportado ng Lite ang HOTP."
         ]
       ]
     }
@@ -2206,7 +2206,7 @@
         ],
         [
           "தவறான குறியீடா?",
-          "ரகசியம், வழிமுறை, இலக்கங்கள், காலத்தை மூலச் சேவையுடன் ஒப்பிட்டு சாதனக் கடிகாரத்தைச் சரிபாருங்கள். காலாவதியாகவிருந்தால் அடுத்த குறியீட்டுக்குக் காத்திருங்கள். Lite HOTP அல்லது Steam சிறப்புக் குறியீடுகளை ஆதரிக்காது."
+          "ரகசியம், வழிமுறை, இலக்கங்கள், காலத்தை மூலச் சேவையுடன் ஒப்பிட்டு சாதனக் கடிகாரத்தைச் சரிபாருங்கள். காலாவதியாகவிருந்தால் அடுத்த குறியீட்டுக்குக் காத்திருங்கள். Lite HOTP குறியீடுகளை ஆதரிக்காது."
         ]
       ]
     }
@@ -2285,7 +2285,7 @@
         ],
         [
           "కోడ్ తప్పా?",
-          "రహస్యం, అల్గోరిథమ్, అంకెలు, వ్యవధి అసలు సేవతో పోల్చి, తర్వాత పరికరం గడియారం చూడండి. గడువు ముగియబోతే తర్వాతి కోడ్ కోసం ఆగండి. Lite HOTP లేదా Steam ప్రత్యేక కోడ్‌లకు మద్దతివ్వదు."
+          "రహస్యం, అల్గోరిథమ్, అంకెలు, వ్యవధి అసలు సేవతో పోల్చి, తర్వాత పరికరం గడియారం చూడండి. గడువు ముగియబోతే తర్వాతి కోడ్ కోసం ఆగండి. Lite HOTP కోడ్‌లకు మద్దతివ్వదు."
         ]
       ]
     }
@@ -2364,7 +2364,7 @@
         ],
         [
           "Λανθασμένος κωδικός;",
-          "Ελέγξτε το μυστικό κλειδί, τον αλγόριθμο, τα ψηφία και την περίοδο σε σχέση με την αρχική υπηρεσία και μετά το ρολόι της συσκευής. Αν ο κωδικός λήγει σύντομα, περιμένετε τον επόμενο. Το Lite δεν υποστηρίζει HOTP ή ειδικούς κωδικούς Steam."
+          "Ελέγξτε το μυστικό κλειδί, τον αλγόριθμο, τα ψηφία και την περίοδο σε σχέση με την αρχική υπηρεσία και μετά το ρολόι της συσκευής. Αν ο κωδικός λήγει σύντομα, περιμένετε τον επόμενο. Το Lite δεν υποστηρίζει HOTP."
         ]
       ]
     }

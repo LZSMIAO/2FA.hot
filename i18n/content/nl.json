@@ -38,7 +38,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Ondersteunt TOTP (SHA-1/SHA-256/SHA-512, 6/8 cijfers) en Steam Guard (5 tekens, 30 seconden). Voer voor Steam een shared_secret in of plak maFile-JSON-inhoud. HOTP-codegeneratie wordt niet ondersteund; HOTP-/MD5-accounts in migratiebestanden kunnen worden ingelezen en geëxporteerd."
+              "Ondersteunt TOTP (SHA-1/SHA-256/SHA-512, 6/8 cijfers). HOTP-codegeneratie wordt niet ondersteund; HOTP-/MD5-accounts in migratiebestanden kunnen worden ingelezen en geëxporteerd."
             ]
           },
           {
@@ -214,7 +214,7 @@
           "title": "Vergelijk het geheim en de configuratie",
           "paragraphs": [
             "2fa.hot ondersteunt TOTP met SHA-1, SHA-256 of SHA-512, zes of acht cijfers en de ingestelde periode. Standaard: SHA-1, zes cijfers en 30 seconden. Een geïmporteerde otpauth-URI kan andere waarden bevatten. Behoud die waarden in plaats van alle accounts naar de standaardwaarden te dwingen.",
-            "Een ontbrekend teken in het geheim, een onlangs opnieuw ingestelde authenticatorregistratie of een ander codetype kunnen herhaalde fouten verklaren. Kies voor Steam-accounts Steam Guard en gebruik de shared_secret van het account. HOTP-codes op basis van een teller worden hier niet gegenereerd. Een geldig ogend resultaat bewijst niet dat de oorspronkelijke dienst het accepteert."
+            "Een ontbrekend teken in het geheim, een onlangs opnieuw ingestelde authenticatorregistratie of een ander codetype kunnen herhaalde fouten verklaren. HOTP-codes op basis van een teller worden hier niet gegenereerd. Een geldig ogend resultaat bewijst niet dat de oorspronkelijke dienst het accepteert."
           ],
           "steps": [
             "Vergelijk de opgeslagen instelsleutel met de oorspronkelijke registratiegegevens op je vertrouwde apparaat.",

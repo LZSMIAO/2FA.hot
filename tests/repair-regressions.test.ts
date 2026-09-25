@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import { test } from 'node:test'
 import { createMemoryHistory, createRouter } from 'vue-router'
 import { analyzePaste, parseSmartBatch, pastedBatchText } from '../app/utils/smart-paste.ts'
-import { generateOtp, parseOtp, toOtpUri, toAccessPath, validateOptions } from '../app/utils/otp.ts'
+import { parseOtp, toOtpUri, validateOptions } from '../app/utils/otp.ts'
 import { validateEnvelope } from '../app/utils/vault-crypto.ts'
 import { transportHeaders } from '../shared/security-headers.ts'
 const secret = 'JBSWY3DPEHPK3PXP'
@@ -46,18 +46,19 @@ test('batch fragments preserve percent, hash, unicode and URI settings after rou
   }
 })
 
-test('Steam links and URIs preserve type and decoded bytes, including ambiguous base64', async () => {
-  for (const shared_secret of ['cnOgv/KdpLoP6Nbh0GMkXkPXALQ=', 'ABCDEFGHIJKLMNOP']) {
-    const config = parseOtp(JSON.stringify({ shared_secret, account_name: 'demo' }))
-    assert.equal(config.secret, shared_secret)
-    assert.deepEqual(validateOptions(config), config)
-    assert.equal(parseOtp(config.secret, { kind: 'steam' }).secret, shared_secret)
-    const linked = parseOtp('https://2fa.hot' + toAccessPath(config))
-    const uri = parseOtp(toOtpUri(config), { kind: 'steam' })
-    assert.equal(linked.kind, 'steam')
-    assert.deepEqual(uri, config)
-    assert.equal(await generateOtp(config, 1449690657000), await generateOtp(linked, 1449690657000))
-  }
+test('only TOTP is generated: other kinds and custom encoders are refused, not miscalculated', () => {
+  // Older links and local history may still carry a kind this site no longer generates.
+  assert.throws(() => parseOtp(`https://2fa.hot/2fa#${secret}?kind=other`), /格式不正确/)
+  assert.throws(
+    () => validateOptions({ ...parseOtp(secret), kind: 'other' as unknown as 'totp' }),
+    /仅支持 TOTP/
+  )
+  assert.throws(
+    () => parseOtp(`otpauth://totp/Acme:alice?secret=${secret}&encoder=custom`),
+    /仅支持 TOTP/
+  )
+  assert.equal(parseOtp(`https://2fa.hot/2fa#${secret}?kind=totp`).secret, secret)
+  assert.throws(() => parseOtp('{"secret":"x"}'), /密钥/)
 })
 
 test('colon-containing issuer roundtrips without accepting a conflicting issuer', () => {

@@ -407,9 +407,6 @@
 .mc-select-item::before {
   content: none;
 }
-.mc-select-menu-kind .mc-select-item {
-  font-size: 0.75rem;
-}
 .mc-select-item[data-highlighted]:not([data-state='checked']) {
   background: var(--mc-menu-hover) !important;
   color: var(--mc-menu-ink);
@@ -1207,7 +1204,6 @@
   .ore-theme .batch-match-icon,
   .ore-theme .candidate-port,
   .ore-theme .link-port,
-  .ore-theme .steam-help,
   .panorama-controls .panorama-control,
   .footer-inner .footer-contacts a,
   /* A short label like "About" leaves this under the target size. */

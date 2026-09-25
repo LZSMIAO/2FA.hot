@@ -37,7 +37,7 @@
 - 本地记录：默认不存储，可主动开启；支持可选加密、备份与还原。
 - 30 种语言：适配手机、深浅主题；内置防呆指南，为你的客户提供保姆级教学。
 
-支持 TOTP（SHA-1／SHA-256／SHA-512、6／8 位）和 Steam Guard（5 位、30 秒）。Steam 可输入 shared_secret 或粘贴 maFile JSON 内容。HOTP 不参与取码；迁移文件中的 HOTP／MD5 账号可解析导出。
+支持 TOTP（SHA-1／SHA-256／SHA-512、6／8 位）。HOTP 不参与取码；迁移文件中的 HOTP／MD5 账号可解析导出。
 
 有想要的功能？看看[愿望单](https://2fa.hot/zh-CN/waitlist)，或在 GitHub 提出你的想法。
 

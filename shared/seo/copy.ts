@@ -1,53 +1,55 @@
 import type { SupportedLocale } from '../locales'
 
-// Localize the product title and purpose; retain standard 2FA / TOTP terminology.
+// Page <h1> text for the tool: short, in the words people search for. The <title> adds the brand.
 export const toolHeadings: Record<SupportedLocale, string> = {
-  en: 'Online TOTP 2FA Authenticator Code Generator — All-in-One | Generate Secure OTP Codes | Made by Minecraft Fans',
-  'zh-CN': '在线多功能 TOTP 2FA验证码 Authenticator生成器｜生成安全OTP验证码｜Minecraft 爱好者制作',
-  'zh-TW': '線上多功能 TOTP 2FA驗證碼 Authenticator產生器｜產生安全OTP驗證碼｜Minecraft 愛好者製作',
-  es: 'Generador Authenticator multifunción de códigos TOTP 2FA en línea | Genera códigos OTP seguros | Creado por fans de Minecraft',
-  fr: 'Générateur Authenticator multifonction de codes TOTP 2FA en ligne | Générez des codes OTP sécurisés | Créé par des fans de Minecraft',
-  de: 'Multifunktionaler Online-Authenticator für TOTP- und 2FA-Codes | Sichere OTP-Codes generieren | Von Minecraft-Fans entwickelt',
-  'pt-BR':
-    'Gerador Authenticator multifuncional de códigos TOTP 2FA online | Gere códigos OTP seguros | Feito por fãs de Minecraft',
-  ru: 'Многофункциональный онлайн-генератор кодов TOTP 2FA Authenticator | Создавайте безопасные OTP-коды | Создано поклонниками Minecraft',
-  ja: '多機能オンライン TOTP・2FA 認証コード Authenticator ジェネレーター｜安全なOTP認証コードを生成｜Minecraftファンが制作',
-  ko: '온라인 다기능 TOTP 2FA 인증 코드 Authenticator 생성기 | 안전한 OTP 인증 코드 생성 | Minecraft 팬 제작',
-  ar: 'مولّد Authenticator متعدد الوظائف لرموز TOTP و2FA عبر الإنترنت | إنشاء رموز OTP آمنة | من صنع محبي Minecraft',
-  hi: 'ऑनलाइन बहुउद्देशीय TOTP 2FA Authenticator कोड जनरेटर | सुरक्षित OTP कोड बनाएँ | Minecraft के प्रशंसकों द्वारा निर्मित',
-  bn: 'অনলাইন বহুমুখী TOTP 2FA Authenticator কোড জেনারেটর | নিরাপদ OTP কোড তৈরি করুন | Minecraft অনুরাগীদের তৈরি',
-  ur: 'آن لائن کثیر المقاصد TOTP 2FA Authenticator کوڈ جنریٹر | محفوظ OTP کوڈ بنائیں | Minecraft کے شائقین کا تیار کردہ',
-  id: 'Generator Authenticator Kode TOTP 2FA Multifungsi Online | Buat Kode OTP Aman | Dibuat oleh Penggemar Minecraft',
-  ms: 'Penjana Authenticator Kod TOTP 2FA Pelbagai Fungsi Dalam Talian | Jana Kod OTP Selamat | Dibuat oleh Peminat Minecraft',
-  vi: 'Trình tạo mã TOTP 2FA Authenticator đa năng trực tuyến | Tạo mã OTP an toàn | Do người hâm mộ Minecraft tạo ra',
-  th: 'เครื่องมือสร้างรหัส TOTP 2FA Authenticator ออนไลน์แบบมัลติฟังก์ชัน | สร้างรหัส OTP ที่ปลอดภัย | สร้างโดยแฟน Minecraft',
-  tr: 'Çevrimiçi Çok İşlevli TOTP 2FA Authenticator Kod Üretici | Güvenli OTP Kodları Oluşturun | Minecraft Hayranları Tarafından Yapıldı',
-  it: 'Generatore Authenticator multifunzione di codici TOTP 2FA online | Genera codici OTP sicuri | Creato da appassionati di Minecraft',
-  nl: 'Multifunctionele online TOTP 2FA Authenticator-codegenerator | Genereer veilige OTP-codes | Gemaakt door Minecraft-fans',
-  pl: 'Wielofunkcyjny generator kodów TOTP 2FA Authenticator online | Generuj bezpieczne kody OTP | Stworzony przez fanów Minecraft',
-  uk: 'Багатофункціональний онлайн-генератор кодів TOTP 2FA Authenticator | Створюйте безпечні OTP-коди | Створено шанувальниками Minecraft',
-  fa: 'تولیدکننده آنلاین چندمنظوره کد TOTP و 2FA Authenticator | تولید کدهای امن OTP | ساخته‌شده توسط طرفداران Minecraft',
-  he: 'מחולל קודי TOTP 2FA Authenticator מקוון ורב־תכליתי | יצירת קודי OTP מאובטחים | נוצר בידי חובבי Minecraft',
-  sw: 'Kizalishaji cha Misimbo ya TOTP 2FA Authenticator chenye Kazi Nyingi Mtandaoni | Tengeneza Misimbo Salama ya OTP | Kimetengenezwa na Mashabiki wa Minecraft',
-  fil: 'Online na Multifunctional TOTP 2FA Authenticator Code Generator | Gumawa ng Ligtas na OTP Code | Gawa ng mga Tagahanga ng Minecraft',
-  ta: 'ஆன்லைன் பல்நோக்கு TOTP 2FA Authenticator குறியீடு உருவாக்கி | பாதுகாப்பான OTP குறியீடுகளை உருவாக்குங்கள் | Minecraft ரசிகர்களால் உருவாக்கப்பட்டது',
-  te: 'ఆన్‌లైన్ బహుళ ప్రయోజన TOTP 2FA Authenticator కోడ్ జనరేటర్ | సురక్షితమైన OTP కోడ్‌లను రూపొందించండి | Minecraft అభిమానులు రూపొందించారు',
-  el: 'Πολυλειτουργική διαδικτυακή γεννήτρια κωδικών TOTP 2FA Authenticator | Δημιουργήστε ασφαλείς κωδικούς OTP | Από φίλους του Minecraft'
+  en: '2FA Code Generator – Free Online TOTP Authenticator',
+  'zh-CN': '2FA 验证码在线生成器｜免费 TOTP 身份验证器网页版',
+  'zh-TW': '2FA 驗證碼線上產生器｜免費 TOTP 驗證器網頁版',
+  es: 'Generador de códigos 2FA – Autenticador TOTP online gratis',
+  fr: 'Générateur de codes 2FA – Authenticator TOTP en ligne gratuit',
+  de: '2FA-Code-Generator – kostenloser Online-TOTP-Authenticator',
+  'pt-BR': 'Gerador de código 2FA – Autenticador TOTP online grátis',
+  ru: 'Генератор кодов 2FA – бесплатный онлайн TOTP-аутентификатор',
+  ja: '2FA認証コード生成ツール｜ブラウザで使える無料TOTP認証アプリ',
+  ko: '2FA 인증 코드 생성기 – 무료 온라인 TOTP 인증 도구',
+  ar: 'مولّد رموز 2FA – أداة مصادقة TOTP مجانية عبر الإنترنت',
+  hi: '2FA कोड जनरेटर – मुफ़्त ऑनलाइन TOTP ऑथेंटिकेटर',
+  bn: '2FA কোড জেনারেটর – বিনামূল্যে অনলাইন TOTP অথেন্টিকেটর',
+  ur: '2FA کوڈ جنریٹر – مفت آن لائن TOTP تصدیق کار',
+  id: 'Generator Kode 2FA – Authenticator TOTP Online Gratis',
+  ms: 'Penjana Kod 2FA – Pengesah TOTP Dalam Talian Percuma',
+  vi: 'Lấy mã 2FA online – Trình tạo mã TOTP xác thực miễn phí',
+  th: 'สร้างรหัส 2FA ออนไลน์ – ตัวยืนยันตัวตน TOTP ฟรี',
+  tr: '2FA Kod Oluşturucu – Ücretsiz Çevrimiçi TOTP Doğrulayıcı',
+  it: 'Generatore di codici 2FA – Autenticatore TOTP online gratuito',
+  nl: '2FA-codegenerator – gratis online TOTP-authenticator',
+  pl: 'Generator kodów 2FA – darmowy uwierzytelniacz TOTP online',
+  uk: 'Генератор кодів 2FA – безкоштовний онлайн TOTP-автентифікатор',
+  fa: 'تولیدکننده کد 2FA – احراز هویت TOTP آنلاین رایگان',
+  he: 'מחולל קודי 2FA – מאמת TOTP מקוון בחינם',
+  sw: 'Kizalishaji cha Misimbo ya 2FA – Kithibitishaji cha TOTP Bila Malipo',
+  fil: '2FA Code Generator – Libreng Online na TOTP Authenticator',
+  ta: '2FA குறியீடு உருவாக்கி – இலவச ஆன்லைன் TOTP அங்கீகாரக் கருவி',
+  te: '2FA కోడ్ జనరేటర్ – ఉచిత ఆన్‌లైన్ TOTP ఆథెంటికేటర్',
+  el: 'Γεννήτρια κωδικών 2FA – Δωρεάν online TOTP Authenticator'
 }
 
+export const toolTitle = (locale: SupportedLocale) =>
+  `${toolHeadings[locale] || toolHeadings.en} | 2fa.hot`
+
 export const toolDescriptions: Record<SupportedLocale, string> = {
-  en: 'Online 2FA/TOTP authenticator. Paste a secret to generate codes locally in your browser, without registration. Supports batch input, QR import, Google Authenticator migration and fragment links. Minecraft-inspired design.',
+  en: 'Free online 2FA code generator. Paste a TOTP secret or import a QR code to get the same codes as Google Authenticator. Runs locally in your browser, no sign-up.',
   'zh-CN':
-    '在线 2FA/TOTP 身份验证器，粘贴密钥即可获取当前验证码，无需注册，取码完全在浏览器本地完成。支持自动识别批量数据、多种密钥格式、二维码导入、Google Authenticator 迁移和片段直链。界面参考 Minecraft 风格设计。',
+    '免费在线 2FA 验证码生成器：粘贴 TOTP 密钥或导入二维码，即可获取与谷歌身份验证器相同的动态验证码。浏览器本地计算，支持批量取码，无需注册。',
   'zh-TW':
-    '線上 2FA/TOTP 身分驗證器，貼上密鑰即可取得目前驗證碼，無需註冊，取碼完全在瀏覽器本機完成。支援自動辨識批次資料、多種密鑰格式、QR 碼匯入、Google Authenticator 遷移和片段直鏈。介面參考 Minecraft 風格設計。',
+    '免費線上 2FA 驗證碼產生器：貼上 TOTP 金鑰或匯入 QR Code，即可取得與 Google Authenticator 相同的動態驗證碼。瀏覽器本機計算，支援批次取碼，免註冊。',
   es: 'Generador de códigos 2FA en línea. Admite TOTP, generación por lotes e importación QR. Funciona en el navegador, sin registro y con historial local cifrado opcional. Diseño inspirado en Minecraft.',
   fr: 'Générateur de codes 2FA en ligne. Codes TOTP, génération par lots et import QR. Calcul dans le navigateur, sans inscription, avec historique local chiffré en option. Design inspiré de Minecraft.',
   de: 'Online-Generator für 2FA-Codes. TOTP-Codes, mehrere Codes gleichzeitig und QR-Import. Berechnung im Browser, ohne Registrierung, mit optional verschlüsseltem lokalem Verlauf. Design inspiriert von Minecraft.',
   'pt-BR':
     'Gerador de códigos 2FA online. Suporta TOTP, geração em lote e importação QR. Funciona no navegador, sem cadastro, com histórico local criptografado opcional. Design inspirado em Minecraft.',
   ru: 'Онлайн-генератор кодов 2FA. Поддержка TOTP, пакетной генерации и импорта QR. Вычисления в браузере, без регистрации, с локальной зашифрованной историей по желанию. Дизайн вдохновлён Minecraft.',
-  ja: 'オンライン 2FA 認証コード生成ツール。TOTP ワンタイムパスワード、一括生成、QR コードの読み込みに対応。ブラウザ内で計算、登録不要。暗号化したローカル履歴を任意で保存できます。 デザインは Minecraft に着想を得ています。',
+  ja: '無料のオンライン2FA認証コード生成ツール。TOTPシークレットキーを貼り付けるかQRコードを読み込むと、Google Authenticatorと同じコードを表示します。ブラウザ内で計算、一括生成に対応、登録不要。',
   ko: '온라인 2FA 인증 코드 생성기. TOTP 일회용 코드, 일괄 생성, QR 가져오기를 지원합니다. 브라우저에서 계산하며 가입이 필요 없고, 암호화된 로컬 기록을 선택적으로 저장할 수 있습니다. 디자인은 Minecraft에서 영감을 받았습니다.',
   ar: 'مولّد رموز 2FA عبر الإنترنت. يدعم رموز TOTP والتوليد الجماعي واستيراد QR. يعمل داخل المتصفح دون تسجيل، مع سجل محلي مشفّر اختياري. تصميم مستوحى من Minecraft.',
   hi: 'ऑनलाइन 2FA कोड जनरेटर। TOTP कोड, एक साथ कई कोड बनाना और QR आयात समर्थित। ब्राउज़र में गणना, बिना पंजीकरण, वैकल्पिक एन्क्रिप्टेड स्थानीय इतिहास के साथ। डिज़ाइन Minecraft से प्रेरित है।',

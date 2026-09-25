@@ -1,5 +1,6 @@
-import { toolDescriptions, toolHeadings } from '~~/shared/seo/copy'
+import { toolDescriptions, toolTitle } from '~~/shared/seo/copy'
 import { guideMetadata } from '~~/shared/seo/guide-meta'
+import { focusedGuideMeta } from '~~/shared/seo/focused-guide-meta'
 import {
   isPrivatePage,
   localizedPath,
@@ -23,15 +24,23 @@ export function useSiteSeo() {
     const sourceArticle = Object.values(guideMetadata['zh-CN']).find(
       (item) => path === `/guides/${item.slug}`
     )
+    const slug = path.startsWith('/guides/') ? path.slice('/guides/'.length) : ''
+    // Focused guides carry their own per-language metadata instead of dictionary entries.
+    const focusedArticle =
+      focusedGuideMeta[slug as keyof typeof focusedGuideMeta]?.[
+        language as keyof (typeof focusedGuideMeta)[keyof typeof focusedGuideMeta]
+      ]
     const article = sourceArticle
       ? {
           ...sourceArticle,
           title: tx(sourceArticle.title),
           description: tx(sourceArticle.description)
         }
-      : undefined
+      : focusedArticle
+        ? { slug, ...focusedArticle }
+        : undefined
     const guideTitle = tx('2FA 与 TOTP 使用指南')
-    let title = toolHeadings[language] || toolHeadings.en
+    let title = toolTitle(language)
     let description = toolDescriptions[language] || toolDescriptions.en
     if (path === '/help') {
       title = `${tx('使用说明')} · 2FA & TOTP | 2fa.hot`
@@ -103,6 +112,18 @@ export function useSiteSeo() {
           isFamilyFriendly: true,
           sameAs: ['https://github.com/LZSMIAO/2FA.hot'],
           image
+        })
+      if (path === '/')
+        graph.push({
+          '@type': 'FAQPage',
+          '@id': `${canonical}#faq`,
+          inLanguage: language,
+          isPartOf: { '@id': `${canonical}#webpage` },
+          mainEntity: homeFaq.map((item) => ({
+            '@type': 'Question',
+            name: tx(item.question),
+            acceptedAnswer: { '@type': 'Answer', text: tx(item.answer) }
+          }))
         })
       if (path !== '/') {
         const crumbs = [{ name: '2fa.hot', item: siteUrl + localizedPath('/', language) }]

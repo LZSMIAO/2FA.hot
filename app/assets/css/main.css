@@ -708,17 +708,17 @@ html[data-panorama-playing] .panorama-playback-icon > :last-child {
 .option-grid {
   display: grid;
   /*
-   * Content-sized tracks: "TOTP" does not need the width that "30 Sekunden"
+   * Content-sized tracks: "SHA-1" does not need the width that "30 Sekunden"
    * does, and sharing the row evenly is what used to push long translations
    * out of their button. Spare width is still split equally between them.
    */
-  grid-template-columns: repeat(4, auto);
+  grid-template-columns: repeat(3, auto);
   gap: 0.5rem;
   margin: 0.75rem 0 0;
 }
 /*
- * A phone cannot hold four even cells, and even ones would give "TOTP" half
- * the card. Let them wrap as a row of chips, each its own label's width.
+ * A phone cannot hold three even cells, and even ones would give "SHA-1"
+ * half the card. Let them wrap as a row of chips, each its own label's width.
  */
 @media (max-width: 600px) {
   .option-grid {
@@ -773,9 +773,6 @@ html[data-panorama-playing] .panorama-playback-icon > :last-child {
   color: var(--ui-text);
   font-size: var(--text-label);
   gap: 0.25rem;
-}
-.option-kind .mc-select-button {
-  font-size: 0.8125rem;
 }
 .option-grid .mc-select-button [data-slot='trailing'] {
   position: static;

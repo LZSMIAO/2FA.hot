@@ -38,7 +38,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Menyokong TOTP (SHA-1/SHA-256/SHA-512, 6/8 digit) dan Steam Guard (5 aksara, 30 saat). Untuk Steam, masukkan shared_secret atau tampal kandungan JSON maFile. Penjanaan kod HOTP tidak disokong; akaun HOTP/MD5 dalam fail migrasi boleh dihuraikan dan dieksport."
+              "Menyokong TOTP (SHA-1/SHA-256/SHA-512, 6/8 digit). Penjanaan kod HOTP tidak disokong; akaun HOTP/MD5 dalam fail migrasi boleh dihuraikan dan dieksport."
             ]
           },
           {
@@ -214,7 +214,7 @@
           "title": "Bandingkan rahsia dan konfigurasi",
           "paragraphs": [
             "2fa.hot menyokong TOTP dengan SHA-1, SHA-256 atau SHA-512, enam atau lapan digit dan tempoh yang dikonfigurasi. Lalainya SHA-1, enam digit dan 30 saat. URI otpauth yang diimport boleh membawa nilai berbeza. Kekalkan nilai tersebut dan jangan paksa setiap akaun menggunakan lalai.",
-            "Aksara rahsia yang hilang, pendaftaran pengesah yang baru ditetapkan semula, atau jenis kod berbeza boleh menyebabkan kegagalan berulang. Untuk akaun Steam, pilih Steam Guard dan gunakan shared_secret akaun. Kod berasaskan pembilang HOTP tidak dijana di sini. Hasil yang kelihatan sah bukan bukti perkhidmatan asal akan menerimanya."
+            "Aksara rahsia yang hilang, pendaftaran pengesah yang baru ditetapkan semula, atau jenis kod berbeza boleh menyebabkan kegagalan berulang. Kod berasaskan pembilang HOTP tidak dijana di sini. Hasil yang kelihatan sah bukan bukti perkhidmatan asal akan menerimanya."
           ],
           "steps": [
             "Bandingkan kunci persediaan tersimpan dengan butiran pendaftaran asal pada peranti dipercayai.",

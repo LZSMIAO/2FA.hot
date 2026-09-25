@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import { readFileSync, existsSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { supportedLocales } from '../shared/locales.ts'
-import { publicPages, localizedPath } from '../shared/seo/routes.ts'
+import { publicPages, localizedPath, pageLocales } from '../shared/seo/routes.ts'
 
 const root = resolve('.output/public')
 let count = 0
@@ -10,6 +10,11 @@ for (const locale of supportedLocales) {
   for (const page of publicPages) {
     const route = localizedPath(page, locale.code)
     const file = resolve(root, '.' + route, 'index.html')
+    // Guides written for a few languages must not exist as empty pages elsewhere.
+    if (!pageLocales(page).includes(locale.code)) {
+      assert.equal(existsSync(file), false, `Unpublished language page: ${route}`)
+      continue
+    }
     assert.ok(existsSync(file), `Missing static HTML: ${route}`)
     const html = readFileSync(file, 'utf8')
     assert.ok(html.includes(`lang="${locale.language}"`), `Wrong language: ${route}`)

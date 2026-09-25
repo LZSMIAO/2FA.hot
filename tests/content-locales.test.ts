@@ -6,6 +6,8 @@ import { supportedLocales } from '../shared/locales.ts'
 import { liteLanguage, escapeLiteText } from '../shared/lite-language.ts'
 import { parseAboutReadme } from '../app/utils/about-readme.ts'
 import { guides } from '../shared/seo/guides.ts'
+import { focusedGuideMeta } from '../shared/seo/focused-guide-meta.ts'
+import { allGuideSlugs, focusedGuideSlugs, guideLocales } from '../shared/seo/routes.ts'
 
 const read = (path: string) =>
   JSON.parse(readFileSync(new URL('../' + path, import.meta.url), 'utf8'))
@@ -27,15 +29,7 @@ function compare(source: unknown, translated: unknown, path: string, compareText
     const inlineCode = (text: string) =>
       [...text.matchAll(/`([^`]+)`/g)].map((match) => match[1]).sort()
     assert.deepEqual(inlineCode(value), inlineCode(source), `${path}: code examples`)
-    for (const token of [
-      'shared_secret',
-      'identity_secret',
-      'maFile',
-      'manifest.json',
-      'ES256',
-      'PRF',
-      '?algorithm=SHA256&digits=8&period=30'
-    ])
+    for (const token of ['manifest.json', 'ES256', 'PRF', '?algorithm=SHA256&digits=8&period=30'])
       if (source.includes(token)) assert.ok(value.includes(token), `${path}: missing ${token}`)
   } else if (Array.isArray(source)) {
     assert.ok(Array.isArray(translated), path)
@@ -54,8 +48,9 @@ function compare(source: unknown, translated: unknown, path: string, compareText
 test('all 30 locales include complete articles, guide anchors and original references', () => {
   for (const { code } of supportedLocales) {
     const content = read(`i18n/content/${code}.json`)
+    const published = (guide: { slug: string }) => guideLocales(guide.slug).includes(code)
     compare(
-      code.startsWith('zh') ? guides['zh-CN'] : english.guides,
+      (code.startsWith('zh') ? guides['zh-CN'] : english.guides).filter(published),
       content.guides,
       `${code}.guides`,
       !['en', 'zh-CN'].includes(code)
@@ -65,6 +60,35 @@ test('all 30 locales include complete articles, guide anchors and original refer
       compare(english.about, content.about, `${code}.about`, code !== 'en')
     assert.equal(content.about.sections.length, 4, code)
   }
+})
+
+test('each language lists exactly its published guides, and focused metadata matches them', () => {
+  for (const { code } of supportedLocales) {
+    const slugs = read(`i18n/content/${code}.json`).guides.map(
+      (guide: { slug: string }) => guide.slug
+    )
+    assert.deepEqual(
+      slugs,
+      allGuideSlugs.filter((slug) => guideLocales(slug).includes(code)),
+      code
+    )
+  }
+  assert.deepEqual(
+    guides.en.map((guide) => guide.slug),
+    [...allGuideSlugs]
+  )
+  for (const slug of focusedGuideSlugs)
+    for (const code of guideLocales(slug)) {
+      const guide = read(`i18n/content/${code}.json`).guides.find(
+        (item: { slug: string }) => item.slug === slug
+      )
+      const { title, description, sources } = guide
+      assert.deepEqual(
+        (focusedGuideMeta as Record<string, Record<string, unknown>>)[slug]?.[code],
+        { title, description, sources },
+        `${code} ${slug}: run scripts/sync-content-locales.mjs`
+      )
+    }
 })
 
 test('the three source About snapshots match the live README content', () => {

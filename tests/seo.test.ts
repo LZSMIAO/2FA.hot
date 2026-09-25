@@ -4,6 +4,7 @@ import { supportedLocales } from '../shared/locales.ts'
 import {
   buildRobots,
   buildSitemap,
+  guideLocales,
   isPrivatePage,
   localizedPath,
   pageLocales,
@@ -31,9 +32,19 @@ test('sitemap only advertises public, translated canonical pages with reciprocal
     assert.ok(locations.includes(`https://2fa.hot${localizedPath('/', code)}`))
     assert.ok(locations.includes(`https://2fa.hot${localizedPath('/waitlist', code)}`))
   }
-  for (const { code } of supportedLocales)
-    for (const path of ['/about', '/guides', ...guides.en.map((guide) => `/guides/${guide.slug}`)])
+  for (const { code } of supportedLocales) {
+    for (const path of ['/about', '/guides'])
       assert.ok(locations.includes(`https://2fa.hot${localizedPath(path, code)}`))
+    // A guide is advertised only in the languages it is written in.
+    for (const { slug } of guides.en)
+      assert.equal(
+        locations.includes(`https://2fa.hot${localizedPath(`/guides/${slug}`, code)}`),
+        guideLocales(slug).includes(code),
+        `${code} ${slug}`
+      )
+  }
+  assert.deepEqual([...guideLocales('batch-2fa-codes')], ['en', 'zh-CN', 'zh-TW', 'ja'])
+  assert.equal(guideLocales('what-is-2fa').length, 30)
 })
 
 test('private routes stay private for every locale, including trailing slash and query variants', () => {

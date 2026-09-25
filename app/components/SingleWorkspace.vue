@@ -32,8 +32,7 @@ import {
   identity,
   DEMO_SECRET,
   type Algorithm,
-  type OtpConfig,
-  type OtpKind
+  type OtpConfig
 } from '~/utils/otp'
 const props = defineProps<{ guideStep?: number; guideStage?: number }>()
 const emit = defineEmits<{ batch: [value: string]; guideCode: [value: string] }>()
@@ -53,12 +52,7 @@ const raw = shallowRef(''),
   composing = shallowRef(false)
 const algorithm = shallowRef<Algorithm>('SHA-1'),
   digits = shallowRef<6 | 8>(6),
-  period = shallowRef(30),
-  kind = shallowRef<OtpKind>('totp')
-const kindItems = [
-  { label: 'TOTP', value: 'totp' as const },
-  { label: 'Steam Guard', value: 'steam' as const }
-]
+  period = shallowRef(30)
 const algorithmItems = [
   { label: 'SHA-1', value: 'SHA-1' as const },
   { label: 'SHA-256', value: 'SHA-256' as const },
@@ -285,10 +279,8 @@ const config = computed<OtpConfig | null>(() => {
   )
     return null
   try {
-    const kindOptions = kind.value === 'steam' ? { kind: 'steam' as const } : {}
     return parseOtp(raw.value, {
       ...restoredDetails.value,
-      ...kindOptions,
       algorithm: algorithm.value,
       digits: digits.value,
       period: period.value
@@ -297,8 +289,6 @@ const config = computed<OtpConfig | null>(() => {
     return null
   }
 })
-const activeKind = computed(() => config.value?.kind ?? kind.value)
-const steamSelected = computed(() => activeKind.value === 'steam')
 const isUri = computed(() => /^otpauth:/i.test(raw.value.trim()))
 const compactScreen = shallowRef(false)
 const resultExpanded = shallowRef(false)
@@ -341,7 +331,7 @@ watch(
   },
   { flush: 'sync' }
 )
-watch([raw, kind, algorithm, digits, period, composing], () => {
+watch([raw, algorithm, digits, period, composing], () => {
   clearTimeout(validation)
   // The message changes once typing pauses, not on every keystroke: clearing it
   // at once and showing it again 300ms later moved everything below it twice.
@@ -359,7 +349,6 @@ watch([raw, kind, algorithm, digits, period, composing], () => {
     }
     try {
       parseOtp(raw.value, {
-        ...(kind.value === 'steam' ? { kind: 'steam' as const } : {}),
         algorithm: algorithm.value,
         digits: digits.value,
         period: period.value
@@ -381,7 +370,6 @@ function clear() {
   originalInput.value = ''
 
   raw.value = ''
-  kind.value = 'totp'
   revealed.value = true
   advanced.value = true
   field.value?.inputRef?.focus()
@@ -470,9 +458,8 @@ async function recognizeImages(files: File[], fromPaste = false) {
 function acceptPaste(value: OtpConfig, source = '') {
   historyPreviewIdentity.value = ''
   raw.value = value.secret
-  kind.value = value.kind ?? 'totp'
   algorithm.value = value.algorithm
-  digits.value = value.kind === 'steam' || value.digits === 5 ? 6 : value.digits
+  digits.value = value.digits
   period.value = value.period
   restoredDetails.value = { label: value.label, issuer: value.issuer }
   pendingPaste.value = null
@@ -501,15 +488,6 @@ function inspectPaste(source: string) {
   if (isMigrationUri(source.trim())) {
     updateRaw(source.trim())
     return
-  }
-  // A bare Steam secret may also look like Base32; honor the explicit selection.
-  if (kind.value === 'steam' && /^[A-Za-z0-9+/=_-]+$/.test(source.trim())) {
-    try {
-      acceptPaste(parseOtp(source, { kind: 'steam' }), source)
-      return
-    } catch {
-      // Let normal input validation explain malformed secrets.
-    }
   }
   const analysis = analyzePaste(source)
   if (analysis.candidates.length > 1) transferPaste(source)
@@ -577,9 +555,8 @@ watch(
     pendingPaste.value = null
 
     raw.value = value.secret
-    kind.value = value.kind ?? 'totp'
     algorithm.value = value.algorithm
-    digits.value = value.kind === 'steam' || value.digits === 5 ? 6 : value.digits
+    digits.value = value.digits
     period.value = value.period
     restoredDetails.value = { label: value.label, issuer: value.issuer }
     historyPreviewIdentity.value = handoff.historyPreview ? identity(value) : ''
@@ -623,9 +600,7 @@ onBeforeUnmount(() => {
           :type="revealed ? 'text' : 'password'"
           size="xl"
           :placeholder="
-            !textDragging && (secretFocused || guiding)
-              ? tx('密钥：Base32 / otpauth:// / Steam')
-              : ''
+            !textDragging && (secretFocused || guiding) ? tx('密钥：Base32 / otpauth://') : ''
           "
           autocomplete="off"
           autocapitalize="off"
@@ -660,7 +635,7 @@ onBeforeUnmount(() => {
             <SecretInputHints
               v-if="!displayRaw && (!secretFocused || textDragging) && !guiding && !pendingPaste"
               :override="textDragging ? tx('将文字拖到此处') : undefined"
-              :default-hint="tx('密钥：Base32 / otpauth:// / Steam')"
+              :default-hint="tx('密钥：Base32 / otpauth://')"
             />
           </template>
           <template #trailing>
@@ -748,7 +723,7 @@ onBeforeUnmount(() => {
       <div class="input-details">
         <div class="input-notices">
           <p v-if="pendingPaste" class="field-hint" role="status">
-            {{ reviewHint || tx('密钥：Base32 / otpauth:// / Steam') }}
+            {{ reviewHint || tx('密钥：Base32 / otpauth://') }}
           </p>
           <Transition name="input-notice">
             <PasteNotice
@@ -779,7 +754,7 @@ onBeforeUnmount(() => {
             </button>
           </AppHint>
           <p id="secret-help" class="sr-only">
-            {{ tx('密钥：Base32 / otpauth:// / Steam') }}
+            {{ tx('密钥：Base32 / otpauth://') }}
           </p>
           <Transition name="input-notice">
             <p
@@ -839,72 +814,33 @@ onBeforeUnmount(() => {
               <p v-if="isUri" class="field-hint">
                 {{ tx('参数由配置链接指定，请在原链接中修改。') }}
               </p>
-              <div v-else class="option-grid" :class="{ 'steam-options': steamSelected }">
-                <div class="option-field option-kind">
+              <div v-else class="option-grid">
+                <div class="option-field">
                   <McSelect
-                    id="otp-kind"
-                    v-model="kind"
-                    :items="kindItems"
-                    :caption="tx('验证方式')"
+                    id="algorithm"
+                    v-model="algorithm"
+                    :items="algorithmItems"
+                    :caption="tx('算法')"
+                    :hint="tx('哈希算法')"
                   />
                 </div>
-                <template v-if="!steamSelected">
-                  <div class="option-field">
-                    <McSelect
-                      id="algorithm"
-                      v-model="algorithm"
-                      :items="algorithmItems"
-                      :caption="tx('算法')"
-                      :hint="tx('哈希算法')"
-                    />
-                  </div>
-                  <div class="option-field">
-                    <McSelect
-                      id="digits"
-                      v-model="digits"
-                      :items="digitItems"
-                      :caption="tx('位数')"
-                      :hint="tx('验证码长度')"
-                    />
-                  </div>
-                  <div class="option-field">
-                    <McSelect
-                      id="period"
-                      v-model="period"
-                      :items="periodItems"
-                      :caption="tx('周期')"
-                      :hint="tx('更新周期')"
-                    />
-                  </div>
-                </template>
-                <div v-else class="steam-profile">
-                  <UTooltip
-                    :text="
-                      tx(
-                        '用于已有 Steam 密钥备份的账号：粘贴 shared_secret 或 maFile 内容，即可在浏览器生成登录验证码。本站不能从官方手机 App 导出密钥，也不能替代扫码登录或交易确认。'
-                      )
-                    "
-                    :delay-duration="0"
-                    :content="{ side: 'top', align: 'start', sideOffset: 6 }"
-                    :ui="{
-                      content: 'parameter-help-tooltip',
-                      arrow: 'parameter-help-arrow',
-                      text: 'whitespace-normal break-words'
-                    }"
-                    arrow
-                  >
-                    <button
-                      type="button"
-                      class="steam-help"
-                      :aria-label="`Steam Guard · ${tx('使用说明')}`"
-                    >
-                      <UIcon name="i-lucide-circle-help" aria-hidden="true" />
-                    </button>
-                  </UTooltip>
-                  <span class="steam-profile-title">Steam Guard</span>
-                  <span>{{
-                    tx('{digits} 位 · 每 {period} 秒更新', { digits: 5, period: 30 })
-                  }}</span>
+                <div class="option-field">
+                  <McSelect
+                    id="digits"
+                    v-model="digits"
+                    :items="digitItems"
+                    :caption="tx('位数')"
+                    :hint="tx('验证码长度')"
+                  />
+                </div>
+                <div class="option-field">
+                  <McSelect
+                    id="period"
+                    v-model="period"
+                    :items="periodItems"
+                    :caption="tx('周期')"
+                    :hint="tx('更新周期')"
+                  />
                 </div>
               </div>
             </div>
@@ -1491,67 +1427,6 @@ onBeforeUnmount(() => {
   .input-notices .inline-notice {
     font-size: var(--text-caption);
     line-height: 1.25rem;
-  }
-}
-.option-grid.steam-options {
-  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-}
-.steam-profile {
-  position: relative;
-  display: flex;
-  align-items: center;
-  align-self: end;
-  gap: 0.75rem;
-  min-height: 2.75rem;
-  padding: 0.5rem 0.75rem;
-  border: 2px solid var(--ore-outline);
-  background: var(--ore-control);
-  box-shadow: var(--ore-bevel);
-  color: var(--ui-text-highlighted);
-  font-size: var(--text-caption);
-}
-.steam-help {
-  position: absolute;
-  inset-block-start: -0.625rem;
-  inset-inline-start: -0.625rem;
-  display: grid;
-  place-items: center;
-  width: 1.25rem;
-  height: 1.25rem;
-  padding: 0;
-  border: 0;
-  border-radius: 50%;
-  background: var(--panel);
-  color: var(--ui-text-muted);
-  font: 600 0.75rem/1 var(--font-sans);
-  cursor: help;
-}
-.steam-help .iconify {
-  width: 1.25rem;
-  height: 1.25rem;
-}
-.steam-help:hover,
-.steam-help:focus-visible {
-  color: var(--ui-text-highlighted);
-  border-color: currentColor;
-}
-.steam-help:focus-visible {
-  outline: 2px solid var(--accent-ink);
-  outline-offset: 2px;
-}
-.steam-profile-title {
-  font-family: 'VT323', monospace;
-  font-size: 1.25rem;
-  line-height: 1;
-}
-@media (max-width: 700px) {
-  .option-grid.steam-options {
-    grid-template-columns: 1fr;
-  }
-  .steam-profile {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 0.25rem;
   }
 }
 </style>

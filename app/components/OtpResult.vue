@@ -48,9 +48,7 @@ const {
 onMounted(() => {
   displayHandoff.value = null
 })
-const showResultLinks = computed(
-  () => !!config.value && !props.error && !calculationError.value && config.value.kind !== 'steam'
-)
+const showResultLinks = computed(() => !!config.value && !props.error && !calculationError.value)
 const { copied, message, copy } = useCopy()
 const { copied: linkCopied, message: linkMessage, copy: copyLink } = useCopy()
 async function handleLink() {
@@ -327,13 +325,7 @@ async function expand() {
           class="expand-button"
           data-sound-custom
           :aria-label="tx(standalone ? '缩小验证码' : '放大验证码')"
-          :disabled="
-            !config ||
-            config.kind === 'steam' ||
-            !!error ||
-            !!calculationError ||
-            guideStep !== undefined
-          "
+          :disabled="!config || !!error || !!calculationError || guideStep !== undefined"
           @pointerenter="prepareSizeChange"
           @focus="prepareSizeChange"
           @click="expand"

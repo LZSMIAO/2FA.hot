@@ -433,7 +433,7 @@ useHead({ meta: [{ name: 'referrer', content: 'no-referrer' }] })
                 {{ tx(secretCopyError || (secretCopied ? '密钥已复制' : '复制密钥')) }}
               </p>
               <div class="direct-parameters">
-                <span>{{ config.kind === 'steam' ? 'Steam Guard' : 'TOTP' }}</span>
+                <span>TOTP</span>
                 <span>{{ config.algorithm }}</span>
                 <span>{{
                   tx('{digits} 位 · 每 {period} 秒更新', {

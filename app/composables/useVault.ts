@@ -30,6 +30,31 @@ export interface VaultRecord extends OtpConfig {
 export interface SessionRecord extends VaultRecord {
   batch?: readonly OtpConfig[]
 }
+/*
+ * A record of a kind this site no longer generates stays in history as it was
+ * saved, so its secret can still be copied or backed up. Validating it as TOTP
+ * would reject the whole history; its row reports that it has no code instead.
+ */
+function retiredKindRecord(r: Record<string, unknown>): OtpConfig | undefined {
+  if (r.kind === undefined || r.kind === 'totp') return undefined
+  if (
+    typeof r.kind !== 'string' ||
+    r.kind.length > 20 ||
+    typeof r.secret !== 'string' ||
+    !r.secret ||
+    r.secret.length > 1024 ||
+    !['SHA-1', 'SHA-256', 'SHA-512'].includes(r.algorithm as string) ||
+    !Number.isInteger(r.digits) ||
+    !Number.isInteger(r.period) ||
+    typeof r.label !== 'string' ||
+    typeof r.issuer !== 'string' ||
+    r.label.length > 120 ||
+    r.issuer.length > 120
+  )
+    throw new Error('历史数据格式不正确。')
+  const { secret, algorithm, digits, period, label, issuer, kind } = r
+  return { secret, algorithm, digits, period, label, issuer, kind } as unknown as OtpConfig
+}
 function validRecords(value: unknown): VaultRecord[] {
   if (!Array.isArray(value) || value.length > 1000)
     throw new Error('历史数据格式不正确或超过 1000 条。')
@@ -52,7 +77,7 @@ function validRecords(value: unknown): VaultRecord[] {
       throw new Error('历史数据格式不正确。')
     ids.add(r.id)
     return {
-      ...validateOptions(r),
+      ...(retiredKindRecord(r) ?? validateOptions(r)),
       id: r.id,
       note: r.note,
       usedAt: r.usedAt,

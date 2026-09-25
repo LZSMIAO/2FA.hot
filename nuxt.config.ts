@@ -2,8 +2,8 @@ import { createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import { baselineCsp, reportOnlyCsp } from './shared/security-headers'
 import { supportedLocales } from './shared/locales'
-import { siteUrl, publicPages, localizedPath } from './shared/seo/routes'
-import { toolDescriptions, toolHeadings } from './shared/seo/copy'
+import { siteUrl, publicPages, localizedPath, pageLocales } from './shared/seo/routes'
+import { toolDescriptions, toolTitle } from './shared/seo/copy'
 
 /*
  * These run before the first paint, so the page cannot draw until each is in
@@ -74,7 +74,7 @@ export default defineNuxtConfig({
     head: {
       htmlAttrs: { lang: 'en' },
       script: prePaintScripts.map((name) => ({ src: versioned(name) })),
-      title: toolHeadings.en,
+      title: toolTitle('en'),
       meta: [
         {
           name: 'viewport',
@@ -91,8 +91,8 @@ export default defineNuxtConfig({
   routeRules: {
     // Public HTML has no user secrets: render it once at build time, not per edge request.
     ...Object.fromEntries(
-      supportedLocales.flatMap(({ code }) =>
-        publicPages.map((path) => [localizedPath(path, code), { prerender: true }])
+      publicPages.flatMap((path) =>
+        pageLocales(path).map((code) => [localizedPath(path, code), { prerender: true }])
       )
     ),
     ...Object.fromEntries(

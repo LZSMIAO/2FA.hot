@@ -38,7 +38,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Hỗ trợ TOTP (SHA-1/SHA-256/SHA-512, 6/8 chữ số) và Steam Guard (5 ký tự, 30 giây). Với Steam, nhập shared_secret hoặc dán nội dung maFile JSON. Không tạo mã HOTP; tài khoản HOTP/MD5 trong tệp chuyển có thể phân tích và xuất."
+              "Hỗ trợ TOTP (SHA-1/SHA-256/SHA-512, 6/8 chữ số). Không tạo mã HOTP; tài khoản HOTP/MD5 trong tệp chuyển có thể phân tích và xuất."
             ]
           },
           {
@@ -214,7 +214,7 @@
           "title": "So sánh khóa và cấu hình",
           "paragraphs": [
             "2fa.hot hỗ trợ TOTP dùng SHA-1, SHA-256 hoặc SHA-512, sáu hoặc tám chữ số và chu kỳ đã cấu hình. Mặc định là SHA-1, sáu chữ số, 30 giây. URI otpauth được nhập có thể có giá trị khác. Giữ các giá trị đó thay vì ép mọi tài khoản về mặc định.",
-            "Thiếu một ký tự trong khóa, đăng ký xác thực vừa đặt lại hoặc loại mã khác có thể gây thất bại lặp lại. Với Steam, chọn Steam Guard và dùng shared_secret của tài khoản. Không tạo mã dựa trên bộ đếm HOTP tại đây. Kết quả trông hợp lệ không chứng minh dịch vụ gốc sẽ chấp nhận."
+            "Thiếu một ký tự trong khóa, đăng ký xác thực vừa đặt lại hoặc loại mã khác có thể gây thất bại lặp lại. Không tạo mã dựa trên bộ đếm HOTP tại đây. Kết quả trông hợp lệ không chứng minh dịch vụ gốc sẽ chấp nhận."
           ],
           "steps": [
             "Đối chiếu khóa đã lưu với thông tin đăng ký ban đầu trên thiết bị đáng tin.",

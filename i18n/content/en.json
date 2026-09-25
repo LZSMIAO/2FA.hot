@@ -38,7 +38,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Supports TOTP (SHA-1/SHA-256/SHA-512, 6/8 digits) and Steam Guard (5 characters, 30 seconds). For Steam, enter a shared_secret or paste maFile JSON content. HOTP code generation is not supported; HOTP/MD5 accounts in migration files can be parsed and exported."
+              "Supports TOTP (SHA-1/SHA-256/SHA-512, 6/8 digits). HOTP code generation is not supported; HOTP/MD5 accounts in migration files can be parsed and exported."
             ]
           },
           {
@@ -214,7 +214,7 @@
           "title": "Compare the secret and configuration",
           "paragraphs": [
             "2fa.hot supports TOTP with SHA-1, SHA-256 or SHA-512, six or eight digits and the configured period. The defaults are SHA-1, six digits and 30 seconds. An imported otpauth URI can carry different values. Keep those values instead of forcing every account to the defaults.",
-            "A missing character in the secret, a newly reset authenticator enrollment, or a different code type can explain repeated failures. For Steam accounts, select Steam Guard and use the account’s shared_secret. HOTP counter-based codes are not generated here. A valid-looking result is not proof that the original service will accept it."
+            "A missing character in the secret, a newly reset authenticator enrollment, or a different code type can explain repeated failures. HOTP counter-based codes are not generated here. A valid-looking result is not proof that the original service will accept it."
           ],
           "steps": [
             "Compare the saved setup key with the original enrollment details on your trusted device.",
@@ -285,6 +285,541 @@
             "QR decoding takes place in your browser. Importing does not automatically enable local history. If you want the entries available later, explicitly enable history and choose whether to protect it with a password. Browser storage is local to this browser and is not automatic device synchronization.",
             "Keep the original authenticator available until you have verified your entries and recovery options. Clearing browser data can remove locally saved records. Password-protected history requires its password; a lost password cannot be recovered by the site. A direct access link exposes the secret in its URL, so it should not be used as a public account reference."
           ]
+        }
+      ]
+    },
+    {
+      "slug": "google-authenticator-web",
+      "title": "Google Authenticator web version: get codes on a computer",
+      "description": "Google Authenticator has no official web or PC version. Learn how to get the same codes on a computer from your setup key or export QR, and the trade-offs.",
+      "sections": [
+        {
+          "id": "no-web-version",
+          "title": "Is there a Google Authenticator web or PC version?",
+          "paragraphs": [
+            "Google’s help center describes Google Authenticator as an app for Android and for iPhone and iPad. At the time of writing, Google offers no official web version and no Windows or Mac app, and its help pages do not describe a website where you can sign in and view your codes. If you find a browser extension or desktop program with a similar name, check who publishes it; Google’s help center does not point to one.",
+            "You can still get the same codes on a computer. An authenticator code is calculated from a setup secret and the current time using the standard TOTP method, so any TOTP generator holding the same secret and settings shows the same code in the same 30-second window. The real questions are how to get the secret onto the computer, and whether doing so suits your security needs."
+          ]
+        },
+        {
+          "id": "account-sync",
+          "title": "Google Account sync is not a web viewer",
+          "paragraphs": [
+            "Current versions of Google Authenticator can save your codes to your Google Account. When you sign in to the app on another phone or tablet, the codes are synced to that device. This helps when you replace a phone, but it delivers codes to the Authenticator app only. Google’s help does not describe a way to open synced codes in a browser or on a computer.",
+            "Sync is optional. You can use the app without an account, and the codes then stay on that device. With sync turned on, deleting a code on one device also removes it from every synced device. Treat sync as protection against losing a phone, not as a separate copy you can view somewhere else."
+          ]
+        },
+        {
+          "id": "setup-key",
+          "title": "Option 1: use the setup key you saved",
+          "paragraphs": [
+            "If you kept the text setup key, an otpauth:// link or the QR image from when you turned on two-factor authentication, you can use it directly. Services often reveal the text key through an option to enter it manually instead of scanning. Nothing changes on your phone, and both devices will show matching codes."
+          ],
+          "steps": [
+            "Open 2fa.hot on your computer and paste the Base32 setup key or otpauth:// link, or import the saved QR image.",
+            "If the service uses settings other than SHA-1, six digits and 30 seconds, check that the imported values match.",
+            "Compare the code with Google Authenticator on your phone in the same interval, then copy it into the sign-in page."
+          ]
+        },
+        {
+          "id": "export-qr",
+          "title": "Option 2: import Google Authenticator export QR codes",
+          "paragraphs": [
+            "If you did not keep the original keys, Google Authenticator can export selected accounts as transfer QR codes, and 2fa.hot can read them on a computer. Menu names vary slightly between app versions and languages; the steps below follow Google’s current help page.",
+            "The export contains your setup secrets. Scanning the phone screen with the computer’s camera avoids leaving an image behind. If you use a screenshot, keep it out of cloud folders and chats, and delete it after importing. Decoding happens in your browser and images are not uploaded. HOTP and MD5 entries can be decoded and exported, but 2fa.hot does not generate their codes."
+          ],
+          "steps": [
+            "In Google Authenticator on your phone, open the menu, choose Transfer accounts, then Export accounts, and unlock the phone when asked.",
+            "Select the accounts you need on the computer and tap Next. Several accounts may produce more than one QR code.",
+            "On 2fa.hot, open Import QR code and choose the Google Authenticator option. Scan the phone screen with the camera, or choose a saved image.",
+            "Import every part of the same export, select the accounts you want, then compare one code with the phone."
+          ]
+        },
+        {
+          "id": "computer-risks",
+          "title": "Trade-offs of keeping codes on a computer",
+          "paragraphs": [
+            "Two-factor authentication works best when the second factor is separate from the place where you type your password. If one computer holds both your saved passwords and your authenticator secrets, anyone who takes over that computer may get both. Use a personal computer you trust and keep it updated, and avoid entering real secrets on shared or public machines.",
+            "2fa.hot calculates codes in your browser and does not send secrets to the server. Local history is off by default. If you turn it on, set a password, and remember that it stays in that browser only and disappears when browser data is cleared. A fragment link such as /2fa#SECRET keeps the secret out of the page request, but the full link can remain in browser history, so do not bookmark or share it on a shared device."
+          ]
+        },
+        {
+          "id": "keep-phone",
+          "title": "Keep the phone app as your backup",
+          "paragraphs": [
+            "Do not remove accounts from Google Authenticator after importing them on a computer. Browser data can be cleared, computers get replaced, and a forgotten local history password cannot be recovered. Keeping the phone app gives you a second working copy, and Google Account sync, if you use it, protects that copy when you change phones.",
+            "For your Google Account itself, Google recommends enrolling more than one 2-Step Verification method so that you are not locked out. Keep the backup or recovery codes for other important services in a safe place too. 2fa.hot is not affiliated with Google. It does not sign in to your Google Account, cannot read synced codes and cannot recover a lost setup key."
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "title": "Google: Get verification codes with Google Authenticator",
+          "url": "https://support.google.com/accounts/answer/1066447?hl=en"
+        },
+        {
+          "title": "RFC 6238: the TOTP algorithm",
+          "url": "https://www.rfc-editor.org/rfc/rfc6238"
+        },
+        {
+          "title": "2fa.hot project information and supported features",
+          "url": "https://github.com/LZSMIAO/2FA.hot"
+        }
+      ]
+    },
+    {
+      "slug": "find-2fa-secret-key",
+      "title": "Where to find your 2FA secret key, and what it is",
+      "description": "What a 2FA secret key looks like, where services show it during authenticator setup, how to get a new one if you did not save it, and how to store it safely.",
+      "sections": [
+        {
+          "id": "what-it-is",
+          "title": "What a 2FA secret key is",
+          "paragraphs": [
+            "A 2FA secret key, also called a setup key or authenticator key, is the shared secret a service creates when you turn on authenticator-based two-factor authentication. The service keeps one copy and your authenticator keeps the other. Each six-digit code is calculated from that key and the current time, as RFC 6238 describes.",
+            "Most services show the key as Base32 text. Base32 uses only the letters A to Z and the digits 2 to 7, so a Base32 key never contains 0, 1, 8 or 9. Keys are often 16 or 32 characters long and are frequently shown in groups of four, such as JBSW Y3DP EHPK 3PXP.",
+            "The spaces are only there to make the key easier to read, and authenticator apps generally treat lower case the same as upper case, so jbsw y3dp ehpk 3pxp is the same key. Some services also add = signs at the end as padding. None of this changes the key, but a missing or extra letter does."
+          ]
+        },
+        {
+          "id": "where-to-find",
+          "title": "Where services show the key",
+          "paragraphs": [
+            "The key appears during authenticator setup, next to the QR code. Look for a link or button labelled Can’t scan it, Enter key manually, Setup key or Show secret key. GitHub, for example, calls it the setup key and describes it as the TOTP secret you can type into your app instead of scanning.",
+            "The QR code holds the same key. It encodes an otpauth:// link whose secret parameter is the key, together with the account name and code settings, so scanning the QR code and typing the key set up the same account. If you save the setup QR code as an image, that image is as sensitive as the key.",
+            "After setup is complete, many services never show the key again. It is not tucked away somewhere in the account settings, and it cannot be worked out from a six-digit code. Your authenticator app stores it, but many apps do not display it; some can export entries, such as the export QR codes in Google Authenticator."
+          ]
+        },
+        {
+          "id": "get-it-again",
+          "title": "How to get the key if you did not save it",
+          "paragraphs": [
+            "If you no longer have the key, the dependable way to obtain one is to set up the authenticator again. The service then creates a new key and shows it with a new QR code. The old key usually stops working once the new setup is saved, so every device that used it needs the new key.",
+            "Some services offer a change or reconfigure option for the authenticator app, which keeps two-factor authentication on the whole time. GitHub, for instance, notes that reconfiguring without disabling 2FA keeps your recovery codes. If the only choice is to turn authenticator 2FA off and on again, do it on a trusted device and turn it back on straight away."
+          ],
+          "steps": [
+            "Sign in to the service and open its security or two-factor authentication settings.",
+            "Choose the option to change or reconfigure the authenticator app. Turn 2FA off and on again only if no such option exists.",
+            "When the QR code appears, select the manual entry option and copy the key shown there.",
+            "Add the key to your authenticator, save a copy safely, and enter the current code to confirm the setup.",
+            "Remove the old entry from your authenticator only after the service has accepted the new one."
+          ]
+        },
+        {
+          "id": "codes-compared",
+          "title": "Secret key, verification codes and recovery codes",
+          "paragraphs": [
+            "The secret key is long-lived: it stays the same until you set up the authenticator again. The six-digit verification code is a short-lived result calculated from it, normally valid for about 30 seconds. You cannot rebuild the key from codes, and pasting a code where a key is expected will not work.",
+            "Backup or recovery codes are a separate list of one-time codes a service gives you for emergencies, for example when you lose your phone. You type one in place of a verification code. They are not a secret key and cannot be added to an authenticator. SMS codes are sent to your phone by the service each time you sign in, so there is no key to save for them."
+          ]
+        },
+        {
+          "id": "safe-storage",
+          "title": "Store the key safely and share it with care",
+          "paragraphs": [
+            "Save the key at the moment it is shown. A practical place is the entry for that account in a password manager you trust. An offline copy, such as a printed sheet kept with your recovery codes, also works. Screenshots in a photo library that syncs to many devices are easier to leak than they seem.",
+            "Anyone who has the key can generate your codes on their own device for as long as it stays active, and you would not notice. Do not send it to anyone you do not trust, including people who contact you claiming to be support staff. The service already holds its own copy, so genuine support never needs you to send it. If a key has been shared, set up the authenticator again to replace it.",
+            "To check a key, you can paste it into 2fa.hot with or without spaces and in either case, or use the full otpauth:// link or its QR image. The code is calculated in your browser and the key is not sent to the server. Local history is off by default; if you turn it on, it stays in that browser and can be protected with a password."
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "title": "GitHub Docs: Configuring two-factor authentication",
+          "url": "https://docs.github.com/en/authentication/securing-your-account-with-two-factor-authentication-2fa/configuring-two-factor-authentication"
+        },
+        {
+          "title": "GitHub Docs: Changing your two-factor authentication method",
+          "url": "https://docs.github.com/en/authentication/securing-your-account-with-two-factor-authentication-2fa/changing-two-factor-authentication-delivery-methods-for-your-mobile-device"
+        },
+        {
+          "title": "RFC 4648: the Base32 alphabet",
+          "url": "https://www.rfc-editor.org/rfc/rfc4648"
+        }
+      ]
+    },
+    {
+      "slug": "batch-2fa-codes",
+      "title": "Batch 2FA code generator: many TOTP codes at once",
+      "description": "Paste up to 100 2FA secrets, spreadsheet rows or mixed text and get every current TOTP code at once in your browser, with safety tips for teams.",
+      "sections": [
+        {
+          "id": "when",
+          "title": "Who the batch tab is for",
+          "paragraphs": [
+            "If you look after many accounts, such as the stores, ad accounts and social profiles of a cross-border e-commerce team, opening each authenticator entry in turn is slow. The batch tab on 2fa.hot reads a list of secrets you already have and shows every account’s current code on one screen, each with its own countdown.",
+            "It takes up to 100 entries and about 100 KB of text at a time. Every row is an ordinary TOTP configuration: SHA-1, SHA-256 or SHA-512, 6 or 8 digits, and the period set in an otpauth:// link. Codes are calculated in your browser, and the secrets are not sent to the 2fa.hot server."
+          ]
+        },
+        {
+          "id": "paste",
+          "title": "What you can paste",
+          "paragraphs": [
+            "The simplest input is one Base32 secret per line. You can also paste otpauth:// links; the box shows each one as its bare key, but the account name, issuer and settings are kept. A line written as a name, a Tab character and a secret uses that name as its label. Secrets split into groups of four, the way many sites display them, are read as one key.",
+            "Rows copied from Excel or Google Sheets arrive as tab-separated text, including quoted cells with line breaks inside. Smart recognition takes only complete secrets and never joins fragments, so passwords, phone numbers and notes in other columns are normally left out, and a notice says when surrounding text was ignored. Two keys on one line separated by a space are marked as needing correction rather than guessed. Still, glance over the results: a long password made only of letters and the digits 2 to 7 can look like a secret.",
+            "You do not need to switch tabs first. Pasting several keys into the single code box, or anywhere on the page, moves them to the batch tab. QR code images can be pasted into the batch box too, up to 20 at a time."
+          ]
+        },
+        {
+          "id": "names",
+          "title": "Keep account names next to secrets",
+          "paragraphs": [
+            "A code is only useful when you know which account it belongs to. The most reliable layout is a name column directly left of the secret column, with one account per row. Copied together, each row becomes name, Tab, secret, and the name appears above the key in the results.",
+            "Email addresses are handled more carefully. An address beside a key might be the recovery email rather than the login, so 2fa.hot does not pair them automatically. When the pasted text contains addresses, the link icon under the box shows that names still need confirming; open it to match each address with its key yourself. Names from otpauth:// links are kept."
+          ]
+        },
+        {
+          "id": "copy",
+          "title": "Check and copy the codes",
+          "paragraphs": [
+            "The Valid and Needs correction counts under the box show how the paste was read. Faulty rows are marked on their own and do not affect the others, and repeated secrets are labeled Duplicate entry. Copy all valid codes puts one line per valid row on the clipboard: name, Tab and code when the row has a name, otherwise the code alone. Secrets are never included, and the confirmation tells you how many rows were skipped.",
+            "Ctrl+Z undoes a whole paste and Ctrl+Shift+Z undoes it one row at a time; on a Mac, use Command instead of Ctrl. The checkbox on each row lets you delete a selection, or save only the selected rows once local history is on and unlocked."
+          ],
+          "steps": [
+            "Open 2fa.hot and choose the Batch codes tab, or simply paste several secrets onto the page.",
+            "Paste your list or spreadsheet rows into the box.",
+            "Fix or delete rows that need correction, and confirm account names if the link icon asks.",
+            "Use a row’s copy button for one code, or Copy all valid codes for the whole list.",
+            "If a countdown is about to run out, wait for the next code before you submit it."
+          ]
+        },
+        {
+          "id": "links",
+          "title": "Batch links and the standalone page",
+          "paragraphs": [
+            "One fragment link can carry several keys, as in /2fa#SECRET1#SECRET2, and commas work as separators too. It opens a standalone page that lists every current code. Non-default settings follow their own key: in /2fa#SECRET1#SECRET2?digits=8, only the second key uses eight digits. The part after # is read inside your browser and is not sent with the page request.",
+            "The expand icon in the batch tab opens the same page with a safe link, /2fa#~…, sealed in your browser so the address bar, history and screenshots do not show keys in plain text. The standalone page also shows only the first and last four characters of each key. Anyone holding the complete link can still open it, though. Links carry keys and settings but not account names, so keep your own record of which row is which."
+          ]
+        },
+        {
+          "id": "team",
+          "title": "Security for teams",
+          "paragraphs": [
+            "A secret is a long-lived credential. Anyone who holds it, or a full link that contains it, can generate codes until the secret is reset at the original service. Keep secrets and links out of chat groups, shared documents and tickets, where they spread easily and cannot be taken back. Give each person only the accounts they need, through a channel your team trusts.",
+            "A fragment link keeps the secret out of the HTTP request, but the full address still sits in browser history and may sync to other devices signed in to the same browser profile. On shared computers, clear the history after use, or use the safe link, which hides the keys but still opens for anyone who has it.",
+            "By default, a batch is kept on the current page only and is cleared when you leave. Local history is off by default; if you turn it on and unlock it, valid rows are saved in this browser, optionally protected by a password, and nothing syncs between devices. When someone leaves the team, reset two-factor authentication on the accounts they could reach, because copies of a secret cannot be recalled."
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "title": "2fa.hot source code and feature overview",
+          "url": "https://github.com/LZSMIAO/2FA.hot"
+        },
+        {
+          "title": "RFC 6238: the TOTP algorithm",
+          "url": "https://www.rfc-editor.org/rfc/rfc6238"
+        },
+        {
+          "title": "MDN: URI fragments are not sent to the server",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Fragment"
+        }
+      ]
+    },
+    {
+      "slug": "otpauth-uri-format",
+      "title": "otpauth URI format: the otpauth:// 2FA link explained",
+      "description": "How the otpauth:// Key URI works: type, label, secret, issuer, algorithm, digits and period, what a 2FA QR code contains, and how to handle it safely.",
+      "sections": [
+        {
+          "id": "what-it-is",
+          "title": "What an otpauth URI is",
+          "paragraphs": [
+            "An otpauth URI is a single line of text that holds everything an authenticator app needs to add an account: the code type, a label, the Base32 secret and any non-default settings. Google documented the format as the Key URI Format in the google-authenticator project wiki, and most authenticator apps can read it.",
+            "When a service shows a QR code during two-factor setup, that QR code usually contains exactly this text. Scanning it simply copies the link into your app without typing. A typical example reads otpauth://totp/Example:alice@example.com?secret=JBSWY3DPEHPK3PXP&issuer=Example. The secret in that example is a well-known public test value and does not protect any real account."
+          ]
+        },
+        {
+          "id": "structure",
+          "title": "The parts of an otpauth:// link",
+          "paragraphs": [
+            "The general shape is otpauth://TYPE/LABEL?PARAMETERS. The otpauth:// scheme marks the text as an authenticator configuration. TYPE is totp for codes that change with time, or hotp for codes that move forward with a counter.",
+            "The label names the account. It is an account name, optionally preceded by an issuer and a colon, as in Example:alice@example.com. Neither part may contain a colon of its own, and spaces and other special characters are URL-encoded, so a space becomes %20. The label helps you recognize the entry; editing it does not change the codes.",
+            "Parameters follow the question mark as name=value pairs joined by ampersands. Their order does not matter. Repeating a parameter makes the link ambiguous, so each one should appear only once."
+          ]
+        },
+        {
+          "id": "parameters",
+          "title": "Parameters and their defaults",
+          "paragraphs": [
+            "secret is the only parameter every link must have. It is the shared key written in Base32, the alphabet of letters A to Z and digits 2 to 7 defined in RFC 4648. The Key URI Format says the trailing = padding of Base32 is not required and should be left out of the link.",
+            "issuer names the provider or service. It is strongly recommended, and if the label also starts with an issuer prefix, the two should be the same. algorithm can be SHA1, SHA256 or SHA512, digits can be 6 or 8, and period sets how many seconds each TOTP code stays valid. A link of type hotp must also carry counter, which sets the starting counter value.",
+            "When algorithm, digits or period is missing, the defaults apply: SHA1, 6 digits and 30 seconds, the usual TOTP settings described in RFC 6238. A service that uses other values has to write them into the link, for instance with a query that begins ?algorithm=SHA256&digits=8&period=30 and then continues with the secret and issuer.",
+            "Support for these optional values varies between apps. The Key URI Format page itself notes that, at the time it was written, Google Authenticator ignored algorithm and period, and its Android and BlackBerry versions ignored digits. An app that quietly falls back to the defaults shows codes the service will reject, so check that non-default values survive the import."
+          ]
+        },
+        {
+          "id": "security",
+          "title": "Treat the link like the secret itself",
+          "paragraphs": [
+            "A complete otpauth URI contains the secret in plain text. Anyone who has the link, a photo of the QR code or a screenshot of the setup page can generate the same codes you do, on any device, for as long as the secret stays active. Keep it out of chats, support tickets, shared folders and public screenshots.",
+            "Changing the label or issuer in a copy of the link does not create a new secret. If you think a link or QR code has been exposed, set up the authenticator again at the original service so that it issues a new secret, confirm the new entry works, then delete the old one."
+          ]
+        },
+        {
+          "id": "on-2fa-hot",
+          "title": "Using an otpauth link with 2fa.hot",
+          "paragraphs": [
+            "You can paste an otpauth:// link into the 2fa.hot input, or import its QR code from an image file, by drag and drop or with the camera. The link is decoded and the code is calculated in your browser; the secret is not sent to the server. No account is needed, and local history stays off unless you turn it on.",
+            "Non-default settings in the link are kept rather than reset: SHA-1, SHA-256 or SHA-512, 6 or 8 digits, and a period from 15 to 120 seconds. If the issuer prefix and the issuer parameter disagree, or a parameter appears twice, the link is reported as invalid instead of being guessed. Links of type hotp are not accepted, because 2fa.hot does not generate counter-based codes.",
+            "Google Authenticator exports use a different scheme, otpauth-migration://. Its data parameter packs one or more accounts into Base64-encoded binary data, so it cannot be read or edited like an ordinary otpauth link. Choose the Google Authenticator option when importing these QR codes. HOTP and MD5 entries inside them can be decoded and exported, but no codes are generated for them."
+          ],
+          "steps": [
+            "On a device you trust, copy the complete otpauth:// link or save the setup QR code as an image.",
+            "Paste the link into the generator, or open Import QR code and choose the image.",
+            "Compare the current code with your existing authenticator or confirm it at the service, then delete copies of the link you no longer need."
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "title": "Google Authenticator wiki: Key Uri Format",
+          "url": "https://github.com/google/google-authenticator/wiki/Key-Uri-Format"
+        },
+        {
+          "title": "RFC 4648: Base32 encoding",
+          "url": "https://www.rfc-editor.org/rfc/rfc4648"
+        },
+        {
+          "title": "RFC 6238: the TOTP algorithm",
+          "url": "https://www.rfc-editor.org/rfc/rfc6238"
+        }
+      ]
+    },
+    {
+      "slug": "enable-authenticator-app-2fa",
+      "title": "Set up authenticator app 2FA: GitHub, Discord, X, Binance",
+      "description": "How to enable 2FA with an authenticator app: scan the QR code, save the setup key and backup codes, with notes for GitHub, Discord, X and Binance.",
+      "sections": [
+        {
+          "id": "before-you-start",
+          "title": "Before you start",
+          "paragraphs": [
+            "Two-factor authentication with an authenticator app uses TOTP. During setup, the service shares a secret setup key with your authenticator, usually shown as a QR code. From then on, the app and the service both calculate a short code from that key and the current time. On most services the code changes every 30 seconds.",
+            "You need your account password, an authenticator app and a safe place for the setup key and backup codes. Any standard TOTP app works, such as Google Authenticator, Microsoft Authenticator or a password manager with TOTP support. Set aside a few minutes on a device you trust, because some setup screens show the key only once."
+          ]
+        },
+        {
+          "id": "general-flow",
+          "title": "The general enrollment flow",
+          "paragraphs": [
+            "Menu names differ between services, but the enrollment itself follows the same pattern almost everywhere."
+          ],
+          "steps": [
+            "Sign in and open the account’s security settings, often called Security, Password and authentication or Two-factor authentication.",
+            "Choose the authenticator app option. It may be labeled Authentication app, TOTP or Google Authenticator. Confirm your password or email address if asked.",
+            "Scan the QR code with your authenticator. If you cannot scan it, reveal the setup key as text and enter it manually.",
+            "Before continuing, save the setup key somewhere secure, as described in the next section.",
+            "Type the current code from your authenticator to confirm. Two-factor authentication is usually switched on only after this step succeeds.",
+            "Download, print or copy the backup codes the service offers, and store them away from your phone."
+          ]
+        },
+        {
+          "id": "save-setup-key",
+          "title": "Save the setup key while you enroll",
+          "paragraphs": [
+            "The QR code and the text setup key contain the same secret. If you keep a copy, a lost or replaced phone does not have to mean a lockout. You can add the key to a new authenticator, or generate codes on a computer with 2fa.hot, which calculates them locally in your browser.",
+            "Treat the key with the same care as a password. Anyone who has it can generate your codes, now and later. Keep it in a password manager or encrypted storage, not in email, chat, a synced screenshots folder or a shared document. If you think it has been exposed, reset two-factor authentication at the service to get a new key.",
+            "The key follows an open standard, so the same key works in any standard TOTP app. You can add it to two apps during setup for redundancy. Most services use SHA-1, six digits and 30 seconds. If a service uses other settings, the QR code or otpauth link carries them."
+          ]
+        },
+        {
+          "id": "service-notes",
+          "title": "Notes for GitHub, Discord, X and Binance",
+          "paragraphs": [
+            "The menu paths below follow each service’s official help pages at the time of writing. Services rename and move settings, so look for similar wording if yours differs.",
+            "GitHub: click your profile picture → Settings → Password and authentication, then choose Enable two-factor authentication. Scan the QR code, or click the setup key link to see the secret as text. Enter the code from your app, then download your recovery codes and confirm that you saved them to finish. GitHub requires two-factor authentication for accounts that contribute code.",
+            "Discord: on desktop, open User Settings with the gear icon next to your username, go to My Account and, under Password and Authentication, choose Enable Authenticator App. On mobile, tap your avatar, then the gear icon, then Account. Scan the QR code or copy the secret key, enter the six-digit code, then save the backup codes. Discord says it cannot help you back into the account if you lose them.",
+            "X: go to More → Settings and privacy → Security and account access → Security → Two-factor authentication, then select Authentication app. X may ask for your password and a confirmed email address before showing the QR code, and it accepts any TOTP app. Text message two-factor authentication is limited to X Premium subscribers, so an authenticator app is the usual choice.",
+            "Binance: on the website, hover over the profile icon and choose Account → Security, then Manage next to Authenticator App. In the app, open Account → your profile → Security → Authenticator App. Binance shows a QR code and a setup key, and advises not to press Next until your authenticator is set up. Then enter the six-digit code to confirm. For an account that holds funds, keep the key offline and take particular care."
+          ]
+        },
+        {
+          "id": "after-setup",
+          "title": "After you turn it on",
+          "paragraphs": [
+            "Test the setup before you rely on it. Keep your current session open, sign in from a private window with a fresh code, and make sure the device clock is set automatically. A code rejected right after setup usually points to a clock or entry mistake.",
+            "Keep at least two ways back in, for example backup codes plus the saved setup key, or a security key where supported. When you change phones, move your authenticator entries before wiping the old one. If you reset two-factor authentication later, the old key stops working, so save the new one.",
+            "2fa.hot accepts a Base32 key or an otpauth link, QR images from a file, drag and drop or the camera, and batches of up to 100 entries. It supports SHA-1, SHA-256 and SHA-512 with six or eight digits. It is free, needs no account, is open source under AGPL-3.0 and is not affiliated with any service named here. Local history is off by default."
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "title": "GitHub Docs: Configuring two-factor authentication",
+          "url": "https://docs.github.com/en/authentication/securing-your-account-with-two-factor-authentication-2fa/configuring-two-factor-authentication"
+        },
+        {
+          "title": "Discord: Using an Authenticator App on Discord",
+          "url": "https://support.discord.com/hc/en-us/articles/26304482627095-Using-an-Authenticator-App-on-Discord"
+        },
+        {
+          "title": "Binance: How to enable Google Authenticator for 2FA on the website",
+          "url": "https://www.binance.com/en/support/faq/how-to-enable-google-authenticator-for-2fa-on-the-binance-website-115000433432"
+        }
+      ]
+    },
+    {
+      "slug": "lost-authenticator-recovery",
+      "title": "Lost phone or authenticator app? How to recover 2FA",
+      "description": "Lost the phone with your authenticator app? Look for a saved setup key, backup codes or another sign-in method, then use the service’s official recovery.",
+      "sections": [
+        {
+          "id": "check-setup-key",
+          "title": "First, look for your setup key",
+          "paragraphs": [
+            "Authenticator codes are not stored on your phone like messages. They are calculated from the setup key the service gave you when you turned on two-factor authentication, combined with the current time. If a copy of that key survived, only the phone is gone: any standard TOTP app or generator holding the same key produces the same codes.",
+            "Before starting a long recovery process, search for anything that contains the key. If you find it, you can generate the current code again on a computer. In 2fa.hot, paste the Base32 key or otpauth link, or import the QR image, including Google Authenticator export QR codes. The calculation runs locally in your browser."
+          ],
+          "steps": [
+            "Search your password manager, encrypted notes and printed records for the text setup key saved at enrollment.",
+            "Look for an old screenshot or printout of the enrollment QR code, or export images from your previous authenticator.",
+            "Check whether your authenticator app had cloud backup or sync turned on. If it did, sign in to the same backup account on the new phone to restore it.",
+            "Generate a code from what you found and sign in promptly. If the service rejects it, two-factor authentication may have been reset after the key was saved."
+          ]
+        },
+        {
+          "id": "backup-codes",
+          "title": "Use backup codes or another sign-in method",
+          "paragraphs": [
+            "Backup codes are one-time codes issued when you turned on two-factor authentication, and each one works only once. Google calls them backup codes and GitHub calls them recovery codes. Check your downloads folder, password manager, printed pages and old notes.",
+            "Other registered methods can also get you in: a hardware security key or passkey, a backup phone number that receives SMS codes, or a device that is still signed in. Google notes that a device where you previously chose not to be asked again may let you sign in without the second step. GitHub accepts a passkey, a security key or a fallback SMS number.",
+            "If a computer or tablet is still signed in, keep that session open. Use it to add a new authenticator, create fresh backup codes or register another method before you sign out anywhere."
+          ]
+        },
+        {
+          "id": "account-recovery",
+          "title": "Use the service’s official account recovery",
+          "paragraphs": [
+            "When no key, backup code or other method is left, the remaining route is the service’s own recovery process. Start from the sign-in page or the official help center, not from a link in an unexpected message. Recovery forms usually ask for details only the owner would know, such as previous passwords, recovery email addresses, recent email subjects and the devices you normally use.",
+            "Use a device and location the service has seen before, answer as accurately and completely as you can, and expect to wait. Microsoft reviews its recovery form and replies within about 24 hours. Google says its checks can take three to five business days. A GitHub recovery request asks you to prove ownership with a verified device, an SSH key or a personal access token, and GitHub replies by email within about three business days.",
+            "Recovery is not guaranteed. Microsoft states that if two-step verification is on and you cannot use any alternate verification method, it cannot help. GitHub Support likewise cannot restore access to an account whose 2FA credentials and recovery methods are all lost. Be wary of anyone who offers paid recovery or asks for your codes."
+          ]
+        },
+        {
+          "id": "limits",
+          "title": "What cannot be recovered",
+          "paragraphs": [
+            "A six-digit code cannot be turned back into the setup key. The code is a short one-way result of the key and the time, so screenshots of old codes, SMS history or a list of used codes will not rebuild the authenticator entry.",
+            "2fa.hot cannot recover a lost key either. It has no account system, does not keep your keys on a server, cannot contact other services and cannot remove two-factor authentication from an account. If you once enabled its optional local history in a browser, those records exist only in that browser. Password-protected history needs its password, and a forgotten password cannot be recovered."
+          ]
+        },
+        {
+          "id": "after-recovery",
+          "title": "After you regain access, and next time",
+          "paragraphs": [
+            "Once you are back in, remove the lost phone or old authenticator from the account and set up the authenticator again. Re-enrolling issues a new setup key, so the old key and any copies of it stop working. Create a new set of backup codes, review signed-in devices and change your password if the phone may be in someone else’s hands.",
+            "Store the new setup key and backup codes as carefully as a password, and keep them separate from the phone that runs your authenticator."
+          ],
+          "steps": [
+            "Save the setup key or enrollment QR code at setup time in a password manager or encrypted storage, not in a chat or shared folder.",
+            "Download or print the backup codes and keep them away from the phone.",
+            "Add a second method where the service allows it, such as a security key or a second authenticator holding the same key.",
+            "Before resetting, trading in or replacing a phone, transfer your authenticator entries and check that they work on the new device.",
+            "Keep your recovery email address and phone number up to date.",
+            "Every few months, check that a saved key still produces the same code as your authenticator."
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "title": "Google: Fix common issues with 2-Step Verification",
+          "url": "https://support.google.com/accounts/answer/185834?hl=en"
+        },
+        {
+          "title": "Microsoft: Help with the Microsoft account recovery form",
+          "url": "https://support.microsoft.com/en-us/account-billing/help-with-the-microsoft-account-recovery-form-b19c02d1-a782-dee6-93c3-dc8113b20c42"
+        },
+        {
+          "title": "GitHub Docs: Recovering your account if you lose your 2FA credentials",
+          "url": "https://docs.github.com/en/authentication/securing-your-account-with-two-factor-authentication-2fa/recovering-your-account-if-you-lose-your-2fa-credentials"
+        }
+      ]
+    },
+    {
+      "slug": "microsoft-authenticator-backup",
+      "title": "Microsoft Authenticator backup, export and moving phones",
+      "description": "Back up Microsoft Authenticator on iPhone or Android, see why accounts cannot be exported to another app, and re-enroll 2FA while keeping each new setup key.",
+      "sections": [
+        {
+          "id": "what-backup-covers",
+          "title": "What Microsoft Authenticator backup covers",
+          "paragraphs": [
+            "Microsoft Authenticator can back up your accounts to the cloud so that you can restore them after losing or replacing a phone. According to Microsoft, backup and restore only work on the same device type: a backup made on an iPhone cannot be restored on an Android phone, and the reverse is also true.",
+            "Accounts do not all come back the same way. Third-party accounts that use a one-time password code refreshing every 30 seconds, such as Amazon, Facebook or Gmail, are restored with working codes, and so are Microsoft personal accounts that only use codes. For Microsoft accounts with passwordless sign-in and for work or school accounts, only the account name is kept, and you need to sign in again after restoring."
+          ]
+        },
+        {
+          "id": "iphone",
+          "title": "Back up and restore on iPhone",
+          "paragraphs": [
+            "On iOS, Microsoft’s current instructions use iCloud for the backup, so the new iPhone needs to be signed in to the same iCloud account. Setting names differ between iOS and app versions; if yours are worded differently, look for the closest match."
+          ],
+          "steps": [
+            "On the old iPhone, turn on iCloud Drive, iCloud Keychain and iCloud Backup.",
+            "In your iCloud settings, open the list of apps saved to iCloud, find Authenticator and turn it on.",
+            "Before you switch, update Authenticator to version 6.8.33 or later and open it at least once.",
+            "On the new iPhone, turn on the same iCloud settings, install Authenticator and follow its prompts to sign in where needed.",
+            "If your accounts do not appear, Microsoft suggests uninstalling and reinstalling Authenticator on the new iPhone."
+          ]
+        },
+        {
+          "id": "android",
+          "title": "Back up and restore on Android",
+          "paragraphs": [
+            "On Android, the backup is currently stored with a personal Microsoft account that you choose as the recovery account. Microsoft’s help page says that from January 2027 you will turn on backup through Google One backup instead, so check the current page before you rely on either method.",
+            "If Restore from backup does not appear when you open the app, Microsoft says you need to remove or sign out of all accounts in it first. If you lose access to the recovery account, Microsoft support cannot restore the backup for you."
+          ],
+          "steps": [
+            "Open Authenticator, go to Settings and turn on Cloud Backup.",
+            "Choose the personal Microsoft account that will hold the backup.",
+            "On the new phone, install Authenticator and select Restore from backup before adding or signing in to any account.",
+            "Sign in with the same personal Microsoft account, then complete the extra sign-in for any account marked Action required."
+          ]
+        },
+        {
+          "id": "no-export",
+          "title": "Moving to another app: there is no export",
+          "paragraphs": [
+            "The backup restores only into Microsoft Authenticator. Microsoft’s help pages do not describe any way to export third-party accounts as QR codes, text keys or a file for another authenticator. Unless a future version adds such an option, you cannot move your accounts to Google Authenticator, another app or 2fa.hot in one step.",
+            "Two routes still work. If you kept the original setup key or QR image for a service and have not reset its two-factor setup since, that key still produces valid codes in any TOTP generator. Otherwise, set up two-factor authentication again at each service, one account at a time, while the old app still works."
+          ]
+        },
+        {
+          "id": "re-enroll",
+          "title": "Re-enroll each service and keep the new key",
+          "paragraphs": [
+            "Re-enrolling creates a new setup secret at the service. Most services replace the old secret, so Microsoft Authenticator stops producing accepted codes for that account once you confirm; some let you keep several authenticators. Save each new key somewhere secure, such as a password manager or an offline note you keep safe.",
+            "For a personal Microsoft account, the security settings include an option to set up a different authenticator app. Work or school accounts are managed by your organization, which decides the sign-in methods you may use. Some organizations require Microsoft Authenticator notifications, which a TOTP generator cannot approve, so check with your IT team first."
+          ],
+          "steps": [
+            "While Microsoft Authenticator still works, sign in to the service and open its security or two-step verification settings.",
+            "Choose to change or add an authenticator app. When the QR code appears, look for the option to enter a key manually and copy the text key.",
+            "Save the key, add it to your new authenticator and enter a fresh code to confirm the setup.",
+            "Store any new recovery codes, and remove the old entry from Microsoft Authenticator only after the new setup works."
+          ]
+        },
+        {
+          "id": "use-2fa-hot",
+          "title": "Generate codes from the new key in 2fa.hot",
+          "paragraphs": [
+            "With a setup key in hand, paste the Base32 key or otpauth:// link into 2fa.hot, or import the QR image from a file, by drag and drop or with the camera. It supports TOTP with SHA-1, SHA-256 or SHA-512 and six or eight digits. Batch mode takes up to 100 entries and recognizes tables copied from Excel and mixed text. No account is needed.",
+            "Codes are calculated in your browser, and secrets are not sent to the server. Local history is off by default and can be protected with a password, but it is not synchronized and does not replace a backup, so keep the setup keys themselves somewhere safe. 2fa.hot is open source under AGPL-3.0 and is not affiliated with Microsoft."
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "title": "Microsoft: Back up your accounts in Microsoft Authenticator",
+          "url": "https://support.microsoft.com/en-us/authenticator/back-up-your-accounts-in-microsoft-authenticator"
+        },
+        {
+          "title": "Microsoft: Restore account credentials from Microsoft Authenticator",
+          "url": "https://support.microsoft.com/en-us/authenticator/restore-account-credentials-from-microsoft-authenticator"
+        },
+        {
+          "title": "Microsoft: How to add your accounts to Microsoft Authenticator",
+          "url": "https://support.microsoft.com/en-us/authenticator/how-to-add-your-accounts-to-microsoft-authenticator"
         }
       ]
     }

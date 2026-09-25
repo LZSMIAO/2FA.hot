@@ -388,3 +388,40 @@ test('a hand-arranged order and batch moves persist, survive a backup and let ne
     stop()
   }
 })
+
+test('a history entry of a retired code kind keeps the rest of history readable', async () => {
+  const { vault, stop } = mount()
+  try {
+    await waitFor(() => vault.ready.value)
+    if (vault.exists.value) await vault.erase()
+    await vault.enable()
+    const base = { algorithm: 'SHA-1', period: 30, label: '', issuer: '', note: '', usedAt: 0 }
+    const backup = JSON.stringify({
+      version: 2,
+      protection: 'none',
+      data: [
+        { ...base, id: 'totp-entry', secret: 'JBSWY3DPEHPK3PXP', digits: 6 },
+        // Saved by an older version of the site, with a kind it no longer generates.
+        {
+          ...base,
+          id: 'retired-entry',
+          secret: 'cnOgv/KdpLoP6Nbh0GMkXkPXALQ=',
+          digits: 5,
+          kind: 'legacy'
+        }
+      ]
+    })
+    const records = await vault.inspectBackup(backup, '')
+    assert.deepEqual(
+      records.map((record) => record.id),
+      ['totp-entry', 'retired-entry']
+    )
+    // The secret is kept as saved so it can still be copied or backed up.
+    assert.equal(records[1]!.secret, 'cnOgv/KdpLoP6Nbh0GMkXkPXALQ=')
+    await vault.merge(records)
+    assert.equal(vault.records.value.length, 2)
+    await vault.erase()
+  } finally {
+    stop()
+  }
+})

@@ -38,7 +38,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Suporta sa TOTP (SHA-1/SHA-256/SHA-512, 6/8 digit) at Steam Guard (5 character, 30 segundo). Para sa Steam, ilagay ang shared_secret o i-paste ang maFile JSON. Hindi suportado ang pagbuo ng HOTP code; maaaring i-parse at i-export ang HOTP/MD5 account sa migration file."
+              "Suporta sa TOTP (SHA-1/SHA-256/SHA-512, 6/8 digit). Hindi suportado ang pagbuo ng HOTP code; maaaring i-parse at i-export ang HOTP/MD5 account sa migration file."
             ]
           },
           {
@@ -214,7 +214,7 @@
           "title": "Ihambing ang secret at configuration",
           "paragraphs": [
             "Sinusuportahan ng 2fa.hot ang TOTP na may SHA-1, SHA-256 o SHA-512, anim o walong digit, at itinakdang panahon. Default ang SHA-1, anim na digit at 30 segundo. Maaaring iba ang mga value sa na-import na otpauth URI. Panatilihin ang mga iyon sa halip na ipilit ang default sa lahat ng account.",
-            "Maaaring sanhi ng paulit-ulit na pagkabigo ang kulang na character sa secret, bagong reset na authenticator enrollment, o ibang uri ng code. Para sa Steam account, piliin ang Steam Guard at gamitin ang shared_secret nito. Hindi gumagawa rito ng counter-based na HOTP code. Hindi patunay ang mukhang wastong resulta na tatanggapin ito ng orihinal na serbisyo."
+            "Maaaring sanhi ng paulit-ulit na pagkabigo ang kulang na character sa secret, bagong reset na authenticator enrollment, o ibang uri ng code. Hindi gumagawa rito ng counter-based na HOTP code. Hindi patunay ang mukhang wastong resulta na tatanggapin ito ng orihinal na serbisyo."
           ],
           "steps": [
             "Ihambing ang naka-save na setup key sa orihinal na enrollment details sa pinagkakatiwalaang device.",

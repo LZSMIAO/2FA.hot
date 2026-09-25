@@ -1,4 +1,5 @@
 import { guideMetadata } from './guide-meta.ts'
+import { focusedGuides } from './focused-guides.ts'
 export interface GuideSection {
   id: string
   title: string
@@ -79,7 +80,7 @@ export const guides: Record<'en' | 'zh-CN', Guide[]> = {
           title: 'Compare the secret and configuration',
           paragraphs: [
             '2fa.hot supports TOTP with SHA-1, SHA-256 or SHA-512, six or eight digits and the configured period. The defaults are SHA-1, six digits and 30 seconds. An imported otpauth URI can carry different values. Keep those values instead of forcing every account to the defaults.',
-            'A missing character in the secret, a newly reset authenticator enrollment, or a different code type can explain repeated failures. For Steam accounts, select Steam Guard and use the account’s shared_secret. HOTP counter-based codes are not generated here. A valid-looking result is not proof that the original service will accept it.'
+            'A missing character in the secret, a newly reset authenticator enrollment, or a different code type can explain repeated failures. HOTP counter-based codes are not generated here. A valid-looking result is not proof that the original service will accept it.'
           ],
           steps: [
             'Compare the saved setup key with the original enrollment details on your trusted device.',
@@ -140,7 +141,8 @@ export const guides: Record<'en' | 'zh-CN', Guide[]> = {
           ]
         }
       ]
-    }
+    },
+    ...focusedGuides.en
   ],
   'zh-CN': [
     {
@@ -208,7 +210,7 @@ export const guides: Record<'en' | 'zh-CN', Guide[]> = {
           title: '核对密钥和验证参数',
           paragraphs: [
             '本站支持 SHA-1、SHA-256、SHA-512，6 位或 8 位验证码，以及配置中指定的周期。默认值是 SHA-1、6 位、30 秒。otpauth 链接可能包含非默认设置，不要把所有导入账号都强制改成默认参数。',
-            '密钥缺少字符、账号重新设置过验证器，或原服务使用其他验证码类型，都可能造成持续失败。Steam 账号请选择 Steam Guard，并使用该账号的 shared_secret。本站不生成 HOTP 计数型验证码。能显示验证码，不代表原服务一定会接受。'
+            '密钥缺少字符、账号重新设置过验证器，或原服务使用其他验证码类型，都可能造成持续失败。本站不生成 HOTP 计数型验证码。能显示验证码，不代表原服务一定会接受。'
           ],
           steps: [
             '在可信设备上核对保存的密钥与原始配置。',
@@ -269,6 +271,7 @@ export const guides: Record<'en' | 'zh-CN', Guide[]> = {
           ]
         }
       ]
-    }
+    },
+    ...focusedGuides['zh-CN']
   ]
 }

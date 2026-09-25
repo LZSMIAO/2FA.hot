@@ -38,7 +38,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "TOTP (SHA-1/SHA-256/SHA-512, 6/8 hane) ve Steam Guard (5 karakter, 30 saniye) desteklenir. Steam için shared_secret girin veya maFile JSON içeriğini yapıştırın. HOTP kod üretimi desteklenmez; taşıma dosyalarındaki HOTP/MD5 hesapları çözümlenip dışa aktarılabilir."
+              "TOTP (SHA-1/SHA-256/SHA-512, 6/8 hane) desteklenir. HOTP kod üretimi desteklenmez; taşıma dosyalarındaki HOTP/MD5 hesapları çözümlenip dışa aktarılabilir."
             ]
           },
           {
@@ -214,7 +214,7 @@
           "title": "Anahtarı ve yapılandırmayı karşılaştırın",
           "paragraphs": [
             "2fa.hot; SHA-1, SHA-256 veya SHA-512, altı veya sekiz hane ve yapılandırılmış süreyle TOTP destekler. Varsayılanlar SHA-1, altı hane ve 30 saniyedir. İçe aktarılan otpauth URI farklı değerler taşıyabilir. Her hesabı varsayılana zorlamak yerine bu değerleri koruyun.",
-            "Anahtarda eksik karakter, yakın zamanda sıfırlanan doğrulayıcı kaydı veya farklı kod türü sürekli başarısızlığa yol açabilir. Steam hesaplarında Steam Guard seçip hesabın shared_secret değerini kullanın. Sayaç tabanlı HOTP kodları burada üretilmez. Geçerli görünen sonuç, özgün hizmetin kabul edeceğini kanıtlamaz."
+            "Anahtarda eksik karakter, yakın zamanda sıfırlanan doğrulayıcı kaydı veya farklı kod türü sürekli başarısızlığa yol açabilir. Sayaç tabanlı HOTP kodları burada üretilmez. Geçerli görünen sonuç, özgün hizmetin kabul edeceğini kanıtlamaz."
           ],
           "steps": [
             "Kayıtlı kurulum anahtarını güvenilir cihazınızdaki özgün kayıt bilgileriyle karşılaştırın.",

@@ -44,12 +44,6 @@ const tips = [
     detail: '批量结果右上角的展开图标，会把验证码放到独立页面，一屏显示全部，适合一边核对一边输入。'
   },
   {
-    icon: 'i-lucide-gamepad-2',
-    title: 'Steam Guard',
-    detail: '把 Steam 的 shared_secret 或 maFile 内容直接粘贴进来，会按 5 位、30 秒的规则取码。',
-    link: '/help#steam'
-  },
-  {
     icon: 'i-lucide-feather',
     title: 'Lite 轻量版',
     detail: '设备老旧或网络受限时可以用 Lite 版，不加载前端框架，兼容到 IE11，同样只在本地取码。',

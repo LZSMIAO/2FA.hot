@@ -4,7 +4,6 @@ definePageMeta({ viewTransition: false })
 const { tx } = useMessages()
 const sections = [
   { id: 'start', label: '开始取码', icon: 'i-lucide-scan-line' },
-  { id: 'steam', label: 'Steam Guard', icon: 'i-lucide-gamepad-2' },
   { id: 'troubleshooting', label: '问题排查', icon: 'i-lucide-wrench' },
   { id: 'links', label: '取码链接', icon: 'i-lucide-link' },
   { id: 'link-privacy', label: '为什么使用 #？', icon: 'i-lucide-shield-check' },
@@ -18,7 +17,7 @@ const sections = [
     >
     <h1>{{ tx('使用说明') }}</h1>
     <p class="article-lead">
-      {{ tx('从导入密钥到获取验证码，了解 TOTP 与 Steam Guard 的用法。') }}
+      {{ tx('从导入密钥到获取验证码，了解 TOTP 的用法。') }}
     </p>
     <ArticleNavigation
       :items="sections.map((section) => ({ ...section, label: tx(section.label) }))"
@@ -42,60 +41,16 @@ const sections = [
         )
       }}
     </p>
-    <h2 id="steam">{{ tx('Steam Guard 如何取码？') }}</h2>
-    <p>
-      {{
-        tx(
-          '在首页将“验证方式”设为 Steam Guard，粘贴账号的 shared_secret（Base64 共享密钥）。也可以直接粘贴 maFile 的 JSON 内容，网站会自动识别其中的 shared_secret。'
-        )
-      }}
-    </p>
-    <p>
-      {{
-        tx(
-          'Steam 验证码为 5 位字母和数字，每 30 秒更新；算法、位数和周期自动固定，无需调整。请勿输入登录密码、恢复码或 identity_secret。'
-        )
-      }}
-    </p>
-    <h3>{{ tx('如何确认生成正确？') }}</h3>
-    <ol>
-      <li>
-        {{
-          tx(
-            '先用测试密钥检查：选择 Steam Guard，粘贴下面的公开测试数据，应显示 5 位验证码并随倒计时更新。此密钥不能用于真实账号登录。'
-          )
-        }}<br /><code dir="ltr">cnOgv/KdpLoP6Nbh0GMkXkPXALQ=</code>
-      </li>
-      <li>
-        {{
-          tx(
-            '验证自己的账号时，使用该账号已有的 shared_secret，在同一个 30 秒周期内与原验证器对比；连续两轮相同后，再到 Steam 官方登录页尝试当前验证码。'
-          )
-        }}
-      </li>
-    </ol>
-    <p>
-      {{
-        tx(
-          '没有 shared_secret 或 maFile 时，只能做演示测试。不要为测试移除原验证器，也不要向任何人发送真实密钥或完整 maFile。'
-        )
-      }}
-    </p>
     <h2 id="troubleshooting">{{ tx('验证码为什么无法使用？') }}</h2>
     <ul>
       <li>{{ tx('确认设备开启了自动设置日期和时间。') }}</li>
       <li>{{ tx('使用本周期的验证码，接近更新时可以等下一组。') }}</li>
       <li>{{ tx('检查密钥是否完整，以及原服务是否重新设置过双重验证。') }}</li>
       <li>
-        {{
-          tx(
-            'TOTP 的算法、位数和周期需与原服务一致，默认 SHA-1、6 位、30 秒；Steam 账号请选择 Steam Guard。'
-          )
-        }}
+        {{ tx('TOTP 的算法、位数和周期需与原服务一致，默认 SHA-1、6 位、30 秒。') }}
       </li>
     </ul>
     <h2 id="links">{{ tx('通过链接取码') }}</h2>
-    <p>{{ tx('以下链接功能适用于 TOTP；Steam Guard 当前不提供取码链接或配置二维码。') }}</p>
     <p>
       {{ tx('生成有效验证码后，点击“获取链接”。链接形式为')
       }}<code dir="ltr">https://2fa.hot/2fa#{{ tx('密钥') }}</code

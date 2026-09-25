@@ -26,7 +26,7 @@ async function copyCode() {
       :aria-label="tx('复制验证码')"
       @click="copyCode"
     >
-      <span class="mono" :style="{ width: `${config.digits + (config.digits === 5 ? 0 : 1)}ch` }">{{
+      <span class="mono" :style="{ width: `${config.digits + 1}ch` }">{{
         code ? groupCode(code) : '— — —'
       }}</span>
       <UIcon :name="copied ? 'i-mc-check' : 'i-lucide-copy'" />

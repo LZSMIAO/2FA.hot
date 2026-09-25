@@ -1,11 +1,30 @@
 import { supportedLocales, type SupportedLocale } from '../locales.ts'
 
 export const siteUrl = 'https://2fa.hot'
+// Core guides are published in every supported language.
 export const guideSlugs = [
   'what-is-2fa',
   'totp-code-not-working',
   'google-authenticator-import'
 ] as const
+// Focused guides are written natively for the largest audiences first. They are
+// only routed, listed and advertised in these languages, never as fallbacks.
+export const focusedGuideLocales = [
+  'en',
+  'zh-CN',
+  'zh-TW',
+  'ja'
+] as const satisfies readonly SupportedLocale[]
+export const focusedGuideSlugs = [
+  'google-authenticator-web',
+  'find-2fa-secret-key',
+  'batch-2fa-codes',
+  'otpauth-uri-format',
+  'enable-authenticator-app-2fa',
+  'lost-authenticator-recovery',
+  'microsoft-authenticator-backup'
+] as const
+export const allGuideSlugs = [...guideSlugs, ...focusedGuideSlugs] as const
 export const editorialLocales = supportedLocales.map((locale) => locale.code)
 export const publicPages = [
   '/',
@@ -14,8 +33,14 @@ export const publicPages = [
   '/about',
   '/waitlist',
   '/guides',
-  ...guideSlugs.map((slug) => `/guides/${slug}`)
+  ...allGuideSlugs.map((slug) => `/guides/${slug}`)
 ]
+
+export function guideLocales(slug: string): readonly SupportedLocale[] {
+  if ((focusedGuideSlugs as readonly string[]).includes(slug)) return focusedGuideLocales
+  if ((guideSlugs as readonly string[]).includes(slug)) return editorialLocales
+  return []
+}
 
 export function unlocalizedPath(path: string) {
   const pathname = path.split(/[?#]/)[0] || '/'
@@ -32,7 +57,8 @@ export function localizedPath(path: string, locale: string) {
 export function pageLocales(path: string): readonly string[] {
   const base = unlocalizedPath(path)
   if (!publicPages.includes(base)) return []
-  return supportedLocales.map((locale) => locale.code)
+  if (base.startsWith('/guides/')) return guideLocales(base.slice('/guides/'.length))
+  return editorialLocales
 }
 
 export function isPrivatePage(path: string) {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { pageLocales } from '~~/shared/seo/routes'
+import { pageLocales, unlocalizedPath } from '~~/shared/seo/routes'
 import { supportedLocales, type SupportedLocale } from '~~/shared/locales'
 // Approximate worldwide L1 + L2 speaker order (2026); Chinese scripts stay together.
 // https://en.wikipedia.org/wiki/List_of_languages_by_total_number_of_speakers
@@ -59,7 +59,9 @@ async function change(next: SupportedLocale) {
   try {
     const available = pageLocales(route.path)
     if (available.length && !available.includes(next)) {
-      await navigateTo(localePath('/', next))
+      // A guide missing in that language falls back to its guide list, not the tool.
+      const guide = unlocalizedPath(route.path).startsWith('/guides/')
+      await navigateTo(localePath(guide ? '/guides' : '/', next))
     } else {
       await setLocale(next)
     }

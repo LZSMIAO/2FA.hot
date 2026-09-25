@@ -66,7 +66,7 @@ function accept(values: string[]) {
               name: config.label,
               issuer: config.issuer,
               algorithm: config.algorithm.replace(/-/g, '') as MigrationAccount['algorithm'],
-              digits: config.digits === 5 ? 6 : config.digits,
+              digits: config.digits,
               type: 'totp',
               counter: '0',
               uri: value

@@ -1,11 +1,11 @@
 import { supportedLocales } from '../../shared/locales.ts'
 import { isSealedFragment, openFragment, sealFragment } from './sealed-link.ts'
 export type Algorithm = 'SHA-1' | 'SHA-256' | 'SHA-512'
-export type OtpKind = 'totp' | 'steam'
+export type OtpKind = 'totp'
 export interface OtpConfig {
   secret: string
   algorithm: Algorithm
-  digits: 5 | 6 | 8
+  digits: 6 | 8
   period: number
   label: string
   issuer: string
@@ -15,74 +15,7 @@ export const defaults = { algorithm: 'SHA-1' as Algorithm, digits: 6 as const, p
 export const DEMO_SECRET = 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ' // RFC 6238 public test vector
 const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567'
 const linkHosts = ['2fa.hot', 'www.2fa.hot', 'localhost', '127.0.0.1', '[::1]']
-const steamAlphabet = '23456789BCDFGHJKMNPQRTVWXY'
 
-function encodeBase64(bytes: Uint8Array): string {
-  let binary = ''
-  for (const byte of bytes) binary += String.fromCharCode(byte)
-  return btoa(binary)
-}
-
-function decodeBase64(value: string): Uint8Array<ArrayBuffer> {
-  const compact = value.replace(/\s/g, '').replace(/-/g, '+').replace(/_/g, '/')
-  if (!compact || !/^[A-Za-z0-9+/]*={0,2}$/.test(compact))
-    throw new Error('Steam 密钥格式不正确，请粘贴 shared_secret 或 maFile。')
-  const padded = compact + '='.repeat((4 - (compact.length % 4)) % 4)
-  try {
-    const binary = atob(padded)
-    return Uint8Array.from(binary, (char) => char.charCodeAt(0))
-  } catch {
-    throw new Error('Steam 密钥格式不正确，请检查 shared_secret。')
-  }
-}
-
-function decodeSteamSecret(raw: string): Uint8Array<ArrayBuffer> {
-  const compact = raw.replace(/\s/g, '')
-  if (!compact) throw new Error('Steam 密钥不能为空。')
-  // WinAuth commonly exports Base32; Steam mobile data normally uses Base64.
-  if (compact === compact.toUpperCase() && /^[A-Z2-7]+=*$/.test(compact))
-    return decodeBase32(compact.replace(/=+$/, ''))
-  return decodeBase64(compact)
-}
-
-function steamConfig(
-  secret: string,
-  options: Partial<OtpConfig> = {},
-  encoding: 'auto' | 'base64' = 'auto'
-): OtpConfig {
-  const bytes = encoding === 'base64' ? decodeBase64(secret) : decodeSteamSecret(secret)
-  if ((options.label?.length || 0) > 120 || (options.issuer?.length || 0) > 120)
-    throw new Error('服务名称或标签过长。')
-  if (bytes.length < 10) throw new Error('Steam 密钥过短，请使用完整的 shared_secret。')
-  return {
-    secret: encodeBase64(bytes),
-    algorithm: 'SHA-1',
-    digits: 5,
-    period: 30,
-    label: options.label || '',
-    issuer: options.issuer || 'Steam',
-    kind: 'steam'
-  }
-}
-
-function steamConfigFromJson(raw: string): OtpConfig | null {
-  if (!raw.trim().startsWith('{')) return null
-  try {
-    const value = JSON.parse(raw) as Record<string, unknown>
-    const secret = typeof value.shared_secret === 'string' ? value.shared_secret : ''
-    if (!secret) return null
-    const label =
-      typeof value.account_name === 'string'
-        ? value.account_name
-        : typeof value.nickname === 'string'
-          ? value.nickname
-          : ''
-    return steamConfig(secret, { label, issuer: 'Steam' }, 'base64')
-  } catch (error) {
-    if (error instanceof Error && error.message.includes('Steam')) throw error
-    throw new Error('Steam maFile 格式不正确。')
-  }
-}
 export function normalizeSecret(raw: string): string {
   const compact = raw.replace(/\s/g, '').toUpperCase()
   if (!compact || compact.length > 1024 || !/^[A-Z2-7]+=*$/.test(compact))
@@ -115,7 +48,10 @@ export function decodeBase32(secret: string): Uint8Array<ArrayBuffer> {
 }
 export function validateOptions(options: Partial<OtpConfig>): OtpConfig {
   const c = { ...defaults, label: '', issuer: '', secret: '', ...options }
-  if (c.kind === 'steam') return steamConfig(c.secret, c, 'base64')
+  // Only TOTP is generated. An entry of any other kind, such as one kept in an
+  // older local history, is reported instead of being shown with a wrong code.
+  if (c.kind !== undefined && c.kind !== 'totp')
+    throw new Error('仅支持 TOTP 配置，不支持 HOTP 或其他链接。')
   if (!['SHA-1', 'SHA-256', 'SHA-512'].includes(c.algorithm))
     throw new Error('不支持的验证码算法。')
   if (c.digits !== 6 && c.digits !== 8) throw new Error('验证码位数必须为 6 或 8。')
@@ -133,8 +69,6 @@ export function validateOptions(options: Partial<OtpConfig>): OtpConfig {
 export function parseOtp(raw: string, options: Partial<OtpConfig> = {}): OtpConfig {
   if (raw.length > 8192) throw new Error('输入过长，请检查密钥或配置链接。')
   const input = raw.trim()
-  const jsonConfig = steamConfigFromJson(input)
-  if (jsonConfig) return jsonConfig
   if (/^https?:\/\//i.test(input) || input.startsWith('/2fa')) {
     let link: URL
     try {
@@ -169,8 +103,7 @@ export function parseOtp(raw: string, options: Partial<OtpConfig> = {}): OtpConf
       throw new Error('配置链接格式不正确。')
     }
     const kind = parameters.get('kind')
-    if (kind && kind !== 'totp' && kind !== 'steam') throw new Error('配置链接格式不正确。')
-    if (kind === 'steam') return steamConfig(secret, {}, 'base64')
+    if (kind && kind !== 'totp') throw new Error('配置链接格式不正确。')
     return validateOptions({
       secret,
       algorithm: algorithmFrom(parameters.get('algorithm') || 'SHA1'),
@@ -178,10 +111,7 @@ export function parseOtp(raw: string, options: Partial<OtpConfig> = {}): OtpConf
       period: Number(parameters.get('period') || 30)
     })
   }
-  if (!/^otpauth:/i.test(input))
-    return options.kind === 'steam'
-      ? steamConfig(input, options, 'base64')
-      : validateOptions({ ...options, secret: input })
+  if (!/^otpauth:/i.test(input)) return validateOptions({ ...options, secret: input })
   let url: URL
   try {
     url = new URL(input)
@@ -193,10 +123,12 @@ export function parseOtp(raw: string, options: Partial<OtpConfig> = {}): OtpConf
     url.hostname !== 'totp' ||
     url.username ||
     url.password ||
-    url.hash
+    url.hash ||
+    // A non-standard encoder writes codes differently; standard TOTP would not match them.
+    url.searchParams.has('encoder')
   )
     throw new Error('仅支持 TOTP 配置，不支持 HOTP 或其他链接。')
-  for (const field of ['secret', 'algorithm', 'digits', 'period', 'issuer', 'encoder', 'encoding'])
+  for (const field of ['secret', 'algorithm', 'digits', 'period', 'issuer'])
     if (url.searchParams.getAll(field).length > 1) throw new Error('配置链接含有重复参数。')
   let label: string
   try {
@@ -220,16 +152,6 @@ export function parseOtp(raw: string, options: Partial<OtpConfig> = {}): OtpConf
     label: prefix ? label.slice(prefix.length + 1).trim() : label,
     issuer: issuer || prefix
   }
-  if (
-    url.searchParams.get('encoder') === 'steam' ||
-    issuer.toLowerCase() === 'steam' ||
-    prefix.toLowerCase() === 'steam'
-  )
-    return steamConfig(
-      config.secret,
-      config,
-      url.searchParams.get('encoding') === 'base64' ? 'base64' : 'auto'
-    )
   return validateOptions(config)
 }
 export function algorithmFrom(value: string): Algorithm {
@@ -247,7 +169,7 @@ export async function generateOtp(config: OtpConfig, time = Date.now()): Promise
   new DataView(counter).setBigUint64(0, BigInt(Math.floor(time / 1000 / c.period)))
   const key = await crypto.subtle.importKey(
     'raw',
-    c.kind === 'steam' ? decodeBase64(c.secret) : decodeBase32(c.secret),
+    decodeBase32(c.secret),
     { name: 'HMAC', hash: c.algorithm },
     false,
     ['sign']
@@ -259,15 +181,6 @@ export async function generateOtp(config: OtpConfig, time = Date.now()): Promise
     (digest[offset + 1]! << 16) |
     (digest[offset + 2]! << 8) |
     digest[offset + 3]!
-  if (c.kind === 'steam') {
-    let value = binary
-    let result = ''
-    for (let index = 0; index < 5; index++) {
-      result += steamAlphabet[value % steamAlphabet.length]
-      value = Math.floor(value / steamAlphabet.length)
-    }
-    return result
-  }
   return (binary % 10 ** c.digits).toString().padStart(c.digits, '0')
 }
 export function toOtpUri(config: OtpConfig): string {
@@ -280,10 +193,6 @@ export function toOtpUri(config: OtpConfig): string {
     period: String(c.period)
   })
   if (c.issuer) query.set('issuer', c.issuer)
-  if (c.kind === 'steam') {
-    query.set('encoder', 'steam')
-    query.set('encoding', 'base64')
-  }
   return `otpauth://totp/${encodeURIComponent(label)}?${query}`
 }
 export function toAccessPath(config: OtpConfig): string {
@@ -292,7 +201,6 @@ export function toAccessPath(config: OtpConfig): string {
   if (c.algorithm !== 'SHA-1') query.set('algorithm', c.algorithm.replace(/-/g, ''))
   if (c.digits !== 6) query.set('digits', String(c.digits))
   if (c.period !== 30) query.set('period', String(c.period))
-  if (c.kind === 'steam') query.set('kind', 'steam')
   const parameters = query.toString()
   return `/2fa#${encodeURIComponent(c.secret)}${parameters ? `?${parameters}` : ''}`
 }
@@ -344,11 +252,9 @@ export function accessLinkEntries(input: string): OtpConfig[] {
   return accessEntries(link.hash)
 }
 export function groupCode(code: string) {
-  return code.length === 5
-    ? code
-    : code.length === 8
-      ? `${code.slice(0, 4)} ${code.slice(4)}`
-      : `${code.slice(0, 3)} ${code.slice(3)}`
+  return code.length === 8
+    ? `${code.slice(0, 4)} ${code.slice(4)}`
+    : `${code.slice(0, 3)} ${code.slice(3)}`
 }
 export function remainingSeconds(period: number, time = Date.now()) {
   return period - (Math.floor(time / 1000) % period)

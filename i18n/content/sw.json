@@ -38,7 +38,7 @@
             "ordered": false,
             "list": false,
             "lines": [
-              "Inakubali TOTP (SHA-1/SHA-256/SHA-512, tarakimu 6/8) na Steam Guard (herufi 5, sekunde 30). Kwa Steam, weka shared_secret au bandika JSON ya maFile. Utengenezaji wa HOTP haukubaliwi; akaunti za HOTP/MD5 katika faili za uhamishaji zinaweza kuchanganuliwa na kuhamishwa."
+              "Inakubali TOTP (SHA-1/SHA-256/SHA-512, tarakimu 6/8). Utengenezaji wa HOTP haukubaliwi; akaunti za HOTP/MD5 katika faili za uhamishaji zinaweza kuchanganuliwa na kuhamishwa."
             ]
           },
           {
@@ -214,7 +214,7 @@
           "title": "Linganisha siri na usanidi",
           "paragraphs": [
             "2fa.hot inakubali TOTP ya SHA-1, SHA-256 au SHA-512, tarakimu sita au nane na kipindi kilichowekwa. Chaguomsingi ni SHA-1, tarakimu sita na sekunde 30. URI ya otpauth iliyoingizwa inaweza kuwa na thamani tofauti. Zihifadhi badala ya kulazimisha kila akaunti kutumia chaguomsingi.",
-            "Herufi iliyokosekana kwenye siri, usajili wa kithibitishaji uliowekwa upya, au aina tofauti ya msimbo vinaweza kusababisha kushindwa mara kwa mara. Kwa akaunti za Steam, chagua Steam Guard na utumie shared_secret ya akaunti. Misimbo ya HOTP ya kuhesabu haitengenezwi hapa. Matokeo yanayoonekana halali si ushahidi kwamba huduma ya awali itayakubali."
+            "Herufi iliyokosekana kwenye siri, usajili wa kithibitishaji uliowekwa upya, au aina tofauti ya msimbo vinaweza kusababisha kushindwa mara kwa mara. Misimbo ya HOTP ya kuhesabu haitengenezwi hapa. Matokeo yanayoonekana halali si ushahidi kwamba huduma ya awali itayakubali."
           ],
           "steps": [
             "Linganisha ufunguo uliohifadhiwa na maelezo ya usajili wa awali kwenye kifaa unachoamini.",
