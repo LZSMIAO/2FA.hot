@@ -12,9 +12,12 @@ useHead(() => ({
       key: 'site-favicon',
       rel: 'icon',
       type: 'image/svg+xml',
-      href: colorMode.unknown
-        ? '/favicon.svg'
-        : `/favicon-${colorMode.value === 'dark' ? 'dark' : 'light'}.svg`
+      tagPriority: 40,
+      // The brand key follows the system on its own; a chosen theme shows its sun or moon.
+      href:
+        colorMode.unknown || colorMode.preference === 'system'
+          ? '/favicon.svg'
+          : `/favicon-${colorMode.value === 'dark' ? 'dark' : 'light'}.svg`
     }
   ]
 }))

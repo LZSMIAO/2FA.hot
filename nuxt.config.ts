@@ -17,7 +17,8 @@ const prePaintScripts = [
   'panorama-preference.js',
   'brand-splash.js',
   'viewport-layout.js',
-  'workspace-mode.js'
+  'workspace-mode.js',
+  'theme-favicon.js'
 ]
 const versioned = (name: string) =>
   `/${name}?v=${createHash('sha1')
@@ -96,11 +97,18 @@ export default defineNuxtConfig({
         }
       ],
       link: [
-        { key: 'site-favicon', rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+        {
+          key: 'site-favicon',
+          rel: 'icon',
+          type: 'image/svg+xml',
+          href: '/favicon.svg',
+          // Ahead of the pre-paint scripts (50 as blocking scripts), so theme-favicon.js finds it.
+          tagPriority: 40
+        },
         // For adding the site to a home screen; offline use is a separate choice.
         // app/plugins/app-manifest.ts swaps in the page's language (see shared/app-manifest.ts).
         { key: 'app-manifest', rel: 'manifest', href: '/app-manifest/en.webmanifest' },
-        { rel: 'apple-touch-icon', href: '/app-icons/icon-180.png' }
+        { rel: 'apple-touch-icon', href: '/app-icons/key-180.png' }
       ]
     }
   },

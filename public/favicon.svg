@@ -1,20 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="11 10.5 10 10">
-  <!-- Original Mojang textures; see public/textures/sun-source.txt. -->
-  <style>
-    image { image-rendering: pixelated; }
-    .moon { display: none; }
-    @media (prefers-color-scheme: dark) {
-      .sun { display: none; }
-      .moon { display: inline; }
-    }
-  </style>
-  <defs>
-    <filter id="remove-black" color-interpolation-filters="sRGB">
-      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0.2126 0.7152 0.0722 0 0"/>
-    </filter>
-  </defs>
-  <g filter="url(#remove-black)">
-    <image class="sun" width="32" height="32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAcJJREFUWMPVl01OwzAQRsduchMkfjbsgTMgARfgaFwAkDgDsGcDReImaWw0ccfz2ZlUZeUSyfLYjfyeZ5I0cUQUaY/DOfrTEeN+5zlLYAm2r8QS3JovBGqAjF3+IUK8BInbZSWeg3GcBXDdEpygHMq4lKICxktyzEORsUQkngkgSMG0jeciuBcEa1yKCLgQsODeK3AeL9c4BJWoY0vCEFCI9x5i7blh1mRBhggU+xBCJWcIaJoVklo91nPwKIHYyjktkSmgsNXKZzjGaeyq6yCldhxL8DgGI8ZrAwR0Z7QFJpDAOcY5vV50RwwRidTXc2Gaw3LwGtM2MN0MSCBsvoglY1JLFEgNY53DssjtnEtQ7txR1/lZLL2dgUibTSj6OpZM5BKIgGSAJWpY16WY28/L1c4n4dH16wRMLRpSIWfAFOi6VQYyvO99hvP89/Ml0dm9Tf98oOObtwksEsOg8DQ/Lgtgurkp3OV+/SQC5xX9YxI4uUWBmCVECEuxUwDhfa9Z+Xq82Clwevee4cMwziT+j0CTEjS/CJvehk0fRE0fxc3/jA7m77j5C0nzV7KmL6XNX8sP4sOk+afZQXyctvg8/wWeuMZGas8GCwAAAABJRU5ErkJggg=="/>
-    <image class="moon" width="128" height="64" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAABACAIAAABdtOgoAAAABGdBTUEAALGPC/xhBQAABC1JREFUeNrtm0ty00AQhi3L73cSOwkJBZQDmKosss0xWLFlBxdgRRV3oIoFJ2CdbQ6RC7DnHvDPtGcy0cMZhxZykT/V5ZIl+evM/OoeW+puNO75SyLsb/7Iv5eYNDfZ1v7Ij0HbDyfNFNZI8NoqNHtIzsk7I387fhbtuO1m2kmaxppp15vbg9e295RzQ34839FDtEDTVi9t91udQdq+Nfu2j0PO2V03ZQMgv4SfoRtVDdpyW51huztu9yZZ645xSDxZ2Y2bEh/kb+bfBlcqwkK6EN3pz7qDfWPDA2N2GzvvuGn1RGpAygZAfgnfyYswgVCOPvLo3mjeGy364yNveIud3g1OFh9W51YgMvkx/EBeBIundwd70FPQg+nJcHY6mBqzGyfixgq+533YlBeKTH4Mv5GIvCa4TF4bBvTD/vgY0NHes9H+8/HBCxg28BY7cQgnBD6G+LgNNCtyMADyN/AT52AtL9KWiSxLH0yeDGdPQZzMl5P52WTx0hg25kvsxCGcID5MrJl8txbZOUjIv4/v4stlN5F330bWsaOfTQ9fTw9Xs6M3MGzgLXaKD6vzAh9Zi2wz3Z2lhvxN/PUKs44vkRcLiM1rp0L/+eu3t6/ff+D17bsP7z9+Fh821pDv5iKyj7JwAJF8MM8vLk0IW9PlA14RX8gZeDQ/cGDiy8mLZQSJDKEEMWXer65vwpmCWZ2XNt+dBCIPygYQww+HocvPz5EWH1hckZnZj+Y7B/aXxdoBFMNS7oJrFU6QvH768s0KsHKBZkQWB4DYNJcdQCRfYksGo8svEkCHn7/2t+HnHQwPJL6woGNJQVKTeYeF0wTDIZyA0yTK8MGoAWzkhwLo8vPXqRa/8PKP5kc4kLzvr1MZDExrACFfpNUVQPjVCVAWAQ8VoCiEZd7FqkhBHl5RCvIXze6moA2LDKZb5kXMv9VaxDJ89UU45O/uIhzzNSucJsWvoSG/0q+JVfMf/jV0+x8aq+niVZU/ZB4Pn7cK6r4VwZtltfN5u7j229F8YFL3Axk+Mqz5kSQfmtf6UJ5lI7XzWThVd2EWSwdr57N4dif4LB/fLT4niP0B7A/gIsn+APYH8IcY+wPYH8CbcewPYH8AH8iwP4D9AXwoz/6AR9YfcH5xWWhahU1hMROwvgJMnQ84yFIod3V9UwUf/7YvolXrDygsfMROrdK+PFm3/yAkY/ZhUoeqy/dwX+qq1h9QLoBOcWshXLH4N4P1c6TI92SJgG34EeXXZQJolXcXwhX7D/ICIEXAFPk+c0r1+Db8XRVAsf8gn9wkRegK4JcWb2r9Af9fCnI5WjkFiT0wBe3UIqzbf5AXQDRQX4R9/4RrYFHqD/j3X0N1+w8K4TvDZ/0++wPYH8CbZewPYH8AH5iwP4D9AXxozv4A9gewcIr9AewPYPEs+wMeC/8P/KdOUa7fl/QAAAAASUVORK5CYII="/>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10" shape-rendering="crispEdges">
+  <!-- The brand mark while the theme follows the system: a key set in a grass
+       block. It fills the same 10 by 10 frame as favicon-light.svg (sun) and
+       favicon-dark.svg (moon); the key is the sun's gold, the grass the site's
+       green from ore.css. Drawn for this site, not taken from a texture. -->
+  <path fill="#6cc349" d="M0 0h1v1h-1zM2 0h2v1h-2zM5 0h1v1h-1zM7 0h2v1h-2zM1 1h1v1h-1zM8 1h2v1h-2zM0 2h1v1h-1zM9 2h1v1h-1z"/>
+  <path fill="#97dc6d" d="M1 0h1v1h-1zM4 0h1v1h-1zM6 0h1v1h-1zM9 0h1v1h-1zM0 1h1v1h-1zM2 1h1v1h-1zM7 1h1v1h-1z"/>
+  <path fill="#3c8527" d="M1 2h1v1h-1zM8 2h1v1h-1zM0 3h1v1h-1zM5 3h1v1h-1zM9 3h1v1h-1z"/>
+  <path fill="#866043" d="M1 3h1v1h-1zM4 3h1v1h-1zM8 3h1v1h-1zM0 4h1v1h-1zM9 4h1v1h-1zM1 5h2v1h-2zM7 5h2v1h-2zM0 6h1v1h-1zM9 6h1v1h-1zM0 7h2v1h-2zM1 8h2v1h-2zM7 8h3v1h-3zM0 9h1v1h-1zM2 9h5v1h-5zM9 9h1v1h-1z"/>
+  <path fill="#9b7653" d="M1 4h1v1h-1zM8 4h1v1h-1zM9 5h1v1h-1zM1 6h1v1h-1zM2 7h1v1h-1zM8 7h1v1h-1zM3 8h1v1h-1zM6 8h1v1h-1zM8 9h1v1h-1z"/>
+  <path fill="#6b4a30" d="M0 5h1v1h-1zM2 6h1v1h-1zM8 6h1v1h-1zM9 7h1v1h-1zM0 8h1v1h-1zM1 9h1v1h-1zM7 9h1v1h-1z"/>
+  <path fill="#2d3442" d="M3 1h4v1h-4zM2 2h1v1h-1zM7 2h1v1h-1zM2 3h1v1h-1zM7 3h1v1h-1zM2 4h1v1h-1zM7 4h1v1h-1zM3 5h1v1h-1zM6 5h1v1h-1zM3 6h1v1h-1zM7 6h1v1h-1zM3 7h1v1h-1zM6 7h2v1h-2zM4 8h2v1h-2z"/>
+  <path fill="#ffffaa" d="M3 2h2v1h-2zM3 3h1v1h-1z"/>
+  <path fill="#ffd54a" d="M5 2h2v1h-2zM3 4h2v1h-2zM4 5h1v1h-1zM4 6h1v1h-1zM4 7h1v1h-1z"/>
+  <path fill="#e0a526" d="M6 3h1v1h-1zM5 4h2v1h-2zM5 5h1v1h-1zM5 6h2v1h-2zM5 7h1v1h-1z"/>
 </svg>

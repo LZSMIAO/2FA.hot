@@ -46,10 +46,17 @@ export function appManifest(code: SupportedLocale, copy: ManifestCopy) {
     theme_color: '#1e1e1f',
     // Opening the app again brings its window forward rather than a second one.
     launch_handler: { client_mode: 'focus-existing' },
+    // The grass-block key of public/favicon.svg, drawn larger; the maskable one
+    // keeps it inside the circle a launcher may cut the icon to.
     icons: [
-      { src: '/app-icons/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
-      { src: '/app-icons/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
-      { src: '/app-icons/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
+      { src: '/app-icons/key-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+      { src: '/app-icons/key-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+      {
+        src: '/app-icons/key-maskable-512.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'maskable'
+      }
     ],
     // The empty home page: a screenshot never shows a key or a code.
     screenshots: [
