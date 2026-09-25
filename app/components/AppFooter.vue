@@ -15,9 +15,9 @@ const { tx } = useMessages()
       <nav :aria-label="tx('页脚导航')">
         <div class="footer-pages">
           <NuxtLink :to="localePath('/guides')">{{ tx('指南') }}</NuxtLink>
-          <NuxtLink :to="localePath('/about')">{{ tx('关于') }}</NuxtLink>
+          <NuxtLink :to="localePath('/waitlist')">{{ tx('功能') }}</NuxtLink>
           <NuxtLink class="footer-privacy" :to="localePath('/privacy')">{{ tx('隐私') }}</NuxtLink>
-          <NuxtLink :to="localePath('/waitlist')">{{ tx('功能建议') }}</NuxtLink>
+          <NuxtLink :to="localePath('/about')">{{ tx('关于') }}</NuxtLink>
         </div>
         <div class="footer-contacts">
           <a

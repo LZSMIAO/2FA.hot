@@ -72,7 +72,7 @@ const items = computed<ExplainerItem[]>(() => [
           <h2 id="tool-explainer-title">{{ tx(homeIntro.welcomeTitle) }}</h2>
           <AppHint :text="tx('关闭')"
             ><button type="button" class="explainer-close" :aria-label="tx('关闭')" @click="close">
-              <UIcon name="i-lucide-x" /></button
+              <UIcon name="i-mc-close" /></button
           ></AppHint>
         </div>
         <p>{{ tx(homeIntro.welcomeLead) }}</p>
@@ -92,7 +92,7 @@ const items = computed<ExplainerItem[]>(() => [
         <details v-for="item in items" :key="item.question" name="tool-explainer">
           <summary>
             <h3>{{ tx(item.question) }}</h3>
-            <UIcon name="i-lucide-chevron-down" class="explainer-chevron" aria-hidden="true" />
+            <UIcon name="i-mc-chevron-down" class="explainer-chevron" aria-hidden="true" />
           </summary>
           <div class="explainer-answer">
             <p v-for="paragraph in item.paragraphs" :key="paragraph">{{ tx(paragraph) }}</p>
@@ -141,6 +141,7 @@ const items = computed<ExplainerItem[]>(() => [
   align-items: center;
   gap: 0.5rem;
 }
+/* The site's ghost close button (ore.css .ore-close): bare, then raised on hover. */
 .explainer-close {
   display: inline-grid;
   place-items: center;
@@ -149,15 +150,25 @@ const items = computed<ExplainerItem[]>(() => [
   height: 2.75rem;
   margin-block: -0.4375rem;
   margin-inline: auto -0.75rem;
-  color: var(--ui-text-muted);
+  border: 2px solid transparent;
+  color: var(--ui-text-highlighted);
   cursor: pointer;
 }
 .explainer-close .iconify {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1rem;
+  height: 1rem;
 }
-.explainer-close:hover {
-  color: var(--ui-text-highlighted);
+@media (hover: hover) {
+  .explainer-close:hover {
+    border-color: var(--ui-border);
+    background: var(--ore-control);
+    box-shadow: var(--ore-bevel);
+  }
+}
+.explainer-close:active {
+  box-shadow:
+    inset 2px 2px 0 var(--ore-shade),
+    inset -2px -2px 0 var(--ore-highlight);
 }
 .explainer-close:focus-visible {
   outline: 2px solid var(--accent-ink);
@@ -200,26 +211,47 @@ const items = computed<ExplainerItem[]>(() => [
   line-height: 1.8;
   color: var(--ui-text-muted);
 }
+/* Ore UI's accordion: each question is a raised control on its own, and an
+   open answer hangs below it in the same outline. */
 .explainer-list {
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
   min-width: 0;
 }
 details {
-  border-bottom: 1px solid var(--ui-border);
   min-width: 0;
 }
 summary {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 0.625rem 0;
+  min-height: 2.75rem;
+  padding: 0.4375rem 0.875rem;
+  border: 2px solid var(--ore-outline);
+  background: var(--ore-control);
+  box-shadow: var(--ore-bevel);
+  color: var(--ui-text-highlighted);
   cursor: pointer;
   list-style: none;
+  transition: background-color 100ms;
+  -webkit-tap-highlight-color: transparent;
 }
 summary::-webkit-details-marker {
   display: none;
+}
+@media (hover: hover) {
+  summary:hover {
+    background: var(--ore-control-hover);
+  }
+}
+/* Pressed, the bevel turns over as it does on the site's buttons. */
+summary:active {
+  box-shadow:
+    inset 2px 2px 0 var(--ore-shade),
+    inset -2px -2px 0 var(--ore-highlight);
 }
 summary:focus-visible {
   outline: 2px solid var(--accent-ink);
@@ -231,21 +263,20 @@ h3 {
   line-height: 1.6;
   margin: 0;
 }
-summary:hover h3 {
-  color: var(--accent-ink);
-}
+/* OreUI's pixel chevron at twice its 8px grid, the size it stays sharp at. */
 .explainer-chevron {
   flex: none;
   width: 1rem;
   height: 1rem;
-  color: var(--ui-text-muted);
-  transition: transform 160ms ease;
 }
 details[open] .explainer-chevron {
   transform: rotate(180deg);
 }
 .explainer-answer {
-  padding-bottom: 0.75rem;
+  padding: 0.75rem 0.875rem 0.25rem;
+  border: 2px solid var(--ore-outline);
+  border-top: 0;
+  background: var(--wash);
   color: var(--ui-text-muted);
 }
 .explainer-answer p,
@@ -288,11 +319,6 @@ a {
 @media (width <= 700px) {
   .tool-explainer {
     padding: 0.875rem 1rem 0.75rem;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .explainer-chevron {
-    transition: none;
   }
 }
 </style>

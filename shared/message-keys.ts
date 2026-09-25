@@ -528,6 +528,7 @@ export const sourceKeys = new Map<string, string>([
   ['历史记录', 'm5467922dce50'],
   ['导入二维码，支持 Google Authenticator 导入', 'me111a2d25ec7'],
   ['功能建议', 'm118db8121c01'],
+  ['功能', 'm25f5ce57a190'],
   ['想加什么功能，或哪里不好用？在这里提建议。', 'mc96e0f43c8bc'],
   ['提建议', 'mb20165367f6a'],
   ['查看已有建议', 'm039983866861'],

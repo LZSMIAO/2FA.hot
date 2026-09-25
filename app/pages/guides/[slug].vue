@@ -15,7 +15,7 @@ const related = computed(() => entries.value.filter((item) => item.slug !== guid
   <article v-if="guide" class="content-page">
     <ArticleLanguageNotice v-if="error" :busy="pending" @retry="refresh()" />
     <NuxtLink :to="localePath('/guides')" class="back-link"
-      ><UIcon name="i-lucide-arrow-left" />{{ tx('全部指南') }}</NuxtLink
+      ><UIcon name="i-mc-arrow-left" />{{ tx('全部指南') }}</NuxtLink
     >
     <h1>{{ guide.title }}</h1>
     <p class="article-lead">{{ guide.description }}</p>
@@ -39,9 +39,12 @@ const related = computed(() => entries.value.filter((item) => item.slug !== guid
       </li>
     </ul>
     <h2>{{ tx('继续阅读') }}</h2>
-    <ul>
+    <ul class="guide-cards">
       <li v-for="item in related" :key="item.slug">
-        <NuxtLink :to="localePath(`/guides/${item.slug}`)">{{ item.title }}</NuxtLink>
+        <NuxtLink :to="localePath(`/guides/${item.slug}`)" class="guide-card">
+          <span class="guide-card-title">{{ item.title }}</span>
+          <p>{{ item.description }}</p>
+        </NuxtLink>
       </li>
     </ul>
     <p>

@@ -6,7 +6,7 @@ const { tx } = useMessages()
 <template>
   <article class="content-page">
     <NuxtLink :to="localePath('/')" class="back-link"
-      ><UIcon name="i-lucide-arrow-left" />{{ tx('返回工具') }}</NuxtLink
+      ><UIcon name="i-mc-arrow-left" />{{ tx('返回工具') }}</NuxtLink
     >
     <h1>{{ tx('隐私说明') }}</h1>
     <p class="article-lead">{{ tx('密钥如何计算、保存和传递。') }}</p>

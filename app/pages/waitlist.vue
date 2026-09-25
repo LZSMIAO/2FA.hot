@@ -9,7 +9,7 @@ const { tx } = useMessages()
 <template>
   <article class="content-page waitlist-page">
     <NuxtLink :to="localePath('/')" class="back-link"
-      ><UIcon name="i-lucide-arrow-left" />{{ tx('返回工具') }}</NuxtLink
+      ><UIcon name="i-mc-arrow-left" />{{ tx('返回工具') }}</NuxtLink
     >
     <h1>{{ tx('功能建议') }}</h1>
     <p class="article-lead">{{ tx('想加什么功能，或哪里不好用？在这里提建议。') }}</p>

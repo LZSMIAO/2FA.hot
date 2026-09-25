@@ -1105,7 +1105,6 @@ html[data-guide-learned~='batch'][data-workspace-mode='batch'] .guide-trigger-in
 }
 .home > .page-intro p,
 .home > .page-intro .intro-help,
-.ore-theme .direct-page > .back-link,
 .ore-theme .direct-page .direct-intro p,
 .ore-theme .direct-page .direct-bottom {
   color: var(--scene-text-muted);
@@ -1113,7 +1112,6 @@ html[data-guide-learned~='batch'][data-workspace-mode='batch'] .guide-trigger-in
 }
 .ore-theme .direct-page .direct-bottom a:hover,
 .ore-theme .direct-page .direct-bottom button:hover,
-.ore-theme .direct-page > .back-link:hover,
 .home > .page-intro .intro-help:hover {
   color: var(--scene-text);
 }

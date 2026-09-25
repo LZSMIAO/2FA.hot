@@ -13,7 +13,7 @@ const sections = [
 <template>
   <article class="content-page help-page">
     <NuxtLink :to="localePath('/')" class="back-link"
-      ><UIcon name="i-lucide-arrow-left" />{{ tx('返回工具') }}</NuxtLink
+      ><UIcon name="i-mc-arrow-left" />{{ tx('返回工具') }}</NuxtLink
     >
     <h1>{{ tx('使用说明') }}</h1>
     <p class="article-lead">

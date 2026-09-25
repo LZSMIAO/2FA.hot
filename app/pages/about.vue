@@ -12,7 +12,7 @@ const sections = computed(() => content.value?.about.sections ?? [])
   <article class="content-page">
     <ArticleLanguageNotice v-if="error" :busy="pending" @retry="refresh()" />
     <NuxtLink :to="localePath('/')" class="back-link"
-      ><UIcon name="i-lucide-arrow-left" />{{ tx('返回工具') }}</NuxtLink
+      ><UIcon name="i-mc-arrow-left" />{{ tx('返回工具') }}</NuxtLink
     >
     <h1>{{ tx('关于') }} 2fa.hot</h1>
     <p
