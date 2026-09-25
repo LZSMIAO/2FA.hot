@@ -17,14 +17,12 @@ useHead({
     }
   ]
 })
-import { sealedAccessPath, toAccessPath, type OtpConfig } from '~/utils/otp'
+import { sealedAccessPath, type OtpConfig } from '~/utils/otp'
 const props = defineProps<{
   config: OtpConfig | null
   error?: string
   compactLayout?: boolean
   standalone?: boolean
-  /** The standalone page was opened from a safe link, /2fa#~… */
-  sealedLink?: boolean
   historyPreview?: boolean
   guideStep?: number
 }>()
@@ -50,15 +48,10 @@ onMounted(() => {
 })
 const showResultLinks = computed(() => !!config.value && !props.error && !calculationError.value)
 const { copied, message, copy } = useCopy()
-const { copied: linkCopied, message: linkMessage, copy: copyLink } = useCopy()
-async function handleLink() {
+// Every page asks which link to copy, a plain one or a safe one.
+function handleLink() {
   if (!props.config || props.guideStep !== undefined) return
-  // A safe link's page asks which link to copy; a plain link's page copies it as before.
-  if (!props.standalone || props.sealedLink) {
-    exportMode.value = 'link'
-    return
-  }
-  await copyLink(`${window.location.origin}${localePath(toAccessPath(props.config))}`)
+  exportMode.value = 'link'
 }
 const copyConfirmed = computed(
   () => copied.value || (props.guideStep !== undefined && props.guideStep >= 3)
@@ -140,8 +133,6 @@ watch(config, () => {
   message.value = ''
   copied.value = false
   exportMode.value = null
-  linkCopied.value = false
-  linkMessage.value = ''
 })
 let navigationRevision = 0
 watch(
@@ -444,14 +435,11 @@ async function expand() {
             :disabled="!config || guideStep !== undefined"
             @click="handleLink"
           >
-            <UIcon :name="standalone && linkCopied ? 'i-mc-check' : 'i-lucide-link'" />{{
-              tx(standalone ? (linkCopied ? '已复制' : '复制链接') : '获取链接')
-            }}
+            <UIcon name="i-lucide-link" />{{ tx('获取链接') }}
           </UButton>
         </div>
       </div>
     </div>
-    <p v-if="standalone && linkMessage" class="inline-error" role="alert">{{ tx(linkMessage) }}</p>
     <LazyExportDialog
       v-if="exportMode && config"
       :mode="exportMode"

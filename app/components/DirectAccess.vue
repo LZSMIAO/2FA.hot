@@ -120,7 +120,6 @@ function collapseBatch() {
   void navigateTo(localePath('/'))
 }
 const missing = computed(() => !route.params.secret && !fragment.value)
-const sealedLink = computed(() => isSealedFragment(fragment.value))
 function load() {
   // The batch view rewrote its own link; what it shows is already current.
   if (writtenHash && route.hash === writtenHash) {
@@ -396,7 +395,6 @@ useHead({ meta: [{ name: 'referrer', content: 'no-referrer' }] })
         :import-version="batchVersion"
         replace
         standalone
-        :sealed-link="sealedLink"
         @rows="followBatch"
         @collapse="collapseBatch"
       />
@@ -405,7 +403,6 @@ useHead({ meta: [{ name: 'referrer', content: 'no-referrer' }] })
       <OtpResult
         :config="pathWarning ? null : config"
         :history-preview="!!config && historyPreviewIdentity === identity(config)"
-        :sealed-link="sealedLink"
         standalone
       />
       <div v-if="config" class="direct-meta">

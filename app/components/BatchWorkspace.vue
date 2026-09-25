@@ -15,7 +15,6 @@ import {
 } from '~/utils/smart-paste'
 import { countdownState } from '~/utils/countdown-state'
 import {
-  accessPath,
   sealedAccessPath,
   generateOtp,
   groupCode,
@@ -31,8 +30,6 @@ const props = defineProps<{
   importVersion?: number
   replace?: boolean
   standalone?: boolean
-  /** The standalone page was opened from a safe link, /2fa#~… */
-  sealedLink?: boolean
   guideStep?: number
   demo?: { input: number; results: number; copied: string }
 }>()
@@ -434,14 +431,13 @@ const autoHistoryError = useAutoHistory(
 )
 const { copied, message, copy } = useCopy(),
   vault = useVault()
-const { copied: linkCopied, message: linkMessage, copy: copyLinkValue } = useCopy()
-/** Standalone, the link to the keys shown now: a safe one if the page was opened safe. */
-async function copyPageLink() {
-  const configs = valid.value.map((row) => row.config!)
-  if (!configs.length) return
-  const path = props.sealedLink ? sealedAccessPath(configs) : accessPath(configs)
-  await copyLinkValue(`${window.location.origin}${localePath(path)}`)
-}
+/**
+ * Standalone, the same two exports the single view offers, for every key shown
+ * now: the link dialog lets the reader pick a plain or a safe link, and the QR
+ * dialog steps through one code per key.
+ */
+const exportMode = shallowRef<'qr' | 'link' | null>(null)
+const exportConfigs = computed(() => valid.value.map((row) => row.config!))
 const copiedLine = shallowRef<number | 'all' | null>(null)
 const demoCopied = computed(() => (guiding.value ? props.demo?.copied : ''))
 watch(guiding, () => {
@@ -964,20 +960,31 @@ onBeforeUnmount(() => {
               color="neutral"
               variant="outline"
               :disabled="!valid.length"
-              @click="copyPageLink"
-              ><UIcon :name="linkCopied ? 'i-mc-check' : 'i-lucide-link'" />{{
-                tx(linkCopied ? '已复制' : '复制链接')
-              }}</UButton
+              @click="exportMode = 'qr'"
+              ><UIcon name="i-lucide-qr-code" />{{ tx('二维码') }}</UButton
+            ><UButton
+              class="result-link"
+              color="neutral"
+              variant="outline"
+              :disabled="!valid.length"
+              @click="exportMode = 'link'"
+              ><UIcon name="i-lucide-link" />{{ tx('获取链接') }}</UButton
             >
           </div>
         </div>
       </div>
     </div>
-    <p v-if="issue || message || linkMessage" class="inline-error px-7 pb-4" role="alert">
-      {{ tx(issue || message || linkMessage) }}
+    <p v-if="issue || message" class="inline-error px-7 pb-4" role="alert">
+      {{ tx(issue || message) }}
     </p>
     <p v-if="note" class="inline-notice px-7 pb-4" role="status">{{ tx(note) }}</p>
   </div>
+  <LazyExportDialog
+    v-if="standalone && exportMode && exportConfigs.length"
+    :mode="exportMode"
+    :configs="exportConfigs"
+    @close="exportMode = null"
+  />
   <LazyQrImport
     v-if="qrOpen"
     ref="qrImport"

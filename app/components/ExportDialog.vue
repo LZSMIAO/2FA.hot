@@ -1,36 +1,63 @@
 <script setup lang="ts">
 const { tx } = useMessages()
-import { sealedAccessPath, toAccessPath, toOtpUri, type OtpConfig } from '~/utils/otp'
+import { accessPath, sealedAccessPath, toAccessPath, toOtpUri, type OtpConfig } from '~/utils/otp'
 import { downloadFile } from '~/utils/download'
-const props = defineProps<{ mode: 'qr' | 'link'; config: OtpConfig }>()
+/** One key, or several: a batch page's link holds them all and its QR codes go one at a time. */
+const props = defineProps<{
+  mode: 'qr' | 'link'
+  config?: OtpConfig
+  configs?: readonly OtpConfig[]
+}>()
 const emit = defineEmits<{ close: [] }>()
+const entries = computed<readonly OtpConfig[]>(() =>
+  props.configs?.length ? props.configs : props.config ? [props.config] : []
+)
+const index = shallowRef(0)
+const current = computed(() => entries.value[Math.min(index.value, entries.value.length - 1)]!)
 const open = shallowRef(true),
   qr = shallowRef(''),
   issue = shallowRef('')
-const label = shallowRef(props.config.label),
-  issuer = shallowRef(props.config.issuer)
+const label = shallowRef(current.value.label),
+  issuer = shallowRef(current.value.issuer)
+// Stepping to another key shows that key's own names, not the last one's edits.
+watch(current, (entry) => {
+  label.value = entry.label
+  issuer.value = entry.issuer
+})
 const { copied, message, copy } = useCopy()
 const { copied: safeCopied, message: safeMessage, copy: copySafe } = useCopy()
-const config = computed(() => ({ ...props.config, label: label.value, issuer: issuer.value }))
+const config = computed(() => ({ ...current.value, label: label.value, issuer: issuer.value }))
 const value = computed(() =>
   props.mode === 'qr'
     ? toOtpUri(config.value)
-    : `${window.location.origin}${toAccessPath(config.value)}`
+    : `${window.location.origin}${accessPath(entries.value)}`
 )
 // Sealed here in the browser when the dialog opens, ready to copy within the click.
 const safeLink = computed(() =>
-  props.mode === 'link' ? `${window.location.origin}${sealedAccessPath([props.config])}` : ''
+  props.mode === 'link' ? `${window.location.origin}${sealedAccessPath(entries.value)}` : ''
 )
+/** What the numbered chips and the QR heading call a key; the names are the user's own. */
+function entryName(entry: OtpConfig, position: number) {
+  return [entry.issuer, entry.label].filter(Boolean).join(' · ') || String(position + 1)
+}
+function downloadName() {
+  return entries.value.length > 1
+    ? `2fa-configuration-${index.value + 1}.png`
+    : '2fa-configuration.png'
+}
 /*
  * The link box masks its key as the key field does; settings after ? stay
  * readable. Masked text is not selectable, so a manual copy never yields
  * asterisks. If copying the safe link fails, the box shows it for a manual copy.
  */
 const shown = shallowRef<'masked' | 'plain' | 'safe'>('masked')
-const linkParameters = computed(() => {
-  const path = toAccessPath(config.value)
-  return path.includes('?') ? path.slice(path.indexOf('?')) : ''
-})
+/** Each key's readable settings, in link order; the keys themselves stay masked. */
+const linkParameters = computed(() =>
+  entries.value.map((entry) => {
+    const path = toAccessPath(entry)
+    return path.includes('?') ? path.slice(path.indexOf('?')) : ''
+  })
+)
 const origin = computed(() => window.location.origin)
 async function copySafeLink() {
   if (!(await copySafe(safeLink.value))) shown.value = 'safe'
@@ -79,6 +106,23 @@ onBeforeUnmount(() => {
               :placeholder="tx('例如 工作账户')"
               class="w-full"
           /></UFormField>
+        </div>
+        <div v-if="mode === 'qr' && entries.length > 1" class="qr-steps">
+          <strong class="qr-step-name">{{ entryName(current, index) }}</strong>
+          <div class="qr-step-chips">
+            <button
+              v-for="(entry, position) in entries"
+              :key="position"
+              type="button"
+              class="qr-step"
+              :class="{ 'is-current': position === index }"
+              :aria-label="entryName(entry, position)"
+              :aria-current="position === index ? 'true' : undefined"
+              @click="index = position"
+            >
+              {{ position + 1 }}
+            </button>
+          </div>
         </div>
         <div v-if="qr && mode === 'qr'" class="qr-image">
           <img :src="qr" :alt="tx('包含当前密钥的 TOTP 配置二维码')" width="288" height="288" />
@@ -149,8 +193,11 @@ onBeforeUnmount(() => {
             dir="ltr"
           >
             <template v-if="shown === 'masked'"
-              >{{ origin }}/2fa#<span class="secret-pixel-mask">****************</span
-              >{{ linkParameters }}</template
+              >{{ origin }}/2fa<template
+                v-for="(parameters, position) in linkParameters"
+                :key="position"
+                >#<span class="secret-pixel-mask">****************</span>{{ parameters }}</template
+              ></template
             ><template v-else>{{ shown === 'safe' ? safeLink : value }}</template>
           </div>
           <button
@@ -175,7 +222,7 @@ onBeforeUnmount(() => {
           variant="outline"
           :disabled="!qr"
           icon="i-lucide-download"
-          @click="downloadFile(qr, '2fa-configuration.png')"
+          @click="downloadFile(qr, downloadName())"
           >{{ tx('下载 PNG') }}</UButton
         ><UButton
           v-if="mode === 'link'"
@@ -205,6 +252,45 @@ onBeforeUnmount(() => {
 }
 .export-notice .info-mark {
   cursor: default;
+}
+.qr-steps {
+  display: grid;
+  gap: 0.5rem;
+  justify-items: center;
+}
+.qr-step-name {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--text-label);
+  font-weight: 600;
+}
+.qr-step-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.375rem;
+}
+/* The same numbered chips the site tips step through. */
+.qr-step {
+  min-width: 2.25rem;
+  min-height: 2.25rem;
+  padding: 0 0.25rem;
+  border: 1px solid var(--ui-border);
+  background: var(--wash);
+  color: var(--ui-text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+}
+.qr-step:hover {
+  color: var(--accent-ink);
+  border-color: var(--accent-ink);
+}
+.qr-step.is-current {
+  background: var(--action);
+  border-color: var(--action);
+  color: #fff;
 }
 .link-info-content {
   display: grid;
