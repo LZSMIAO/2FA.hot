@@ -5,7 +5,6 @@ import { DEMO_SECRET } from '~/utils/otp'
 /** Shown in groups of four, as authenticator apps do, so lines break between groups. */
 const secretGroups = DEMO_SECRET.match(/.{1,4}/g)!
 
-const localePath = useLocalePath()
 const { tx } = useMessages()
 
 const props = defineProps<{ code: string; compact?: boolean }>()
@@ -449,13 +448,6 @@ onBeforeUnmount(() => {
         </div>
         <p>{{ tx(steps[activeStep]!.detail) }}</p>
       </div>
-      <p class="tutorial-link-tip">
-        {{ tx('通过链接取码') }}：<code dir="ltr">https://2fa.hot/2fa#{{ tx('密钥') }}</code>
-        <span>{{ tx('把链接末尾的“密钥”换成你自己的完整密钥，打开就能查看当前验证码。') }}</span>
-        <NuxtLink :to="localePath('/help#links')" @click="emit('close')"
-          >{{ tx('使用说明') }} ↗</NuxtLink
-        >
-      </p>
       <div class="tutorial-controls">
         <div>
           <AppHint v-if="!reducedMotion && !finished" :text="tx(paused ? '继续' : '暂停')"
@@ -1132,28 +1124,6 @@ onBeforeUnmount(() => {
 </style>
 
 <style scoped>
-.tutorial-link-tip {
-  margin: 0;
-  padding: 0.75rem 1.25rem;
-  border-top: 1px solid var(--ui-border);
-  font-size: var(--text-caption);
-  line-height: 1.7;
-  color: var(--ui-text-muted);
-}
-.tutorial-link-tip code {
-  display: block;
-  overflow-wrap: anywhere;
-  color: var(--ui-text-highlighted);
-  user-select: all;
-}
-.tutorial-link-tip a {
-  color: var(--ui-text-highlighted);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-</style>
-
-<style scoped>
 @media (max-width: 700px), (max-height: 500px) and (pointer: coarse) {
   .tutorial-window,
   .tutorial-window.started,
@@ -1180,9 +1150,6 @@ onBeforeUnmount(() => {
   }
   .tutorial-intro .tutorial-muted {
     margin-block: 0.75rem;
-  }
-  .tutorial-link-tip {
-    overflow-wrap: anywhere;
   }
 }
 </style>
