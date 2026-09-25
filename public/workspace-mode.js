@@ -11,4 +11,10 @@
   } catch {
     // Without storage the page opens on single codes, as it always did.
   }
+  // The browser can offer installing before the app has started; keep the
+  // offer for app/plugins/app-shell.client.ts, which shows the install button.
+  window.addEventListener('beforeinstallprompt', (event) => {
+    event.preventDefault()
+    window.__2faInstallOffer = event
+  })
 })()

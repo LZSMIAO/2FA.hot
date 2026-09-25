@@ -39,14 +39,14 @@
       "sizes": "1280x800",
       "type": "image/jpeg",
       "form_factor": "wide",
-      "label": "สร้างหลายรหัส"
+      "label": "เครื่องมือสร้างรหัส TOTP แบบมัลติฟังก์ชัน"
     },
     {
       "src": "/app-screenshots/narrow-en.jpg",
       "sizes": "780x1688",
       "type": "image/jpeg",
       "form_factor": "narrow",
-      "label": "สร้างรหัสเดียว"
+      "label": "เครื่องมือสร้างรหัส TOTP แบบมัลติฟังก์ชัน"
     }
   ],
   "shortcuts": [

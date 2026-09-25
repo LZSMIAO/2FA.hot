@@ -39,14 +39,14 @@
       "sizes": "1280x800",
       "type": "image/jpeg",
       "form_factor": "wide",
-      "label": "Kod berkelompok"
+      "label": "Penjana Kod TOTP Pelbagai Fungsi"
     },
     {
       "src": "/app-screenshots/narrow-en.jpg",
       "sizes": "780x1688",
       "type": "image/jpeg",
       "form_factor": "narrow",
-      "label": "Kod tunggal"
+      "label": "Penjana Kod TOTP Pelbagai Fungsi"
     }
   ],
   "shortcuts": [

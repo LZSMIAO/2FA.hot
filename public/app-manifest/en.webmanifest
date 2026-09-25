@@ -39,14 +39,14 @@
       "sizes": "1280x800",
       "type": "image/jpeg",
       "form_factor": "wide",
-      "label": "Batch codes"
+      "label": "All-in-One TOTP Code Generator"
     },
     {
       "src": "/app-screenshots/narrow-en.jpg",
       "sizes": "780x1688",
       "type": "image/jpeg",
       "form_factor": "narrow",
-      "label": "Single code"
+      "label": "All-in-One TOTP Code Generator"
     }
   ],
   "shortcuts": [

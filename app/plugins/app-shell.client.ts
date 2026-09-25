@@ -9,8 +9,13 @@ type LaunchQueue = { setConsumer: (consumer: (params: { targetURL?: string }) =>
  * shortcut to where it points while a plain launch leaves the page as it was.
  */
 export default defineNuxtPlugin(() => {
-  // Already the app: there is nothing to install.
-  if (!runningAsApp()) window.addEventListener('beforeinstallprompt', offerInstall)
+  // Already the app: there is nothing to install. An offer made before the app
+  // started was kept by public/workspace-mode.js.
+  if (!runningAsApp()) {
+    const early = (window as { __2faInstallOffer?: Event }).__2faInstallOffer
+    if (early) offerInstall(early)
+    window.addEventListener('beforeinstallprompt', offerInstall)
+  }
   window.addEventListener('appinstalled', markInstalled)
   const queue = (window as { launchQueue?: LaunchQueue }).launchQueue
   queue?.setConsumer(({ targetURL }) => {

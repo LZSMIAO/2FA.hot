@@ -1073,10 +1073,13 @@ html[data-workspace-mode='batch'] .mode-tabs [id$='-trigger-batch'] {
   .workspace-summary-links {
     margin-inline-start: 0;
   }
-  /* Two icons with their switches share one row: offline left, history right. */
+  /* The icons and their switches share one row: install and offline on the
+     left, history on the right. */
   .workspace-summary-links {
     width: 100%;
-    justify-content: space-between;
+  }
+  .workspace-summary-links > .history-toggle {
+    margin-inline-start: auto;
   }
 }
 

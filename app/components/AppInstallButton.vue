@@ -1,41 +1,56 @@
 <script setup lang="ts">
 /*
  * Installs the site as an app where the browser offers it (not in Safari,
- * whose home screen tip lives with offline mode). Someone who already keeps
- * the site offline hears about it once, on a later visit; an install is
- * confirmed with where to find the app.
+ * whose home screen tip lives with offline mode). A returning visitor hears
+ * about it once; an install is confirmed with where to find the app.
  */
 const { tx } = useMessages()
 const { available, installed, install } = useAppInstall()
 const offline = useOfflineMode()
 const tip = shallowRef<'suggest' | 'installed' | null>(null)
 let timer: ReturnType<typeof setTimeout> | undefined
+let offerTimer: ReturnType<typeof setTimeout> | undefined
 function show(kind: 'suggest' | 'installed') {
   tip.value = kind
   clearTimeout(timer)
   timer = setTimeout(() => (tip.value = null), 10_000)
 }
+/** Here before this visit, as public/first-visit.js recorded it. */
+function returning() {
+  const first = Number(localStorage.getItem('2fa-first-visit') ?? NaN)
+  return Number.isFinite(first) && first < performance.timeOrigin
+}
 function suggest() {
   // Not over another tip, not in the visit that has just saved the files, and
   // not offline, where installing cannot finish.
-  if (!available.value || offline.status.value !== 'ready' || offline.justSaved.value) return
-  if (!navigator.onLine) return
+  if (!available.value || offline.justSaved.value || !navigator.onLine) return
   if (document.querySelector('.action-hint')) return
   try {
-    if (localStorage.getItem('2fa-install-tip-v1')) return
+    if (!returning() || localStorage.getItem('2fa-install-tip-v1')) return
     localStorage.setItem('2fa-install-tip-v1', '1')
   } catch {
     return
   }
   show('suggest')
 }
-onMounted(() => {
-  timer = setTimeout(suggest, 3_000)
-})
+// The browser may offer installing some time after the page has loaded.
+onMounted(() =>
+  watch(
+    available,
+    (offered) => {
+      clearTimeout(offerTimer)
+      if (offered) offerTimer = setTimeout(suggest, 3_000)
+    },
+    { immediate: true }
+  )
+)
 watch(installed, (value) => {
   if (value) show('installed')
 })
-onBeforeUnmount(() => clearTimeout(timer))
+onBeforeUnmount(() => {
+  clearTimeout(timer)
+  clearTimeout(offerTimer)
+})
 </script>
 <template>
   <div class="app-install">

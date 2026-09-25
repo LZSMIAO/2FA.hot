@@ -39,14 +39,14 @@
       "sizes": "1280x800",
       "type": "image/jpeg",
       "form_factor": "wide",
-      "label": "Kode massal"
+      "label": "Generator Kode TOTP Multifungsi"
     },
     {
       "src": "/app-screenshots/narrow-en.jpg",
       "sizes": "780x1688",
       "type": "image/jpeg",
       "form_factor": "narrow",
-      "label": "Kode tunggal"
+      "label": "Generator Kode TOTP Multifungsi"
     }
   ],
   "shortcuts": [

@@ -39,14 +39,14 @@
       "sizes": "1280x800",
       "type": "image/jpeg",
       "form_factor": "wide",
-      "label": "ఒకేసారి పలు కోడ్‌లు"
+      "label": "బహుళ ప్రయోజన TOTP కోడ్ జనరేటర్"
     },
     {
       "src": "/app-screenshots/narrow-en.jpg",
       "sizes": "780x1688",
       "type": "image/jpeg",
       "form_factor": "narrow",
-      "label": "ఒక కోడ్"
+      "label": "బహుళ ప్రయోజన TOTP కోడ్ జనరేటర్"
     }
   ],
   "shortcuts": [

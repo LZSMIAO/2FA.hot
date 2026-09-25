@@ -39,14 +39,14 @@
       "sizes": "1280x800",
       "type": "image/jpeg",
       "form_factor": "wide",
-      "label": "批量取码"
+      "label": "多功能 TOTP 验证码生成器"
     },
     {
       "src": "/app-screenshots/narrow-zh-CN.jpg",
       "sizes": "780x1688",
       "type": "image/jpeg",
       "form_factor": "narrow",
-      "label": "单条取码"
+      "label": "多功能 TOTP 验证码生成器"
     }
   ],
   "shortcuts": [

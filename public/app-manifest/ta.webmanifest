@@ -39,14 +39,14 @@
       "sizes": "1280x800",
       "type": "image/jpeg",
       "form_factor": "wide",
-      "label": "பல குறியீடுகள்"
+      "label": "பல்நோக்கு TOTP குறியீடு உருவாக்கி"
     },
     {
       "src": "/app-screenshots/narrow-en.jpg",
       "sizes": "780x1688",
       "type": "image/jpeg",
       "form_factor": "narrow",
-      "label": "ஒரு குறியீடு"
+      "label": "பல்நோக்கு TOTP குறியீடு உருவாக்கி"
     }
   ],
   "shortcuts": [

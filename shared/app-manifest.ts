@@ -51,20 +51,21 @@ export function appManifest(code: SupportedLocale, copy: ManifestCopy) {
       { src: '/app-icons/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
       { src: '/app-icons/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
     ],
+    // The empty home page: a screenshot never shows a key or a code.
     screenshots: [
       {
         src: `/app-screenshots/wide-${shots}.jpg`,
         sizes: '1280x800',
         type: 'image/jpeg',
         form_factor: 'wide',
-        label: copy.batch
+        label: copy.description
       },
       {
         src: `/app-screenshots/narrow-${shots}.jpg`,
         sizes: '780x1688',
         type: 'image/jpeg',
         form_factor: 'narrow',
-        label: copy.single
+        label: copy.description
       }
     ],
     // Right-click the dock icon, or hold the home screen icon, to go straight there.

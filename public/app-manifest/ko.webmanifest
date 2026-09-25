@@ -39,14 +39,14 @@
       "sizes": "1280x800",
       "type": "image/jpeg",
       "form_factor": "wide",
-      "label": "일괄 코드 생성"
+      "label": "다기능 TOTP 인증 코드 생성기"
     },
     {
       "src": "/app-screenshots/narrow-en.jpg",
       "sizes": "780x1688",
       "type": "image/jpeg",
       "form_factor": "narrow",
-      "label": "단일 코드 생성"
+      "label": "다기능 TOTP 인증 코드 생성기"
     }
   ],
   "shortcuts": [

@@ -39,14 +39,14 @@
       "sizes": "1280x800",
       "type": "image/jpeg",
       "form_factor": "wide",
-      "label": "Toplu kodlar"
+      "label": "Çok İşlevli TOTP Kod Üretici"
     },
     {
       "src": "/app-screenshots/narrow-en.jpg",
       "sizes": "780x1688",
       "type": "image/jpeg",
       "form_factor": "narrow",
-      "label": "Tek kod"
+      "label": "Çok İşlevli TOTP Kod Üretici"
     }
   ],
   "shortcuts": [

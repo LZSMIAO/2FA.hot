@@ -39,14 +39,14 @@
       "sizes": "1280x800",
       "type": "image/jpeg",
       "form_factor": "wide",
-      "label": "Пакет кодів"
+      "label": "Багатофункціональний генератор кодів TOTP"
     },
     {
       "src": "/app-screenshots/narrow-en.jpg",
       "sizes": "780x1688",
       "type": "image/jpeg",
       "form_factor": "narrow",
-      "label": "Один код"
+      "label": "Багатофункціональний генератор кодів TOTP"
     }
   ],
   "shortcuts": [

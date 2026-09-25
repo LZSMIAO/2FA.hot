@@ -1180,10 +1180,12 @@ onBeforeUnmount(() => {
   }
 }
 @media (max-width: 700px), (max-height: 500px) and (pointer: coarse) {
+  /* The line sits as far from the settings under it as from the buttons above
+     (1rem here plus their 0.25rem). */
   .input-details {
     position: relative;
     margin-top: 1rem;
-    padding-top: 1rem;
+    padding-top: 1.25rem;
     border-top: 1px solid var(--ui-border);
   }
   .input-details .input-notices {
@@ -1191,10 +1193,17 @@ onBeforeUnmount(() => {
     margin: 0 0 0.75rem;
     text-align: start;
   }
+  /* Holding only screen reader text, it takes no room. */
+  .input-details .input-notices:not(:has(> :not(.sr-only))) {
+    margin: 0;
+  }
   .input-details .advanced {
     position: static;
     border-top: 0;
     padding-top: 0;
+  }
+  .input-details .option-grid {
+    margin-top: 0;
   }
   .workspace :deep(.otp-digits) {
     font-size: clamp(2rem, 8vw, 3rem);

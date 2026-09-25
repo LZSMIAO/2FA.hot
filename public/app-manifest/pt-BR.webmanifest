@@ -39,14 +39,14 @@
       "sizes": "1280x800",
       "type": "image/jpeg",
       "form_factor": "wide",
-      "label": "Códigos em lote"
+      "label": "Gerador multifuncional de códigos TOTP"
     },
     {
       "src": "/app-screenshots/narrow-en.jpg",
       "sizes": "780x1688",
       "type": "image/jpeg",
       "form_factor": "narrow",
-      "label": "Código individual"
+      "label": "Gerador multifuncional de códigos TOTP"
     }
   ],
   "shortcuts": [

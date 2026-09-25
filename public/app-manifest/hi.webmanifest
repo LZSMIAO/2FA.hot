@@ -39,14 +39,14 @@
       "sizes": "1280x800",
       "type": "image/jpeg",
       "form_factor": "wide",
-      "label": "एक साथ कई कोड"
+      "label": "बहुउद्देशीय TOTP कोड जनरेटर"
     },
     {
       "src": "/app-screenshots/narrow-en.jpg",
       "sizes": "780x1688",
       "type": "image/jpeg",
       "form_factor": "narrow",
-      "label": "एक कोड"
+      "label": "बहुउद्देशीय TOTP कोड जनरेटर"
     }
   ],
   "shortcuts": [

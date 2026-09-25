@@ -39,14 +39,14 @@
       "sizes": "1280x800",
       "type": "image/jpeg",
       "form_factor": "wide",
-      "label": "Maramihang code"
+      "label": "Multifunctional na TOTP Code Generator"
     },
     {
       "src": "/app-screenshots/narrow-en.jpg",
       "sizes": "780x1688",
       "type": "image/jpeg",
       "form_factor": "narrow",
-      "label": "Isang code"
+      "label": "Multifunctional na TOTP Code Generator"
     }
   ],
   "shortcuts": [
