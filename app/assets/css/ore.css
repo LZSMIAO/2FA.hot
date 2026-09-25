@@ -838,9 +838,9 @@ html[data-workspace-mode='batch'] .mode-tabs [id$='-trigger-batch'] {
     margin: 0.5rem 0 0;
   }
   html:root .site-footer .footer-pages {
-    /* Grouped at the end, under the icons; spread across the width, four short
+    /* Grouped in the middle of the footer; spread across the width, four short
        links sat a column apart. A wrapped row leaves room for both rows' targets. */
-    justify-content: flex-end;
+    justify-content: center;
     gap: 1.25rem;
   }
   html:root .site-footer .footer-pages a {
@@ -865,8 +865,8 @@ html[data-workspace-mode='batch'] .mode-tabs [id$='-trigger-batch'] {
   html:root .site-footer .footer-contacts {
     position: absolute;
     /* The envelope's top level with the tops of the first line's letters,
-       and the last icon's edge with the end of the links under it; the 44px
-       targets reach past both. */
+       and the last icon's edge with the text's end; the 44px targets reach
+       past both. */
     inset-block-start: calc(0.875rem - 0.5625rem);
     inset-inline-end: 0.5rem;
   }
