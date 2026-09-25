@@ -532,15 +532,9 @@ const date = (v: number) =>
         <McChest />
         <h2>{{ tx(vault.exists.value ? '解锁本地历史' : '开启本地历史') }}</h2>
       </div>
-      <p>
-        {{
-          tx(
-            vault.exists.value
-              ? '输入本地口令，查看这台设备保存的记录。'
-              : '记录保存在当前浏览器，可选择密码保护。'
-          )
-        }}
-      </p>
+      <!-- Opening history for the first time, the page's own line above says
+           where records live; saying it again here only repeated it. -->
+      <p v-if="vault.exists.value">{{ tx('输入本地口令，查看这台设备保存的记录。') }}</p>
       <form class="unlock-form" @submit.prevent="unlock">
         <UCheckbox v-if="!vault.exists.value" v-model="protect" :label="tx('使用密码保护')" />
         <p v-if="!vault.exists.value && !protect" class="field-hint">
