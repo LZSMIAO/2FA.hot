@@ -783,14 +783,16 @@ html[data-workspace-mode='batch'] .mode-tabs [id$='-trigger-batch'] {
     /* The tab strip already contributes 2px below the buttons. */
     margin-top: calc(1rem - 2px);
   }
+  /* The heading as far from the panel's top as the fields are from its sides,
+     and clear of the field under it; 8px and 4px read as cramped. */
   html[data-mobile] .home .input-panel,
   html[data-mobile] .home .batch-input {
-    padding-top: 0.5rem;
+    padding-top: 1rem;
   }
   html[data-mobile] .home .input-panel > .section-heading,
   html[data-mobile] .home .batch-input > .section-heading {
     min-height: 0;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.75rem;
   }
   html[data-mobile] .home .section-heading .workspace-title {
     font-size: 1.125rem;
