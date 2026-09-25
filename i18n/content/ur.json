@@ -127,7 +127,7 @@
   "guides": [
     {
       "slug": "what-is-2fa",
-      "title": "2FA کیا ہے؟ TOTP تصدیقی کوڈ کیسے کام کرتے ہیں",
+      "title": "2FA کیا ہے؟ TOTP کیسے کام کرتا ہے",
       "description": "دو عاملی تصدیق، خفیہ کلید اور کوڈ کا فرق، اور موجودہ سیٹ اپ کلید سے TOTP جنریٹر استعمال کرنا سمجھیں۔",
       "sources": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "slug": "totp-code-not-working",
-      "title": "2FA کوڈ کام نہیں کر رہا؟ غلط TOTP کوڈ کی جانچ",
+      "title": "2FA کوڈ کام نہیں کر رہا؟",
       "description": "سروس کے کوڈ رد کرنے پر آلے کا وقت، کوڈ کی میعاد، سیٹ اپ کلید اور TOTP پیرامیٹر جانچیں۔",
       "sources": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "slug": "google-authenticator-import",
-      "title": "Google Authenticator کی QR برآمدات 2fa.hot میں درآمد کریں",
+      "title": "Google Authenticator سے درآمد",
       "description": "Google Authenticator کے برآمدی QR درآمد کریں، متعدد حصے سنبھالیں، اکاؤنٹس دیکھیں اور سمجھیں براؤزر میں کیا محفوظ ہوتا ہے۔",
       "sources": [
         {

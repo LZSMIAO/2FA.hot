@@ -127,7 +127,7 @@
   "guides": [
     {
       "slug": "what-is-2fa",
-      "title": "Wat is 2FA? Hoe TOTP-authenticatorcodes werken",
+      "title": "Wat is 2FA? Zo werkt TOTP",
       "description": "Begrijp tweefactorauthenticatie, het verschil tussen een geheim en een code en het gebruik van een TOTP-generator met je bestaande instelsleutel.",
       "sources": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "slug": "totp-code-not-working",
-      "title": "Werkt je 2FA-code niet? Los ongeldige TOTP-codes op",
+      "title": "Werkt je 2FA-code niet?",
       "description": "Controleer de apparaattijd, verlopen codes, het instelgeheim en de TOTP-parameters wanneer een dienst je authenticatorcode weigert.",
       "sources": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "slug": "google-authenticator-import",
-      "title": "Google Authenticator-QR-exports importeren in 2fa.hot",
+      "title": "Importeren uit Google Authenticator",
       "description": "Importeer Google Authenticator-export-QR-codes, verwerk meerdere delen, controleer accounts en begrijp wat in je browser wordt opgeslagen.",
       "sources": [
         {

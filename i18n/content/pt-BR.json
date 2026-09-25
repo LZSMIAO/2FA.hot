@@ -127,7 +127,7 @@
   "guides": [
     {
       "slug": "what-is-2fa",
-      "title": "O que é 2FA? Como funcionam os códigos TOTP de autenticadores",
+      "title": "O que é 2FA? Como funciona o TOTP",
       "description": "Entenda a autenticação de dois fatores, a diferença entre um segredo e um código e como usar um gerador TOTP com sua chave de configuração existente.",
       "sources": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "slug": "totp-code-not-working",
-      "title": "O código 2FA não funciona? Resolva códigos TOTP inválidos",
+      "title": "Código 2FA não funciona?",
       "description": "Confira hora do dispositivo, códigos expirados, segredo de configuração e parâmetros TOTP quando um serviço rejeitar seu código de autenticador.",
       "sources": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "slug": "google-authenticator-import",
-      "title": "Importar exportações QR do Google Authenticator para o 2fa.hot",
+      "title": "Importar do Google Authenticator",
       "description": "Importe códigos QR de exportação do Google Authenticator, lide com várias partes, revise contas e entenda o que fica armazenado no navegador.",
       "sources": [
         {

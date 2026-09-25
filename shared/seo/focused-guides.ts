@@ -6,7 +6,7 @@ export const focusedGuides: Record<'en' | 'zh-CN', Guide[]> = {
   en: [
     {
       slug: 'google-authenticator-web',
-      title: 'Google Authenticator web version: get codes on a computer',
+      title: 'Google Authenticator on a computer',
       description:
         'Google Authenticator has no official web or PC version. Learn how to get the same codes on a computer from your setup key or export QR, and the trade-offs.',
       sections: [
@@ -86,7 +86,7 @@ export const focusedGuides: Record<'en' | 'zh-CN', Guide[]> = {
     },
     {
       slug: 'find-2fa-secret-key',
-      title: 'Where to find your 2FA secret key, and what it is',
+      title: 'Where to find your 2FA secret key',
       description:
         'What a 2FA secret key looks like, where services show it during authenticator setup, how to get a new one if you did not save it, and how to store it safely.',
       sections: [
@@ -158,7 +158,7 @@ export const focusedGuides: Record<'en' | 'zh-CN', Guide[]> = {
     },
     {
       slug: 'batch-2fa-codes',
-      title: 'Batch 2FA code generator: many TOTP codes at once',
+      title: 'Get 2FA codes in batches',
       description:
         'Paste up to 100 2FA secrets, spreadsheet rows or mixed text and get every current TOTP code at once in your browser, with safety tips for teams.',
       sections: [
@@ -237,7 +237,7 @@ export const focusedGuides: Record<'en' | 'zh-CN', Guide[]> = {
     },
     {
       slug: 'otpauth-uri-format',
-      title: 'otpauth URI format: the otpauth:// 2FA link explained',
+      title: 'The otpauth:// link format',
       description:
         'How the otpauth:// Key URI works: type, label, secret, issuer, algorithm, digits and period, what a 2FA QR code contains, and how to handle it safely.',
       sections: [
@@ -308,9 +308,9 @@ export const focusedGuides: Record<'en' | 'zh-CN', Guide[]> = {
     },
     {
       slug: 'enable-authenticator-app-2fa',
-      title: 'Set up authenticator app 2FA: GitHub, Discord, X, Binance',
+      title: 'Turn on authenticator app 2FA',
       description:
-        'How to enable 2FA with an authenticator app: scan the QR code, save the setup key and backup codes, with notes for GitHub, Discord, X and Binance.',
+        'How to enable 2FA with an authenticator app: scan the QR code, save the setup key and backup codes, with notes for GitHub, Discord and X.',
       sections: [
         {
           id: 'before-you-start',
@@ -346,13 +346,12 @@ export const focusedGuides: Record<'en' | 'zh-CN', Guide[]> = {
         },
         {
           id: 'service-notes',
-          title: 'Notes for GitHub, Discord, X and Binance',
+          title: 'Notes for GitHub, Discord and X',
           paragraphs: [
             'The menu paths below follow each service’s official help pages at the time of writing. Services rename and move settings, so look for similar wording if yours differs.',
             'GitHub: click your profile picture → Settings → Password and authentication, then choose Enable two-factor authentication. Scan the QR code, or click the setup key link to see the secret as text. Enter the code from your app, then download your recovery codes and confirm that you saved them to finish. GitHub requires two-factor authentication for accounts that contribute code.',
             'Discord: on desktop, open User Settings with the gear icon next to your username, go to My Account and, under Password and Authentication, choose Enable Authenticator App. On mobile, tap your avatar, then the gear icon, then Account. Scan the QR code or copy the secret key, enter the six-digit code, then save the backup codes. Discord says it cannot help you back into the account if you lose them.',
-            'X: go to More → Settings and privacy → Security and account access → Security → Two-factor authentication, then select Authentication app. X may ask for your password and a confirmed email address before showing the QR code, and it accepts any TOTP app. Text message two-factor authentication is limited to X Premium subscribers, so an authenticator app is the usual choice.',
-            'Binance: on the website, hover over the profile icon and choose Account → Security, then Manage next to Authenticator App. In the app, open Account → your profile → Security → Authenticator App. Binance shows a QR code and a setup key, and advises not to press Next until your authenticator is set up. Then enter the six-digit code to confirm. For an account that holds funds, keep the key offline and take particular care.'
+            'X: go to More → Settings and privacy → Security and account access → Security → Two-factor authentication, then select Authentication app. X may ask for your password and a confirmed email address before showing the QR code, and it accepts any TOTP app. Text message two-factor authentication is limited to X Premium subscribers, so an authenticator app is the usual choice.'
           ]
         },
         {
@@ -375,14 +374,14 @@ export const focusedGuides: Record<'en' | 'zh-CN', Guide[]> = {
           url: 'https://support.discord.com/hc/en-us/articles/26304482627095-Using-an-Authenticator-App-on-Discord'
         },
         {
-          title: 'Binance: How to enable Google Authenticator for 2FA on the website',
-          url: 'https://www.binance.com/en/support/faq/how-to-enable-google-authenticator-for-2fa-on-the-binance-website-115000433432'
+          title: 'X Help Center: How to use two-factor authentication',
+          url: 'https://help.x.com/en/managing-your-account/two-factor-authentication'
         }
       ]
     },
     {
       slug: 'lost-authenticator-recovery',
-      title: 'Lost phone or authenticator app? How to recover 2FA',
+      title: 'Lost your 2FA phone?',
       description:
         'Lost the phone with your authenticator app? Look for a saved setup key, backup codes or another sign-in method, then use the service’s official recovery.',
       sections: [
@@ -460,7 +459,7 @@ export const focusedGuides: Record<'en' | 'zh-CN', Guide[]> = {
     },
     {
       slug: 'microsoft-authenticator-backup',
-      title: 'Microsoft Authenticator backup, export and moving phones',
+      title: 'Back up Microsoft Authenticator',
       description:
         'Back up Microsoft Authenticator on iPhone or Android, see why accounts cannot be exported to another app, and re-enroll 2FA while keeping each new setup key.',
       sections: [
@@ -550,7 +549,7 @@ export const focusedGuides: Record<'en' | 'zh-CN', Guide[]> = {
   'zh-CN': [
     {
       slug: 'google-authenticator-web',
-      title: '谷歌身份验证器网页版与电脑版：在电脑上取码',
+      title: '谷歌身份验证器网页版',
       description:
         '谷歌身份验证器（Google Authenticator）没有官方网页版或电脑版。本文介绍如何用已保存的密钥或导出二维码在电脑上获取相同验证码，以及相应的安全取舍。',
       sections: [
@@ -630,7 +629,7 @@ export const focusedGuides: Record<'en' | 'zh-CN', Guide[]> = {
     },
     {
       slug: 'find-2fa-secret-key',
-      title: '2FA 密钥在哪里？密钥是什么及如何保存',
+      title: '2FA 密钥在哪里找',
       description:
         '2FA 密钥是什么、长什么样？了解设置验证器时在哪里找到密钥，没保存时如何重新获取，以及如何安全保存、为什么不能随意发给别人。',
       sections: [
@@ -702,7 +701,7 @@ export const focusedGuides: Record<'en' | 'zh-CN', Guide[]> = {
     },
     {
       slug: 'batch-2fa-codes',
-      title: '批量获取 2FA 验证码：一次粘贴多个密钥',
+      title: '批量获取 2FA 验证码',
       description:
         '一次粘贴最多 100 个 2FA 密钥、Excel 表格行或混合文本，在浏览器中批量获取当前 TOTP 验证码，并了解团队使用时的安全建议。',
       sections: [
@@ -781,7 +780,7 @@ export const focusedGuides: Record<'en' | 'zh-CN', Guide[]> = {
     },
     {
       slug: 'otpauth-uri-format',
-      title: 'otpauth 链接格式：otpauth:// 参数详解',
+      title: 'otpauth 链接格式详解',
       description:
         '了解 otpauth:// 链接的结构，secret、issuer、algorithm、digits、period 等参数的含义与默认值，以及 2FA 二维码的内容与安全处理。',
       sections: [
@@ -852,9 +851,9 @@ export const focusedGuides: Record<'en' | 'zh-CN', Guide[]> = {
     },
     {
       slug: 'enable-authenticator-app-2fa',
-      title: '如何开启两步验证？验证器 App 设置教程',
+      title: '如何开启验证器两步验证',
       description:
-        '用验证器 App 开启两步验证：扫描二维码、确认验证码、保存设置密钥和备用码，并附 GitHub、Discord、X 和币安的设置说明。',
+        '用验证器 App 开启两步验证：扫描二维码、确认验证码、保存设置密钥和备用码，并附 GitHub、Discord 和 X 的设置说明。',
       sections: [
         {
           id: 'before-you-start',
@@ -888,13 +887,12 @@ export const focusedGuides: Record<'en' | 'zh-CN', Guide[]> = {
         },
         {
           id: 'service-notes',
-          title: 'GitHub、Discord、X 和币安的设置说明',
+          title: 'GitHub、Discord 和 X 的设置说明',
           paragraphs: [
             '以下菜单路径依据撰写本文时各服务的官方帮助页面。服务可能调整设置的名称和位置，如果界面不同，请寻找意思相近的选项。',
             'GitHub：点击头像 → Settings → Password and authentication，选择 Enable two-factor authentication。扫描二维码，或点击 setup key 链接查看文字密钥。输入 App 中的验证码后，下载恢复码并确认已保存，才算完成。GitHub 要求贡献代码的账号开启两步验证。',
             'Discord：电脑端点击用户名旁的齿轮图标打开用户设置，在我的账号页面的密码与验证部分选择启用验证器应用；手机端依次点击右下角头像、右上角齿轮图标和账号，即可找到同一选项。扫描二维码或复制密钥，输入 6 位验证码，然后保存备用码。Discord 表示，备用码丢失后它无法帮你找回账号。',
-            'X：在侧边菜单的更多中打开设置和隐私，依次进入安全和账号访问 → 安全 → 双重验证，选择身份验证应用。X 可能先要求输入密码并确认邮箱，之后才显示二维码，任何 TOTP 应用都可以使用。短信双重验证仅向 X Premium 订阅用户提供，因此验证器 App 通常是更实际的选择。',
-            '币安：网页版将鼠标移到个人头像，依次进入账户 → 安全，点击身份验证器应用旁的管理；App 中则是账户 → 个人资料 → 安全 → 身份验证器应用。币安会显示二维码和设置密钥，并提示在验证器设置完成前不要点击下一步。之后输入 6 位验证码完成确认。账户涉及资金时，更要离线妥善保存密钥。'
+            'X：在侧边菜单的更多中打开设置和隐私，依次进入安全和账号访问 → 安全 → 双重验证，选择身份验证应用。X 可能先要求输入密码并确认邮箱，之后才显示二维码，任何 TOTP 应用都可以使用。短信双重验证仅向 X Premium 订阅用户提供，因此验证器 App 通常是更实际的选择。'
           ]
         },
         {
@@ -917,14 +915,14 @@ export const focusedGuides: Record<'en' | 'zh-CN', Guide[]> = {
           url: 'https://support.discord.com/hc/en-us/articles/26304482627095-Using-an-Authenticator-App-on-Discord'
         },
         {
-          title: '币安：如何在网页版启用 Google 身份验证器',
-          url: 'https://www.binance.com/en/support/faq/how-to-enable-google-authenticator-for-2fa-on-the-binance-website-115000433432'
+          title: 'X 帮助中心：如何使用双重验证',
+          url: 'https://help.x.com/en/managing-your-account/two-factor-authentication'
         }
       ]
     },
     {
       slug: 'lost-authenticator-recovery',
-      title: '2FA 手机丢了怎么办？验证器丢失后的恢复方法',
+      title: '2FA 手机丢了怎么办',
       description:
         '手机或验证器 App 丢了怎么办？先找设置密钥、备用码和其他已绑定的验证方式，再走原服务的官方账号恢复流程，恢复后重新绑定并做好备份。',
       sections: [
@@ -1002,7 +1000,7 @@ export const focusedGuides: Record<'en' | 'zh-CN', Guide[]> = {
     },
     {
       slug: 'microsoft-authenticator-backup',
-      title: 'Microsoft Authenticator 备份与导出',
+      title: 'Microsoft Authenticator 备份',
       description:
         'Microsoft Authenticator（微软身份验证器）如何在 iPhone 和安卓手机上备份、换手机后恢复，为什么不能导出到其他应用，以及怎样重新绑定并保存新密钥。',
       sections: [

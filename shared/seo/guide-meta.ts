@@ -3,7 +3,7 @@ export const guideMetadata = {
   en: {
     'what-is-2fa': {
       slug: 'what-is-2fa',
-      title: 'What is 2FA? How TOTP authenticator codes work',
+      title: 'What is 2FA? How TOTP works',
       description:
         'Understand two-factor authentication, the difference between a secret and a code, and how to use a TOTP generator with your existing setup key.',
       sources: [
@@ -19,7 +19,7 @@ export const guideMetadata = {
     },
     'totp-code-not-working': {
       slug: 'totp-code-not-working',
-      title: '2FA code not working? Troubleshoot invalid TOTP codes',
+      title: '2FA code not working?',
       description:
         'Check device time, expired codes, the setup secret and TOTP parameters when a service rejects your authenticator code.',
       sources: [
@@ -35,7 +35,7 @@ export const guideMetadata = {
     },
     'google-authenticator-import': {
       slug: 'google-authenticator-import',
-      title: 'Import Google Authenticator QR exports into 2fa.hot',
+      title: 'Import from Google Authenticator',
       description:
         'Import Google Authenticator export QR codes, handle multiple QR parts, review accounts and understand what is stored in your browser.',
       sources: [
@@ -53,7 +53,7 @@ export const guideMetadata = {
   'zh-CN': {
     'what-is-2fa': {
       slug: 'what-is-2fa',
-      title: '2FA 是什么？TOTP 验证码与双重验证入门',
+      title: '2FA 是什么？TOTP 入门',
       description:
         '了解 2FA 双重验证、TOTP 动态验证码、密钥和验证码的区别，以及如何用已有密钥在线取码。',
       sources: [
@@ -69,7 +69,7 @@ export const guideMetadata = {
     },
     'totp-code-not-working': {
       slug: 'totp-code-not-working',
-      title: '2FA 验证码不正确？TOTP 无效问题排查',
+      title: '2FA 验证码无效怎么办',
       description:
         '从设备时间、验证码过期、账号密钥和算法参数排查 2FA 验证失败，并了解何时需要使用账号恢复流程。',
       sources: [
@@ -85,7 +85,7 @@ export const guideMetadata = {
     },
     'google-authenticator-import': {
       slug: 'google-authenticator-import',
-      title: '如何导入 Google Authenticator 导出二维码',
+      title: '导入 Google Authenticator 二维码',
       description:
         '将 Google Authenticator 导出二维码导入 2fa.hot，处理多张二维码、选择账号，并了解导入后的本地保存方式。',
       sources: [

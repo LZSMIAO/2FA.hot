@@ -127,7 +127,7 @@
   "guides": [
     {
       "slug": "what-is-2fa",
-      "title": "מה זה 2FA? כיצד פועלים קודי מאמת TOTP",
+      "title": "מה זה 2FA? איך TOTP עובד",
       "description": "הבינו אימות דו-גורמי, את ההבדל בין סוד לקוד, וכיצד להשתמש במחולל TOTP עם מפתח ההגדרה הקיים.",
       "sources": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "slug": "totp-code-not-working",
-      "title": "קוד 2FA לא עובד? פתרון בעיות בקודי TOTP לא תקינים",
+      "title": "קוד 2FA לא עובד?",
       "description": "בדקו את שעון המכשיר, תפוגת הקוד, סוד ההגדרה ופרמטרי TOTP כשהשירות דוחה קוד מאמת.",
       "sources": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "slug": "google-authenticator-import",
-      "title": "ייבוא קודי QR לייצוא של Google Authenticator אל 2fa.hot",
+      "title": "ייבוא מ-Google Authenticator",
       "description": "ייבאו קודי QR מ-Google Authenticator, טפלו במספר חלקים, בדקו חשבונות והבינו מה נשמר בדפדפן.",
       "sources": [
         {

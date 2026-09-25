@@ -127,7 +127,7 @@
   "guides": [
     {
       "slug": "what-is-2fa",
-      "title": "2FA అంటే ఏమిటి? TOTP ఆథెంటికేటర్ కోడ్‌లు ఎలా పనిచేస్తాయి",
+      "title": "2FA అంటే ఏమిటి? TOTP ఎలా పనిచేస్తుంది",
       "description": "రెండు-కారకాల ప్రమాణీకరణ, రహస్య కీకి కోడ్‌కు తేడా, ప్రస్తుత సెటప్ కీతో TOTP జనరేటర్ వాడటం అర్థం చేసుకోండి.",
       "sources": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "slug": "totp-code-not-working",
-      "title": "2FA కోడ్ పనిచేయడం లేదా? చెల్లని TOTP కోడ్‌ల పరిష్కారం",
+      "title": "2FA కోడ్ పనిచేయడం లేదా?",
       "description": "సేవ కోడ్ తిరస్కరిస్తే పరికరం సమయం, కోడ్ గడువు, సెటప్ రహస్యం, TOTP పారామీటర్లు చూడండి.",
       "sources": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "slug": "google-authenticator-import",
-      "title": "Google Authenticator ఎగుమతి QRను 2fa.hotలో తీసుకోండి",
+      "title": "Google Authenticator నుండి దిగుమతి",
       "description": "Google Authenticator ఎగుమతి QR దిగుమతి, అనేక భాగాల నిర్వహణ, ఖాతాల పరిశీలన, బ్రౌజర్‌లో నిలిచేవి అర్థం చేసుకోండి.",
       "sources": [
         {

@@ -127,7 +127,7 @@
   "guides": [
     {
       "slug": "what-is-2fa",
-      "title": "Apakah 2FA? Cara kod pengesah TOTP berfungsi",
+      "title": "Apakah 2FA? Cara TOTP berfungsi",
       "description": "Fahami pengesahan dua faktor, beza antara rahsia dengan kod, serta cara menggunakan penjana TOTP dengan kunci persediaan sedia ada.",
       "sources": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "slug": "totp-code-not-working",
-      "title": "Kod 2FA tidak berfungsi? Selesaikan kod TOTP tidak sah",
+      "title": "Kod 2FA tidak berfungsi?",
       "description": "Semak masa peranti, kod tamat tempoh, rahsia persediaan dan parameter TOTP apabila perkhidmatan menolak kod pengesah anda.",
       "sources": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "slug": "google-authenticator-import",
-      "title": "Import eksport QR Google Authenticator ke 2fa.hot",
+      "title": "Import dari Google Authenticator",
       "description": "Import kod QR eksport Google Authenticator, kendalikan beberapa bahagian QR, semak akaun dan fahami apa yang disimpan dalam pelayar anda.",
       "sources": [
         {

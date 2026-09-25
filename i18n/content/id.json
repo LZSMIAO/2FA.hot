@@ -127,7 +127,7 @@
   "guides": [
     {
       "slug": "what-is-2fa",
-      "title": "Apa itu 2FA? Cara kerja kode autentikator TOTP",
+      "title": "Apa itu 2FA? Cara kerja TOTP",
       "description": "Pahami autentikasi dua faktor, perbedaan rahasia dan kode, serta cara menggunakan pembuat TOTP dengan kunci penyiapan yang sudah Anda miliki.",
       "sources": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "slug": "totp-code-not-working",
-      "title": "Kode 2FA tidak berfungsi? Atasi kode TOTP tidak valid",
+      "title": "Kode 2FA tidak berfungsi?",
       "description": "Periksa waktu perangkat, kode kedaluwarsa, rahasia penyiapan, dan parameter TOTP saat layanan menolak kode autentikator Anda.",
       "sources": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "slug": "google-authenticator-import",
-      "title": "Impor ekspor QR Google Authenticator ke 2fa.hot",
+      "title": "Impor dari Google Authenticator",
       "description": "Impor kode QR ekspor Google Authenticator, tangani beberapa bagian QR, tinjau akun, dan pahami apa yang disimpan dalam peramban Anda.",
       "sources": [
         {

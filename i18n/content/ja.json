@@ -127,7 +127,7 @@
   "guides": [
     {
       "slug": "what-is-2fa",
-      "title": "2FAとは？TOTP認証コードの仕組み",
+      "title": "2FAとは？TOTPの仕組み",
       "description": "二要素認証、シークレットとコードの違い、既存の設定キーでTOTP生成ツールを使う方法を解説します。",
       "sources": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "slug": "totp-code-not-working",
-      "title": "2FAコードが使えない？無効なTOTPコードの対処法",
+      "title": "2FAコードが使えないとき",
       "description": "コードが拒否されるときは、端末の時刻、有効期限、設定キー、TOTPパラメータを確認しましょう。",
       "sources": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "slug": "google-authenticator-import",
-      "title": "Google AuthenticatorのエクスポートQRを2fa.hotに取り込む",
+      "title": "Google Authenticatorから取り込む",
       "description": "Google AuthenticatorのエクスポートQR、複数パート、アカウント確認、ブラウザに保存される情報を解説します。",
       "sources": [
         {
@@ -290,7 +290,7 @@
     },
     {
       "slug": "google-authenticator-web",
-      "title": "Google AuthenticatorをPCで使う方法とWeb版",
+      "title": "Google AuthenticatorをPCで使う",
       "description": "Google Authenticatorに公式のWeb版・PC版はありません。シークレットキーやエクスポートQRを使ってPCで同じコードを表示する方法と注意点を解説します。",
       "sections": [
         {
@@ -369,7 +369,7 @@
     },
     {
       "slug": "find-2fa-secret-key",
-      "title": "2段階認証のシークレットキーとは？確認場所と保管方法",
+      "title": "2FAシークレットキーの確認方法",
       "description": "2段階認証のシークレットキーとは何か、設定時にどこで確認できるか、保存し忘れたときの再取得方法、安全な保管と共有の注意点を解説します。",
       "sections": [
         {
@@ -440,7 +440,7 @@
     },
     {
       "slug": "batch-2fa-codes",
-      "title": "2FAコード一括生成：複数のシークレットを一度に",
+      "title": "2FAコードを一括生成",
       "description": "最大100件の2FAシークレットやExcelの行、混在したテキストを貼り付けて、現在のTOTPコードをブラウザーで一括取得する方法と、チームで使うときの注意点を解説します。",
       "sections": [
         {
@@ -518,7 +518,7 @@
     },
     {
       "slug": "otpauth-uri-format",
-      "title": "otpauth URLの形式とは？otpauth://の中身を解説",
+      "title": "otpauth URLの形式",
       "description": "otpauth://リンクの構造、secret、issuer、algorithm、digits、periodの意味と既定値、2FAのQRコードの中身と安全な扱い方を解説します。",
       "sections": [
         {
@@ -588,8 +588,8 @@
     },
     {
       "slug": "enable-authenticator-app-2fa",
-      "title": "二段階認証の設定方法｜認証アプリで有効にする手順",
-      "description": "認証アプリで二段階認証を有効にする手順と、設定キーやバックアップコードの保管方法を解説。GitHub、Discord、X、Binanceの設定の要点も紹介します。",
+      "title": "認証アプリで二段階認証を設定",
+      "description": "認証アプリで二段階認証を有効にする手順と、設定キーやバックアップコードの保管方法を解説。GitHub、Discord、Xの設定の要点も紹介します。",
       "sections": [
         {
           "id": "before-you-start",
@@ -623,13 +623,12 @@
         },
         {
           "id": "service-notes",
-          "title": "GitHub・Discord・X・Binanceの設定の要点",
+          "title": "GitHub・Discord・Xの設定の要点",
           "paragraphs": [
             "以下のメニューは、執筆時点の各サービス公式ヘルプに基づいています。名称や場所は変わることがあるため、表示が違う場合は近い名前の項目を探してください。",
             "GitHub：プロフィール画像 → Settings → Password and authentication を開き、Enable two-factor authentication を選びます。QRコードを読み取るか、setup key のリンクからキーを文字で表示します。アプリのコードを入力したら、リカバリーコードをダウンロードし、保存したことを確認して設定を完了します。GitHubでは、コードに貢献するアカウントに二段階認証が求められています。",
             "Discord：パソコンではユーザー名の横の歯車アイコンからユーザー設定を開き、マイアカウントのパスワードと認証の欄で認証アプリの有効化を選びます。スマホでは右下のアバター、右上の歯車アイコン、アカウントの順に開くと同じ項目があります。QRコードを読み取るかキーをコピーし、6桁のコードを入力したら、バックアップコードを保存します。Discordは、バックアップコードを失うとアカウントの回復を手伝えないとしています。",
-            "X：サイドメニューの「もっと見る」から「設定とプライバシー」を開き、「セキュリティとアカウントアクセス」→「セキュリティ」→「2要素認証」の順に進んで、「認証アプリ」を選びます。QRコードの表示前にパスワードとメールアドレスの確認を求められることがあり、TOTPアプリならどれでも使えます。SMSによる2要素認証はX Premiumの加入者に限られるため、認証アプリが現実的な選択肢です。",
-            "Binance：ウェブ版ではプロフィールアイコンからアカウント → セキュリティを開き、認証アプリの管理を選びます。アプリではアカウント → プロフィール → セキュリティ → 認証アプリの順です。QRコードと設定キーが表示され、認証アプリの設定が終わるまで次へを押さないよう案内されています。その後6桁のコードを入力して確認します。資産を扱うアカウントなので、キーはオフラインで特に慎重に保管してください。"
+            "X：サイドメニューの「もっと見る」から「設定とプライバシー」を開き、「セキュリティとアカウントアクセス」→「セキュリティ」→「2要素認証」の順に進んで、「認証アプリ」を選びます。QRコードの表示前にパスワードとメールアドレスの確認を求められることがあり、TOTPアプリならどれでも使えます。SMSによる2要素認証はX Premiumの加入者に限られるため、認証アプリが現実的な選択肢です。"
           ]
         },
         {
@@ -652,14 +651,14 @@
           "url": "https://support.discord.com/hc/en-us/articles/26304482627095-Using-an-Authenticator-App-on-Discord"
         },
         {
-          "title": "Binance：ウェブサイトでGoogle Authenticatorの2FAを有効にする方法",
-          "url": "https://www.binance.com/en/support/faq/how-to-enable-google-authenticator-for-2fa-on-the-binance-website-115000433432"
+          "title": "Xヘルプセンター：2要素認証の使い方",
+          "url": "https://help.x.com/en/managing-your-account/two-factor-authentication"
         }
       ]
     },
     {
       "slug": "lost-authenticator-recovery",
-      "title": "認証アプリの引き継ぎ忘れ・スマホ紛失時の2FA復旧方法",
+      "title": "2FAのスマホを紛失したら",
       "description": "スマホ紛失や機種変更で認証アプリを引き継げなかったときは、設定キー、バックアップコード、他の認証方法を確認し、公式の復旧手続きを使います。",
       "sections": [
         {
@@ -736,7 +735,7 @@
     },
     {
       "slug": "microsoft-authenticator-backup",
-      "title": "Microsoft Authenticatorのバックアップと機種変更",
+      "title": "Microsoft Authenticatorの移行",
       "description": "Microsoft AuthenticatorのiPhone・Androidでのバックアップと機種変更時の復元、他アプリへ移せない理由、二段階認証の再設定方法を解説します。",
       "sections": [
         {

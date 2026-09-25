@@ -127,7 +127,7 @@
   "guides": [
     {
       "slug": "what-is-2fa",
-      "title": "2FA nedir? TOTP doğrulayıcı kodları nasıl çalışır?",
+      "title": "2FA nedir? TOTP nasıl çalışır?",
       "description": "İki faktörlü kimlik doğrulamayı, gizli anahtar ile kod arasındaki farkı ve mevcut kurulum anahtarıyla TOTP üreticisini kullanmayı öğrenin.",
       "sources": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "slug": "totp-code-not-working",
-      "title": "2FA kodu çalışmıyor mu? Geçersiz TOTP kodlarını düzeltin",
+      "title": "2FA kodu çalışmıyor mu?",
       "description": "Hizmet doğrulayıcı kodunu reddettiğinde cihaz saatini, süresi dolan kodları, kurulum anahtarını ve TOTP parametrelerini denetleyin.",
       "sources": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "slug": "google-authenticator-import",
-      "title": "Google Authenticator QR dışa aktarımlarını 2fa.hot'a alın",
+      "title": "Google Authenticator'dan içe aktarma",
       "description": "Google Authenticator dışa aktarım QR kodlarını alın, çok parçalı QR'ları işleyin, hesapları inceleyin ve tarayıcıda nelerin saklandığını öğrenin.",
       "sources": [
         {

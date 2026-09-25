@@ -127,7 +127,7 @@
   "guides": [
     {
       "slug": "what-is-2fa",
-      "title": "ما هي 2FA؟ كيف تعمل رموز المصادِق TOTP",
+      "title": "ما هي 2FA؟ كيف يعمل TOTP",
       "description": "افهم المصادقة الثنائية والفرق بين المفتاح السري والرمز، وكيف تستخدم مولّد TOTP بمفتاح الإعداد الذي لديك.",
       "sources": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "slug": "totp-code-not-working",
-      "title": "رمز 2FA لا يعمل؟ معالجة رموز TOTP غير الصالحة",
+      "title": "رمز 2FA لا يعمل؟",
       "description": "تحقّق من وقت الجهاز وانتهاء صلاحية الرمز ومفتاح الإعداد ومعاملات TOTP عندما ترفض الخدمة رمز المصادِق.",
       "sources": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "slug": "google-authenticator-import",
-      "title": "استيراد صادرات QR من Google Authenticator إلى 2fa.hot",
+      "title": "الاستيراد من Google Authenticator",
       "description": "استورد رموز QR المصدّرة من Google Authenticator، وتعامل مع أجزائها المتعددة، وراجع الحسابات وافهم ما يُحفظ في متصفحك.",
       "sources": [
         {

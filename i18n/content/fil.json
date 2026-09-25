@@ -127,7 +127,7 @@
   "guides": [
     {
       "slug": "what-is-2fa",
-      "title": "Ano ang 2FA? Paano gumagana ang TOTP authenticator code",
+      "title": "Ano ang 2FA? Paano gumagana ang TOTP",
       "description": "Unawain ang two-factor authentication, pagkakaiba ng secret at code, at paggamit ng TOTP generator sa kasalukuyang setup key mo.",
       "sources": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "slug": "totp-code-not-working",
-      "title": "Hindi gumagana ang 2FA code? Ayusin ang di-wastong TOTP code",
+      "title": "Hindi gumagana ang 2FA code?",
       "description": "Suriin ang oras ng device, expired na code, setup secret at TOTP parameter kapag tinanggihan ng serbisyo ang authenticator code.",
       "sources": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "slug": "google-authenticator-import",
-      "title": "I-import ang Google Authenticator QR export sa 2fa.hot",
+      "title": "Mag-import mula sa Google Authenticator",
       "description": "I-import ang QR export ng Google Authenticator, asikasuhin ang maraming bahagi, suriin ang mga account at alamin kung ano ang iniimbak sa browser.",
       "sources": [
         {

@@ -127,7 +127,7 @@
   "guides": [
     {
       "slug": "what-is-2fa",
-      "title": "What is 2FA? How TOTP authenticator codes work",
+      "title": "What is 2FA? How TOTP works",
       "description": "Understand two-factor authentication, the difference between a secret and a code, and how to use a TOTP generator with your existing setup key.",
       "sources": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "slug": "totp-code-not-working",
-      "title": "2FA code not working? Troubleshoot invalid TOTP codes",
+      "title": "2FA code not working?",
       "description": "Check device time, expired codes, the setup secret and TOTP parameters when a service rejects your authenticator code.",
       "sources": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "slug": "google-authenticator-import",
-      "title": "Import Google Authenticator QR exports into 2fa.hot",
+      "title": "Import from Google Authenticator",
       "description": "Import Google Authenticator export QR codes, handle multiple QR parts, review accounts and understand what is stored in your browser.",
       "sources": [
         {
@@ -290,7 +290,7 @@
     },
     {
       "slug": "google-authenticator-web",
-      "title": "Google Authenticator web version: get codes on a computer",
+      "title": "Google Authenticator on a computer",
       "description": "Google Authenticator has no official web or PC version. Learn how to get the same codes on a computer from your setup key or export QR, and the trade-offs.",
       "sections": [
         {
@@ -369,7 +369,7 @@
     },
     {
       "slug": "find-2fa-secret-key",
-      "title": "Where to find your 2FA secret key, and what it is",
+      "title": "Where to find your 2FA secret key",
       "description": "What a 2FA secret key looks like, where services show it during authenticator setup, how to get a new one if you did not save it, and how to store it safely.",
       "sections": [
         {
@@ -440,7 +440,7 @@
     },
     {
       "slug": "batch-2fa-codes",
-      "title": "Batch 2FA code generator: many TOTP codes at once",
+      "title": "Get 2FA codes in batches",
       "description": "Paste up to 100 2FA secrets, spreadsheet rows or mixed text and get every current TOTP code at once in your browser, with safety tips for teams.",
       "sections": [
         {
@@ -518,7 +518,7 @@
     },
     {
       "slug": "otpauth-uri-format",
-      "title": "otpauth URI format: the otpauth:// 2FA link explained",
+      "title": "The otpauth:// link format",
       "description": "How the otpauth:// Key URI works: type, label, secret, issuer, algorithm, digits and period, what a 2FA QR code contains, and how to handle it safely.",
       "sections": [
         {
@@ -588,8 +588,8 @@
     },
     {
       "slug": "enable-authenticator-app-2fa",
-      "title": "Set up authenticator app 2FA: GitHub, Discord, X, Binance",
-      "description": "How to enable 2FA with an authenticator app: scan the QR code, save the setup key and backup codes, with notes for GitHub, Discord, X and Binance.",
+      "title": "Turn on authenticator app 2FA",
+      "description": "How to enable 2FA with an authenticator app: scan the QR code, save the setup key and backup codes, with notes for GitHub, Discord and X.",
       "sections": [
         {
           "id": "before-you-start",
@@ -625,13 +625,12 @@
         },
         {
           "id": "service-notes",
-          "title": "Notes for GitHub, Discord, X and Binance",
+          "title": "Notes for GitHub, Discord and X",
           "paragraphs": [
             "The menu paths below follow each service’s official help pages at the time of writing. Services rename and move settings, so look for similar wording if yours differs.",
             "GitHub: click your profile picture → Settings → Password and authentication, then choose Enable two-factor authentication. Scan the QR code, or click the setup key link to see the secret as text. Enter the code from your app, then download your recovery codes and confirm that you saved them to finish. GitHub requires two-factor authentication for accounts that contribute code.",
             "Discord: on desktop, open User Settings with the gear icon next to your username, go to My Account and, under Password and Authentication, choose Enable Authenticator App. On mobile, tap your avatar, then the gear icon, then Account. Scan the QR code or copy the secret key, enter the six-digit code, then save the backup codes. Discord says it cannot help you back into the account if you lose them.",
-            "X: go to More → Settings and privacy → Security and account access → Security → Two-factor authentication, then select Authentication app. X may ask for your password and a confirmed email address before showing the QR code, and it accepts any TOTP app. Text message two-factor authentication is limited to X Premium subscribers, so an authenticator app is the usual choice.",
-            "Binance: on the website, hover over the profile icon and choose Account → Security, then Manage next to Authenticator App. In the app, open Account → your profile → Security → Authenticator App. Binance shows a QR code and a setup key, and advises not to press Next until your authenticator is set up. Then enter the six-digit code to confirm. For an account that holds funds, keep the key offline and take particular care."
+            "X: go to More → Settings and privacy → Security and account access → Security → Two-factor authentication, then select Authentication app. X may ask for your password and a confirmed email address before showing the QR code, and it accepts any TOTP app. Text message two-factor authentication is limited to X Premium subscribers, so an authenticator app is the usual choice."
           ]
         },
         {
@@ -654,14 +653,14 @@
           "url": "https://support.discord.com/hc/en-us/articles/26304482627095-Using-an-Authenticator-App-on-Discord"
         },
         {
-          "title": "Binance: How to enable Google Authenticator for 2FA on the website",
-          "url": "https://www.binance.com/en/support/faq/how-to-enable-google-authenticator-for-2fa-on-the-binance-website-115000433432"
+          "title": "X Help Center: How to use two-factor authentication",
+          "url": "https://help.x.com/en/managing-your-account/two-factor-authentication"
         }
       ]
     },
     {
       "slug": "lost-authenticator-recovery",
-      "title": "Lost phone or authenticator app? How to recover 2FA",
+      "title": "Lost your 2FA phone?",
       "description": "Lost the phone with your authenticator app? Look for a saved setup key, backup codes or another sign-in method, then use the service’s official recovery.",
       "sections": [
         {
@@ -738,7 +737,7 @@
     },
     {
       "slug": "microsoft-authenticator-backup",
-      "title": "Microsoft Authenticator backup, export and moving phones",
+      "title": "Back up Microsoft Authenticator",
       "description": "Back up Microsoft Authenticator on iPhone or Android, see why accounts cannot be exported to another app, and re-enroll 2FA while keeping each new setup key.",
       "sections": [
         {

@@ -2,7 +2,7 @@
 export const focusedGuideMeta = {
   'google-authenticator-web': {
     en: {
-      title: 'Google Authenticator web version: get codes on a computer',
+      title: 'Google Authenticator on a computer',
       description:
         'Google Authenticator has no official web or PC version. Learn how to get the same codes on a computer from your setup key or export QR, and the trade-offs.',
       sources: [
@@ -21,7 +21,7 @@ export const focusedGuideMeta = {
       ]
     },
     'zh-CN': {
-      title: '谷歌身份验证器网页版与电脑版：在电脑上取码',
+      title: '谷歌身份验证器网页版',
       description:
         '谷歌身份验证器（Google Authenticator）没有官方网页版或电脑版。本文介绍如何用已保存的密钥或导出二维码在电脑上获取相同验证码，以及相应的安全取舍。',
       sources: [
@@ -40,7 +40,7 @@ export const focusedGuideMeta = {
       ]
     },
     'zh-TW': {
-      title: 'Google Authenticator 網頁版、電腦版教學',
+      title: 'Google Authenticator 網頁版',
       description:
         'Google Authenticator 沒有官方網頁版或電腦版。本文說明如何用已保存的金鑰或匯出的 QR Code 在電腦上取得相同驗證碼，以及需要留意的安全取捨。',
       sources: [
@@ -59,7 +59,7 @@ export const focusedGuideMeta = {
       ]
     },
     ja: {
-      title: 'Google AuthenticatorをPCで使う方法とWeb版',
+      title: 'Google AuthenticatorをPCで使う',
       description:
         'Google Authenticatorに公式のWeb版・PC版はありません。シークレットキーやエクスポートQRを使ってPCで同じコードを表示する方法と注意点を解説します。',
       sources: [
@@ -80,7 +80,7 @@ export const focusedGuideMeta = {
   },
   'find-2fa-secret-key': {
     en: {
-      title: 'Where to find your 2FA secret key, and what it is',
+      title: 'Where to find your 2FA secret key',
       description:
         'What a 2FA secret key looks like, where services show it during authenticator setup, how to get a new one if you did not save it, and how to store it safely.',
       sources: [
@@ -99,7 +99,7 @@ export const focusedGuideMeta = {
       ]
     },
     'zh-CN': {
-      title: '2FA 密钥在哪里？密钥是什么及如何保存',
+      title: '2FA 密钥在哪里找',
       description:
         '2FA 密钥是什么、长什么样？了解设置验证器时在哪里找到密钥，没保存时如何重新获取，以及如何安全保存、为什么不能随意发给别人。',
       sources: [
@@ -118,7 +118,7 @@ export const focusedGuideMeta = {
       ]
     },
     'zh-TW': {
-      title: '2FA 金鑰在哪裡？金鑰是什麼及如何保存',
+      title: '2FA 金鑰在哪裡找',
       description:
         '2FA 金鑰是什麼、長什麼樣子？了解設定驗證應用程式時在哪裡找到金鑰、沒保存時如何重新取得，以及如何安全備份、為何不該隨意傳給他人。',
       sources: [
@@ -137,7 +137,7 @@ export const focusedGuideMeta = {
       ]
     },
     ja: {
-      title: '2段階認証のシークレットキーとは？確認場所と保管方法',
+      title: '2FAシークレットキーの確認方法',
       description:
         '2段階認証のシークレットキーとは何か、設定時にどこで確認できるか、保存し忘れたときの再取得方法、安全な保管と共有の注意点を解説します。',
       sources: [
@@ -158,7 +158,7 @@ export const focusedGuideMeta = {
   },
   'batch-2fa-codes': {
     en: {
-      title: 'Batch 2FA code generator: many TOTP codes at once',
+      title: 'Get 2FA codes in batches',
       description:
         'Paste up to 100 2FA secrets, spreadsheet rows or mixed text and get every current TOTP code at once in your browser, with safety tips for teams.',
       sources: [
@@ -177,7 +177,7 @@ export const focusedGuideMeta = {
       ]
     },
     'zh-CN': {
-      title: '批量获取 2FA 验证码：一次粘贴多个密钥',
+      title: '批量获取 2FA 验证码',
       description:
         '一次粘贴最多 100 个 2FA 密钥、Excel 表格行或混合文本，在浏览器中批量获取当前 TOTP 验证码，并了解团队使用时的安全建议。',
       sources: [
@@ -196,7 +196,7 @@ export const focusedGuideMeta = {
       ]
     },
     'zh-TW': {
-      title: '批次取得 2FA 驗證碼：一次貼上多組金鑰',
+      title: '批次取得 2FA 驗證碼',
       description:
         '一次貼上最多 100 組 2FA 金鑰、Excel 試算表的列或混合文字，在瀏覽器中批次取得目前的 TOTP 驗證碼，並了解團隊使用時的安全建議。',
       sources: [
@@ -215,7 +215,7 @@ export const focusedGuideMeta = {
       ]
     },
     ja: {
-      title: '2FAコード一括生成：複数のシークレットを一度に',
+      title: '2FAコードを一括生成',
       description:
         '最大100件の2FAシークレットやExcelの行、混在したテキストを貼り付けて、現在のTOTPコードをブラウザーで一括取得する方法と、チームで使うときの注意点を解説します。',
       sources: [
@@ -236,7 +236,7 @@ export const focusedGuideMeta = {
   },
   'otpauth-uri-format': {
     en: {
-      title: 'otpauth URI format: the otpauth:// 2FA link explained',
+      title: 'The otpauth:// link format',
       description:
         'How the otpauth:// Key URI works: type, label, secret, issuer, algorithm, digits and period, what a 2FA QR code contains, and how to handle it safely.',
       sources: [
@@ -255,7 +255,7 @@ export const focusedGuideMeta = {
       ]
     },
     'zh-CN': {
-      title: 'otpauth 链接格式：otpauth:// 参数详解',
+      title: 'otpauth 链接格式详解',
       description:
         '了解 otpauth:// 链接的结构，secret、issuer、algorithm、digits、period 等参数的含义与默认值，以及 2FA 二维码的内容与安全处理。',
       sources: [
@@ -274,7 +274,7 @@ export const focusedGuideMeta = {
       ]
     },
     'zh-TW': {
-      title: 'otpauth 連結格式：otpauth:// 參數詳解',
+      title: 'otpauth 連結格式詳解',
       description:
         '了解 otpauth:// 連結的結構，secret、issuer、algorithm、digits、period 等參數的意義與預設值，以及 QR Code 的內容與安全處理。',
       sources: [
@@ -293,7 +293,7 @@ export const focusedGuideMeta = {
       ]
     },
     ja: {
-      title: 'otpauth URLの形式とは？otpauth://の中身を解説',
+      title: 'otpauth URLの形式',
       description:
         'otpauth://リンクの構造、secret、issuer、algorithm、digits、periodの意味と既定値、2FAのQRコードの中身と安全な扱い方を解説します。',
       sources: [
@@ -314,9 +314,9 @@ export const focusedGuideMeta = {
   },
   'enable-authenticator-app-2fa': {
     en: {
-      title: 'Set up authenticator app 2FA: GitHub, Discord, X, Binance',
+      title: 'Turn on authenticator app 2FA',
       description:
-        'How to enable 2FA with an authenticator app: scan the QR code, save the setup key and backup codes, with notes for GitHub, Discord, X and Binance.',
+        'How to enable 2FA with an authenticator app: scan the QR code, save the setup key and backup codes, with notes for GitHub, Discord and X.',
       sources: [
         {
           title: 'GitHub Docs: Configuring two-factor authentication',
@@ -327,15 +327,15 @@ export const focusedGuideMeta = {
           url: 'https://support.discord.com/hc/en-us/articles/26304482627095-Using-an-Authenticator-App-on-Discord'
         },
         {
-          title: 'Binance: How to enable Google Authenticator for 2FA on the website',
-          url: 'https://www.binance.com/en/support/faq/how-to-enable-google-authenticator-for-2fa-on-the-binance-website-115000433432'
+          title: 'X Help Center: How to use two-factor authentication',
+          url: 'https://help.x.com/en/managing-your-account/two-factor-authentication'
         }
       ]
     },
     'zh-CN': {
-      title: '如何开启两步验证？验证器 App 设置教程',
+      title: '如何开启验证器两步验证',
       description:
-        '用验证器 App 开启两步验证：扫描二维码、确认验证码、保存设置密钥和备用码，并附 GitHub、Discord、X 和币安的设置说明。',
+        '用验证器 App 开启两步验证：扫描二维码、确认验证码、保存设置密钥和备用码，并附 GitHub、Discord 和 X 的设置说明。',
       sources: [
         {
           title: 'GitHub 文档：配置双重身份验证',
@@ -346,15 +346,15 @@ export const focusedGuideMeta = {
           url: 'https://support.discord.com/hc/en-us/articles/26304482627095-Using-an-Authenticator-App-on-Discord'
         },
         {
-          title: '币安：如何在网页版启用 Google 身份验证器',
-          url: 'https://www.binance.com/en/support/faq/how-to-enable-google-authenticator-for-2fa-on-the-binance-website-115000433432'
+          title: 'X 帮助中心：如何使用双重验证',
+          url: 'https://help.x.com/en/managing-your-account/two-factor-authentication'
         }
       ]
     },
     'zh-TW': {
-      title: '如何設定雙重驗證？驗證器 App 設定教學',
+      title: '如何設定驗證器雙重驗證',
       description:
-        '用驗證器 App 設定雙重驗證：掃描 QR Code、輸入驗證碼、保存設定金鑰與備用碼，並附上 GitHub、Discord、X 和幣安的設定說明。',
+        '用驗證器 App 設定雙重驗證：掃描 QR Code、輸入驗證碼、保存設定金鑰與備用碼，並附上 GitHub、Discord 和 X 的設定說明。',
       sources: [
         {
           title: 'GitHub 文件：設定雙重驗證',
@@ -365,15 +365,15 @@ export const focusedGuideMeta = {
           url: 'https://support.discord.com/hc/en-us/articles/26304482627095-Using-an-Authenticator-App-on-Discord'
         },
         {
-          title: '幣安：如何在網頁版啟用 Google Authenticator 雙重驗證',
-          url: 'https://www.binance.com/en/support/faq/how-to-enable-google-authenticator-for-2fa-on-the-binance-website-115000433432'
+          title: 'X 說明中心：如何使用雙重驗證',
+          url: 'https://help.x.com/en/managing-your-account/two-factor-authentication'
         }
       ]
     },
     ja: {
-      title: '二段階認証の設定方法｜認証アプリで有効にする手順',
+      title: '認証アプリで二段階認証を設定',
       description:
-        '認証アプリで二段階認証を有効にする手順と、設定キーやバックアップコードの保管方法を解説。GitHub、Discord、X、Binanceの設定の要点も紹介します。',
+        '認証アプリで二段階認証を有効にする手順と、設定キーやバックアップコードの保管方法を解説。GitHub、Discord、Xの設定の要点も紹介します。',
       sources: [
         {
           title: 'GitHub Docs：2要素認証を設定する',
@@ -384,15 +384,15 @@ export const focusedGuideMeta = {
           url: 'https://support.discord.com/hc/en-us/articles/26304482627095-Using-an-Authenticator-App-on-Discord'
         },
         {
-          title: 'Binance：ウェブサイトでGoogle Authenticatorの2FAを有効にする方法',
-          url: 'https://www.binance.com/en/support/faq/how-to-enable-google-authenticator-for-2fa-on-the-binance-website-115000433432'
+          title: 'Xヘルプセンター：2要素認証の使い方',
+          url: 'https://help.x.com/en/managing-your-account/two-factor-authentication'
         }
       ]
     }
   },
   'lost-authenticator-recovery': {
     en: {
-      title: 'Lost phone or authenticator app? How to recover 2FA',
+      title: 'Lost your 2FA phone?',
       description:
         'Lost the phone with your authenticator app? Look for a saved setup key, backup codes or another sign-in method, then use the service’s official recovery.',
       sources: [
@@ -411,7 +411,7 @@ export const focusedGuideMeta = {
       ]
     },
     'zh-CN': {
-      title: '2FA 手机丢了怎么办？验证器丢失后的恢复方法',
+      title: '2FA 手机丢了怎么办',
       description:
         '手机或验证器 App 丢了怎么办？先找设置密钥、备用码和其他已绑定的验证方式，再走原服务的官方账号恢复流程，恢复后重新绑定并做好备份。',
       sources: [
@@ -430,7 +430,7 @@ export const focusedGuideMeta = {
       ]
     },
     'zh-TW': {
-      title: '2FA 手機遺失怎麼辦？驗證器 App 不見的復原方法',
+      title: '2FA 手機遺失怎麼辦',
       description:
         '手機或驗證器 App 不見時，先找出設定金鑰、備用碼和其他已設定的驗證方式，再透過原服務的官方流程復原帳號，並在復原後重新設定。',
       sources: [
@@ -449,7 +449,7 @@ export const focusedGuideMeta = {
       ]
     },
     ja: {
-      title: '認証アプリの引き継ぎ忘れ・スマホ紛失時の2FA復旧方法',
+      title: '2FAのスマホを紛失したら',
       description:
         'スマホ紛失や機種変更で認証アプリを引き継げなかったときは、設定キー、バックアップコード、他の認証方法を確認し、公式の復旧手続きを使います。',
       sources: [
@@ -470,7 +470,7 @@ export const focusedGuideMeta = {
   },
   'microsoft-authenticator-backup': {
     en: {
-      title: 'Microsoft Authenticator backup, export and moving phones',
+      title: 'Back up Microsoft Authenticator',
       description:
         'Back up Microsoft Authenticator on iPhone or Android, see why accounts cannot be exported to another app, and re-enroll 2FA while keeping each new setup key.',
       sources: [
@@ -489,7 +489,7 @@ export const focusedGuideMeta = {
       ]
     },
     'zh-CN': {
-      title: 'Microsoft Authenticator 备份与导出',
+      title: 'Microsoft Authenticator 备份',
       description:
         'Microsoft Authenticator（微软身份验证器）如何在 iPhone 和安卓手机上备份、换手机后恢复，为什么不能导出到其他应用，以及怎样重新绑定并保存新密钥。',
       sources: [
@@ -508,7 +508,7 @@ export const focusedGuideMeta = {
       ]
     },
     'zh-TW': {
-      title: 'Microsoft Authenticator 備份與匯出',
+      title: 'Microsoft Authenticator 備份',
       description:
         'Microsoft Authenticator 如何在 iPhone、Android 上備份與換手機還原，為何無法匯出到其他 App，以及重新設定雙重驗證並保存新金鑰的方法。',
       sources: [
@@ -527,7 +527,7 @@ export const focusedGuideMeta = {
       ]
     },
     ja: {
-      title: 'Microsoft Authenticatorのバックアップと機種変更',
+      title: 'Microsoft Authenticatorの移行',
       description:
         'Microsoft AuthenticatorのiPhone・Androidでのバックアップと機種変更時の復元、他アプリへ移せない理由、二段階認証の再設定方法を解説します。',
       sources: [

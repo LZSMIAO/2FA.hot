@@ -113,7 +113,7 @@
   "guides": [
     {
       "slug": "what-is-2fa",
-      "title": "2FA 是什麼？TOTP 驗證碼與雙重驗證入門",
+      "title": "2FA 是什麼？TOTP 入門",
       "description": "了解 2FA 雙重驗證、TOTP 動態驗證碼、金鑰和驗證碼的差別，以及如何用現有金鑰線上取碼。",
       "sources": [
         {
@@ -166,7 +166,7 @@
     },
     {
       "slug": "totp-code-not-working",
-      "title": "2FA 驗證碼不正確？TOTP 驗證碼無效的疑難排解",
+      "title": "2FA 驗證碼無效怎麼辦",
       "description": "從裝置時間、驗證碼過期、帳號金鑰和演算法參數著手，排除 2FA 驗證失敗的問題，並了解何時需要使用帳號復原流程。",
       "sources": [
         {
@@ -221,7 +221,7 @@
     },
     {
       "slug": "google-authenticator-import",
-      "title": "如何匯入 Google Authenticator 匯出的 QR Code",
+      "title": "匯入 Google Authenticator QR Code",
       "description": "將 Google Authenticator 匯出的 QR Code 匯入 2fa.hot，處理多張 QR Code、選擇帳號，並了解匯入後的本機儲存方式。",
       "sources": [
         {
@@ -276,7 +276,7 @@
     },
     {
       "slug": "google-authenticator-web",
-      "title": "Google Authenticator 網頁版、電腦版教學",
+      "title": "Google Authenticator 網頁版",
       "description": "Google Authenticator 沒有官方網頁版或電腦版。本文說明如何用已保存的金鑰或匯出的 QR Code 在電腦上取得相同驗證碼，以及需要留意的安全取捨。",
       "sections": [
         {
@@ -355,7 +355,7 @@
     },
     {
       "slug": "find-2fa-secret-key",
-      "title": "2FA 金鑰在哪裡？金鑰是什麼及如何保存",
+      "title": "2FA 金鑰在哪裡找",
       "description": "2FA 金鑰是什麼、長什麼樣子？了解設定驗證應用程式時在哪裡找到金鑰、沒保存時如何重新取得，以及如何安全備份、為何不該隨意傳給他人。",
       "sections": [
         {
@@ -426,7 +426,7 @@
     },
     {
       "slug": "batch-2fa-codes",
-      "title": "批次取得 2FA 驗證碼：一次貼上多組金鑰",
+      "title": "批次取得 2FA 驗證碼",
       "description": "一次貼上最多 100 組 2FA 金鑰、Excel 試算表的列或混合文字，在瀏覽器中批次取得目前的 TOTP 驗證碼，並了解團隊使用時的安全建議。",
       "sections": [
         {
@@ -504,7 +504,7 @@
     },
     {
       "slug": "otpauth-uri-format",
-      "title": "otpauth 連結格式：otpauth:// 參數詳解",
+      "title": "otpauth 連結格式詳解",
       "description": "了解 otpauth:// 連結的結構，secret、issuer、algorithm、digits、period 等參數的意義與預設值，以及 QR Code 的內容與安全處理。",
       "sections": [
         {
@@ -574,8 +574,8 @@
     },
     {
       "slug": "enable-authenticator-app-2fa",
-      "title": "如何設定雙重驗證？驗證器 App 設定教學",
-      "description": "用驗證器 App 設定雙重驗證：掃描 QR Code、輸入驗證碼、保存設定金鑰與備用碼，並附上 GitHub、Discord、X 和幣安的設定說明。",
+      "title": "如何設定驗證器雙重驗證",
+      "description": "用驗證器 App 設定雙重驗證：掃描 QR Code、輸入驗證碼、保存設定金鑰與備用碼，並附上 GitHub、Discord 和 X 的設定說明。",
       "sections": [
         {
           "id": "before-you-start",
@@ -609,13 +609,12 @@
         },
         {
           "id": "service-notes",
-          "title": "GitHub、Discord、X 與幣安的設定說明",
+          "title": "GitHub、Discord 與 X 的設定說明",
           "paragraphs": [
             "以下選單路徑依據撰寫本文時各服務的官方說明頁面。服務可能會調整設定的名稱或位置，若畫面不同，請尋找意思相近的選項。",
             "GitHub：點選大頭貼 → Settings → Password and authentication，選擇 Enable two-factor authentication。掃描 QR Code，或點選 setup key 連結查看文字金鑰。輸入 App 中的驗證碼後，下載復原碼並確認已保存，才算完成設定。GitHub 要求貢獻程式碼的帳號啟用雙重驗證。",
             "Discord：電腦版點選使用者名稱旁的齒輪圖示開啟使用者設定，在我的帳號頁面的密碼與驗證區塊選擇啟用驗證器應用程式；手機版依序點選右下角大頭貼、右上角齒輪圖示和帳號，就能找到同一個選項。掃描 QR Code 或複製金鑰，輸入 6 位數驗證碼，然後保存備用碼。Discord 表示，備用碼遺失後就無法協助你找回帳號。",
-            "X：從側邊選單的更多開啟設定和隱私，依序進入安全性和帳號存取權 → 安全性 → 雙重驗證，選擇驗證應用程式。X 可能會先要求輸入密碼並確認電子郵件地址，再顯示 QR Code，任何 TOTP 應用程式都能使用。簡訊雙重驗證只提供給 X Premium 訂閱者，因此驗證器 App 通常是較實際的選擇。",
-            "幣安：網頁版將滑鼠移到個人頭像，依序進入帳號 → 安全，點選驗證器應用程式旁的管理；App 則是帳號 → 個人資料 → 安全 → 驗證器應用程式。幣安會顯示 QR Code 和設定金鑰，並提醒在驗證器設定完成前不要點選下一步。接著輸入 6 位數驗證碼完成確認。帳號涉及資金時，更要以離線方式妥善保存金鑰。"
+            "X：從側邊選單的更多開啟設定和隱私，依序進入安全性和帳號存取權 → 安全性 → 雙重驗證，選擇驗證應用程式。X 可能會先要求輸入密碼並確認電子郵件地址，再顯示 QR Code，任何 TOTP 應用程式都能使用。簡訊雙重驗證只提供給 X Premium 訂閱者，因此驗證器 App 通常是較實際的選擇。"
           ]
         },
         {
@@ -638,14 +637,14 @@
           "url": "https://support.discord.com/hc/en-us/articles/26304482627095-Using-an-Authenticator-App-on-Discord"
         },
         {
-          "title": "幣安：如何在網頁版啟用 Google Authenticator 雙重驗證",
-          "url": "https://www.binance.com/en/support/faq/how-to-enable-google-authenticator-for-2fa-on-the-binance-website-115000433432"
+          "title": "X 說明中心：如何使用雙重驗證",
+          "url": "https://help.x.com/en/managing-your-account/two-factor-authentication"
         }
       ]
     },
     {
       "slug": "lost-authenticator-recovery",
-      "title": "2FA 手機遺失怎麼辦？驗證器 App 不見的復原方法",
+      "title": "2FA 手機遺失怎麼辦",
       "description": "手機或驗證器 App 不見時，先找出設定金鑰、備用碼和其他已設定的驗證方式，再透過原服務的官方流程復原帳號，並在復原後重新設定。",
       "sections": [
         {
@@ -722,7 +721,7 @@
     },
     {
       "slug": "microsoft-authenticator-backup",
-      "title": "Microsoft Authenticator 備份與匯出",
+      "title": "Microsoft Authenticator 備份",
       "description": "Microsoft Authenticator 如何在 iPhone、Android 上備份與換手機還原，為何無法匯出到其他 App，以及重新設定雙重驗證並保存新金鑰的方法。",
       "sections": [
         {

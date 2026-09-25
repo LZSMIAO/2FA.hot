@@ -127,7 +127,7 @@
   "guides": [
     {
       "slug": "what-is-2fa",
-      "title": "2FA ni nini? Jinsi misimbo ya kithibitishaji cha TOTP inavyofanya kazi",
+      "title": "2FA ni nini? Jinsi TOTP inavyofanya kazi",
       "description": "Elewa uthibitishaji wa hatua mbili, tofauti ya siri na msimbo, na matumizi ya kizalishaji cha TOTP kwa ufunguo wako wa usanidi uliopo.",
       "sources": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "slug": "totp-code-not-working",
-      "title": "Msimbo wa 2FA haufanyi kazi? Tatua misimbo batili ya TOTP",
+      "title": "Msimbo wa 2FA haufanyi kazi?",
       "description": "Kagua muda wa kifaa, misimbo iliyoisha muda, siri ya usanidi na vigezo vya TOTP huduma inapokataa msimbo wako.",
       "sources": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "slug": "google-authenticator-import",
-      "title": "Ingiza QR zilizohamishwa za Google Authenticator katika 2fa.hot",
+      "title": "Ingiza kutoka Google Authenticator",
       "description": "Ingiza QR za uhamishaji za Google Authenticator, shughulikia sehemu nyingi, kagua akaunti na uelewe kinachohifadhiwa katika kivinjari.",
       "sources": [
         {

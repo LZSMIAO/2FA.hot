@@ -127,7 +127,7 @@
   "guides": [
     {
       "slug": "what-is-2fa",
-      "title": "2FA چیست؟ کدهای احرازگر TOTP چگونه کار می‌کنند",
+      "title": "2FA چیست؟ TOTP چگونه کار می‌کند",
       "description": "احراز هویت دومرحله‌ای، تفاوت کلید محرمانه با کد و استفاده از مولد TOTP با کلید راه‌اندازی موجود را بشناسید.",
       "sources": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "slug": "totp-code-not-working",
-      "title": "کد 2FA کار نمی‌کند؟ رفع مشکل کدهای TOTP نامعتبر",
+      "title": "کد 2FA کار نمی‌کند؟",
       "description": "وقتی سرویس کد احرازگر را رد می‌کند، زمان دستگاه، انقضای کد، کلید و پارامترهای TOTP را بررسی کنید.",
       "sources": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "slug": "google-authenticator-import",
-      "title": "واردکردن QR خروجی Google Authenticator به 2fa.hot",
+      "title": "واردکردن از Google Authenticator",
       "description": "QRهای خروجی Google Authenticator را وارد کنید، بخش‌های متعدد را مدیریت کنید، حساب‌ها را بررسی کنید و بدانید چه چیزی در مرورگر ذخیره می‌شود.",
       "sources": [
         {

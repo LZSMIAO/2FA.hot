@@ -127,7 +127,7 @@
   "guides": [
     {
       "slug": "what-is-2fa",
-      "title": "2FA là gì? Cách mã xác thực TOTP hoạt động",
+      "title": "2FA là gì? Cách TOTP hoạt động",
       "description": "Hiểu xác thực hai yếu tố, phân biệt khóa bí mật với mã và dùng trình tạo TOTP bằng khóa thiết lập hiện có.",
       "sources": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "slug": "totp-code-not-working",
-      "title": "Mã 2FA không hoạt động? Khắc phục mã TOTP không hợp lệ",
+      "title": "Mã 2FA không hoạt động?",
       "description": "Kiểm tra giờ thiết bị, mã hết hạn, khóa thiết lập và tham số TOTP khi dịch vụ từ chối mã xác thực.",
       "sources": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "slug": "google-authenticator-import",
-      "title": "Nhập QR xuất của Google Authenticator vào 2fa.hot",
+      "title": "Nhập từ Google Authenticator",
       "description": "Nhập QR xuất Google Authenticator, xử lý nhiều phần QR, xem lại tài khoản và hiểu dữ liệu được lưu trong trình duyệt.",
       "sources": [
         {

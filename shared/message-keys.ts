@@ -689,21 +689,21 @@ export const sourceKeys = new Map<string, string>([
     '网页无法静默添加此扩展。商店上架后，安装按钮会带你前往官方商店，由你确认安装。',
     'm43180ed1f7a5'
   ],
-  ['2FA 是什么？TOTP 验证码与双重验证入门', 'm812ba3f32a77'],
+  ['2FA 是什么？TOTP 入门', 'm812ba3f32a77'],
   [
     '了解 2FA 双重验证、TOTP 动态验证码、密钥和验证码的区别，以及如何用已有密钥在线取码。',
     'mfdd3a6983155'
   ],
   ['RFC 6238：TOTP 算法说明', 'mc006cd2cd1bb'],
   ['Google：通过 Google 身份验证器获取验证码', 'm4aad52120c10'],
-  ['2FA 验证码不正确？TOTP 无效问题排查', 'mb3c87e13f841'],
+  ['2FA 验证码无效怎么办', 'mb3c87e13f841'],
   [
     '从设备时间、验证码过期、账号密钥和算法参数排查 2FA 验证失败，并了解何时需要使用账号恢复流程。',
     'mea9235596ecb'
   ],
   ['RFC 6238：验证与时钟同步', 'm6d7dc3dd1848'],
   ['Google 身份验证器：故障排查与设备时间', 'mb3a92bc00bca'],
-  ['如何导入 Google Authenticator 导出二维码', 'm0cf3e2d8ca93'],
+  ['导入 Google Authenticator 二维码', 'm0cf3e2d8ca93'],
   [
     '将 Google Authenticator 导出二维码导入 2fa.hot，处理多张二维码、选择账号，并了解导入后的本地保存方式。',
     'md4dee1bfc858'
@@ -882,7 +882,7 @@ export const sourceKeys = new Map<string, string>([
     'homeFormatsBody1'
   ],
   [
-    '适用于支持验证器 App 的服务，例如 Google、Microsoft、GitHub、Discord、X、Facebook、Instagram、Amazon 和币安。',
+    '适用于支持验证器 App 的服务，例如 Google、Microsoft、GitHub、Discord、X、Facebook、Instagram 和 Amazon。',
     'homeFormatsBody2'
   ],
   ['在线生成 2FA 验证码安全吗？', 'homeFaqSafeQ'],

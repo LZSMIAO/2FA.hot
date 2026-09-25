@@ -127,7 +127,7 @@
   "guides": [
     {
       "slug": "what-is-2fa",
-      "title": "2FA란? TOTP 인증 코드의 작동 원리",
+      "title": "2FA란? TOTP 작동 원리",
       "description": "2단계 인증, 비밀 키와 코드의 차이, 기존 설정 키로 TOTP 생성기를 사용하는 방법을 알아보세요.",
       "sources": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "slug": "totp-code-not-working",
-      "title": "2FA 코드가 안 되나요? 잘못된 TOTP 코드 해결",
+      "title": "2FA 코드가 안 될 때",
       "description": "서비스가 인증 코드를 거부하면 기기 시간, 만료된 코드, 설정 비밀 키, TOTP 매개변수를 확인하세요.",
       "sources": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "slug": "google-authenticator-import",
-      "title": "Google Authenticator 내보내기 QR을 2fa.hot으로 가져오기",
+      "title": "Google Authenticator 가져오기",
       "description": "Google Authenticator 내보내기 QR을 가져오고 여러 QR 부분을 처리하며, 계정을 검토하고 브라우저 저장 내용을 알아보세요.",
       "sources": [
         {

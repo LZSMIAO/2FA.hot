@@ -127,7 +127,7 @@
   "guides": [
     {
       "slug": "what-is-2fa",
-      "title": "2FA คืออะไร? รหัสยืนยันตัวตน TOTP ทำงานอย่างไร",
+      "title": "2FA คืออะไร? TOTP ทำงานอย่างไร",
       "description": "เข้าใจการยืนยันตัวตนสองปัจจัย ความต่างของคีย์ลับกับรหัส และการใช้ตัวสร้าง TOTP ด้วยคีย์ตั้งค่าที่มีอยู่",
       "sources": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "slug": "totp-code-not-working",
-      "title": "รหัส 2FA ใช้ไม่ได้? แก้ปัญหารหัส TOTP ไม่ถูกต้อง",
+      "title": "รหัส 2FA ใช้ไม่ได้?",
       "description": "ตรวจสอบเวลาเครื่อง รหัสหมดอายุ คีย์ตั้งค่า และพารามิเตอร์ TOTP เมื่อบริการปฏิเสธรหัส",
       "sources": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "slug": "google-authenticator-import",
-      "title": "นำเข้า QR ที่ส่งออกจาก Google Authenticator สู่ 2fa.hot",
+      "title": "นำเข้าจาก Google Authenticator",
       "description": "นำเข้า QR ส่งออกของ Google Authenticator จัดการหลายส่วน ตรวจสอบบัญชี และเข้าใจสิ่งที่เก็บในเบราว์เซอร์",
       "sources": [
         {

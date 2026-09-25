@@ -21,7 +21,7 @@ export const homeIntro = {
     title: '支持的格式与服务',
     paragraphs: [
       '支持 Base32 密钥、otpauth:// 配置链接、普通 2FA 二维码和 Google Authenticator 导出二维码。TOTP 可选 SHA-1、SHA-256、SHA-512，6 位或 8 位。',
-      '适用于支持验证器 App 的服务，例如 Google、Microsoft、GitHub、Discord、X、Facebook、Instagram、Amazon 和币安。'
+      '适用于支持验证器 App 的服务，例如 Google、Microsoft、GitHub、Discord、X、Facebook、Instagram 和 Amazon。'
     ]
   },
   // A new visitor's welcome; the questions follow it.

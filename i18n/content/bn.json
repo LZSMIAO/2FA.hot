@@ -127,7 +127,7 @@
   "guides": [
     {
       "slug": "what-is-2fa",
-      "title": "2FA কী? TOTP অথেন্টিকেটর কোড যেভাবে কাজ করে",
+      "title": "2FA কী? TOTP যেভাবে কাজ করে",
       "description": "দুই-উপাদান প্রমাণীকরণ, গোপন কী ও কোডের পার্থক্য এবং বর্তমান সেটআপ কী দিয়ে TOTP জেনারেটর ব্যবহার বুঝুন।",
       "sources": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "slug": "totp-code-not-working",
-      "title": "2FA কোড চলছে না? ভুল TOTP কোডের সমাধান",
+      "title": "2FA কোড কাজ করছে না?",
       "description": "পরিষেবা কোড নাকচ করলে ডিভাইসের সময়, কোডের মেয়াদ, সেটআপ কী ও TOTP প্যারামিটার দেখুন।",
       "sources": [
         {
@@ -235,7 +235,7 @@
     },
     {
       "slug": "google-authenticator-import",
-      "title": "Google Authenticator-এর রপ্তানি QR 2fa.hot-এ আনুন",
+      "title": "Google Authenticator থেকে ইমপোর্ট",
       "description": "Google Authenticator-এর রপ্তানি QR আমদানি, একাধিক অংশ সামলানো, অ্যাকাউন্ট পরীক্ষা এবং ব্রাউজারে কী থাকে তা বুঝুন।",
       "sources": [
         {
