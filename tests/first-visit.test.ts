@@ -57,4 +57,9 @@ test('the page is marked new for a browser first day here and returning after th
   assert.equal(mark({ '2fa-first-visit': String(Date.now() - 2 * 864e5) }), 'returning')
   assert.equal(mark({ '2fa-first-visit': '0' }), 'returning')
   assert.equal(mark({ '2fa-hot-theme': 'dark' }), 'returning')
+  // Closed by hand on the first day, it stays closed.
+  assert.equal(
+    mark({ '2fa-first-visit': String(Date.now() - 60_000), '2fa-welcome-closed': '1' }),
+    'returning'
+  )
 })

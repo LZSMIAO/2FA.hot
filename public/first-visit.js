@@ -3,7 +3,10 @@
 // so notices meant for returning visitors reach it too.
 ;(() => {
   let first = null
+  let closed = false
   try {
+    // A visitor can also close the welcome under the tool themselves.
+    closed = localStorage.getItem('2fa-welcome-closed') === '1'
     first = localStorage.getItem('2fa-first-visit')
     if (first === null) {
       const returning = Object.keys(localStorage).some((key) => key.startsWith('2fa-'))
@@ -16,7 +19,7 @@
   // Introductory copy under the tool is for a browser's first day here. Mark
   // the page before it paints so returning visitors never see it flash.
   const since = first === null ? 0 : Date.now() - Number(first)
-  const fresh = first === null || (first !== '0' && since >= 0 && since < 864e5)
+  const fresh = !closed && (first === null || (first !== '0' && since >= 0 && since < 864e5))
   if (typeof document !== 'undefined')
     document.documentElement.dataset.visitor = fresh ? 'new' : 'returning'
 })()

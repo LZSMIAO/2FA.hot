@@ -23,6 +23,15 @@ interface ExplainerItem {
   steps?: readonly string[]
   link?: { to: string; title: string }
 }
+// Closed by hand, it stays closed: public/first-visit.js reads this on later visits.
+function close() {
+  try {
+    localStorage.setItem('2fa-welcome-closed', '1')
+  } catch {
+    // Without storage it closes for this page only.
+  }
+  document.documentElement.dataset.visitor = 'returning'
+}
 // What 2fa.hot is reads as the welcome's own text; the rest fold beside it.
 const items = computed<ExplainerItem[]>(() => [
   { question: homeIntro.steps.title, steps: homeIntro.steps.items },
@@ -54,8 +63,14 @@ const items = computed<ExplainerItem[]>(() => [
         height="72"
         loading="lazy"
       />
-      <div>
-        <h2 id="tool-explainer-title">{{ tx(homeIntro.welcomeTitle) }}</h2>
+      <div class="explainer-welcome-text">
+        <div class="explainer-title-row">
+          <h2 id="tool-explainer-title">{{ tx(homeIntro.welcomeTitle) }}</h2>
+          <AppHint :text="tx('关闭')"
+            ><button type="button" class="explainer-close" :aria-label="tx('关闭')" @click="close">
+              <UIcon name="i-lucide-x" /></button
+          ></AppHint>
+        </div>
         <p>{{ tx(homeIntro.welcomeLead) }}</p>
       </div>
     </div>
@@ -110,6 +125,38 @@ const items = computed<ExplainerItem[]>(() => [
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+.explainer-welcome-text {
+  flex: 1;
+  min-width: 0;
+}
+/* The close button at the heading line's end, centred on it; its 44px target
+   reaches past the line without making it taller. */
+.explainer-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.explainer-close {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin: -0.4375rem -0.75rem -0.4375rem auto;
+  color: var(--ui-text-muted);
+  cursor: pointer;
+}
+.explainer-close .iconify {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+.explainer-close:hover {
+  color: var(--ui-text-highlighted);
+}
+.explainer-close:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: -2px;
 }
 .explainer-mascot {
   flex: none;

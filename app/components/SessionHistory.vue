@@ -303,6 +303,11 @@ function time(value: number) {
   transform: none;
   font-size: var(--text-label);
 }
+/* The icon at its label's size, rather than a fixed 20px beside 14px text. */
+.session-heading .session-clear :deep([data-slot='leadingIcon']) {
+  width: 1.125em;
+  height: 1.125em;
+}
 .session-heading .session-clear:hover:not(:disabled) {
   background: transparent;
   color: var(--ui-text-highlighted);
@@ -549,6 +554,10 @@ function time(value: number) {
 }
 @media (max-width: 700px) {
   .session-heading h2 {
+    font-size: var(--text-body);
+  }
+  /* On a phone the action reads at the heading's size beside it. */
+  .session-heading .session-clear {
     font-size: var(--text-body);
   }
   .session-history {
