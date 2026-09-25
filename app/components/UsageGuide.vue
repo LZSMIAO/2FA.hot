@@ -293,7 +293,8 @@ onBeforeUnmount(() => {
         }}</span
         ><GuideVoiceButton :enabled="narration.enabled.value" @toggle="toggleNarration" /></span
       ><UButton
-        icon="i-lucide-x"
+        icon="i-mc-close"
+        class="ore-close"
         color="neutral"
         variant="ghost"
         :aria-label="tx('关闭教学')"
@@ -405,7 +406,7 @@ onBeforeUnmount(() => {
                   }}</span>
                 </div>
                 <div id="tutorial-submit" class="simulated-button">
-                  {{ tx('验证并登录') }}<UIcon name="i-lucide-arrow-right" />
+                  {{ tx('验证并登录') }}<UIcon name="i-mc-arrow-right" />
                 </div>
               </template>
             </div>

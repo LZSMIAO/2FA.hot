@@ -381,6 +381,13 @@
   background: var(--ore-control);
   box-shadow: var(--ore-bevel);
 }
+/* Dialogs and guide cards close on one square ghost button, a full target. */
+.ore-button.ore-close {
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  justify-content: center;
+}
 .ore-raised:disabled,
 .primary-button:disabled {
   opacity: 1;
@@ -1202,7 +1209,7 @@ html[data-guide-learned~='batch'][data-workspace-mode='batch'] .guide-trigger-in
   flex-shrink: 0;
   vertical-align: middle;
   margin: 0;
-  border: 2px solid var(--ui-border);
+  border: 2px solid var(--ui-text-muted);
   border-radius: 0;
   background-color: var(--ore-input);
   background-position: center;
@@ -1225,11 +1232,11 @@ html[data-guide-learned~='batch'][data-workspace-mode='batch'] .guide-trigger-in
 }
 .ore-theme input[type='checkbox']:not([aria-hidden='true']):focus-visible {
   outline: 2px solid var(--accent-ink);
-  outline-offset: 3px;
+  outline-offset: 2px;
 }
 .ore-theme input[type='checkbox']:not([aria-hidden='true']):disabled {
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: var(--ore-disabled-opacity);
 }
 .ore-checkbox {
   /* An explicit border survives the pixel inset overriding Nuxt UI's ring shadow. */
@@ -1241,6 +1248,21 @@ html[data-guide-learned~='batch'][data-workspace-mode='batch'] .guide-trigger-in
 .ore-checkbox[data-state='checked'],
 .ore-checkbox[data-state='indeterminate'] {
   border-color: var(--action);
+}
+/*
+ * Checked, Nuxt UI fills the indicator with --ui-primary and inks it with
+ * --ui-text-inverted: on the dark theme a bright green with a dark mark, where
+ * the native box and SelectionCheck are the action green with a white one.
+ */
+.ore-checkbox[data-state='checked'] > [data-slot='indicator'],
+.ore-checkbox[data-state='indeterminate'] > [data-slot='indicator'] {
+  background-color: var(--action);
+  color: #fff;
+  box-shadow: var(--ore-bevel);
+}
+.ore-checkbox:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 2px;
 }
 @media (forced-colors: active) {
   .ore-theme input[type='checkbox']:not([aria-hidden='true']) {
@@ -1270,6 +1292,16 @@ html[data-guide-learned~='batch'][data-workspace-mode='batch'] .guide-trigger-in
 }
 .ore-popover {
   z-index: var(--layer-popover);
+}
+/*
+ * Pixel icons show at 16px whatever slot they sit in. They are drawn on an 8
+ * or 16 unit grid, and only a whole multiple keeps their edges sharp: at the
+ * 20px Nuxt UI gives a button's icon, every pixel smeared across two. The
+ * spinner sizes itself (spinner.css).
+ */
+.iconify[class*='i-mc:']:not(.i-mc\:spinner) {
+  width: 1rem;
+  height: 1rem;
 }
 .ore-input:focus-visible,
 .input-panel input:focus-visible,

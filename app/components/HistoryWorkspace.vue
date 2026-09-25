@@ -524,7 +524,7 @@ const date = (v: number) =>
 <template>
   <div ref="surface" class="history-surface ore-workspace-frame" @keydown="cancelSelection">
     <div v-if="!vault.ready.value" class="empty-state">
-      <UIcon name="i-lucide-loader-circle" class="animate-spin" />
+      <span class="ore-spinner ore-spinner-large" aria-hidden="true" />
       <p>{{ tx('正在读取本地存储…') }}</p>
     </div>
     <div v-else-if="!vault.unlocked.value" class="vault-gate">
@@ -696,7 +696,7 @@ const date = (v: number) =>
           }}
         </p>
         <UButton v-if="!search" :to="localePath('/')" class="primary-button"
-          >{{ tx('开始取码') }}<UIcon name="i-lucide-arrow-right"
+          >{{ tx('开始取码') }}<UIcon name="i-mc-arrow-right"
         /></UButton>
       </div>
       <div
@@ -795,7 +795,7 @@ const date = (v: number) =>
           </span>
           <UIcon
             class="history-batch-chevron"
-            :name="batchExpanded(group.id) ? 'i-lucide-chevron-down' : 'i-lucide-chevron-right'"
+            :name="batchExpanded(group.id) ? 'i-mc-chevron-down' : 'i-mc-chevron-right'"
           />
         </div>
         <div
@@ -1339,6 +1339,7 @@ const date = (v: number) =>
 }
 .history-switch:disabled {
   cursor: default;
+  opacity: var(--ore-disabled-opacity);
 }
 .history-search {
   flex: 1 1 16rem;

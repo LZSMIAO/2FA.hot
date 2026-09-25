@@ -13,7 +13,7 @@ function entranceSound() {
         <UIcon :name="icon" class="hint-icon" />
         <span class="hint-message">{{ message }}</span>
         <button type="button" class="touch-reach" :aria-label="tx('关闭')" @click="$emit('close')">
-          <UIcon name="i-lucide-x" />
+          <UIcon name="i-mc-close" />
         </button>
       </aside>
     </Transition>

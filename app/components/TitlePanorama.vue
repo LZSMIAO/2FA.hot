@@ -437,10 +437,7 @@ onBeforeUnmount(() => {
       >
         <AppHint :text="tx('切换背景')"
           ><button class="panorama-control" :disabled="loading" :aria-label="tx('切换背景')">
-            <UIcon
-              :name="loading ? 'i-lucide-loader-circle' : 'i-lucide-image'"
-              :class="{ 'animate-spin': loading }"
-            /></button
+            <UIcon :name="loading ? 'i-mc-spinner' : 'i-lucide-image'" /></button
         ></AppHint>
         <template #item-leading="{ item }">
           <img

@@ -67,7 +67,7 @@ function select(value: string | number) {
         trailingIcon: 'mc-select-trailing'
       }"
       selected-icon="i-mc-check"
-      trailing-icon="i-lucide-chevron-down"
+      trailing-icon="i-mc-chevron-down"
     />
   </UTooltip>
 </template>

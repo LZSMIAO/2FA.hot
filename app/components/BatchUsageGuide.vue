@@ -172,7 +172,8 @@ onBeforeUnmount(() => {
         >{{ tx('批量取码')
         }}<GuideVoiceButton :enabled="narration.enabled.value" @toggle="toggleNarration" /></strong
       ><UButton
-        icon="i-lucide-x"
+        icon="i-mc-close"
+        class="ore-close"
         variant="ghost"
         color="neutral"
         :aria-label="tx('关闭教学')"

@@ -105,7 +105,7 @@ onBeforeUnmount(() => {
     <ActionHint
       :open="tip"
       :message="tx('已安装，可以从桌面或主屏幕直接打开。')"
-      icon="i-lucide-check"
+      icon="i-mc-check"
       @close="tip = false"
     />
   </span>

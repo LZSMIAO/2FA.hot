@@ -77,7 +77,8 @@ onMounted(() => panel.value?.focus({ preventScroll: true }))
         ><UIcon name="i-lucide-lightbulb" />{{ tx('网站小技巧')
         }}<GuideVoiceButton :enabled="narration.enabled.value" @toggle="narration.toggle()" /></span
       ><UButton
-        icon="i-lucide-x"
+        icon="i-mc-close"
+        class="ore-close"
         color="neutral"
         variant="ghost"
         :aria-label="tx('关闭教学')"
@@ -122,7 +123,7 @@ onMounted(() => panel.value?.focus({ preventScroll: true }))
       </div>
     </div>
     <div class="site-tips-controls">
-      <UButton variant="outline" color="neutral" icon="i-lucide-arrow-left" @click="emit('back')">{{
+      <UButton variant="outline" color="neutral" icon="i-mc-arrow-left" @click="emit('back')">{{
         tx('返回教学')
       }}</UButton>
       <UButton v-if="!last" class="primary-button" @click="show(index + 1)">{{

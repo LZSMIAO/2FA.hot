@@ -173,7 +173,7 @@ function time(value: number) {
                       :aria-label="tx('取消')"
                       @click="editing = null"
                     >
-                      <UIcon name="i-lucide-x" />
+                      <UIcon name="i-mc-close" />
                     </button>
                   </form>
                   <div v-else class="session-name">
@@ -185,9 +185,7 @@ function time(value: number) {
                     >
                       <UIcon
                         v-if="row.batch"
-                        :name="
-                          expanded.has(row.id) ? 'i-lucide-chevron-down' : 'i-lucide-chevron-right'
-                        "
+                        :name="expanded.has(row.id) ? 'i-mc-chevron-down' : 'i-mc-chevron-right'"
                       />
                       {{ row.label || row.issuer || tx(row.batch ? '批量取码' : '未命名记录') }}
                     </button>

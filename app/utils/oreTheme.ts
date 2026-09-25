@@ -1,7 +1,11 @@
 // Shared Ore controls; AppHeader removes these classes for plain navigation.
 export const oreTheme = {
   button: {
-    slots: { base: 'ore-button font-medium cursor-pointer rounded-none' },
+    // Nuxt UI fades a disabled button to 75%; ghost and link buttons take the
+    // site's one disabled opacity instead (raised ones keep ore.css's look).
+    slots: {
+      base: 'ore-button font-medium cursor-pointer rounded-none disabled:opacity-(--ore-disabled-opacity) aria-disabled:opacity-(--ore-disabled-opacity)'
+    },
     variants: {
       /*
        * Nuxt UI's button size variant is a per-slot object carrying padding,
@@ -59,7 +63,11 @@ export const oreTheme = {
   input: { slots: { base: 'ore-input w-full rounded-none' } },
   textarea: { slots: { base: 'ore-input rounded-none' } },
   modal: {
-    slots: { content: 'ore-window ore-theme rounded-none', header: 'ore-window-title' },
+    slots: {
+      content: 'ore-window ore-theme rounded-none',
+      header: 'ore-window-title',
+      close: 'ore-close'
+    },
     variants: {
       transition: {
         true: { content: 'ore-dialog-motion', overlay: 'ore-overlay-motion' }

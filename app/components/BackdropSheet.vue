@@ -86,7 +86,7 @@ const remove = () => window.dispatchEvent(new Event('2fa-panorama-remove'))
             />
             <span class="backdrop-group-name">{{ tx(group.label) }}</span>
             <span class="backdrop-group-count">{{ group.scenes.length }}</span>
-            <UIcon name="i-lucide-chevron-down" class="backdrop-group-chevron" />
+            <UIcon name="i-mc-chevron-down" class="backdrop-group-chevron" />
           </button>
         </h3>
         <div

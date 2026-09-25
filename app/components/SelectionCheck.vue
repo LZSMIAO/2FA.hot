@@ -38,16 +38,17 @@ defineProps<{ checked: boolean | 'mixed'; label: string }>()
   place-items: center;
   width: 20px;
   height: 20px;
+  /* The same box as the native and Nuxt UI checkboxes (ore.css). */
   border: 2px solid var(--ui-text-muted);
-  background: var(--ui-bg);
-  box-shadow: inset 2px 2px 0 rgb(0 0 0 / 18%);
+  background: var(--ore-input);
+  box-shadow: var(--ore-inset);
 }
 .selection-check[aria-checked='true'] > .selection-box,
 .selection-check[aria-checked='mixed'] > .selection-box {
   background: var(--action);
-  border-color: var(--accent-ink);
+  border-color: var(--action);
   color: white;
-  box-shadow: inset 2px 2px 0 rgb(255 255 255 / 18%);
+  box-shadow: var(--ore-bevel);
 }
 .selection-check:focus-visible {
   outline: 2px solid var(--accent-ink);
@@ -59,7 +60,7 @@ defineProps<{ checked: boolean | 'mixed'; label: string }>()
 }
 .selection-check:disabled {
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: var(--ore-disabled-opacity);
 }
 @media (pointer: coarse) {
   .selection-check {

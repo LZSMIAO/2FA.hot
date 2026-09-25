@@ -57,5 +57,6 @@ defineEmits<{ toggle: [] }>()
 }
 .history-switch:disabled {
   cursor: default;
+  opacity: var(--ore-disabled-opacity);
 }
 </style>

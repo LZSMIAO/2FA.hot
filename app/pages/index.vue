@@ -319,7 +319,7 @@ watch(
               :aria-controls="guideOpen ? 'usage-guide' : undefined"
               @click="toggleGuide"
             >
-              <UIcon :name="guideOpen ? 'i-lucide-x' : 'i-lucide-accessibility'" />
+              <UIcon :name="guideOpen ? 'i-mc-close' : 'i-lucide-accessibility'" />
               <span class="guide-trigger-label"
                 ><span :class="{ 'is-spare': guideOpen }">{{ tx('不会用？') }}</span
                 ><span :class="{ 'is-spare': !guideOpen }">{{ tx('关闭教学') }}</span></span

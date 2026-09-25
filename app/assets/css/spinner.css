@@ -1,0 +1,37 @@
+/*
+ * OreUI's pixel spinner for every loading state: fifteen 8x8 frames played in
+ * steps, in the text colour around it. See app/assets/ore/oreui-source.txt.
+ *
+ * Nuxt UI draws its loading icon (app.config.ts sets it to i-mc-spinner) as a
+ * masked span and adds animate-spin. This takes over that span's mask and
+ * animation, so buttons with :loading show frames instead of a rotating glyph.
+ * The sprite's pixels sit on half units, so they stay sharp at whole even
+ * multiples: 2px per pixel by default, 4px for a large spinner.
+ */
+.ore-spinner,
+.iconify.i-mc\:spinner {
+  --ore-spinner-pixel: 2px;
+  display: inline-block;
+  flex: none;
+  width: calc(var(--ore-spinner-pixel) * 8);
+  height: calc(var(--ore-spinner-pixel) * 8);
+  background-color: currentColor;
+  mask: url('../ore/spinner.svg') 0 0 / calc(var(--ore-spinner-pixel) * 278) 100% no-repeat;
+  animation: ore-spinner 800ms steps(15, jump-end) infinite;
+  vertical-align: middle;
+}
+.ore-spinner-large {
+  --ore-spinner-pixel: 4px;
+}
+/* Frame n sits 18 units along the sprite; the sixteenth repeats the first. */
+@keyframes ore-spinner {
+  to {
+    mask-position: calc(var(--ore-spinner-pixel) * -270) 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ore-spinner,
+  .iconify.i-mc\:spinner {
+    animation: none;
+  }
+}

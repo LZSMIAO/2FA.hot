@@ -378,7 +378,7 @@ useHead({ meta: [{ name: 'referrer', content: 'no-referrer' }] })
         class="primary-button w-full mt-4"
         :disabled="!!pendingPaste"
         @click="submit"
-        >{{ tx('获取验证码') }}<UIcon name="i-lucide-arrow-right"
+        >{{ tx('获取验证码') }}<UIcon name="i-mc-arrow-right"
       /></UButton>
     </div>
     <div v-else-if="issue" class="direct-error">

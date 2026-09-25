@@ -1,0 +1,17 @@
+Files taken from OreUI by katorly, https://katorly.dev/OreUI
+
+  app/assets/ore/spinner.svg          src/assets/icons/spinner.svg, unchanged:
+                                      the loading spinner, 15 frames of 8x8
+                                      pixels, 18 units apart
+  app/assets/icons/mc/spinner.svg     the first frame of that sprite
+  app/assets/icons/mc/chevron-down.svg  src/assets/icons/chevron-down.svg,
+                                      with a width and height added
+  app/assets/icons/mc/arrow-left.svg  src/assets/icons/arrow-left.svg, likewise,
+                                      as are arrow-right, arrow-up, arrow-down,
+                                      chevron-up, chevron-left and chevron-right
+  app/assets/icons/mc/close.svg       src/assets/icons/cross.svg, likewise
+
+Source: https://github.com/katorlys/OreUI/tree/7c3ac389c265534390091373ad9cb504483060ca/src/assets/icons
+
+License: Mozilla Public License 2.0, https://mozilla.org/MPL/2.0/
+The MPL applies to these files only. Changes to them must stay under the MPL.

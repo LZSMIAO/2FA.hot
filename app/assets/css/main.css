@@ -53,6 +53,9 @@
   /* Eases out instead of accelerating into nothing, which read as a snap. */
   --ore-dialog-exit-ease: cubic-bezier(0.4, 0, 0.6, 1);
   --ore-dialog-distance: 20px;
+  /* How far anything unavailable fades. Raised buttons keep their own look:
+     control grey with muted text (ore.css). */
+  --ore-disabled-opacity: 0.5;
   --layer-skip: 50;
   --layer-header: 20;
 }
@@ -212,7 +215,7 @@ button {
     border-color 160ms ease;
 }
 ::selection {
-  background: oklch(0.78 0.1 290 / 0.25);
+  background: color-mix(in srgb, #6cc349 32%, transparent);
 }
 :focus-visible {
   outline: 2px solid var(--accent-ink);
@@ -462,7 +465,7 @@ code {
   pointer-events: none;
 }
 .guide-trigger:disabled {
-  opacity: 0.5;
+  opacity: var(--ore-disabled-opacity);
   cursor: default;
 }
 /* A short viewport cannot give the side drawer enough height for the card. */
@@ -829,7 +832,7 @@ html.light .workspace .parameter-moon {
   min-height: 2.75rem;
 }
 .text-action:disabled {
-  opacity: 0.45;
+  opacity: var(--ore-disabled-opacity);
   cursor: not-allowed;
 }
 .result-head {

@@ -75,6 +75,7 @@ async function change(next: SupportedLocale) {
 </script>
 <template>
   <div class="language-picker">
+    <!-- The header keeps Nuxt UI's glyphs; app.config.ts's pixel set is for the page. -->
     <USelectMenu
       v-model:open="listOpen"
       :model-value="locale"
@@ -82,6 +83,7 @@ async function change(next: SupportedLocale) {
       value-key="code"
       :filter-fields="['name', 'code', 'language']"
       :aria-label="tx('选择语言')"
+      trailing-icon="i-lucide-chevron-down"
       :disabled="changing"
       :autofocus="false"
       :search-input="{

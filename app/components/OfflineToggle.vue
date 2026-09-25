@@ -78,7 +78,7 @@ const notice = computed(() => {
     return { icon: 'i-lucide-thumbs-up', message: tx('太好了，已断网！验证码照常产生。') }
   if (offline.justSaved.value)
     return {
-      icon: 'i-lucide-check',
+      icon: 'i-mc-check',
       message: tx(
         homeScreenHint.value
           ? '已可离线使用。在 Safari 分享菜单选“添加到主屏幕”，就能像 App 一样打开。'

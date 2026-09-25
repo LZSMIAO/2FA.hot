@@ -170,7 +170,7 @@ function useSelected() {
               color="neutral"
               variant="ghost"
               size="sm"
-              icon="i-lucide-x"
+              icon="i-mc-close"
               class="paste-clear"
               :aria-label="tx('清空')"
               data-sound-custom
@@ -309,7 +309,7 @@ function useSelected() {
           color="neutral"
           variant="soft"
           size="sm"
-          trailing-icon="i-lucide-arrow-right"
+          trailing-icon="i-mc-arrow-right"
           :disabled="!selected.length"
           @click="useSelected"
           >{{ tx(selected.length > 1 ? '转到批量取码' : '使用所选密钥') }}</UButton
@@ -588,7 +588,7 @@ function useSelected() {
   color: var(--accent-ink);
 }
 .candidate-port:disabled {
-  opacity: 0.4;
+  opacity: var(--ore-disabled-opacity);
   cursor: default;
 }
 .candidate-port:focus-visible {
