@@ -661,5 +661,16 @@
   "homeFaqBatchA": "Ja. Wechsle zu „Mehrere Codes“ und füge mehrere Schlüssel ein, einen pro Zeile, oder füge eine aus Excel kopierte Tabelle oder einen Text mit Konten, Passwörtern und Schlüsseln ein. Das Tool erkennt die Schlüssel, verarbeitet bis zu 100 Einträge und kopiert alle Codes mit einem Klick.",
   "homeFaqFreeQ": "Brauche ich ein Konto oder muss ich bezahlen?",
   "homeFaqFreeA": "Nein. 2fa.hot ist kostenlos und kommt ohne Konto aus. Der Quellcode steht auf GitHub unter der Lizenz AGPL-3.0.",
-  "homeGuidesLink": "Anleitungen zu 2FA und TOTP lesen"
+  "homeGuidesLink": "Anleitungen zu 2FA und TOTP lesen",
+  "m0a7ecabc2b9e": "Offline-Nutzung",
+  "mc337dfe13669": "Über die Offline-Nutzung",
+  "m7aaebbb409dd": "Offline-Nutzung einschalten",
+  "m8e63bef38436": "Offline-Nutzung ausschalten",
+  "m2853dcdcbdd5": "Dieser Browser unterstützt keine Offline-Nutzung",
+  "m19271ea9b4fb": "Dateien für die Offline-Nutzung werden gespeichert… {percent} %",
+  "m36f6a802ca31": "Die Offline-Dateien wurden nicht vollständig gespeichert. Bitte mit dem Internet verbinden und erneut einschalten.",
+  "m34e2493078fa": "Bereit für die Offline-Nutzung.",
+  "m97f96cb5d18f": "Bereit für die Offline-Nutzung. Im Teilen-Menü von Safari „Zum Home-Bildschirm“ wählen, um die Seite wie eine App zu öffnen.",
+  "m04c231282e5b": "Offline-Nutzung: die Dateien der Website auf dem Gerät",
+  "m16c3059ac799": "Ist „Offline-Nutzung“ unter dem Werkzeug auf der Startseite eingeschaltet, speichert dieser Browser Code, Stile, Schriften, Übersetzungen und den aktuellen Hintergrund der Website auf diesem Gerät, sodass sie sich ohne Netz öffnen lässt und Codes erzeugt. Gespeichert werden nur die öffentlichen Dateien der Website selbst, für alle Besucher gleich; Schlüssel, Codes und der lokale Verlauf werden nie darin abgelegt, und dadurch wird nichts hochgeladen. Beim Ausschalten wird das Offline-Modul entfernt und diese Dateien werden gelöscht."
 }

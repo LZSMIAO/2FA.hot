@@ -661,5 +661,16 @@
   "homeFaqBatchA": "Tak. Przejdź do karty „Wiele kodów” i wklej kilka kluczy, po jednym w wierszu, albo wklej tabelę skopiowaną z programu Excel lub tekst, w którym mieszają się konta, hasła i klucze. Narzędzie wykryje klucze, obsłuży do 100 wpisów i skopiuje wszystkie kody jednym kliknięciem.",
   "homeFaqFreeQ": "Czy potrzebuję konta lub muszę płacić?",
   "homeFaqFreeA": "Nie. 2fa.hot jest bezpłatny i nie wymaga konta. Kod źródłowy jest dostępny w serwisie GitHub na licencji AGPL-3.0.",
-  "homeGuidesLink": "Przeczytaj poradniki o 2FA i TOTP"
+  "homeGuidesLink": "Przeczytaj poradniki o 2FA i TOTP",
+  "m0a7ecabc2b9e": "Użycie offline",
+  "mc337dfe13669": "O użyciu offline",
+  "m7aaebbb409dd": "Włącz użycie offline",
+  "m8e63bef38436": "Wyłącz użycie offline",
+  "m2853dcdcbdd5": "Ta przeglądarka nie obsługuje użycia offline",
+  "m19271ea9b4fb": "Zapisywanie plików do użycia offline… {percent}%",
+  "m36f6a802ca31": "Pliki offline nie zostały zapisane w całości. Połącz się z internetem i włącz ponownie.",
+  "m34e2493078fa": "Gotowe do użycia offline.",
+  "m97f96cb5d18f": "Gotowe do użycia offline. W menu Udostępnij w Safari wybierz „Do ekranu początkowego”, aby otwierać stronę jak aplikację.",
+  "m04c231282e5b": "Użycie offline: pliki strony na Twoim urządzeniu",
+  "m16c3059ac799": "Po włączeniu „Użycia offline” pod narzędziem na stronie głównej ta przeglądarka zapisuje na tym urządzeniu kod, style, czcionki, tłumaczenia i bieżące tło strony, dzięki czemu otwiera się ona i generuje kody bez sieci. Zapisywane są tylko publiczne pliki samej strony, takie same dla każdego odwiedzającego; klucze, kody i historia lokalna nigdy nie są w nich zapisywane, a przez to nic nie jest wysyłane. Wyłączenie usuwa moduł offline i kasuje te pliki."
 }

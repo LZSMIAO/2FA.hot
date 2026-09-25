@@ -661,5 +661,16 @@
   "homeFaqBatchA": "Yes. Switch to Batch codes and paste several secrets, one per line, or paste a table copied from Excel or text that mixes accounts, passwords and secrets. The tool detects the secrets, handles up to 100 entries and copies all codes in one click.",
   "homeFaqFreeQ": "Do I need an account or to pay?",
   "homeFaqFreeA": "No. 2fa.hot is free and needs no account. The source code is on GitHub under the AGPL-3.0 license.",
-  "homeGuidesLink": "Read the 2FA and TOTP guides"
+  "homeGuidesLink": "Read the 2FA and TOTP guides",
+  "m0a7ecabc2b9e": "Offline use",
+  "mc337dfe13669": "About offline use",
+  "m7aaebbb409dd": "Turn on offline use",
+  "m8e63bef38436": "Turn off offline use",
+  "m2853dcdcbdd5": "This browser does not support offline use",
+  "m19271ea9b4fb": "Saving files for offline use… {percent}%",
+  "m36f6a802ca31": "The offline files were not fully saved. Connect to the internet and turn it on again.",
+  "m34e2493078fa": "Ready to use offline.",
+  "m97f96cb5d18f": "Ready to use offline. In Safari's Share menu, choose “Add to Home Screen” to open it like an app.",
+  "m04c231282e5b": "Offline use: the site's files on your device",
+  "m16c3059ac799": "When you turn on “Offline use” below the tool on the home page, this browser keeps the site's code, styles, fonts, translations and current background on this device, so it opens and generates codes without a network. Only the site's own public files are kept, the same for every visitor; secrets, codes and local history are never written to them, and nothing is uploaded because of it. Turning it off removes the offline helper and deletes these files."
 }

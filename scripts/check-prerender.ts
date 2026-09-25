@@ -29,6 +29,8 @@ for (const locale of supportedLocales) {
       `Private page must not become a shared asset: ${page}`
     )
 }
+// public/sw.js reads this to keep the site for offline use.
+assert.ok(existsSync(resolve(root, 'offline-manifest.json')), 'Missing offline-manifest.json')
 const headers = readFileSync(resolve(root, '_headers'), 'utf8')
 for (const header of [
   'Content-Security-Policy:',

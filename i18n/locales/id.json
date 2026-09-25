@@ -661,5 +661,16 @@
   "homeFaqBatchA": "Bisa. Beralihlah ke “Kode massal” lalu tempel beberapa kunci rahasia, satu per baris, atau tempel tabel yang disalin dari Excel maupun teks yang mencampur akun, kata sandi, dan kunci. Alat ini mendeteksi kunci rahasia, memproses hingga 100 entri, dan menyalin semua kode dengan sekali klik.",
   "homeFaqFreeQ": "Apakah perlu akun atau membayar?",
   "homeFaqFreeA": "Tidak. 2fa.hot gratis dan tidak memerlukan akun. Kode sumbernya tersedia di GitHub dengan lisensi AGPL-3.0.",
-  "homeGuidesLink": "Baca panduan 2FA dan TOTP"
+  "homeGuidesLink": "Baca panduan 2FA dan TOTP",
+  "m0a7ecabc2b9e": "Penggunaan offline",
+  "mc337dfe13669": "Tentang penggunaan offline",
+  "m7aaebbb409dd": "Aktifkan penggunaan offline",
+  "m8e63bef38436": "Nonaktifkan penggunaan offline",
+  "m2853dcdcbdd5": "Browser ini tidak mendukung penggunaan offline",
+  "m19271ea9b4fb": "Menyimpan file untuk penggunaan offline… {percent}%",
+  "m36f6a802ca31": "File offline belum tersimpan sepenuhnya. Sambungkan ke internet lalu aktifkan lagi.",
+  "m34e2493078fa": "Siap dipakai secara offline.",
+  "m97f96cb5d18f": "Siap dipakai secara offline. Di menu Bagikan Safari, pilih “Tambah ke Layar Utama” agar bisa dibuka seperti aplikasi.",
+  "m04c231282e5b": "Penggunaan offline: file situs di perangkat Anda",
+  "m16c3059ac799": "Saat Anda mengaktifkan “Penggunaan offline” di bawah alat pada halaman beranda, browser ini menyimpan kode, gaya, font, terjemahan, dan latar belakang situs saat ini di perangkat ini, sehingga situs tetap terbuka dan membuat kode tanpa jaringan. Yang disimpan hanya file publik milik situs sendiri, sama untuk setiap pengunjung; kunci rahasia, kode, dan riwayat lokal tidak pernah ditulis ke dalamnya, dan tidak ada yang diunggah karenanya. Menonaktifkannya akan menghapus modul offline beserta file-file ini."
 }

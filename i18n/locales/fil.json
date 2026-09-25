@@ -661,5 +661,16 @@
   "homeFaqBatchA": "Oo. Lumipat sa “Maramihang code” at mag-paste ng ilang secret key, isa bawat linya, o mag-paste ng table na kinopya mula sa Excel o text na may halong account, password at secret key. Nakikilala ng tool ang mga secret key, kaya nitong iproseso ang hanggang 100 tala, at makokopya ang lahat ng code sa isang click.",
   "homeFaqFreeQ": "Kailangan ko bang gumawa ng account o magbayad?",
   "homeFaqFreeA": "Hindi. Libre ang 2fa.hot at hindi kailangan ng account. Nasa GitHub ang source code sa ilalim ng AGPL-3.0 license.",
-  "homeGuidesLink": "Basahin ang mga gabay sa 2FA at TOTP"
+  "homeGuidesLink": "Basahin ang mga gabay sa 2FA at TOTP",
+  "m0a7ecabc2b9e": "Offline na paggamit",
+  "mc337dfe13669": "Tungkol sa offline na paggamit",
+  "m7aaebbb409dd": "I-on ang offline na paggamit",
+  "m8e63bef38436": "I-off ang offline na paggamit",
+  "m2853dcdcbdd5": "Hindi sinusuportahan ng browser na ito ang offline na paggamit",
+  "m19271ea9b4fb": "Sine-save ang mga file para sa offline na paggamit… {percent}%",
+  "m36f6a802ca31": "Hindi natapos i-save ang mga offline na file. Kumonekta sa internet at i-on itong muli.",
+  "m34e2493078fa": "Handa nang gamitin offline.",
+  "m97f96cb5d18f": "Handa nang gamitin offline. Sa Share menu ng Safari, piliin ang “Idagdag sa Home Screen” para mabuksan ito na parang app.",
+  "m04c231282e5b": "Offline na paggamit: ang mga file ng site sa iyong device",
+  "m16c3059ac799": "Kapag in-on mo ang “Offline na paggamit” sa ilalim ng tool sa home page, itinatabi ng browser na ito sa device na ito ang code, mga istilo, font, pagsasalin at kasalukuyang background ng site, kaya bumubukas ito at gumagawa ng mga code kahit walang network. Ang mga pampublikong file lang ng site mismo ang itinatabi, pareho para sa bawat bisita; hindi kailanman isinusulat dito ang mga secret key, code at lokal na kasaysayan, at walang ina-upload dahil dito. Kapag in-off, aalisin ang offline na module at buburahin ang mga file na ito."
 }

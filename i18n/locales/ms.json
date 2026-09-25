@@ -661,5 +661,16 @@
   "homeFaqBatchA": "Boleh. Tukar ke “Kod berkelompok” dan tampal beberapa kunci rahsia, satu setiap baris, atau tampal jadual yang disalin daripada Excel atau teks yang bercampur akaun, kata laluan dan kunci rahsia. Alat ini mengesan kunci rahsia, memproses sehingga 100 entri dan menyalin semua kod dengan satu klik.",
   "homeFaqFreeQ": "Perlukah saya mendaftar akaun atau membayar?",
   "homeFaqFreeA": "Tidak. 2fa.hot percuma dan tidak memerlukan akaun. Kod sumbernya tersedia di GitHub di bawah lesen AGPL-3.0.",
-  "homeGuidesLink": "Baca panduan 2FA dan TOTP"
+  "homeGuidesLink": "Baca panduan 2FA dan TOTP",
+  "m0a7ecabc2b9e": "Penggunaan luar talian",
+  "mc337dfe13669": "Tentang penggunaan luar talian",
+  "m7aaebbb409dd": "Hidupkan penggunaan luar talian",
+  "m8e63bef38436": "Matikan penggunaan luar talian",
+  "m2853dcdcbdd5": "Pelayar ini tidak menyokong penggunaan luar talian",
+  "m19271ea9b4fb": "Menyimpan fail untuk penggunaan luar talian… {percent}%",
+  "m36f6a802ca31": "Fail luar talian tidak disimpan sepenuhnya. Sambung ke internet dan hidupkannya semula.",
+  "m34e2493078fa": "Sedia digunakan di luar talian.",
+  "m97f96cb5d18f": "Sedia digunakan di luar talian. Dalam menu Kongsi Safari, pilih “Tambah ke Skrin Utama” untuk membukanya seperti apl.",
+  "m04c231282e5b": "Penggunaan luar talian: fail laman di peranti anda",
+  "m16c3059ac799": "Apabila anda menghidupkan “Penggunaan luar talian” di bawah alat pada halaman utama, pelayar ini menyimpan kod, gaya, fon, terjemahan dan latar belakang semasa laman pada peranti ini, supaya laman boleh dibuka dan menjana kod tanpa rangkaian. Hanya fail awam laman itu sendiri disimpan, sama bagi setiap pelawat; rahsia, kod dan sejarah setempat tidak pernah ditulis ke dalamnya, dan tiada apa-apa dimuat naik kerananya. Mematikannya akan membuang modul luar talian dan memadamkan fail-fail ini."
 }

@@ -661,5 +661,16 @@
   "homeFaqBatchA": "Evet. “Toplu kodlar” sekmesine geçin ve her satıra bir tane olacak şekilde birden fazla gizli anahtar yapıştırın; Excel’den kopyalanmış bir tabloyu ya da hesap, şifre ve gizli anahtarların karışık olduğu bir metni de yapıştırabilirsiniz. Araç gizli anahtarları algılar, 100 kayda kadar işler ve tüm kodları tek tıkla kopyalar.",
   "homeFaqFreeQ": "Hesap açmam ya da ödeme yapmam gerekir mi?",
   "homeFaqFreeA": "Hayır. 2fa.hot ücretsizdir ve hesap gerektirmez. Kaynak kodu AGPL-3.0 lisansıyla GitHub’da yayımlanmıştır.",
-  "homeGuidesLink": "2FA ve TOTP kılavuzlarını okuyun"
+  "homeGuidesLink": "2FA ve TOTP kılavuzlarını okuyun",
+  "m0a7ecabc2b9e": "Çevrimdışı kullanım",
+  "mc337dfe13669": "Çevrimdışı kullanım hakkında",
+  "m7aaebbb409dd": "Çevrimdışı kullanımı aç",
+  "m8e63bef38436": "Çevrimdışı kullanımı kapat",
+  "m2853dcdcbdd5": "Bu tarayıcı çevrimdışı kullanımı desteklemiyor",
+  "m19271ea9b4fb": "Çevrimdışı kullanım için dosyalar kaydediliyor… %{percent}",
+  "m36f6a802ca31": "Çevrimdışı dosyalar tam olarak kaydedilemedi. İnternete bağlanıp yeniden açın.",
+  "m34e2493078fa": "Çevrimdışı kullanıma hazır.",
+  "m97f96cb5d18f": "Çevrimdışı kullanıma hazır. Uygulama gibi açmak için Safari'nin Paylaş menüsünden “Ana Ekrana Ekle”yi seçin.",
+  "m04c231282e5b": "Çevrimdışı kullanım: sitenin dosyaları cihazınızda",
+  "m16c3059ac799": "Ana sayfadaki aracın altında “Çevrimdışı kullanım”ı açtığınızda bu tarayıcı sitenin kodunu, stillerini, yazı tiplerini, çevirilerini ve mevcut arka planını bu cihaza kaydeder; böylece site ağ olmadan da açılır ve kod üretir. Yalnızca sitenin kendi herkese açık dosyaları kaydedilir ve bunlar her ziyaretçi için aynıdır; gizli anahtarlar, kodlar ve yerel geçmiş asla bunlara yazılmaz ve bu yüzden hiçbir şey yüklenmez. Kapatıldığında çevrimdışı modül kaldırılır ve bu dosyalar silinir."
 }

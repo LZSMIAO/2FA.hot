@@ -661,5 +661,16 @@
   "homeFaqBatchA": "Ja. Schakel over naar “Meerdere codes” en plak meerdere sleutels, één per regel, of plak een tabel uit Excel of tekst waarin accounts, wachtwoorden en sleutels door elkaar staan. De tool herkent de sleutels, verwerkt tot 100 items en kopieert alle codes met één klik.",
   "homeFaqFreeQ": "Heb ik een account nodig of moet ik betalen?",
   "homeFaqFreeA": "Nee. 2fa.hot is gratis en je hebt geen account nodig. De broncode staat op GitHub onder de AGPL-3.0-licentie.",
-  "homeGuidesLink": "Lees de handleidingen over 2FA en TOTP"
+  "homeGuidesLink": "Lees de handleidingen over 2FA en TOTP",
+  "m0a7ecabc2b9e": "Offline gebruik",
+  "mc337dfe13669": "Over offline gebruik",
+  "m7aaebbb409dd": "Offline gebruik inschakelen",
+  "m8e63bef38436": "Offline gebruik uitschakelen",
+  "m2853dcdcbdd5": "Deze browser ondersteunt geen offline gebruik",
+  "m19271ea9b4fb": "Bestanden voor offline gebruik opslaan… {percent}%",
+  "m36f6a802ca31": "De offline bestanden zijn niet volledig opgeslagen. Maak verbinding met internet en schakel het opnieuw in.",
+  "m34e2493078fa": "Klaar voor offline gebruik.",
+  "m97f96cb5d18f": "Klaar voor offline gebruik. Kies in het deelmenu van Safari ‘Zet op beginscherm’ om het als een app te openen.",
+  "m04c231282e5b": "Offline gebruik: de bestanden van de site op je apparaat",
+  "m16c3059ac799": "Als je ‘Offline gebruik’ onder de tool op de startpagina inschakelt, bewaart deze browser de code, stijlen, lettertypen, vertalingen en huidige achtergrond van de site op dit apparaat, zodat de site ook zonder netwerk opent en codes maakt. Alleen de eigen openbare bestanden van de site worden bewaard, voor elke bezoeker hetzelfde; sleutels, codes en lokale geschiedenis worden er nooit in geschreven, en daardoor wordt niets geüpload. Uitschakelen verwijdert de offline module en wist deze bestanden."
 }

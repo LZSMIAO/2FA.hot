@@ -661,5 +661,16 @@
   "homeFaqBatchA": "Ndiyo. Badili hadi “Misimbo kwa makundi” kisha ubandike funguo kadhaa za siri, moja kwa kila mstari, au ubandike jedwali lililonakiliwa kutoka Excel au maandishi yaliyochanganya akaunti, manenosiri na funguo. Zana hutambua funguo za siri, hushughulikia hadi maingizo 100 na hunakili misimbo yote kwa mbofyo mmoja.",
   "homeFaqFreeQ": "Je, ninahitaji akaunti au kulipa?",
   "homeFaqFreeA": "Hapana. 2fa.hot ni bure na haihitaji akaunti. Msimbo chanzo unapatikana kwenye GitHub chini ya leseni ya AGPL-3.0.",
-  "homeGuidesLink": "Soma miongozo ya 2FA na TOTP"
+  "homeGuidesLink": "Soma miongozo ya 2FA na TOTP",
+  "m0a7ecabc2b9e": "Matumizi nje ya mtandao",
+  "mc337dfe13669": "Kuhusu matumizi nje ya mtandao",
+  "m7aaebbb409dd": "Washa matumizi nje ya mtandao",
+  "m8e63bef38436": "Zima matumizi nje ya mtandao",
+  "m2853dcdcbdd5": "Kivinjari hiki hakitumii matumizi nje ya mtandao",
+  "m19271ea9b4fb": "Inahifadhi faili kwa matumizi nje ya mtandao… {percent}%",
+  "m36f6a802ca31": "Faili za nje ya mtandao hazikuhifadhiwa zote. Unganisha kwenye intaneti kisha uwashe tena.",
+  "m34e2493078fa": "Iko tayari kutumika nje ya mtandao.",
+  "m97f96cb5d18f": "Iko tayari kutumika nje ya mtandao. Kwenye menyu ya Shiriki ya Safari, chagua “Ongeza kwenye Skrini ya Nyumbani” ili kuifungua kama programu.",
+  "m04c231282e5b": "Matumizi nje ya mtandao: faili za tovuti kwenye kifaa chako",
+  "m16c3059ac799": "Ukiwasha “Matumizi nje ya mtandao” chini ya zana kwenye ukurasa wa mwanzo, kivinjari hiki huhifadhi msimbo, mitindo, fonti, tafsiri na mandharinyuma ya sasa ya tovuti kwenye kifaa hiki, ili ifunguke na kutengeneza misimbo bila mtandao. Huhifadhiwa faili za umma za tovuti yenyewe pekee, zinazofanana kwa kila mgeni; siri, misimbo na historia ya ndani haziandikwi humo kamwe, na hakuna kinachopakiwa kwa sababu hiyo. Kuzima huondoa kipengele cha nje ya mtandao na kufuta faili hizi."
 }

@@ -661,5 +661,16 @@
   "homeFaqBatchA": "Sim. Mude para “Códigos em lote” e cole várias chaves secretas, uma por linha, ou cole uma tabela copiada do Excel ou um texto que misture contas, senhas e chaves. A ferramenta identifica as chaves, processa até 100 registros e copia todos os códigos com um clique.",
   "homeFaqFreeQ": "Preciso criar conta ou pagar?",
   "homeFaqFreeA": "Não. O 2fa.hot é gratuito e não exige conta. O código-fonte está no GitHub sob a licença AGPL-3.0.",
-  "homeGuidesLink": "Leia os guias de 2FA e TOTP"
+  "homeGuidesLink": "Leia os guias de 2FA e TOTP",
+  "m0a7ecabc2b9e": "Uso offline",
+  "mc337dfe13669": "Sobre o uso offline",
+  "m7aaebbb409dd": "Ativar o uso offline",
+  "m8e63bef38436": "Desativar o uso offline",
+  "m2853dcdcbdd5": "Este navegador não oferece suporte ao uso offline",
+  "m19271ea9b4fb": "Salvando arquivos para uso offline… {percent}%",
+  "m36f6a802ca31": "Os arquivos offline não foram salvos por completo. Conecte-se à internet e ative de novo.",
+  "m34e2493078fa": "Pronto para usar offline.",
+  "m97f96cb5d18f": "Pronto para usar offline. No menu Compartilhar do Safari, escolha “Adicionar à Tela de Início” para abrir como um app.",
+  "m04c231282e5b": "Uso offline: os arquivos do site no seu dispositivo",
+  "m16c3059ac799": "Ao ativar “Uso offline” abaixo da ferramenta na página inicial, este navegador guarda neste dispositivo o código, os estilos, as fontes, as traduções e o fundo atual do site, para que ele abra e gere códigos sem rede. Só são guardados os arquivos públicos do próprio site, iguais para todos os visitantes; segredos, códigos e o histórico local nunca são gravados neles, e nada é enviado por causa disso. Ao desativar, o componente offline é removido e esses arquivos são apagados."
 }

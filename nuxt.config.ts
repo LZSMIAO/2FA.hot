@@ -94,7 +94,12 @@ export default defineNuxtConfig({
           content: toolDescriptions.en
         }
       ],
-      link: [{ key: 'site-favicon', rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }]
+      link: [
+        { key: 'site-favicon', rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+        // For adding the site to a home screen; offline use is a separate choice.
+        { rel: 'manifest', href: '/manifest.webmanifest' },
+        { rel: 'apple-touch-icon', href: '/app-icons/icon-180.png' }
+      ]
     }
   },
   routeRules: {

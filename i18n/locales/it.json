@@ -661,5 +661,16 @@
   "homeFaqBatchA": "Sì. Passa a «Codici in blocco» e incolla più chiavi segrete, una per riga, oppure incolla una tabella copiata da Excel o un testo che mescola account, password e chiavi. Lo strumento riconosce le chiavi segrete, gestisce fino a 100 voci e copia tutti i codici con un clic.",
   "homeFaqFreeQ": "Serve un account o bisogna pagare?",
   "homeFaqFreeA": "No. 2fa.hot è gratuito e non richiede alcun account. Il codice sorgente è disponibile su GitHub con licenza AGPL-3.0.",
-  "homeGuidesLink": "Leggi le guide su 2FA e TOTP"
+  "homeGuidesLink": "Leggi le guide su 2FA e TOTP",
+  "m0a7ecabc2b9e": "Uso offline",
+  "mc337dfe13669": "Informazioni sull'uso offline",
+  "m7aaebbb409dd": "Attiva l'uso offline",
+  "m8e63bef38436": "Disattiva l'uso offline",
+  "m2853dcdcbdd5": "Questo browser non supporta l'uso offline",
+  "m19271ea9b4fb": "Salvataggio dei file per l'uso offline… {percent}%",
+  "m36f6a802ca31": "I file offline non sono stati salvati del tutto. Collegati a Internet e riattivalo.",
+  "m34e2493078fa": "Pronto per l'uso offline.",
+  "m97f96cb5d18f": "Pronto per l'uso offline. Nel menu Condividi di Safari, scegli «Aggiungi alla schermata Home» per aprirlo come un'app.",
+  "m04c231282e5b": "Uso offline: i file del sito sul tuo dispositivo",
+  "m16c3059ac799": "Quando attivi «Uso offline» sotto lo strumento nella pagina iniziale, questo browser salva su questo dispositivo il codice, gli stili, i caratteri, le traduzioni e lo sfondo attuale del sito, così si apre e genera codici anche senza rete. Vengono salvati solo i file pubblici del sito stesso, uguali per ogni visitatore; segreti, codici e cronologia locale non vi vengono mai scritti, e per questo non viene caricato nulla. Disattivandolo, il modulo offline viene rimosso e questi file vengono eliminati."
 }

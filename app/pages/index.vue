@@ -276,6 +276,7 @@ watch(
             </span>
           </div>
           <div class="workspace-summary-links">
+            <OfflineToggle />
             <HistoryToggle />
           </div>
           <SessionHistory @select="mode = 'single'" @batch="(value) => importBatch(value, true)" />

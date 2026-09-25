@@ -661,5 +661,16 @@
   "homeFaqBatchA": "Sí. Cambia a «Códigos por lotes» y pega varias claves secretas, una por línea, o pega una tabla copiada de Excel o un texto que mezcle cuentas, contraseñas y claves. La herramienta detecta las claves secretas, procesa hasta 100 entradas y copia todos los códigos con un solo clic.",
   "homeFaqFreeQ": "¿Hay que registrarse o pagar?",
   "homeFaqFreeA": "No. 2fa.hot es gratuito y no necesita cuenta. El código fuente está en GitHub con licencia AGPL-3.0.",
-  "homeGuidesLink": "Lee las guías sobre 2FA y TOTP"
+  "homeGuidesLink": "Lee las guías sobre 2FA y TOTP",
+  "m0a7ecabc2b9e": "Uso sin conexión",
+  "mc337dfe13669": "Acerca del uso sin conexión",
+  "m7aaebbb409dd": "Activar el uso sin conexión",
+  "m8e63bef38436": "Desactivar el uso sin conexión",
+  "m2853dcdcbdd5": "Este navegador no admite el uso sin conexión",
+  "m19271ea9b4fb": "Guardando archivos para usar sin conexión… {percent} %",
+  "m36f6a802ca31": "Los archivos sin conexión no se guardaron por completo. Conéctate a internet y vuelve a activarlo.",
+  "m34e2493078fa": "Listo para usar sin conexión.",
+  "m97f96cb5d18f": "Listo para usar sin conexión. En el menú Compartir de Safari, elige «Añadir a pantalla de inicio» para abrirlo como una app.",
+  "m04c231282e5b": "Uso sin conexión: los archivos del sitio en tu dispositivo",
+  "m16c3059ac799": "Al activar «Uso sin conexión» debajo de la herramienta en la página de inicio, este navegador guarda en este dispositivo el código, los estilos, las fuentes, las traducciones y el fondo actual del sitio, para que se abra y genere códigos sin red. Solo se guardan los archivos públicos del propio sitio, iguales para todos los visitantes; los secretos, los códigos y el historial local nunca se escriben en ellos, y no se sube nada por ello. Al desactivarlo se quita el componente sin conexión y se borran estos archivos."
 }

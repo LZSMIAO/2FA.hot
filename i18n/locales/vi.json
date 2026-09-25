@@ -661,5 +661,16 @@
   "homeFaqBatchA": "Có. Chuyển sang “Tạo mã hàng loạt” rồi dán nhiều khóa bí mật, mỗi dòng một khóa, hoặc dán bảng sao chép từ Excel hay đoạn văn bản lẫn lộn tài khoản, mật khẩu và khóa. Công cụ sẽ nhận diện khóa bí mật, xử lý tối đa 100 mục và sao chép toàn bộ mã chỉ với một cú nhấp.",
   "homeFaqFreeQ": "Có cần tài khoản hay trả phí không?",
   "homeFaqFreeA": "Không. 2fa.hot miễn phí và không cần tài khoản. Mã nguồn được công khai trên GitHub theo giấy phép AGPL-3.0.",
-  "homeGuidesLink": "Đọc hướng dẫn về 2FA và TOTP"
+  "homeGuidesLink": "Đọc hướng dẫn về 2FA và TOTP",
+  "m0a7ecabc2b9e": "Dùng ngoại tuyến",
+  "mc337dfe13669": "Giới thiệu về dùng ngoại tuyến",
+  "m7aaebbb409dd": "Bật dùng ngoại tuyến",
+  "m8e63bef38436": "Tắt dùng ngoại tuyến",
+  "m2853dcdcbdd5": "Trình duyệt này không hỗ trợ dùng ngoại tuyến",
+  "m19271ea9b4fb": "Đang lưu tệp để dùng ngoại tuyến… {percent}%",
+  "m36f6a802ca31": "Chưa lưu xong tệp ngoại tuyến. Hãy kết nối Internet rồi bật lại.",
+  "m34e2493078fa": "Đã sẵn sàng dùng ngoại tuyến.",
+  "m97f96cb5d18f": "Đã sẵn sàng dùng ngoại tuyến. Trong menu Chia sẻ của Safari, chọn “Thêm vào MH chính” để mở như một ứng dụng.",
+  "m04c231282e5b": "Dùng ngoại tuyến: tệp của trang trên thiết bị của bạn",
+  "m16c3059ac799": "Khi bạn bật “Dùng ngoại tuyến” bên dưới công cụ ở trang chủ, trình duyệt này sẽ lưu mã nguồn, kiểu dáng, phông chữ, bản dịch và hình nền hiện tại của trang trên thiết bị này, để trang vẫn mở và tạo mã khi không có mạng. Chỉ các tệp công khai của chính trang được lưu, giống nhau với mọi khách truy cập; khóa bí mật, mã và lịch sử cục bộ không bao giờ được ghi vào đó, và cũng không có gì được tải lên vì việc này. Khi tắt, mô-đun ngoại tuyến sẽ bị gỡ và các tệp này sẽ bị xóa."
 }

@@ -661,5 +661,16 @@
   "homeFaqBatchA": "Oui. Passez à « Codes par lots » et collez plusieurs clés secrètes, une par ligne, ou collez un tableau copié depuis Excel ou un texte mêlant comptes, mots de passe et clés. L’outil détecte les clés secrètes, traite jusqu’à 100 entrées et copie tous les codes en un clic.",
   "homeFaqFreeQ": "Faut-il un compte ou payer ?",
   "homeFaqFreeA": "Non. 2fa.hot est gratuit et ne nécessite aucun compte. Le code source est disponible sur GitHub sous licence AGPL-3.0.",
-  "homeGuidesLink": "Lire les guides 2FA et TOTP"
+  "homeGuidesLink": "Lire les guides 2FA et TOTP",
+  "m0a7ecabc2b9e": "Utilisation hors ligne",
+  "mc337dfe13669": "À propos de l'utilisation hors ligne",
+  "m7aaebbb409dd": "Activer l'utilisation hors ligne",
+  "m8e63bef38436": "Désactiver l'utilisation hors ligne",
+  "m2853dcdcbdd5": "Ce navigateur ne prend pas en charge l'utilisation hors ligne",
+  "m19271ea9b4fb": "Enregistrement des fichiers hors ligne… {percent} %",
+  "m36f6a802ca31": "Les fichiers hors ligne n'ont pas été entièrement enregistrés. Connectez-vous à Internet et réactivez l'option.",
+  "m34e2493078fa": "Prêt pour une utilisation hors ligne.",
+  "m97f96cb5d18f": "Prêt pour une utilisation hors ligne. Dans le menu Partager de Safari, choisissez « Sur l'écran d'accueil » pour l'ouvrir comme une app.",
+  "m04c231282e5b": "Utilisation hors ligne : les fichiers du site sur votre appareil",
+  "m16c3059ac799": "Lorsque vous activez « Utilisation hors ligne » sous l'outil de la page d'accueil, ce navigateur conserve sur cet appareil le code, les styles, les polices, les traductions et l'arrière-plan actuel du site, pour qu'il s'ouvre et génère des codes sans réseau. Seuls les fichiers publics du site sont conservés, identiques pour chaque visiteur ; les secrets, les codes et l'historique local n'y sont jamais écrits, et rien n'est envoyé pour autant. La désactivation retire le module hors ligne et efface ces fichiers."
 }
