@@ -679,5 +679,6 @@
   "appInstallTip": "Pasang sebagai apl; berfungsi walaupun di luar talian",
   "appInstalled": "Sudah dipasang. Bukanya dari desktop atau skrin utama.",
   "homeWelcomeTitle": "Selamat datang ke 2fa.hot",
-  "homeWelcomeLead": "Sebelum bermula, mungkin anda ingin tahu…"
+  "homeWelcomeLead": "Sebelum bermula, mungkin anda ingin tahu…",
+  "privacyOfflineApp": "Selepas dipasang sebagai apl, penggunaan luar talian dihidupkan secara automatik kali pertama ia dibuka; jika anda mematikannya dalam apl, ia kekal mati."
 }

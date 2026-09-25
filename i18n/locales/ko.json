@@ -679,5 +679,6 @@
   "appInstallTip": "앱으로 설치하면 오프라인에서도 쓸 수 있습니다",
   "appInstalled": "설치했습니다. 데스크톱이나 홈 화면에서 바로 여세요.",
   "homeWelcomeTitle": "2fa.hot에 오신 것을 환영합니다",
-  "homeWelcomeLead": "시작하기 전에 알아 두면 좋은 내용"
+  "homeWelcomeLead": "시작하기 전에 알아 두면 좋은 내용",
+  "privacyOfflineApp": "앱으로 설치하면 처음 열 때 오프라인 사용이 자동으로 켜집니다. 이후 앱에서 끄면 계속 꺼진 상태로 유지됩니다."
 }

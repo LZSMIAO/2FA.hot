@@ -679,5 +679,6 @@
   "appInstallTip": "Installez-le comme app : il marche hors ligne",
   "appInstalled": "Installé. Ouvrez-le depuis le bureau ou l’écran d’accueil.",
   "homeWelcomeTitle": "Bienvenue sur 2fa.hot",
-  "homeWelcomeLead": "Avant de commencer, vous aimeriez peut-être savoir…"
+  "homeWelcomeLead": "Avant de commencer, vous aimeriez peut-être savoir…",
+  "privacyOfflineApp": "Une fois installée comme app, elle active d’elle-même l’utilisation hors ligne à la première ouverture ; si vous la désactivez dans l’app, elle reste désactivée."
 }

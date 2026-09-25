@@ -679,5 +679,6 @@
   "appInstallTip": "Pasang sebagai aplikasi; tetap jalan saat offline",
   "appInstalled": "Terpasang. Buka dari desktop atau layar utama.",
   "homeWelcomeTitle": "Selamat datang di 2fa.hot",
-  "homeWelcomeLead": "Sebelum mulai, mungkin Anda ingin tahu…"
+  "homeWelcomeLead": "Sebelum mulai, mungkin Anda ingin tahu…",
+  "privacyOfflineApp": "Setelah dipasang sebagai aplikasi, penggunaan offline aktif dengan sendirinya saat pertama kali dibuka; jika Anda mematikannya di aplikasi, fitur ini tetap mati."
 }

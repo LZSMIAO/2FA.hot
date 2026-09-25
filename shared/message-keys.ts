@@ -935,5 +935,9 @@ export const sourceKeys = new Map<string, string>([
   ['可以安装成 App，断网也能用', 'appInstallTip'],
   ['已安装，可以从桌面或主屏幕直接打开。', 'appInstalled'],
   ['欢迎来到 2fa.hot', 'homeWelcomeTitle'],
-  ['开始使用前，您或许想了解……', 'homeWelcomeLead']
+  ['开始使用前，您或许想了解……', 'homeWelcomeLead'],
+  [
+    '安装成 App 后，第一次打开时会自动开启离线使用；之后在 App 里关掉，就会一直保持关闭。',
+    'privacyOfflineApp'
+  ]
 ])

@@ -679,5 +679,6 @@
   "appInstallTip": "Installeer het als app; werkt ook offline",
   "appInstalled": "Geïnstalleerd. Open het vanaf je bureaublad of beginscherm.",
   "homeWelcomeTitle": "Welkom bij 2fa.hot",
-  "homeWelcomeLead": "Voordat je begint, wil je misschien weten…"
+  "homeWelcomeLead": "Voordat je begint, wil je misschien weten…",
+  "privacyOfflineApp": "Als app geïnstalleerd zet hij offline gebruik bij de eerste keer openen zelf aan; zet je het in de app uit, dan blijft het uit."
 }

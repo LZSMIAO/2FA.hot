@@ -26,6 +26,11 @@ const { tx } = useMessages()
         )
       }}
     </p>
+    <p>
+      {{
+        tx('安装成 App 后，第一次打开时会自动开启离线使用；之后在 App 里关掉，就会一直保持关闭。')
+      }}
+    </p>
     <h2>{{ tx('获取链接：地址中包含密钥') }}</h2>
     <p>
       <code dir="ltr">/2fa#YOUR_SECRET</code> —

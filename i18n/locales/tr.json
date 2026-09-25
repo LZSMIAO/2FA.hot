@@ -679,5 +679,6 @@
   "appInstallTip": "Uygulamayı yükleyin; çevrimdışı da çalışır",
   "appInstalled": "Yüklendi. Masaüstünden veya ana ekrandan doğrudan açın.",
   "homeWelcomeTitle": "2fa.hot'a hoş geldiniz",
-  "homeWelcomeLead": "Başlamadan önce bilmek isteyebilecekleriniz…"
+  "homeWelcomeLead": "Başlamadan önce bilmek isteyebilecekleriniz…",
+  "privacyOfflineApp": "Uygulama olarak yüklendiğinde, ilk açılışta çevrimdışı kullanım kendiliğinden açılır; uygulamada kapatırsanız kapalı kalır."
 }

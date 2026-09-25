@@ -679,5 +679,6 @@
   "appInstallTip": "Isakinishe kama programu; inafanya kazi hata nje ya mtandao",
   "appInstalled": "Imesakinishwa. Ifungue kutoka kwenye eneo-kazi au skrini ya nyumbani.",
   "homeWelcomeTitle": "Karibu 2fa.hot",
-  "homeWelcomeLead": "Kabla ya kuanza, huenda ungependa kujua…"
+  "homeWelcomeLead": "Kabla ya kuanza, huenda ungependa kujua…",
+  "privacyOfflineApp": "Ikisakinishwa kama programu, matumizi nje ya mtandao huwashwa yenyewe mara ya kwanza inapofunguliwa; ukiyazima ndani ya programu, yanabaki yamezimwa."
 }

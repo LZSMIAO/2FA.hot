@@ -679,5 +679,6 @@
   "appInstallTip": "Instálalo como app; funciona sin conexión",
   "appInstalled": "Instalado. Ábrelo desde el escritorio o la pantalla de inicio.",
   "homeWelcomeTitle": "Te damos la bienvenida a 2fa.hot",
-  "homeWelcomeLead": "Antes de empezar, quizá quieras saber…"
+  "homeWelcomeLead": "Antes de empezar, quizá quieras saber…",
+  "privacyOfflineApp": "Instalada como app, activa el uso sin conexión por sí sola la primera vez que se abre; si lo desactivas en la app, seguirá desactivado."
 }

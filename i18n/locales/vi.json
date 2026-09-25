@@ -679,5 +679,6 @@
   "appInstallTip": "Cài thành ứng dụng, dùng được cả khi ngoại tuyến",
   "appInstalled": "Đã cài đặt. Mở thẳng từ màn hình máy tính hoặc MH chính.",
   "homeWelcomeTitle": "Chào mừng bạn đến với 2fa.hot",
-  "homeWelcomeLead": "Trước khi bắt đầu, có thể bạn muốn biết…"
+  "homeWelcomeLead": "Trước khi bắt đầu, có thể bạn muốn biết…",
+  "privacyOfflineApp": "Khi cài thành ứng dụng, chế độ dùng ngoại tuyến tự bật ở lần mở đầu tiên; nếu bạn tắt trong ứng dụng, nó sẽ luôn tắt."
 }

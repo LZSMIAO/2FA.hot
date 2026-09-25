@@ -679,5 +679,6 @@
   "appInstallTip": "Install it as an app; it works offline too",
   "appInstalled": "Installed. Open it from your desktop or home screen.",
   "homeWelcomeTitle": "Welcome to 2fa.hot",
-  "homeWelcomeLead": "Before you start, you might want to know…"
+  "homeWelcomeLead": "Before you start, you might want to know…",
+  "privacyOfflineApp": "Once installed as an app, it turns offline use on by itself the first time it opens; switch it off in the app and it stays off."
 }

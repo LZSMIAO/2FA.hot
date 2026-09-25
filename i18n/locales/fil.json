@@ -679,5 +679,6 @@
   "appInstallTip": "I-install bilang app; gumagana kahit offline",
   "appInstalled": "Na-install na. Buksan ito mula sa desktop o home screen.",
   "homeWelcomeTitle": "Maligayang pagdating sa 2fa.hot",
-  "homeWelcomeLead": "Bago ka magsimula, baka gusto mong malaman…"
+  "homeWelcomeLead": "Bago ka magsimula, baka gusto mong malaman…",
+  "privacyOfflineApp": "Kapag na-install bilang app, kusang nag-o-on ang offline na paggamit sa unang pagbukas nito; kapag pinatay mo ito sa app, mananatili itong naka-off."
 }

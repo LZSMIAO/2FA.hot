@@ -1319,7 +1319,6 @@ html[data-guide-learned~='batch'][data-workspace-mode='batch'] .guide-trigger-in
 }
 @media (pointer: coarse) {
   .ore-theme .icon-action,
-  .ore-theme .session-icon,
   .ore-theme .batch-match-icon,
   .ore-theme .candidate-port,
   .ore-theme .link-port,

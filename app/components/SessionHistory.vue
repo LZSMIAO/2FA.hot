@@ -430,6 +430,25 @@ function time(value: number) {
   width: 14px;
   height: 14px;
 }
+/*
+ * On touch the icons keep their size and their target reaches 44px around
+ * them. Made 44px boxes themselves (ore.css used to), the pencil stretched a
+ * row's first line, so the key on its second line fell out of the fixed-height
+ * row and was cut off, and the time and arrow sank below the name.
+ */
+@media (pointer: coarse) {
+  .session-icon {
+    position: relative;
+  }
+  .session-icon::after {
+    content: '';
+    position: absolute;
+    inset: -0.5rem;
+  }
+  .session-row.session-child .session-icon::after {
+    inset: -0.6875rem;
+  }
+}
 .session-batch > code {
   padding-inline-start: 1.5rem;
   font-family: inherit;

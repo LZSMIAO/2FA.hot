@@ -679,5 +679,6 @@
   "appInstallTip": "可以安裝成 App，斷網也能用",
   "appInstalled": "已安裝，可以從桌面或主畫面直接開啟。",
   "homeWelcomeTitle": "歡迎來到 2fa.hot",
-  "homeWelcomeLead": "開始使用前，您或許想了解……"
+  "homeWelcomeLead": "開始使用前，您或許想了解……",
+  "privacyOfflineApp": "安裝成 App 後，第一次開啟時會自動開啟離線使用；之後在 App 裡關掉，就會一直保持關閉。"
 }

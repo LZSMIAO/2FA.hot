@@ -679,5 +679,6 @@
   "appInstallTip": "Instale como app; funciona offline também",
   "appInstalled": "Instalado. Abra direto da área de trabalho ou da tela de início.",
   "homeWelcomeTitle": "Boas-vindas ao 2fa.hot",
-  "homeWelcomeLead": "Antes de começar, talvez você queira saber…"
+  "homeWelcomeLead": "Antes de começar, talvez você queira saber…",
+  "privacyOfflineApp": "Instalado como app, o uso offline é ativado automaticamente na primeira vez que ele é aberto; se você desativar no app, ele continua desativado."
 }

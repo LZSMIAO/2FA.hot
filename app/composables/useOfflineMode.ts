@@ -1,7 +1,8 @@
 /**
  * Offline mode: public/sw.js keeps this site's own files so the tool opens
  * and generates codes with no network. It is off until a visitor turns it on,
- * and turning it off removes the worker and every file it kept.
+ * except that the installed app turns it on by itself once (OfflineToggle.vue);
+ * turning it off removes the worker and every file it kept.
  */
 export type OfflineStatus = 'off' | 'saving' | 'ready' | 'error'
 
