@@ -4,6 +4,11 @@
  */
 export interface Announcement {
   id: string
+  /**
+   * What a visitor is marked as having seen: the id and a fingerprint of the
+   * wording and date. Editing a notice shows the new version once more.
+   */
+  key: string
   /** Start of the day it goes live, local time. */
   date: number
   /** End of its last day, if it has one. */
@@ -36,6 +41,16 @@ function day(value: string, end = false) {
   return end ? new Date(y, m - 1, d, 23, 59, 59, 999).getTime() : new Date(y, m - 1, d).getTime()
 }
 
+/** A short, stable fingerprint of a notice's text (FNV-1a). */
+function fingerprint(text: string) {
+  let hash = 0x811c9dc5
+  for (const character of text) {
+    hash ^= character.codePointAt(0)!
+    hash = Math.imul(hash, 0x01000193) >>> 0
+  }
+  return hash.toString(36)
+}
+
 export function parseAnnouncements(markdown: string): Announcement[] {
   const seen = new Set<string>()
   return markdown
@@ -46,7 +61,8 @@ export function parseAnnouncements(markdown: string): Announcement[] {
       const [heading = '', ...lines] = section.split('\n')
       const id = heading.trim()
       if (!/^[\w-]{1,64}$/.test(id) || seen.has(id)) return []
-      const entry: Announcement = { id, date: NaN, returning: false, icon: '', text: {} }
+      const entry: Announcement = { id, key: id, date: NaN, returning: false, icon: '', text: {} }
+      let dateText = ''
       for (const raw of lines) {
         const line = raw.replace(/^\s*[-*]\s+/, '').trim()
         const match = line.match(/^([^:：]+)[:：]\s*(.+)$/)
@@ -54,7 +70,7 @@ export function parseAnnouncements(markdown: string): Announcement[] {
         const name = match[1]!.trim(),
           value = match[2]!.trim()
         const field = fields[name.toLowerCase()] ?? fields[name]
-        if (field === 'date') entry.date = day(value)
+        if (field === 'date') entry.date = day((dateText = value))
         else if (field === 'until') entry.until = day(value, true)
         else if (field === 'audience')
           entry.returning = Object.hasOwn(returningNames, value.toLowerCase())
@@ -64,6 +80,10 @@ export function parseAnnouncements(markdown: string): Announcement[] {
       }
       if (!Number.isFinite(entry.date) || !Object.keys(entry.text).length) return []
       if (entry.until !== undefined && !Number.isFinite(entry.until)) delete entry.until
+      const wording = Object.keys(entry.text)
+        .sort()
+        .map((language) => `${language}\n${entry.text[language]}`)
+      entry.key = `${id}@${fingerprint([dateText, ...wording].join('\n\n'))}`
       seen.add(id)
       return [entry]
     })
@@ -92,11 +112,11 @@ export function pickAnnouncement(
   const due = entries
     .filter(
       (entry) =>
-        !visitor.seen.has(entry.id) &&
+        !visitor.seen.has(entry.key) &&
         entry.date <= visitor.now &&
         (entry.until === undefined || visitor.now <= entry.until) &&
         (!entry.returning || visitor.firstVisit < entry.date)
     )
     .sort((a, b) => b.date - a.date)
-  return due.length ? { entry: due[0]!, seen: due.map((entry) => entry.id) } : null
+  return due.length ? { entry: due[0]!, seen: due.map((entry) => entry.key) } : null
 }

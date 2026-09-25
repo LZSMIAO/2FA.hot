@@ -65,6 +65,7 @@ const themes = computed(() => [
  * the backdrop is on screen.
  */
 const { selected, playbackPaused, custom } = usePanoramaPreference()
+const newBadge = useNewBadge('backdrop')
 const narrow = shallowRef(false)
 const onHome = computed(() => unlocalizedPath(route.path) === '/')
 onMounted(() => {
@@ -80,6 +81,7 @@ const backdrop = computed(() =>
         {
           label: tx('切换背景'),
           icon: 'i-lucide-image',
+          slot: 'backdrop' as const,
           children: [
             /* On its own in the top menu this read as "pause" with no object.
                A still custom image has nothing to play. */
@@ -190,7 +192,12 @@ const menu = computed(() => [
                 class="icon-button"
             /></UDropdownMenu>
           </AppHint>
-          <UDropdownMenu v-if="!compact" :items="menu"
+          <UDropdownMenu
+            v-if="!compact"
+            :items="menu"
+            @update:open="(open: boolean) => !open && backdrop.length && newBadge.seen()"
+            ><template #backdrop-label="{ item }"
+              >{{ item.label }}<NewBadge v-if="newBadge.visible.value" class="menu-new" /></template
             ><UButton
               class="mobile-menu icon-button"
               color="neutral"
@@ -203,3 +210,10 @@ const menu = computed(() => [
     </header>
   </UTheme>
 </template>
+
+<style scoped>
+.menu-new {
+  margin-inline-start: 0.5rem;
+  vertical-align: 0.1em;
+}
+</style>

@@ -16,6 +16,7 @@ import {
 } from '~/composables/usePanoramaPreference'
 defineProps<{ bounded?: boolean }>()
 const { tx } = useMessages()
+const newBadge = useNewBadge('backdrop')
 const { selected, playbackPaused, custom } = usePanoramaPreference()
 const hydrated = shallowRef(false)
 const scene = computed(() => {
@@ -351,6 +352,7 @@ onBeforeUnmount(() => {
     <UDropdownMenu
       :items="sceneItems"
       :modal="false"
+      @update:open="(open: boolean) => !open && newBadge.seen()"
       :content="{ side: 'top', align: 'end', sideOffset: 8 }"
       :ui="{
         content: 'panorama-menu',
@@ -364,7 +366,7 @@ onBeforeUnmount(() => {
           <UIcon
             :name="loading ? 'i-lucide-loader-circle' : 'i-lucide-image'"
             :class="{ 'animate-spin': loading }"
-          /></button
+          /><NewBadge v-if="newBadge.visible.value" class="panorama-new" /></button
       ></AppHint>
       <template #item-leading="{ item }">
         <img
@@ -589,6 +591,7 @@ onBeforeUnmount(() => {
   gap: 0.375rem;
 }
 .panorama-control {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 0.375rem;
@@ -598,6 +601,12 @@ onBeforeUnmount(() => {
   background: var(--panel);
   color: var(--ui-text);
   font-size: 0.8125rem;
+}
+/* On the corner, clear of the icon, so the button keeps its size. */
+.panorama-new {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.625rem;
 }
 @keyframes panorama-turn {
   to {

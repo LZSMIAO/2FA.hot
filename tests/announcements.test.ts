@@ -63,7 +63,10 @@ test('each visitor sees the newest due notice once, and returning-only ones need
   })
   assert.equal(returning?.entry.id, 'custom-background')
   // The older unread notice is marked too, so it never pops up afterwards.
-  assert.deepEqual(returning?.seen.sort(), ['custom-background', 'old-news'])
+  assert.deepEqual(returning?.seen.map((key) => key.split('@')[0]).sort(), [
+    'custom-background',
+    'old-news'
+  ])
   assert.equal(
     pickAnnouncement(entries, {
       now: at('2026-09-26'),
@@ -91,6 +94,30 @@ test('each visitor sees the newest due notice once, and returning-only ones need
       seen: new Set()
     }),
     null
+  )
+})
+
+test('an edited notice is shown once more, and only a change to its wording or date counts', () => {
+  const visitor = (seen: string[]) => ({
+    now: at('2026-09-26'),
+    firstVisit: 0,
+    seen: new Set(seen)
+  })
+  const before = parseAnnouncements(sample)
+  const first = pickAnnouncement(before, visitor([]))!
+  assert.equal(pickAnnouncement(before, visitor(first.seen)), null)
+  // Reworded on GitHub after it went out: everyone who saw the old text sees this.
+  const reworded = parseAnnouncements(sample.replace('en: New', 'en: New, and better'))
+  assert.equal(pickAnnouncement(reworded, visitor(first.seen))?.entry.id, 'custom-background')
+  const redated = parseAnnouncements(sample.replace('日期: 2026-09-25', '日期: 2026-09-26'))
+  assert.equal(pickAnnouncement(redated, visitor(first.seen))?.entry.id, 'custom-background')
+  // A new icon or blank lines alone are not a new version.
+  const tidied = parseAnnouncements(sample.replace('圖標: image-up', '圖標: sparkles\n'))
+  assert.equal(pickAnnouncement(tidied, visitor(first.seen)), null)
+  // Before versions, a visitor was marked by id alone; they see the current text once.
+  assert.equal(
+    pickAnnouncement(before, visitor(['custom-background', 'old-news']))?.entry.id,
+    'custom-background'
   )
 })
 
