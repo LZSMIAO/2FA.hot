@@ -52,7 +52,7 @@ async function copySecret(id: string) {
   error.value = ''
   note.value = ''
   try {
-    if (await copySecretValue(record.secret)) note.value = '密钥已复制'
+    if (await copySecretValue(record.secret)) showRowNote(id, '密钥已复制')
     else error.value = secretCopyError.value
   } finally {
     copyingSecret.value = false
@@ -68,7 +68,7 @@ async function copyBatch(group: { id: string; rows: VaultRecord[] }) {
   note.value = ''
   try {
     if (await copySecretValue(group.rows.map((row) => row.secret).join('\n')))
-      note.value = '密钥已复制'
+      showRowNote(group.id, '密钥已复制')
     else error.value = secretCopyError.value
   } finally {
     copyingSecret.value = false
@@ -292,19 +292,23 @@ async function releasePointer(event: PointerEvent) {
   }
   // Confirmed where it landed: on its first row, or on the heading of a batch moved whole.
   const first = next.find((item) => drag.ids.has(item.id))!
-  showLanded(
-    first.batchId && drag.wholeBatches.has(first.batchId) ? 'batch:' + first.batchId : first.id
+  showRowNote(
+    first.batchId && drag.wholeBatches.has(first.batchId) ? 'batch:' + first.batchId : first.id,
+    '顺序已保存'
   )
 }
-/** The row or batch heading that just took a drop, marked saved for a moment. */
-const landed = shallowRef('')
-let landedTimer: ReturnType<typeof setTimeout> | undefined
-function showLanded(id: string) {
-  landed.value = id
-  clearTimeout(landedTimer)
-  landedTimer = setTimeout(() => (landed.value = ''), 1800)
+/*
+ * What just happened to a row or batch heading (its key copied, a new order
+ * saved) is confirmed on it for a moment, rather than under the whole list.
+ */
+const rowNote = shallowRef<{ id: string; text: string } | null>(null)
+let rowNoteTimer: ReturnType<typeof setTimeout> | undefined
+function showRowNote(id: string, text: string) {
+  rowNote.value = { id, text }
+  clearTimeout(rowNoteTimer)
+  rowNoteTimer = setTimeout(() => (rowNote.value = null), 1800)
 }
-onBeforeUnmount(() => clearTimeout(landedTimer))
+onBeforeUnmount(() => clearTimeout(rowNoteTimer))
 function endDrag() {
   if (press) clearTimeout(press.timer)
   press = null
@@ -639,36 +643,45 @@ const date = (v: number) =>
           v-if="rows.length"
           class="history-select-all"
           :checked="allSelected ? true : selected.length ? 'mixed' : false"
-          :label="tx(allSelected ? '取消全选' : '全选')"
+          :label="tx('全选')"
           @click="toggleAll"
         >
-          <span>{{ tx(allSelected ? '取消全选' : '全选') }}</span>
+          <span>{{ tx('全选') }}</span>
         </SelectionCheck>
-        <span
-          class="history-count"
-          :class="{ 'is-selecting': selected.length }"
-          aria-live="polite"
-          >{{
-            selected.length
-              ? tx('已选 {count} / {total}', {
-                  count: selected.length,
-                  total: vault.records.value.length
-                })
-              : tx('记录：{count}', { count: vault.records.value.length })
+        <!-- Each place holds both of its labels, the one not in use hidden, so
+             ticking a row changes words without moving anything on the line
+             or wrapping it onto a second one. -->
+        <span class="history-count" :class="{ 'is-selecting': selected.length }" aria-live="polite"
+          ><span :class="{ 'is-shown': !selected.length }">{{
+            tx('记录：{count}', { count: vault.records.value.length })
           }}</span
+          ><span :class="{ 'is-shown': selected.length }">{{
+            tx('已选 {count} / {total}', {
+              count: selected.length || vault.records.value.length,
+              total: vault.records.value.length
+            })
+          }}</span></span
         >
-        <UButton
-          v-if="selected.length"
-          class="history-remove"
-          color="error"
-          variant="soft"
-          size="sm"
-          @click="removing = [...selected]"
-          >{{ tx('删除所选：{count}', { count: selected.length }) }}</UButton
-        >
-        <button class="text-action text-action-danger history-erase" @click="eraseOpen = true">
-          {{ tx('清空全部本地历史') }}
-        </button>
+        <span class="history-status-end">
+          <button
+            class="text-action text-action-danger history-erase"
+            :class="{ 'is-shown': !selected.length }"
+            @click="eraseOpen = true"
+          >
+            {{ tx('清空全部本地历史') }}
+          </button>
+          <UButton
+            class="history-remove"
+            :class="{ 'is-shown': selected.length }"
+            color="error"
+            variant="soft"
+            size="sm"
+            @click="removing = [...selected]"
+            >{{
+              tx('删除所选：{count}', { count: selected.length || vault.records.value.length })
+            }}</UButton
+          >
+        </span>
       </div>
       <div v-if="!rows.length" class="empty-state">
         <UIcon :name="search ? 'i-lucide-search-x' : 'i-lucide-history'" />
@@ -772,8 +785,8 @@ const date = (v: number) =>
             <span class="record-meta">
               <span>{{ tx('记录：{count}', { count: group.rows.length }) }}</span>
               <Transition name="history-landed" mode="out-in"
-                ><span v-if="landed === group.id" class="history-landed" role="status"
-                  ><UIcon name="i-mc-check" />{{ tx('顺序已保存') }}</span
+                ><span v-if="rowNote?.id === group.id" class="history-landed" role="status"
+                  ><UIcon name="i-mc-check" />{{ tx(rowNote.text) }}</span
                 ><time v-else>{{
                   date(Math.max(...group.rows.map((row) => row.usedAt)))
                 }}</time></Transition
@@ -883,8 +896,8 @@ const date = (v: number) =>
                     }}
                   </span>
                   <Transition name="history-landed" mode="out-in"
-                    ><span v-if="landed === row.id" class="history-landed" role="status"
-                      ><UIcon name="i-mc-check" />{{ tx('顺序已保存') }}</span
+                    ><span v-if="rowNote?.id === row.id" class="history-landed" role="status"
+                      ><UIcon name="i-mc-check" />{{ tx(rowNote.text) }}</span
                     ><time v-else :datetime="new Date(row.usedAt).toISOString()">{{
                       date(row.usedAt)
                     }}</time></Transition
@@ -1350,8 +1363,6 @@ const date = (v: number) =>
   gap: var(--control-gap);
   padding-block: 0.5rem;
   border-bottom: 1px solid var(--ui-border);
-  content-visibility: auto;
-  contain-intrinsic-size: auto 4.5rem;
 }
 .history-select-all {
   position: relative;
@@ -1366,6 +1377,25 @@ const date = (v: number) =>
   cursor: pointer;
   color: var(--ui-text);
 }
+.history-count,
+.history-status-end {
+  display: inline-grid;
+  align-items: center;
+}
+.history-count > span {
+  grid-area: 1 / 2;
+}
+.history-status-end {
+  margin-inline-start: auto;
+  justify-items: end;
+}
+.history-status-end > * {
+  grid-area: 1 / 1;
+}
+.history-count > :not(.is-shown),
+.history-status-end > :not(.is-shown) {
+  visibility: hidden;
+}
 .history-count.is-selecting {
   color: var(--accent-ink);
 }
@@ -1375,19 +1405,14 @@ const date = (v: number) =>
 }
 .history-count:not(:first-child)::before {
   content: '·';
+  grid-area: 1 / 1;
   margin-inline-end: 8px;
-}
-.history-remove {
-  margin-inline-start: 0.25rem;
 }
 /* Both of these open the erase dialog, so the shared hover green read as a
    safe action on something that is not one. */
 .text-action-danger:hover,
 .text-action-danger:focus-visible {
   color: var(--ui-error);
-}
-.history-erase {
-  margin-inline-start: auto;
 }
 .history-select-cell {
   display: grid;
@@ -1498,22 +1523,23 @@ const date = (v: number) =>
   opacity: 0.45;
 }
 /*
- * Saving a new order is confirmed on the row it moved: for a moment its date
- * reads as saved, in the paste confirmation's colour. Shorter than the date,
- * it never moves the row.
+ * A copied key or a saved order is confirmed on its row: for a moment the
+ * date reads as done, in the paste confirmation's colour. Shorter than the
+ * date, it never moves the row.
  */
 .history-landed {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
   /* The date's size, so the line and the row keep their height. */
   font-size: var(--text-caption);
   color: var(--accent-ink);
   white-space: nowrap;
 }
+/* Inline beside the words rather than a flex item: in a flex box the icon set
+   the baseline, which sat the note lower and made the row a pixel taller. */
 .history-landed .iconify {
   width: 0.875rem;
   height: 0.875rem;
+  margin-inline-end: 0.25rem;
+  vertical-align: -0.125rem;
 }
 .history-landed-enter-active,
 .history-landed-leave-active {

@@ -196,11 +196,11 @@ function useSelected() {
         <div class="paste-select-all">
           <SelectionCheck
             :checked="allSelected ? true : selected.length ? 'mixed' : false"
-            :label="tx(allSelected ? '取消全选' : '全选')"
+            :label="tx('全选')"
             @click="toggleAll"
           />
           <button type="button" class="select-all-label" @click="toggleAll">
-            {{ tx(allSelected ? '取消全选' : '全选') }}
+            {{ tx('全选') }}
           </button>
           <span class="selection-count-group">
             <span
