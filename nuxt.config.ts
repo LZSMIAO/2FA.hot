@@ -42,7 +42,16 @@ export default defineNuxtConfig({
   },
   css: ['~/assets/css/app.css'],
   devtools: { enabled: false },
-  experimental: { viewTransition: true },
+  experimental: {
+    viewTransition: true,
+    /*
+     * Links fetched their page's data as soon as they scrolled into view. On
+     * the home page that was nine requests per load, three of them for the page
+     * itself, and a couple of reloads tripped the site's rate limit. A link now
+     * fetches when a finger or pointer reaches it, still ahead of the click.
+     */
+    defaults: { nuxtLink: { prefetchOn: { visibility: false, interaction: true } } }
+  },
   nitro: {
     cloudflare: { nodeCompat: true },
     plugins: ['~~/server/plugins/security-headers'],
