@@ -223,9 +223,11 @@
     min-width: 0;
     text-wrap: pretty;
   }
+  /* The spacing above comes from SessionHistory alone. A second value here tied
+     with it, so the one that applied depended on which stylesheet loaded last,
+     and the heading moved 4px while a page loaded. */
   .workspace-summary .session-history {
     margin-top: 0;
-    padding-top: 0.75rem;
   }
   .workspace-summary .session-heading {
     gap: 0.375rem;

@@ -1,7 +1,28 @@
+import { createHash } from 'node:crypto'
+import { readFileSync } from 'node:fs'
 import { baselineCsp, reportOnlyCsp } from './shared/security-headers'
 import { supportedLocales } from './shared/locales'
 import { siteUrl, publicPages, localizedPath } from './shared/seo/routes'
 import { toolDescriptions, toolHeadings } from './shared/seo/copy'
+
+/*
+ * These run before the first paint, so the page cannot draw until each is in
+ * hand. Unversioned, a browser had to recheck every one with the server on
+ * each load; addressed by their content, they are kept like the app's own
+ * chunks and a change arrives under a new address.
+ */
+const prePaintScripts = [
+  // first-visit.js runs first: it must see storage before this visit writes any.
+  'first-visit.js',
+  'panorama-preference.js',
+  'brand-splash.js',
+  'viewport-layout.js'
+]
+const versioned = (name: string) =>
+  `/${name}?v=${createHash('sha1')
+    .update(readFileSync(new URL(`./public/${name}`, import.meta.url)))
+    .digest('hex')
+    .slice(0, 10)}`
 
 export default defineNuxtConfig({
   compatibilityDate: '2026-09-07',
@@ -52,12 +73,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
-      // first-visit.js runs first: it must see storage before this visit writes any.
-      script: [
-        { src: '/first-visit.js' },
-        { src: '/panorama-preference.js' },
-        { src: '/brand-splash.js' }
-      ],
+      script: prePaintScripts.map((name) => ({ src: versioned(name) })),
       title: toolHeadings.en,
       meta: [
         {
@@ -85,7 +101,12 @@ export default defineNuxtConfig({
         return ['/2fa', '/2fa/**', '/history'].map((path) => [
           prefix + path,
           {
-            ssr: false,
+            /*
+             * A secret in the address must never reach a server render. History
+             * has none, and rendered on the server its header, backdrop and
+             * placeholder paint at once instead of after the app's code loads.
+             */
+            ssr: path === '/history',
             headers: {
               'Cache-Control': 'no-store',
               'Referrer-Policy': 'no-referrer',
@@ -94,6 +115,23 @@ export default defineNuxtConfig({
           }
         ])
       })
+    ),
+    ...Object.fromEntries(
+      prePaintScripts.map((name) => [
+        `/${name}`,
+        { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } }
+      ])
+    ),
+    /*
+     * Backdrops, textures, sounds and art keep their names between versions.
+     * Checked with the server on every load, the backdrop drew late on a
+     * reload, and each reload sent a burst of requests.
+     */
+    ...Object.fromEntries(
+      ['/panorama/**', '/textures/**', '/skins/**', '/art/**', '/audio/**'].map((path) => [
+        path,
+        { headers: { 'Cache-Control': 'public, max-age=604800, stale-while-revalidate=2592000' } }
+      ])
     ),
     '/**': {
       headers: {

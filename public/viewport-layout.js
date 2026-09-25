@@ -1,3 +1,6 @@
+// A reload opens at the top; see app/plugins/scroll-restoration.client.ts.
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
+
 // Reserve the native scrollbar width before the page's first paint.
 ;(function () {
   var probe = document.createElement('div')
@@ -129,13 +132,4 @@
 ;(function () {
   if (/(^|;\s*)2fa-panorama-paused=false(\s*;|$)/.test(document.cookie))
     document.documentElement.setAttribute('data-panorama-playing', '')
-})()
-
-// ?debug=viewport shows a live readout of viewport sizes and layout jumps, for
-// diagnosing iOS Safari on a real device. Nothing loads without it.
-;(function () {
-  if (!/[?&]debug=viewport(&|$)/.test(location.search)) return
-  var script = document.createElement('script')
-  script.src = '/viewport-debug.js'
-  document.head.appendChild(script)
 })()

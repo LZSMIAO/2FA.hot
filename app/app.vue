@@ -7,7 +7,6 @@ const uiLocale = useInterfaceLocale()
 useSiteSeo()
 const colorMode = useColorMode()
 useHead(() => ({
-  script: [{ src: '/viewport-layout.js', tagPosition: 'head' }],
   link: [
     {
       key: 'site-favicon',
