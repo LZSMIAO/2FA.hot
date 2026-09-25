@@ -329,9 +329,6 @@
   .workspace-summary .session-heading h2 {
     font-size: 1rem;
   }
-  .workspace-summary .session-clear {
-    padding-inline: 0.375rem;
-  }
   .workspace-summary-links {
     margin-inline-start: auto;
   }

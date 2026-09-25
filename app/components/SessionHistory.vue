@@ -112,16 +112,17 @@ function time(value: number) {
       <h2>
         {{ tx('本次会话') }} <span class="session-count">{{ vault.recent.value.length }}</span>
       </h2>
-      <UButton
-        color="neutral"
-        variant="ghost"
-        icon="i-lucide-trash-2"
-        class="session-clear"
-        :disabled="!vault.recent.value.length"
-        @click="vault.clearRecent"
-      >
-        {{ tx('清空') }}
-      </UButton>
+      <!-- The bin alone says it; the name is its label and hint. -->
+      <AppHint :text="tx('清空')"
+        ><UButton
+          color="neutral"
+          variant="ghost"
+          icon="i-lucide-trash-2"
+          class="session-clear"
+          :aria-label="tx('清空')"
+          :disabled="!vault.recent.value.length"
+          @click="vault.clearRecent"
+      /></AppHint>
     </div>
     <Transition
       name="session-reveal"
@@ -294,14 +295,18 @@ function time(value: number) {
   color: var(--ui-text-muted);
 }
 .session-heading .session-clear {
+  justify-content: center;
+  min-width: 2.75rem;
   min-height: 2.75rem;
-  padding-inline: 0.75rem;
+  padding: 0;
+  /* The bin's edge in line with the switches' above; the target reaches past it. */
+  margin-inline-end: calc((2.75rem - 1.125em) / -2);
   border: 0;
   background: transparent;
   box-shadow: none;
   color: var(--ui-text-muted);
   transform: none;
-  /* The action reads at the heading's size beside it, here and on a phone. */
+  /* The bin is sized from the heading's size beside it, here and on a phone. */
   font-size: var(--text-section);
 }
 /* The icon at its label's size, rather than a fixed 20px. */

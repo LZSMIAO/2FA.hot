@@ -38,6 +38,9 @@
   --text-title: 2rem;
   /* The sticky header's height, which anything scrolled to the top must clear. */
   --site-header-height: 4.75rem;
+  /* The footer's height where the backdrop's corner controls show (its
+     min-height); they rise by this much as it scrolls in (TitlePanorama.vue). */
+  --site-footer-height: 5rem;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ore-enter-duration: 420ms;
   --ore-exit-duration: 240ms;
@@ -359,8 +362,6 @@ code {
   display: none;
 }
 .site-footer {
-  /* The backdrop's corner controls keep clear of it (TitlePanorama.vue). */
-  anchor-name: --site-footer;
   margin-top: 4.5rem;
   color: var(--ui-text-muted);
   font-size: var(--text-caption);
