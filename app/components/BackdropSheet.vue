@@ -25,21 +25,15 @@ const playable = computed(
 const playing = computed(() => playbackPaused.value === false)
 /*
  * All 27 scenes open at once made a long scroll. Each collection folds to one
- * row showing its scene in use, or its first; the one holding the scene in
- * use opens by itself each time the sheet does.
+ * row showing its scene in use, or its first, and every row starts folded
+ * each time the sheet opens.
  */
 const expanded = ref(new Set<string>())
 const activeIn = (group: (typeof panoramaGroups)[number]) =>
   group.scenes.find((entry) => entry.id === selected.value)
-watch(
-  open,
-  (value) => {
-    if (!value) return
-    const group = panoramaGroups.find(activeIn)
-    expanded.value = new Set(group ? [group.label] : [])
-  },
-  { immediate: true }
-)
+watch(open, (value) => {
+  if (value) expanded.value = new Set()
+})
 function toggle(label: string) {
   const next = new Set(expanded.value)
   if (!next.delete(label)) next.add(label)

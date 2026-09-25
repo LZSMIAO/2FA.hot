@@ -44,6 +44,7 @@ const route = useRoute()
 const localePath = useLocalePath()
 const { tx } = useMessages()
 const changing = shallowRef(false)
+const listOpen = useHeaderPopover('language')
 const hovered = shallowRef(false)
 const issue = shallowRef('')
 async function change(next: SupportedLocale) {
@@ -75,6 +76,7 @@ async function change(next: SupportedLocale) {
 <template>
   <div class="language-picker">
     <USelectMenu
+      v-model:open="listOpen"
       :model-value="locale"
       :items="languageItems"
       value-key="code"

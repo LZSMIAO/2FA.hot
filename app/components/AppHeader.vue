@@ -60,6 +60,8 @@ const themes = computed(() => [
  * Only on the home page, which is the only place the backdrop is on screen.
  */
 const newBadge = useNewBadge('backdrop')
+const themeOpen = useHeaderPopover('theme')
+const menuOpen = useHeaderPopover('menu')
 const narrow = shallowRef(false)
 const onHome = computed(() => unlocalizedPath(route.path) === '/')
 onMounted(() => {
@@ -127,7 +129,7 @@ const menu = computed(() => [
           <LanguagePicker />
           <ButtonSoundToggle />
           <AppHint :text="tx('切换主题')">
-            <UDropdownMenu :items="themes" :modal="false"
+            <UDropdownMenu v-model:open="themeOpen" :items="themes" :modal="false"
               ><UButton
                 color="neutral"
                 variant="ghost"
@@ -138,6 +140,7 @@ const menu = computed(() => [
           </AppHint>
           <UDropdownMenu
             v-if="!compact"
+            v-model:open="menuOpen"
             :items="menu"
             @update:open="(open: boolean) => !open && backdrop.length && newBadge.seen()"
             ><template #backdrop-label="{ item }"
