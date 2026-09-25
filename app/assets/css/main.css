@@ -1425,7 +1425,9 @@ html.size-transition .desert-art svg * {
 .secret-field:has(#secret):has(.secret-actions.has-content)::after {
   content: '';
   position: absolute;
-  inset-block: 2px;
+  /* Below the field's 3px top shade (--ore-inset) as well as its 2px border:
+     painted over it, the shade broke off where the fade began. */
+  inset-block: 5px 2px;
   inset-inline-end: 5.5rem;
   width: 1.5rem;
   background: linear-gradient(to left, var(--ore-input), transparent);
