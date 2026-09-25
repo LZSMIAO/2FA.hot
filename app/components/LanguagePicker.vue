@@ -82,7 +82,12 @@ async function change(next: SupportedLocale) {
       :aria-label="tx('选择语言')"
       :disabled="changing"
       :autofocus="false"
-      :search-input="{ autofocus: false, placeholder: tx('搜索…'), icon: 'i-lucide-search' }"
+      :search-input="{
+        autofocus: false,
+        placeholder: tx('搜索…'),
+        icon: 'i-lucide-search',
+        ui: { base: 'rounded-none' }
+      }"
       icon="i-lucide-languages"
       color="neutral"
       variant="ghost"
@@ -112,6 +117,16 @@ async function change(next: SupportedLocale) {
   </div>
 </template>
 <style>
+/* The search box sits flush in the menu, so it drops the boxed ore-input look
+   and its accent focus border; the caret shows where typing goes. */
+.language-menu input,
+.language-menu input:focus,
+.language-menu input:focus-visible {
+  border: 0;
+  outline: none;
+  background: transparent;
+  box-shadow: none;
+}
 .language-picker .language-trigger {
   width: 10rem;
 }
