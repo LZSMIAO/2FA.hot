@@ -31,6 +31,10 @@ function close() {
     // Without storage it closes for this page only.
   }
   document.documentElement.dataset.visitor = 'returning'
+  // The focused button went with the section; the tool's current tab takes focus.
+  document
+    .querySelector<HTMLElement>(".mode-tabs [role='tab'][aria-selected='true']")
+    ?.focus({ preventScroll: true })
 }
 // What 2fa.hot is reads as the welcome's own text; the rest fold beside it.
 const items = computed<ExplainerItem[]>(() => [
@@ -143,7 +147,8 @@ const items = computed<ExplainerItem[]>(() => [
   flex: none;
   width: 2.75rem;
   height: 2.75rem;
-  margin: -0.4375rem -0.75rem -0.4375rem auto;
+  margin-block: -0.4375rem;
+  margin-inline: auto -0.75rem;
   color: var(--ui-text-muted);
   cursor: pointer;
 }

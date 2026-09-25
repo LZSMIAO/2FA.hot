@@ -196,7 +196,11 @@ function closeHistoryHint() {
   historyKeyboardHint.value = false
   clearTimeout(historyHintTimer)
 }
+/* With the desert showing, a failed paste has no line under the buttons (it
+   sat over the cactus), so it takes the floating hint instead. */
+const floatingPasteIssue = computed(() => !!pasteIssue.value && !advanced.value && !guiding.value)
 function closeActionHint() {
+  if (floatingPasteIssue.value) pasteIssue.value = ''
   clipboardHint.visible.value = false
   closeHistoryHint()
 }
@@ -767,15 +771,23 @@ onBeforeUnmount(() => {
             </p>
           </Transition>
           <ActionHint
-            :open="clipboardHint.visible.value || historyKeyboardHint"
+            :open="floatingPasteIssue || clipboardHint.visible.value || historyKeyboardHint"
             :message="
               tx(
-                clipboardHint.visible.value
-                  ? '如果浏览器询问剪贴板权限，请点允许。'
-                  : '请先开启并解锁本地历史。'
+                floatingPasteIssue
+                  ? pasteIssue
+                  : clipboardHint.visible.value
+                    ? '如果浏览器询问剪贴板权限，请点允许。'
+                    : '请先开启并解锁本地历史。'
               )
             "
-            :icon="clipboardHint.visible.value ? 'i-lucide-clipboard-paste' : 'i-lucide-history'"
+            :icon="
+              floatingPasteIssue
+                ? 'i-lucide-circle-alert'
+                : clipboardHint.visible.value
+                  ? 'i-lucide-clipboard-paste'
+                  : 'i-lucide-history'
+            "
             @close="closeActionHint"
           />
           <Transition name="input-notice">
@@ -960,7 +972,7 @@ onBeforeUnmount(() => {
 }
 /*
  * While the desert shows, a paste that failed gets no line here, where it sat
- * over the cactus; the floating hint about clipboard permission still shows.
+ * over the cactus; it shows in the floating hint instead.
  * The notices that stay (a key error, what a paste picked out, the account
  * link) have the scene draw back from them instead.
  */

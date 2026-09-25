@@ -96,7 +96,14 @@
             db.close()
             const value = read.result
             if (!value || (value.layout !== 'cube' && value.layout !== 'flat')) return resolve(null)
-            const urls = value.images.map((image) => URL.createObjectURL(image))
+            let urls
+            try {
+              urls = value.images.map((image) => URL.createObjectURL(image))
+            } catch {
+              // A malformed record would leave the app waiting on this forever;
+              // it reads storage itself instead.
+              return resolve(undefined)
+            }
             resolve({ layout: value.layout, images: value.images, urls })
             // Swap in only once decoded, so the preview never gives way to a blank.
             Promise.all(

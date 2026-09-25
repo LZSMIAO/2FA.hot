@@ -57,8 +57,8 @@ export function useAppInstall() {
     deferred = null
     available.value = false
     inviting.value = false
-    await prompt.prompt()
-    // Declined, the browser offers the event again on a later visit.
+    // Declined, or refused by the browser, it offers the event again on a later visit.
+    await prompt.prompt().catch(() => undefined)
     await prompt.userChoice.catch(() => undefined)
   }
   return { available: readonly(available), installed, inviting, inviteHeld, install }

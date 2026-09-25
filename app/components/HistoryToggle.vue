@@ -170,4 +170,11 @@ watch(open, (visible) => {
   display: grid;
   gap: 1rem;
 }
+/* Its explanation reads as the other dialogs' do (.modal-stack p). */
+.history-enable-form > p:not(.field-hint, .inline-error) {
+  margin: 0;
+  color: var(--ui-text-muted);
+  font-size: var(--text-label);
+  line-height: 1.8;
+}
 </style>

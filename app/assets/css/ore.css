@@ -153,6 +153,7 @@
     visibility 0s;
 }
 .install-invite {
+  display: none;
   /* On the first line, where the sentence it replaces begins. */
   align-self: start;
   justify-self: start;
@@ -163,6 +164,9 @@
   font: inherit;
   text-align: start;
   cursor: pointer;
+}
+:root[data-installable] .install-invite {
+  display: block;
 }
 .install-invite:hover {
   color: var(--accent-ink);
@@ -222,11 +226,12 @@
 }
 /*
  * On a phone the marks go, bar the ones marked essential (why a link keeps
- * its key after #): the rest add detail the page already gives in brief, and
- * beside short lines on a small screen they read as clutter.
+ * its key after #) and the walkthroughs' step tips, which are said nowhere
+ * else: the rest add detail the page already gives in brief, and beside short
+ * lines on a small screen they read as clutter.
  */
 @media (max-width: 700px), (max-height: 500px) and (pointer: coarse) {
-  .info-mark:not(.info-mark-essential) {
+  .info-mark:not(.info-mark-essential, .tutorial-tip-toggle) {
     display: none;
   }
 }

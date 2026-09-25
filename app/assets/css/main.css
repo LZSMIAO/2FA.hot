@@ -558,8 +558,9 @@ html[data-panorama-flat] .panorama-playback {
   border-color: var(--accent-ink);
   color: var(--accent-ink);
 }
+/* The icon at 1.125em of the label, as elsewhere, rather than a fixed 18px. */
 .guide-trigger > span {
-  font-size: 1.125rem;
+  font-size: 1.125em;
 }
 /* Both labels share one cell, so the button keeps one width in every language. */
 .guide-trigger > .guide-trigger-label {

@@ -155,7 +155,7 @@ const tabItems = computed(() => [
  * showed it before the app started; once the tabs follow, its mark goes.
  */
 const modeKey = '2fa-workspace-mode'
-const { available: installable, inviting, inviteHeld, install } = useAppInstall()
+const { inviting, inviteHeld, install } = useAppInstall()
 watch(mode, (value) => {
   try {
     if (value === 'batch') localStorage.setItem(modeKey, value)
@@ -344,10 +344,11 @@ watch(
                     /></NuxtLink>
                   </UTooltip>
                 </span>
-                <!-- Only where the browser can install: kept hidden elsewhere, a longer
-                     invitation still sized the cell and left a blank line. -->
+                <!-- Takes part in the cell's size only where this browser offered
+                     installing (html[data-installable], set before the first paint):
+                     elsewhere a longer invitation left a blank line, and added once
+                     the offer came, it pushed the page down. -->
                 <button
-                  v-if="installable"
                   type="button"
                   class="install-invite"
                   :inert="!inviting"

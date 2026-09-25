@@ -63,7 +63,6 @@ const remove = () => window.dispatchEvent(new Event('2fa-panorama-remove'))
         color="neutral"
         variant="ghost"
         :icon="playing ? 'i-lucide-pause' : 'i-lucide-play'"
-        :aria-pressed="playing"
         @click="playbackPaused = playing"
         >{{ tx(playing ? '暂停' : '继续') }}</UButton
       >
@@ -264,7 +263,7 @@ const remove = () => window.dispatchEvent(new Event('2fa-panorama-remove'))
  * A sheet along the bottom on a phone, leaving the top of the page, and the
  * backdrop behind it, in view while trying scenes.
  */
-@media (max-width: 700px) {
+@media (max-width: 700px), (max-height: 500px) and (pointer: coarse) {
   .backdrop-sheet.backdrop-sheet {
     top: auto;
     bottom: 0;

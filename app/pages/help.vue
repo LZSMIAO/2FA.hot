@@ -154,6 +154,12 @@ const sections = [
   margin-block: 1.25rem 0.625rem;
   font-size: var(--text-title);
 }
+/* On a phone as close under the way back as the other articles' titles. */
+@media (max-width: 700px), (max-height: 500px) and (pointer: coarse) {
+  .help-page h1 {
+    margin-block: 0.5rem 0.75rem;
+  }
+}
 .help-page .article-lead {
   max-width: 48rem;
   margin-block: 0 1.75rem;
