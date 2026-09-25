@@ -29,7 +29,7 @@
   function note(text) {
     var time = ((performance.now() - start) / 1000).toFixed(2)
     log.unshift(time + ' ' + (touching ? 'T ' : '  ') + text)
-    if (log.length > 14) log.length = 14
+    if (log.length > 18) log.length = 18
   }
   function round(value) {
     return Math.round(value * 10) / 10
@@ -102,17 +102,46 @@
     })
     document.body.appendChild(inset)
     document.body.appendChild(box)
+    // Every tap, and who handled it: registered in the bubble phase on window,
+    // so it runs after the page's own handlers and sees whether they took it.
+    var tap = null
     addEventListener(
       'touchstart',
-      function () {
+      function (event) {
         touching = true
+        var touch = event.touches[0]
+        var field = event.target instanceof Element ? event.target.closest('input, textarea') : null
+        tap =
+          touch && event.touches.length === 1
+            ? {
+                target: event.target,
+                x: touch.clientX,
+                y: touch.clientY,
+                at: performance.now(),
+                focused: !!field && field === document.activeElement
+              }
+            : null
       },
       { passive: true }
     )
     addEventListener(
       'touchend',
-      function () {
+      function (event) {
         touching = false
+        var touch = event.changedTouches[0]
+        if (!tap || !touch) return
+        note(
+          'TAP ' +
+            describe(tap.target) +
+            ' ' +
+            Math.round(performance.now() - tap.at) +
+            'ms ' +
+            Math.round(Math.hypot(touch.clientX - tap.x, touch.clientY - tap.y)) +
+            'px' +
+            (tap.focused ? ' already-focused' : '') +
+            (event.defaultPrevented ? ' -> page' : ' -> safari')
+        )
+        tap = null
       },
       { passive: true }
     )
@@ -120,9 +149,21 @@
       'touchcancel',
       function () {
         touching = false
+        if (tap) note('TAP cancelled ' + describe(tap.target))
+        tap = null
       },
       { passive: true }
     )
+    // A native sheet or menu taking over shows up as the window losing focus.
+    addEventListener('blur', function () {
+      note('WINDOW blur')
+    })
+    addEventListener('focus', function () {
+      note('WINDOW focus')
+    })
+    document.addEventListener('visibilitychange', function () {
+      note('visibility ' + document.visibilityState)
+    })
     document.addEventListener('focusin', function (event) {
       note('focusin ' + describe(event.target))
     })
