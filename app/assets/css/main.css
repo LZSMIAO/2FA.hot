@@ -533,6 +533,12 @@ html[data-panorama-playing] .panorama-playback-icon > :first-child {
 html[data-panorama-playing] .panorama-playback-icon > :last-child {
   display: inline-block;
 }
+/* A still backdrop has nothing to play. The server renders the default scene,
+   which moves; public/panorama-preference.js marks a still one before the
+   first paint, so the button never shows for a moment on a reload. */
+html[data-panorama-flat] .panorama-playback {
+  display: none;
+}
 .guide-trigger {
   display: inline-flex;
   align-items: center;
