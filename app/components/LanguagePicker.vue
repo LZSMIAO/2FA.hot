@@ -102,8 +102,8 @@ async function change(next: SupportedLocale) {
         leadingIcon: 'size-5',
         trailingIcon: 'size-5',
         content:
-          'language-menu w-64 max-w-[calc(100vw-1.5rem)] max-h-[min(22rem,var(--reka-combobox-content-available-height))] rounded-md',
-        item: 'min-h-11 items-center text-base rounded-md before:rounded-md',
+          'language-menu max-w-[calc(100vw-1.5rem)] max-h-[min(22rem,var(--reka-combobox-content-available-height))] rounded-md',
+        item: 'min-h-11 items-center text-sm max-[600px]:text-base rounded-md before:rounded-md',
         input: 'text-base shrink-0',
         viewport: 'overscroll-contain'
       }"
@@ -131,6 +131,10 @@ async function change(next: SupportedLocale) {
   width: 10rem;
 }
 @media (max-width: 600px) {
+  /* The button is only an icon here; the list keeps room for the names. */
+  .language-menu {
+    width: 16rem;
+  }
   .language-picker .language-trigger {
     width: 2.75rem;
     min-width: 2.75rem;

@@ -375,7 +375,7 @@ onBeforeUnmount(() => {
             <div
               :id="demo ? 'tutorial-qr-drop' : undefined"
               ref="dropZone"
-              class="drop-zone ore-drop-zone"
+              class="drop-zone ore-drop-zone info-reveal"
               :class="{ 'is-dragging': dragging }"
               :aria-busy="processing || dropLoading"
               @dragenter="highlightDropZone"

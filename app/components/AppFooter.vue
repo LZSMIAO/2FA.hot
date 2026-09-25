@@ -5,12 +5,11 @@ const { tx } = useMessages()
 <template>
   <footer class="site-footer">
     <div class="footer-inner">
-      <NuxtLink class="footer-brand" :to="localePath('/')"
-        ><span class="footer-wordmark">2fa.hot</span
-        ><span class="footer-tagline"
-          ><span class="footer-dash"> - </span>{{ tx('多功能 TOTP 验证码生成器') }}</span
-        ></NuxtLink
-      >
+      <p class="footer-brand">
+        <span class="footer-tagline">{{ tx('多功能 TOTP 验证码生成器') }}</span
+        ><!-- Not translated: the notice reads the same on every language's page.
+        --><span class="footer-copyright">© 2026 2fa.hot. All rights reserved.</span>
+      </p>
       <nav :aria-label="tx('页脚导航')">
         <div class="footer-pages">
           <NuxtLink :to="localePath('/guides')">{{ tx('指南') }}</NuxtLink>
@@ -45,34 +44,24 @@ const { tx } = useMessages()
 <style scoped>
 .footer-inner nav {
   gap: 1.75rem;
+  /* Level with the notice's line, not centred on both: the description's line
+     and the gap under it are left above the links. */
+  margin-block-start: 1.375rem;
 }
-/* The brand reads as one line; on a narrow footer the description gives way first. */
-.footer-inner .footer-brand {
-  width: auto;
+/* The description over the notice, both cut short rather than pushing the links. */
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
   min-width: 0;
-  max-width: 100%;
-  justify-content: flex-start;
-  gap: 0;
+  margin: 0;
+  line-height: 1.25rem;
   white-space: nowrap;
 }
-.footer-wordmark {
-  flex-shrink: 0;
-}
-/*
- * Chinese, Japanese and Korean glyphs fill more of the em than Latin letters,
- * so at the same font size the name looked smaller than the words after it.
- * This brings the height of its letters level with theirs.
- */
-.footer-wordmark:lang(zh),
-.footer-wordmark:lang(ja),
-.footer-wordmark:lang(ko) {
-  font-size: 1.12em;
-}
+.footer-copyright,
 .footer-tagline {
-  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: pre;
 }
 .footer-pages,
 .footer-contacts {

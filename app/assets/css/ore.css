@@ -108,6 +108,10 @@
   gap: 0.5rem;
   color: var(--ui-text);
 }
+/* Only as wide as its words, so the mark shows near them, not across the row. */
+.workspace-summary-copy > .info-reveal {
+  justify-self: start;
+}
 .workspace-summary-copy .iconify {
   flex-shrink: 0;
   width: 1.25rem;
@@ -151,6 +155,22 @@
 @media (pointer: coarse) {
   .info-mark::after {
     inset: -1rem;
+  }
+}
+/*
+ * Where a mark only adds detail, it waits until the pointer comes to the words
+ * it explains, or to the mark itself, and shows to the keyboard as well. Its
+ * space is kept, so nothing moves; with no pointer to hover, it always shows.
+ */
+@media (hover: hover) and (pointer: fine) {
+  .info-reveal .info-mark {
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+  .info-reveal:hover .info-mark,
+  .info-reveal:focus-within .info-mark,
+  .info-reveal .info-mark[data-state$='open'] {
+    opacity: 1;
   }
 }
 .local-processing-label .local-processing-help,
@@ -795,32 +815,18 @@ html[data-workspace-mode='batch'] .mode-tabs [id$='-trigger-batch'] {
     gap: 0;
     /* Text sits by its own line height, not in 44px boxes, so the footer stays
        compact; the touch targets reach past the text instead. */
-    padding: 0.625rem 1.25rem 0.75rem;
+    padding: 0.875rem 1.25rem 0.75rem;
   }
   html:root .site-footer .footer-brand {
     grid-row: 1;
-    justify-self: start;
-    width: auto;
-    /* The icons are absolute at the row's end, so the brand has to stop short of
-       them itself. */
-    max-width: calc(100% - 6rem);
-    min-width: 2.75rem;
-    min-height: 0;
-    /* The description goes under the name and wraps rather than being cut
-       off, still clear of the icons. */
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 0.125rem;
-    line-height: 1.25rem;
+    /* The icons are absolute at the row's end, so the text has to stop short of
+       them itself; it wraps rather than being cut off. */
+    max-width: calc(100% - 5.5rem);
     white-space: normal;
   }
+  html:root .site-footer .footer-copyright,
   html:root .site-footer .footer-tagline {
     overflow: visible;
-    white-space: normal;
-  }
-  html:root .site-footer .footer-dash {
-    display: none;
   }
   html:root .site-footer .footer-inner nav {
     grid-row: 2;
@@ -830,9 +836,9 @@ html[data-workspace-mode='batch'] .mode-tabs [id$='-trigger-batch'] {
     margin: 0.5rem 0 0;
   }
   html:root .site-footer .footer-pages {
-    /* Grouped at the start; spread across the width, four short links sat a
-       column apart. A wrapped row leaves room for both rows' targets. */
-    justify-content: flex-start;
+    /* Grouped at the end, under the icons; spread across the width, four short
+       links sat a column apart. A wrapped row leaves room for both rows' targets. */
+    justify-content: flex-end;
     gap: 1.25rem;
   }
   html:root .site-footer .footer-pages a {
@@ -856,9 +862,11 @@ html[data-workspace-mode='batch'] .mode-tabs [id$='-trigger-batch'] {
   }
   html:root .site-footer .footer-contacts {
     position: absolute;
-    /* Centred on the two-line brand: 2.625rem tall from the same top. */
-    inset-block-start: calc(0.625rem - 0.0625rem);
-    inset-inline-end: 1.25rem;
+    /* The envelope's top level with the tops of the first line's letters,
+       and the last icon's edge with the end of the links under it; the 44px
+       targets reach past both. */
+    inset-block-start: calc(0.875rem - 0.5625rem);
+    inset-inline-end: 0.5rem;
   }
   html:root .site-footer .footer-contacts a {
     width: 2.75rem;
@@ -1065,6 +1073,16 @@ html[data-workspace-mode='batch'] .mode-tabs [id$='-trigger-batch'] {
   min-height: 1.625rem;
   padding-block: 0;
   margin-block: 0;
+  /* The glyph 6px from its switch, like the offline icon's. */
+  margin-inline-end: -1.125rem;
+}
+.workspace-summary .workspace-summary-links .history-view-link .iconify {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+/* Each icon's target reaches a little under its switch; the switch keeps it. */
+.workspace-summary .workspace-summary-links .history-switch {
+  z-index: 1;
 }
 @media (max-width: 700px) {
   .workspace-summary {

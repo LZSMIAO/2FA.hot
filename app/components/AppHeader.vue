@@ -2,11 +2,6 @@
 const localePath = useLocalePath()
 import { isPrivatePage, unlocalizedPath } from '~~/shared/seo/routes'
 import ButtonSoundToggle from './ButtonSoundToggle.vue'
-import {
-  customPanoramaScene,
-  flatPanoramaOf,
-  panoramaGroups
-} from '~/composables/usePanoramaPreference'
 
 const { tx, locale } = useMessages()
 const liteHref = computed(() => '/lite?lang=' + locale.value)
@@ -61,10 +56,9 @@ const themes = computed(() => [
 ])
 /*
  * The backdrop's own controls sit above the viewport on a phone, so the menu
- * carries them there instead. Only on the home page, which is the only place
- * the backdrop is on screen.
+ * carries them there instead, as one entry that opens every scene in a sheet.
+ * Only on the home page, which is the only place the backdrop is on screen.
  */
-const { selected, playbackPaused, custom } = usePanoramaPreference()
 const newBadge = useNewBadge('backdrop')
 const narrow = shallowRef(false)
 const onHome = computed(() => unlocalizedPath(route.path) === '/')
@@ -75,6 +69,9 @@ onMounted(() => {
   query.addEventListener('change', update)
   onBeforeUnmount(() => query.removeEventListener('change', update))
 })
+// Loaded the first time it is asked for, not with every page.
+const sheetLoaded = shallowRef(false)
+const sheetOpen = shallowRef(false)
 const backdrop = computed(() =>
   narrow.value && onHome.value
     ? [
@@ -82,63 +79,10 @@ const backdrop = computed(() =>
           label: tx('切换背景'),
           icon: 'i-lucide-image',
           slot: 'backdrop' as const,
-          children: [
-            /* On its own in the top menu this read as "pause" with no object.
-               A still custom image has nothing to play. */
-            ...((selected.value === customPanoramaScene && custom.value?.layout === 'flat') ||
-            flatPanoramaOf(selected.value)
-              ? []
-              : [
-                  {
-                    label: tx(playbackPaused.value === false ? '暂停' : '继续'),
-                    icon: playbackPaused.value === false ? 'i-lucide-pause' : 'i-lucide-play',
-                    onSelect: () => {
-                      playbackPaused.value = playbackPaused.value === false
-                    }
-                  },
-                  { type: 'separator' as const }
-                ]),
-            // Each collection folds behind one entry, as in the backdrop's own menu.
-            ...panoramaGroups.map((group) => ({
-              label: tx(group.label),
-              children: group.scenes.map((entry) => ({
-                label: tx(entry.label),
-                type: 'checkbox' as const,
-                checked: selected.value === entry.id,
-                onSelect: () => {
-                  selected.value = entry.id
-                }
-              }))
-            })),
-            { type: 'separator' as const },
-            ...(custom.value
-              ? [
-                  {
-                    label: tx('自定义背景'),
-                    type: 'checkbox' as const,
-                    checked: selected.value === customPanoramaScene,
-                    onSelect: () => {
-                      selected.value = customPanoramaScene
-                    }
-                  }
-                ]
-              : []),
-            // The panorama owns the file input and storage; ask it to act.
-            {
-              label: tx('上传背景图片…'),
-              icon: 'i-lucide-upload',
-              onSelect: () => window.dispatchEvent(new Event('2fa-panorama-upload'))
-            },
-            ...(custom.value
-              ? [
-                  {
-                    label: tx('移除自定义背景'),
-                    icon: 'i-lucide-trash-2',
-                    onSelect: () => window.dispatchEvent(new Event('2fa-panorama-remove'))
-                  }
-                ]
-              : [])
-          ]
+          onSelect: () => {
+            sheetLoaded.value = true
+            sheetOpen.value = true
+          }
         }
       ]
     : []
@@ -209,6 +153,8 @@ const menu = computed(() => [
       </div>
     </header>
   </UTheme>
+  <!-- Outside the header's theme: a dialog like the others, not a menu. -->
+  <LazyBackdropSheet v-if="sheetLoaded" v-model:open="sheetOpen" />
 </template>
 
 <style scoped>

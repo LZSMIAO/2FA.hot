@@ -8,7 +8,7 @@ const { tx } = useMessages()
     <div class="page-intro">
       <div>
         <h1>{{ tx('本地历史') }}</h1>
-        <p>
+        <p class="info-reveal">
           {{ tx('记录保存在当前浏览器，可选择密码保护。').replace(/[。.]$/, '') }}
           <AppHint :text="tx('保存与备份')"
             ><NuxtLink

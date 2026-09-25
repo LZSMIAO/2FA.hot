@@ -287,7 +287,7 @@ watch(
 
         <div class="workspace-foot workspace-summary">
           <div class="workspace-summary-copy">
-            <span>
+            <span class="info-reveal">
               <UIcon name="i-lucide-monitor" />
               <span class="local-processing-label">
                 {{ tx('所有数据由本地浏览器处理') }}

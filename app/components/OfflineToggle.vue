@@ -140,13 +140,15 @@ const iconHint = computed(() => (online.value ? '离线使用说明' : '已断�
   place-items: center;
   width: 2.75rem;
   height: 2.75rem;
-  /* The target is wider than the glyph; keep the glyph beside its switch. */
-  margin-inline: -0.75rem -0.5rem;
+  /* The target is wider than the glyph: the glyph starts in line with the text
+     above and sits close beside its switch, 6px off, as the history icon does. */
+  margin-inline: -0.625rem -1rem;
   color: var(--ui-text-muted);
 }
+/* As tall as the switch's track, so the pair reads as one control. */
 .offline-help .iconify {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.5rem;
+  height: 1.5rem;
 }
 .offline-help:hover,
 .offline-help:focus-visible {

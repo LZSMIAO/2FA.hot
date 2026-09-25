@@ -377,39 +377,43 @@ onBeforeUnmount(() => {
     </div>
   </div>
   <div class="panorama-controls">
-    <UDropdownMenu
-      :items="sceneItems"
-      :modal="false"
-      @update:open="(open: boolean) => !open && newBadge.seen()"
-      :content="{ side: 'top', align: 'end', sideOffset: 8 }"
-      :ui="{
-        content: 'panorama-menu',
-        viewport: 'panorama-menu-viewport',
-        item: 'panorama-menu-item',
-        itemTrailingIcon: 'text-primary size-4'
-      }"
-    >
-      <AppHint :text="tx('切换背景')"
-        ><button class="panorama-control" :disabled="loading" :aria-label="tx('切换背景')">
-          <UIcon
-            :name="loading ? 'i-lucide-loader-circle' : 'i-lucide-image'"
-            :class="{ 'animate-spin': loading }"
-          /><NewBadge v-if="newBadge.visible.value" class="panorama-new" /></button
-      ></AppHint>
-      <template #item-leading="{ item }">
-        <img
-          v-if="item.preview"
-          :src="item.preview"
-          class="panorama-preview"
-          alt=""
-          width="48"
-          height="32"
-        />
-        <span v-else class="panorama-preview panorama-action-icon"
-          ><UIcon :name="item.icon"
-        /></span>
-      </template>
-    </UDropdownMenu>
+    <span class="panorama-menu-anchor">
+      <UDropdownMenu
+        :items="sceneItems"
+        :modal="false"
+        @update:open="(open: boolean) => !open && newBadge.seen()"
+        :content="{ side: 'top', align: 'end', sideOffset: 8 }"
+        :ui="{
+          content: 'panorama-menu',
+          viewport: 'panorama-menu-viewport',
+          item: 'panorama-menu-item',
+          itemTrailingIcon: 'text-primary size-4'
+        }"
+      >
+        <AppHint :text="tx('切换背景')"
+          ><button class="panorama-control" :disabled="loading" :aria-label="tx('切换背景')">
+            <UIcon
+              :name="loading ? 'i-lucide-loader-circle' : 'i-lucide-image'"
+              :class="{ 'animate-spin': loading }"
+            /></button
+        ></AppHint>
+        <template #item-leading="{ item }">
+          <img
+            v-if="item.preview"
+            :src="item.preview"
+            class="panorama-preview"
+            alt=""
+            width="48"
+            height="32"
+          />
+          <span v-else class="panorama-preview panorama-action-icon"
+            ><UIcon :name="item.icon"
+          /></span>
+        </template>
+      </UDropdownMenu>
+      <!-- Beside the button, not in it: the control is dimmed and would dim the mark too. -->
+      <NewBadge v-if="newBadge.visible.value" class="panorama-new" />
+    </span>
     <AppHint v-if="!flat" :text="tx(paused ? '继续' : '暂停')"
       ><button
         class="panorama-control panorama-playback"
@@ -631,10 +635,16 @@ onBeforeUnmount(() => {
   font-size: 0.8125rem;
 }
 /* On the corner, clear of the icon, so the button keeps its size. */
+.panorama-menu-anchor {
+  position: relative;
+  display: flex;
+}
+/* Centred on the button's top edge, so it reads as a tag on this button alone. */
 .panorama-new {
   position: absolute;
-  top: -0.5rem;
-  right: -0.625rem;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -60%);
 }
 @keyframes panorama-turn {
   to {
