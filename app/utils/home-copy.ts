@@ -26,7 +26,7 @@ export const homeIntro = {
   },
   // A new visitor's welcome; the questions follow it.
   welcomeTitle: '欢迎来到 2fa.hot',
-  welcomeLead: '开始使用前，你或许想了解……',
+  welcomeLead: '开始使用前，您或许想了解……',
   guidesLink: '阅读 2FA 与 TOTP 指南'
 } as const
 
