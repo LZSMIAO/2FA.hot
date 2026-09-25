@@ -12,6 +12,7 @@ export const sourceKeys = new Map<string, string>([
   ['页脚导航', 'ma512b3fc5b4b'],
   ['隐私', 'm86651d17a401'],
   ['2fa.hot 的 GitHub 项目（新窗口）', 'm75d2398e8d5d'],
+  ['2fa.hot 的 Telegram（新窗口）', 'footerTelegram'],
   ['浅色', 'maa0819dfc4d8'],
   ['深色', 'ma6b75d068032'],
   ['跟随系统', 'm217cfe7db1e3'],

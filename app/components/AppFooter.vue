@@ -8,7 +8,9 @@ const { tx } = useMessages()
       <p class="footer-brand">
         <span class="footer-tagline">{{ tx('多功能 TOTP 验证码生成器') }}</span
         ><!-- Not translated: the notice reads the same on every language's page.
-        --><span class="footer-copyright">© 2026 2fa.hot. All rights reserved.</span>
+        --><span class="footer-copyright"
+          ><span>© 2026 2fa.hot.</span> <span>All rights reserved.</span></span
+        >
       </p>
       <nav :aria-label="tx('页脚导航')">
         <div class="footer-pages">
@@ -26,6 +28,15 @@ const { tx } = useMessages()
           >
             <UIcon name="i-lucide-mail" />
           </a>
+          <a
+            class="footer-icon"
+            href="https://t.me/TwoFAhot"
+            target="_blank"
+            rel="noopener noreferrer"
+            :aria-label="tx('2fa.hot 的 Telegram（新窗口）')"
+            title="Telegram"
+            ><UIcon name="i-brand-telegram"
+          /></a>
           <a
             class="footer-icon"
             href="https://github.com/LZSMIAO/2FA.hot"
@@ -62,6 +73,11 @@ const { tx } = useMessages()
 .footer-tagline {
   overflow: hidden;
   text-overflow: ellipsis;
+}
+/* Where the notice has to wrap (a narrow phone, beside the contact icons), it
+   breaks between its two sentences rather than inside one. */
+.footer-copyright > span {
+  white-space: nowrap;
 }
 .footer-pages,
 .footer-contacts {

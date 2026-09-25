@@ -76,7 +76,12 @@ export default defineNuxtConfig({
   ui: { fonts: false },
   icon: {
     provider: 'server',
-    customCollections: [{ prefix: 'mc', dir: './app/assets/icons/mc' }],
+    customCollections: [
+      { prefix: 'mc', dir: './app/assets/icons/mc' },
+      // Marks Lucide does not carry, drawn in its line style (Telegram's plane
+      // after Tabler Icons' brand-telegram, MIT).
+      { prefix: 'brand', dir: './app/assets/icons/brand' }
+    ],
     clientBundle: { scan: true },
     serverBundle: { collections: ['lucide'] }
   },

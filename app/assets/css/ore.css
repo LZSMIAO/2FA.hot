@@ -889,7 +889,7 @@ html[data-workspace-mode='batch'] .mode-tabs [id$='-trigger-batch'] {
     grid-row: 1;
     /* The icons are absolute at the row's end, so the text has to stop short of
        them itself; it wraps rather than being cut off. */
-    max-width: calc(100% - 5.5rem);
+    max-width: calc(100% - 8.25rem);
     white-space: normal;
   }
   html:root .site-footer .footer-copyright,
