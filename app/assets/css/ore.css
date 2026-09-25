@@ -123,6 +123,15 @@
   height: 1rem;
   margin-top: calc((1.5em - 1rem) / 2);
 }
+/* Until the install offer arrives, the idle icon shows the download too if
+   this browser offered installing before (see public/workspace-mode.js). */
+.app-install-offered,
+:root[data-installable] .app-install-plain {
+  display: none;
+}
+:root[data-installable] .app-install-offered {
+  display: block;
+}
 .workspace-summary-copy > span > .app-install .iconify {
   width: 1rem;
   height: 1rem;

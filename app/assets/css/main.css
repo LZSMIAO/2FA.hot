@@ -359,6 +359,8 @@ code {
   display: none;
 }
 .site-footer {
+  /* The backdrop's corner controls keep clear of it (TitlePanorama.vue). */
+  anchor-name: --site-footer;
   margin-top: 4.5rem;
   color: var(--ui-text-muted);
   font-size: var(--text-caption);

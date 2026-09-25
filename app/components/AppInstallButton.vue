@@ -95,7 +95,13 @@ onBeforeUnmount(() => {
       >
         <UIcon name="i-lucide-monitor-down" /></button
     ></AppHint>
-    <UIcon v-else name="i-lucide-monitor" />
+    <!-- Until the offer arrives: the download too if this browser offered it
+         before (html[data-installable], set before the first paint). -->
+    <span v-else class="app-install-idle"
+      ><UIcon name="i-lucide-monitor" class="app-install-plain" /><UIcon
+        name="i-lucide-monitor-down"
+        class="app-install-offered"
+    /></span>
     <ActionHint
       :open="tip"
       :message="tx('已安装，可以从桌面或主屏幕直接打开。')"
@@ -139,6 +145,9 @@ onBeforeUnmount(() => {
 /* While the line beside it invites installing, the icon joins in. */
 .app-install-button.is-inviting {
   color: var(--accent-ink);
+}
+.app-install-idle {
+  display: grid;
 }
 @media (prefers-reduced-motion: reduce) {
   .app-install-button {

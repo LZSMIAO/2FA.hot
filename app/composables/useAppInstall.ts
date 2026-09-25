@@ -25,11 +25,21 @@ export function runningAsApp() {
   )
 }
 
+/** Remembered for public/workspace-mode.js, which marks the page before its first paint. */
+export function rememberInstallable(offered: boolean) {
+  document.documentElement.toggleAttribute('data-installable', offered)
+  try {
+    if (offered) localStorage.setItem('2fa-install-offered', '1')
+    else localStorage.removeItem('2fa-install-offered')
+  } catch {}
+}
+
 export function offerInstall(event: Event) {
   // Keep the browser's own banner away; the page offers the button instead.
   event.preventDefault()
   deferred = event as InstallPrompt
   available.value = true
+  rememberInstallable(true)
 }
 
 export function markInstalled() {
@@ -37,6 +47,7 @@ export function markInstalled() {
   available.value = false
   inviting.value = false
   installed.value = true
+  rememberInstallable(false)
 }
 
 export function useAppInstall() {

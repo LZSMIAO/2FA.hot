@@ -17,4 +17,13 @@
     event.preventDefault()
     window.__2faInstallOffer = event
   })
+  // A browser that offered installing last time most likely will again: the
+  // icon beside "processed in this browser" draws its download from the first
+  // paint, rather than a plain computer that changes once the offer arrives.
+  try {
+    if (localStorage.getItem('2fa-install-offered') === '1')
+      document.documentElement.setAttribute('data-installable', '')
+  } catch {
+    // Without storage the plain computer shows until the offer arrives.
+  }
 })()

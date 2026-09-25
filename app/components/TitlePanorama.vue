@@ -293,7 +293,10 @@ function updatePreference() {
 /*
  * The controls are fixed to the window's corner, which at the page's end is
  * where the footer's own icons sit. They rise with the footer as it scrolls
- * into view, and settle back as it leaves.
+ * into view, and settle back as it leaves. Browsers with CSS anchor
+ * positioning do this in layout (see .panorama-controls), from the first
+ * paint; set here after the page starts, the controls were drawn at the
+ * bottom on a reload and then jumped up. This is for the others.
  */
 const controls = useTemplateRef<HTMLElement>('controls')
 let liftFrame = 0
@@ -309,6 +312,7 @@ function scheduleLift() {
   if (!liftFrame) liftFrame = requestAnimationFrame(liftControls)
 }
 onMounted(() => {
+  if (CSS.supports('anchor-name: --footer')) return
   window.addEventListener('scroll', scheduleLift, { passive: true })
   window.addEventListener('resize', scheduleLift)
   // Content opening or closing moves the footer without a scroll.
@@ -653,6 +657,13 @@ onBeforeUnmount(() => {
   z-index: 10;
   display: flex;
   gap: 0.375rem;
+}
+/* 1rem above the footer once it is in view, else 1rem above the window's foot. */
+@supports (anchor-name: --footer) {
+  .panorama-controls {
+    position-anchor: --site-footer;
+    bottom: max(1rem, calc(anchor(top) + 1rem));
+  }
 }
 .panorama-control {
   position: relative;
