@@ -350,6 +350,11 @@ useHead({ meta: [{ name: 'referrer', content: 'no-referrer' }] })
           class="w-full"
           size="xl"
           autocomplete="off"
+          data-1p-ignore
+          data-op-ignore
+          data-lpignore="true"
+          data-bwignore
+          data-form-type="other"
           :placeholder="tx('输入密钥')"
           @paste="handlePaste"
           @compositionstart="composing = true"

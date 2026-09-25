@@ -607,6 +607,8 @@ onBeforeUnmount(() => {
       </div>
       <div class="secret-entry">
         <PasteConfirmation class="paste-confirmation" :show="pasteConfirmed" />
+        <!-- A 2FA secret is not a login. Password managers' inline menus took the keyboard
+             away and brought it back, and iOS moved the page to reveal the field each time. -->
         <label class="sr-only" for="secret">{{ tx('2FA 密钥') }}</label>
         <UInput
           v-show="!pendingPaste || guiding"
@@ -628,6 +630,11 @@ onBeforeUnmount(() => {
           autocomplete="off"
           autocapitalize="off"
           :spellcheck="false"
+          data-1p-ignore
+          data-op-ignore
+          data-lpignore="true"
+          data-bwignore
+          data-form-type="other"
           :aria-invalid="!guiding && !!issue"
           :aria-describedby="!guiding && issue ? 'secret-help secret-error' : 'secret-help'"
           :ui="{

@@ -741,6 +741,11 @@ onBeforeUnmount(() => {
           :ui="{ base: 'font-mono text-base leading-6 px-3 py-3 ring-[var(--control-line)]' }"
           :spellcheck="false"
           autocomplete="off"
+          data-1p-ignore
+          data-op-ignore
+          data-lpignore="true"
+          data-bwignore
+          data-form-type="other"
         />
       </div>
       <ActionHint
