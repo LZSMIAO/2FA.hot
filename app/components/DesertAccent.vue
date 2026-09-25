@@ -265,11 +265,14 @@ onBeforeUnmount(() => {
     width: 52%;
   }
 }
+/*
+ * On a phone or tablet the scene cuts in and out. Any fade over a drawing this
+ * size left a frame of it half drawn, which read as a flash.
+ */
 @media (max-width: 700px), (pointer: coarse) {
   .desert-accent,
   .desert-accent.is-open {
-    /* Resolve the panel height once; only opacity animates over the SVG. */
-    transition: opacity 180ms ease-out;
+    transition: none;
   }
 }
 @media (prefers-reduced-motion: reduce) {

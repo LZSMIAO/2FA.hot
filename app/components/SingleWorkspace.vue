@@ -1415,6 +1415,15 @@ onBeforeUnmount(() => {
     transition: none;
   }
 }
+/* Touch devices cut the whole toggle, the settings and the sun and moon alike. */
+@media (max-width: 700px), (pointer: coarse) {
+  .advanced-options,
+  .advanced-options.is-hidden,
+  .parameter-sun,
+  .parameter-moon {
+    transition: none;
+  }
+}
 .option-field {
   min-width: 0;
 }
