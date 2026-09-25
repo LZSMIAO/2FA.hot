@@ -1391,13 +1391,18 @@ onBeforeUnmount(() => {
     pointer-events: auto;
   }
 }
+/* On touch, full-height targets but narrower and with no gap, so the two
+   icons sit together as they do on a desktop rather than a finger apart. */
 @media (pointer: coarse) {
+  .secret-actions {
+    gap: 0;
+  }
   .secret-actions .secret-action,
   .secret-actions .secret-action:hover,
   .secret-actions .secret-action:active {
-    width: 2.75rem;
+    width: 2.25rem;
     height: 2.75rem;
-    min-width: 2.75rem;
+    min-width: 2.25rem;
     min-height: 2.75rem;
   }
 }

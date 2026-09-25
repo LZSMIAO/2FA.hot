@@ -109,10 +109,7 @@ function time(value: number) {
 <template>
   <section class="session-history" :aria-label="tx('本次会话')">
     <div class="session-heading">
-      <h2>
-        {{ tx('本次会话') }} <span class="session-count">{{ vault.recent.value.length }}</span>
-      </h2>
-      <!-- The bin alone says it; the name is its label and hint. -->
+      <!-- The bin alone says it, before the heading; the name is its label and hint. -->
       <AppHint :text="tx('清空')"
         ><UButton
           color="neutral"
@@ -123,6 +120,9 @@ function time(value: number) {
           :disabled="!vault.recent.value.length"
           @click="vault.clearRecent"
       /></AppHint>
+      <h2>
+        {{ tx('本次会话') }} <span class="session-count">{{ vault.recent.value.length }}</span>
+      </h2>
     </div>
     <Transition
       name="session-reveal"
@@ -268,11 +268,13 @@ function time(value: number) {
   padding-top: 0.5rem;
   border-top: 1px solid var(--ui-border);
 }
+/* The bin leads the heading, on the left. */
 .session-heading {
+  --session-heading-gap: 0.75rem;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  justify-content: space-between;
+  gap: var(--session-heading-gap);
+  justify-content: flex-start;
   flex-wrap: wrap;
 }
 .session-heading h2 {
@@ -299,8 +301,10 @@ function time(value: number) {
   min-width: 2.75rem;
   min-height: 2.75rem;
   padding: 0;
-  /* The bin's edge in line with the switches' above; the target reaches past it. */
-  margin-inline-end: calc((2.75rem - 1.125em) / -2);
+  /* The glyph's edge on the panel's content edge and 0.5rem from the words;
+     the 44px target reaches past both. */
+  margin-inline: calc((1.125em - 2.75rem) / 2)
+    calc((1.125em - 2.75rem) / 2 + 0.5rem - var(--session-heading-gap));
   border: 0;
   background: transparent;
   box-shadow: none;

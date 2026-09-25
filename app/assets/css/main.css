@@ -1389,24 +1389,6 @@ html.size-transition .desert-art svg * {
   text-align: left;
 }
 /*
- * Password managers dock their button at the end of the field's TEXT, so this
- * padding is what positions it. The button is right-aligned to that edge and
- * grows leftward over the last characters, so widening the reserve does not
- * open a slot beside it - it drags the text and the button left together and
- * leaves dead space. Reserve only what clears our own icons: 68px for them,
- * their 12px inset, and a small gap.
- *
- * This used to be gated on a fine pointer, on the assumption that touch
- * devices rarely run these extensions. They do, and there the button landed
- * on the hint text instead.
- *
- * It also has to be reserved from the start rather than once the field has
- * content: the extension measures the field when it decorates it and does not
- * re-measure on a padding change, so a reserve that appears with the first
- * keystroke leaves its button parked over the icons until the field is
- * blurred and focused again.
- */
-/*
  * This entry walks the reader through installing a browser extension, which a
  * touch browser has no page for. No API reports whether a browser can install
  * one, so the device is the only signal: a touch-first pointer rules it out,
@@ -1418,35 +1400,15 @@ html.size-transition .desert-art svg * {
     display: none;
   }
 }
+/*
+ * Room at the field's end for its own icons, show and clear: 68px for them
+ * (72px on touch), their 12px inset and a small gap. Password managers once
+ * docked a button there too; #secret now asks them to leave it alone
+ * (data-1p-ignore and the like), so the room is ours and a secret longer
+ * than the field is simply cut at its edge.
+ */
 .secret-field #secret {
   padding-inline-end: 5.5rem;
-}
-/*
- * A secret longer than the field gets clipped at that reserve's edge, part
- * way through a character, which reads as a rendering fault rather than as
- * "there is more". Fade the last characters into the field instead.
- *
- * Only once there is a secret to run over: on an empty field it cut into the
- * hint, which is not overflowing and has no business looking clipped. And not
- * while the field has focus, since the caret sits on that same edge while
- * typing and the fade would swallow it.
- */
-/* .secret-field also wraps the batch textarea, which is multi-line and must
-   not be faded - this belongs to the single secret input alone. */
-.secret-field:has(#secret):has(.secret-actions.has-content)::after {
-  content: '';
-  position: absolute;
-  /* Below the field's 3px top shade (--ore-inset) as well as its 2px border:
-     painted over it, the shade broke off where the fade began. */
-  inset-block: 5px 2px;
-  inset-inline-end: 5.5rem;
-  width: 1.5rem;
-  background: linear-gradient(to left, var(--ore-input), transparent);
-  pointer-events: none;
-  transition: opacity 120ms ease;
-}
-.secret-field:has(#secret):has(.secret-actions.has-content):focus-within::after {
-  opacity: 0;
 }
 .record-name {
   unicode-bidi: plaintext;
