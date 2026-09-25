@@ -277,14 +277,15 @@ function time(value: number) {
   justify-content: flex-end;
   flex-wrap: wrap;
 }
+/* A quiet label at the size of the line above it, not a section heading. */
 .session-heading h2 {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   margin: 0;
-  font-size: var(--text-section);
-  font-weight: 600;
-  color: var(--ui-text-highlighted);
+  font-size: var(--text-label);
+  font-weight: 400;
+  color: var(--ui-text);
 }
 .session-count {
   min-width: 1.5rem;
@@ -311,7 +312,7 @@ function time(value: number) {
   color: var(--ui-text-muted);
   transform: none;
   /* The bin is sized from the heading's size beside it, here and on a phone. */
-  font-size: var(--text-section);
+  font-size: var(--text-label);
 }
 /* The icon at its label's size, rather than a fixed 20px. */
 .session-heading .session-clear :deep([data-slot='leadingIcon']) {
@@ -592,12 +593,6 @@ function time(value: number) {
   }
 }
 @media (max-width: 700px) {
-  .session-heading h2 {
-    font-size: var(--text-body);
-  }
-  .session-heading .session-clear {
-    font-size: var(--text-body);
-  }
   .session-history {
     --session-row-height: 4rem;
     padding-inline: 0;
