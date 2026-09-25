@@ -128,6 +128,7 @@ const tabItems = computed(() => [
  * showed it before the app started; once the tabs follow, its mark goes.
  */
 const modeKey = '2fa-workspace-mode'
+const { inviting, inviteHeld, install } = useAppInstall()
 watch(mode, (value) => {
   try {
     if (value === 'batch') localStorage.setItem(modeKey, value)
@@ -288,28 +289,42 @@ watch(
         <div class="workspace-foot workspace-summary">
           <div class="workspace-summary-copy">
             <span class="info-reveal">
-              <UIcon name="i-lucide-monitor" />
-              <span class="local-processing-label">
-                {{ tx('所有数据由本地浏览器处理') }}
-                <UTooltip
-                  :text="tx('隐私说明')"
-                  :delay-duration="0"
-                  :content="{ side: 'top', align: 'center', sideOffset: 2 }"
-                  arrow
-                  :ui="{ content: 'parameter-help-tooltip', arrow: 'parameter-help-arrow' }"
+              <AppInstallButton />
+              <!-- Both lines share one cell, sized from the first paint, so the
+                   invitation fades in over the other without moving anything. -->
+              <span class="summary-faces" :class="{ 'is-inviting': inviting }">
+                <span class="local-processing-label" :inert="inviting">
+                  {{ tx('所有数据由本地浏览器处理') }}
+                  <UTooltip
+                    :text="tx('隐私说明')"
+                    :delay-duration="0"
+                    :content="{ side: 'top', align: 'center', sideOffset: 2 }"
+                    arrow
+                    :ui="{ content: 'parameter-help-tooltip', arrow: 'parameter-help-arrow' }"
+                  >
+                    <NuxtLink
+                      :to="localePath('/privacy')"
+                      class="local-processing-help info-mark"
+                      :aria-label="tx('隐私说明')"
+                      ><UIcon name="i-lucide-info"
+                    /></NuxtLink>
+                  </UTooltip>
+                </span>
+                <button
+                  type="button"
+                  class="install-invite"
+                  :inert="!inviting"
+                  :aria-hidden="!inviting"
+                  @click="install"
+                  @pointerenter="inviteHeld = true"
+                  @pointerleave="inviteHeld = false"
                 >
-                  <NuxtLink
-                    :to="localePath('/privacy')"
-                    class="local-processing-help info-mark"
-                    :aria-label="tx('隐私说明')"
-                    ><UIcon name="i-lucide-info"
-                  /></NuxtLink>
-                </UTooltip>
+                  {{ tx('可以安装成 App，断网也能用') }}
+                </button>
               </span>
             </span>
           </div>
           <div class="workspace-summary-links">
-            <AppInstallButton />
             <OfflineToggle />
             <HistoryToggle />
           </div>

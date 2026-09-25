@@ -622,7 +622,7 @@
   "migrationNextStep": "Trong Google Authenticator, nhấn Tiếp theo để hiện mã QR kế tiếp, rồi quét hoặc dán ảnh chụp màn hình.",
   "migrationImportBlocked": "Hãy đọc tất cả mã QR trước khi nhập.",
   "copyAllSecrets": "Sao chép tất cả khóa",
-  "orderSaved": "Đã lưu thứ tự.",
+  "orderSaved": "Đã lưu thứ tự",
   "linkPrivacyBatch": "Phân tách nhiều khóa bằng thêm một dấu # (dấu phẩy cũng được) để xem theo lô; khi xóa bớt chỉ còn một khóa, trang chuyển sang dạng đơn. Tùy chọn khác mặc định viết sau khóa của nó, ví dụ /2fa#KEY1#KEY2?digits=8.",
   "safeLinkCopy": "Liên kết an toàn",
   "safeLinkBroken": "Liên kết an toàn này không đầy đủ hoặc đã bị hỏng. Hãy sao chép lại toàn bộ liên kết.",
@@ -676,7 +676,7 @@
   "offlineTryTip": "Đã sẵn sàng dùng ngoại tuyến. Thử tắt Wi-Fi xem, mã vẫn tạo bình thường.",
   "offlinePraise": "Tuyệt, bạn đang ngoại tuyến! Mã vẫn tạo bình thường.",
   "appInstall": "Cài đặt ứng dụng",
-  "appInstallTip": "Cài thành ứng dụng để mở thẳng từ màn hình máy tính hoặc MH chính, kể cả khi ngoại tuyến.",
+  "appInstallTip": "Cài thành ứng dụng, dùng được cả khi ngoại tuyến",
   "appInstalled": "Đã cài đặt. Mở thẳng từ màn hình máy tính hoặc MH chính.",
   "homeWelcomeTitle": "Chào mừng bạn đến với 2fa.hot",
   "homeWelcomeLead": "Trước khi bắt đầu, có thể bạn muốn biết…"

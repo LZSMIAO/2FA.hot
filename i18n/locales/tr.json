@@ -622,7 +622,7 @@
   "migrationNextStep": "Google Authenticator’da sonraki QR kodunu göstermek için İleri’ye dokunun, ardından tarayın veya ekran görüntüsünü yapıştırın.",
   "migrationImportBlocked": "İçe aktarmadan önce tüm QR kodlarını okuyun.",
   "copyAllSecrets": "Tüm anahtarları kopyala",
-  "orderSaved": "Sıralama kaydedildi.",
+  "orderSaved": "Sıralama kaydedildi",
   "linkPrivacyBatch": "Birden çok anahtarı bir # daha ile ayırırsanız (virgül de olur) toplu görünür; anahtarları teke indirdiğinizde sayfa tekli görünüme geçer. Varsayılandan farklı ayarlar kendi anahtarının ardından yazılır, örneğin /2fa#KEY1#KEY2?digits=8.",
   "safeLinkCopy": "Güvenli bağlantı",
   "safeLinkBroken": "Bu güvenli bağlantı eksik veya bozuk. Tam bağlantıyı yeniden kopyalayın.",
@@ -676,7 +676,7 @@
   "offlineTryTip": "Çevrimdışı kullanıma hazır. Wi-Fi'yi kapatıp deneyin; kodlar çalışmaya devam eder.",
   "offlinePraise": "Harika, çevrimdışısınız! Kodlar çalışmaya devam ediyor.",
   "appInstall": "Uygulamayı yükle",
-  "appInstallTip": "Uygulama olarak yükleyin; masaüstünden veya ana ekrandan, çevrimdışıyken bile doğrudan açın.",
+  "appInstallTip": "Uygulamayı yükleyin; çevrimdışı da çalışır",
   "appInstalled": "Yüklendi. Masaüstünden veya ana ekrandan doğrudan açın.",
   "homeWelcomeTitle": "2fa.hot'a hoş geldiniz",
   "homeWelcomeLead": "Başlamadan önce bilmek isteyebilecekleriniz…"

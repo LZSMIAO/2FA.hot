@@ -11,6 +11,10 @@ interface InstallPrompt extends Event {
 const available = shallowRef(false)
 /** Set when the app was installed during this visit. */
 const installed = shallowRef(false)
+/** While the visitor is idle, the local-processing line fades into an invitation to install. */
+const inviting = shallowRef(false)
+/** The pointer rests on the invitation, which then stays until it leaves. */
+const inviteHeld = shallowRef(false)
 let deferred: InstallPrompt | null = null
 
 /** Opened as the installed app rather than in a browser tab. */
@@ -31,6 +35,7 @@ export function offerInstall(event: Event) {
 export function markInstalled() {
   deferred = null
   available.value = false
+  inviting.value = false
   installed.value = true
 }
 
@@ -40,9 +45,10 @@ export function useAppInstall() {
     const prompt = deferred
     deferred = null
     available.value = false
+    inviting.value = false
     await prompt.prompt()
     // Declined, the browser offers the event again on a later visit.
     await prompt.userChoice.catch(() => undefined)
   }
-  return { available: readonly(available), installed, install }
+  return { available: readonly(available), installed, inviting, inviteHeld, install }
 }

@@ -622,7 +622,7 @@
   "migrationNextStep": "Tippe in Google Authenticator auf Weiter, um den nächsten QR-Code anzuzeigen, und scanne ihn oder füge einen Screenshot ein.",
   "migrationImportBlocked": "Lies zuerst alle QR-Codes ein, dann kannst du importieren.",
   "copyAllSecrets": "Alle Schlüssel kopieren",
-  "orderSaved": "Reihenfolge gespeichert.",
+  "orderSaved": "Reihenfolge gespeichert",
   "linkPrivacyBatch": "Mehrere Schlüssel trennst du mit einem weiteren # (Kommas gehen auch), um sie gesammelt zu sehen; bleibt nur einer übrig, wechselt die Seite zur Einzelansicht. Abweichende Einstellungen stehen hinter ihrem Schlüssel, zum Beispiel /2fa#KEY1#KEY2?digits=8.",
   "safeLinkCopy": "Sicherer Link",
   "safeLinkBroken": "Dieser sichere Link ist unvollständig oder beschädigt. Kopiere den vollständigen Link erneut.",
@@ -676,7 +676,7 @@
   "offlineTryTip": "Bereit für die Offline-Nutzung. Schalte zum Test das WLAN aus – die Codes funktionieren weiter.",
   "offlinePraise": "Super, du bist offline! Die Codes funktionieren weiter.",
   "appInstall": "App installieren",
-  "appInstallTip": "Als App installiert, öffnest du sie direkt vom Desktop oder Home-Bildschirm, auch offline.",
+  "appInstallTip": "Als App installieren – läuft auch offline",
   "appInstalled": "Installiert. Öffne die App direkt vom Desktop oder Home-Bildschirm.",
   "homeWelcomeTitle": "Willkommen bei 2fa.hot",
   "homeWelcomeLead": "Bevor du loslegst, möchtest du vielleicht wissen …"

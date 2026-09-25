@@ -622,7 +622,7 @@
   "migrationNextStep": "Google Authenticator で「次へ」をタップして次の QR コードを表示し、続けてスキャンするかスクリーンショットを貼り付けてください。",
   "migrationImportBlocked": "すべての QR コードを読み取ってからインポートできます。",
   "copyAllSecrets": "すべてのキーをコピー",
-  "orderSaved": "並び順を保存しました。",
+  "orderSaved": "並び順を保存しました",
   "linkPrivacyBatch": "複数のキーはさらに # で区切ると（カンマも可）一括表示になり、1 つまで減らすと単体表示に切り替わります。既定と異なる設定は各キーの後ろに付けます（例：/2fa#KEY1#KEY2?digits=8）。",
   "safeLinkCopy": "安全リンク",
   "safeLinkBroken": "安全リンクが不完全か破損しています。完全なリンクをもう一度コピーしてください。",
@@ -676,7 +676,7 @@
   "offlineTryTip": "オフラインで使えるようになりました。Wi-Fi を切って試してみてください。コードはそのまま生成されます。",
   "offlinePraise": "いいですね、オフラインです！コードはそのまま生成されます。",
   "appInstall": "アプリをインストール",
-  "appInstallTip": "アプリとしてインストールすると、デスクトップやホーム画面から直接開けます。オフラインでも使えます。",
+  "appInstallTip": "アプリとしてインストールすると、オフラインでも使えます",
   "appInstalled": "インストールしました。デスクトップやホーム画面から直接開けます。",
   "homeWelcomeTitle": "2fa.hot へようこそ",
   "homeWelcomeLead": "使い始める前に、知っておくと役立つこと"

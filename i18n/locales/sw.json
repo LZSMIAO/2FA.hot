@@ -622,7 +622,7 @@
   "migrationNextStep": "Katika Google Authenticator, gusa Inayofuata ili kuonyesha msimbo wa QR unaofuata, kisha uuchanganue au ubandike picha ya skrini.",
   "migrationImportBlocked": "Soma misimbo yote ya QR kabla ya kuingiza.",
   "copyAllSecrets": "Nakili funguo zote",
-  "orderSaved": "Mpangilio umehifadhiwa.",
+  "orderSaved": "Mpangilio umehifadhiwa",
   "linkPrivacyBatch": "Tenganisha funguo kadhaa kwa # nyingine (koma pia zinafaa) ili zionekane pamoja; ukiondoa hadi ubaki mmoja, ukurasa hubadilika kuwa mwonekano mmoja. Mipangilio isiyo ya chaguomsingi huandikwa baada ya ufunguo wake, kwa mfano /2fa#KEY1#KEY2?digits=8.",
   "safeLinkCopy": "Kiungo salama",
   "safeLinkBroken": "Kiungo hiki salama hakijakamilika au kimeharibika. Nakili kiungo kizima tena.",
@@ -676,7 +676,7 @@
   "offlineTryTip": "Iko tayari kutumika nje ya mtandao. Jaribu kuzima Wi-Fi; misimbo itaendelea kufanya kazi.",
   "offlinePraise": "Safi, uko nje ya mtandao! Misimbo inaendelea kufanya kazi.",
   "appInstall": "Sakinisha programu",
-  "appInstallTip": "Isakinishe kama programu ili uifungue kutoka kwenye eneo-kazi au skrini ya nyumbani, hata nje ya mtandao.",
+  "appInstallTip": "Isakinishe kama programu; inafanya kazi hata nje ya mtandao",
   "appInstalled": "Imesakinishwa. Ifungue kutoka kwenye eneo-kazi au skrini ya nyumbani.",
   "homeWelcomeTitle": "Karibu 2fa.hot",
   "homeWelcomeLead": "Kabla ya kuanza, huenda ungependa kujua…"

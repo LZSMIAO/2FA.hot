@@ -114,12 +114,61 @@
   justify-self: start;
 }
 /* The icon at the text's size, centred on its first line, which is its only
-   line unless a language runs long. */
-.workspace-summary-copy > span > .iconify {
+   line unless a language runs long. On the home page the icon is the install
+   button's (app/components/AppInstallButton.vue), which wraps it. */
+.workspace-summary-copy > span > .iconify,
+.workspace-summary-copy > span > .app-install {
   flex-shrink: 0;
   width: 1rem;
   height: 1rem;
   margin-top: calc((1.5em - 1rem) / 2);
+}
+.workspace-summary-copy > span > .app-install .iconify {
+  width: 1rem;
+  height: 1rem;
+}
+/*
+ * While a visitor is idle, the line cross-fades into an invitation to install
+ * (app/components/AppInstallButton.vue). Both sit in one cell, so its size
+ * never changes and nothing around it moves.
+ */
+.summary-faces {
+  display: inline-grid;
+  min-width: 0;
+}
+.summary-faces > * {
+  grid-area: 1 / 1;
+  transition:
+    opacity 700ms ease,
+    visibility 0s;
+}
+.install-invite {
+  /* On the first line, where the sentence it replaces begins. */
+  align-self: start;
+  justify-self: start;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.install-invite:hover {
+  color: var(--accent-ink);
+}
+.summary-faces:not(.is-inviting) > .install-invite,
+.summary-faces.is-inviting > .local-processing-label {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 700ms ease,
+    visibility 0s 700ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  .summary-faces > * {
+    transition: none !important;
+  }
 }
 /*
  * Info marks follow the text they explain and sit at its top-right, like a
@@ -1096,8 +1145,8 @@ html[data-workspace-mode='batch'] .mode-tabs [id$='-trigger-batch'] {
   .workspace-summary-links {
     margin-inline-start: 0;
   }
-  /* The icons and their switches share one row: install and offline on the
-     left, history on the right. */
+  /* The icons and their switches share one row: offline on the left,
+     history on the right. */
   .workspace-summary-links {
     width: 100%;
   }

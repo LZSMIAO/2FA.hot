@@ -622,7 +622,7 @@
   "migrationNextStep": "在 Google Authenticator 中点“下一步”显示下一张二维码，继续扫描或粘贴截图。",
   "migrationImportBlocked": "读取全部二维码后才能导入。",
   "copyAllSecrets": "复制全部密钥",
-  "orderSaved": "顺序已保存。",
+  "orderSaved": "顺序已保存",
   "linkPrivacyBatch": "多个密钥之间再用 # 分隔（也可以用逗号），页面会显示批量验证码；删到只剩一个时，自动切换为单条样式。非默认参数写在各自的密钥后面，例如 /2fa#密钥1#密钥2?digits=8。",
   "safeLinkCopy": "安全链接",
   "safeLinkBroken": "安全链接不完整或已损坏，请重新复制完整链接。",
@@ -676,7 +676,7 @@
   "offlineTryTip": "已可离线使用。可以关掉 Wi-Fi 试试，验证码照常产生。",
   "offlinePraise": "太好了，已断网！验证码照常产生。",
   "appInstall": "安装 App",
-  "appInstallTip": "安装成 App 后，可以从桌面或主屏幕直接打开，断网也能用。",
+  "appInstallTip": "可以安装成 App，断网也能用",
   "appInstalled": "已安装，可以从桌面或主屏幕直接打开。",
   "homeWelcomeTitle": "欢迎来到 2fa.hot",
   "homeWelcomeLead": "开始使用前，您或许想了解……"

@@ -622,7 +622,7 @@
   "migrationNextStep": "Tik in Google Authenticator op Volgende om de volgende QR-code te tonen en scan die of plak een screenshot.",
   "migrationImportBlocked": "Lees eerst alle QR-codes in voordat je importeert.",
   "copyAllSecrets": "Alle sleutels kopiëren",
-  "orderSaved": "Volgorde opgeslagen.",
+  "orderSaved": "Volgorde opgeslagen",
   "linkPrivacyBatch": "Scheid meerdere sleutels met nog een # (komma’s werken ook) om ze samen te zien; blijft er na verwijderen één over, dan schakelt de pagina naar de enkele weergave. Afwijkende instellingen staan achter hun sleutel, bijvoorbeeld /2fa#KEY1#KEY2?digits=8.",
   "safeLinkCopy": "Veilige link",
   "safeLinkBroken": "Deze veilige link is onvolledig of beschadigd. Kopieer de volledige link opnieuw.",
@@ -676,7 +676,7 @@
   "offlineTryTip": "Klaar voor offline gebruik. Zet je wifi eens uit: de codes blijven werken.",
   "offlinePraise": "Top, je bent offline! De codes werken gewoon.",
   "appInstall": "App installeren",
-  "appInstallTip": "Installeer het als app om het vanaf je bureaublad of beginscherm te openen, ook offline.",
+  "appInstallTip": "Installeer het als app; werkt ook offline",
   "appInstalled": "Geïnstalleerd. Open het vanaf je bureaublad of beginscherm.",
   "homeWelcomeTitle": "Welkom bij 2fa.hot",
   "homeWelcomeLead": "Voordat je begint, wil je misschien weten…"

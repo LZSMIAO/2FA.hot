@@ -1,108 +1,164 @@
 <script setup lang="ts">
 /*
  * Installs the site as an app where the browser offers it (not in Safari,
- * whose home screen tip lives with offline mode). A returning visitor hears
- * about it once; an install is confirmed with where to find the app.
+ * whose home screen tip lives with offline mode). Rather than a notice, a
+ * visitor who has gone quiet sees the line beside this icon fade into an
+ * invitation to install (see index.vue), once a visit and no more than a few
+ * visits in all; an install is confirmed with where to find the app.
  */
 const { tx } = useMessages()
-const { available, installed, install } = useAppInstall()
+const { available, installed, inviting, inviteHeld, install } = useAppInstall()
 const offline = useOfflineMode()
-const tip = shallowRef<'suggest' | 'installed' | null>(null)
-let timer: ReturnType<typeof setTimeout> | undefined
-let offerTimer: ReturnType<typeof setTimeout> | undefined
-function show(kind: 'suggest' | 'installed') {
-  tip.value = kind
-  clearTimeout(timer)
-  timer = setTimeout(() => (tip.value = null), 10_000)
-}
-/** Here before this visit, as public/first-visit.js recorded it. */
-function returning() {
-  const first = Number(localStorage.getItem('2fa-first-visit') ?? NaN)
-  return Number.isFinite(first) && first < performance.timeOrigin
-}
-function suggest() {
-  // Not over another tip, not in the visit that has just saved the files, and
-  // not offline, where installing cannot finish.
-  if (!available.value || offline.justSaved.value || !navigator.onLine) return
-  if (document.querySelector('.action-hint')) return
+const tip = shallowRef(false)
+let tipTimer: ReturnType<typeof setTimeout> | undefined
+let idleTimer: ReturnType<typeof setTimeout> | undefined
+let inviteTimer: ReturnType<typeof setTimeout> | undefined
+let invited = false
+const inviteKey = '2fa-install-invites'
+const idleEvents = [
+  'pointermove',
+  'pointerdown',
+  'keydown',
+  'wheel',
+  'touchstart',
+  'scroll'
+] as const
+
+function inviteOnceMore() {
   try {
-    if (!returning() || localStorage.getItem('2fa-install-tip-v1')) return
-    localStorage.setItem('2fa-install-tip-v1', '1')
+    const count = Number(localStorage.getItem(inviteKey)) || 0
+    if (count >= 5) return false
+    localStorage.setItem(inviteKey, String(count + 1))
+    return true
   } catch {
-    return
+    return false
   }
-  show('suggest')
 }
+function invite() {
+  // Not offline, where installing cannot finish, nor while the files are being kept.
+  if (!available.value || invited || !navigator.onLine || offline.status.value === 'saving') return
+  if (!inviteOnceMore()) return
+  invited = true
+  inviting.value = true
+  stopWatching()
+  inviteTimer = setTimeout(() => (inviting.value = false), 12_000)
+}
+function restartIdle() {
+  clearTimeout(idleTimer)
+  idleTimer = setTimeout(invite, 8_000)
+}
+function stopWatching() {
+  clearTimeout(idleTimer)
+  for (const type of idleEvents) window.removeEventListener(type, restartIdle)
+}
+// Held while the pointer rests on the invitation, so it can be read and clicked.
+watch(inviteHeld, (held) => {
+  clearTimeout(inviteTimer)
+  if (!held && inviting.value) inviteTimer = setTimeout(() => (inviting.value = false), 4_000)
+})
 // The browser may offer installing some time after the page has loaded.
 onMounted(() =>
   watch(
     available,
     (offered) => {
-      clearTimeout(offerTimer)
-      if (offered) offerTimer = setTimeout(suggest, 3_000)
+      stopWatching()
+      if (!offered || invited) return
+      for (const type of idleEvents) window.addEventListener(type, restartIdle, { passive: true })
+      restartIdle()
     },
     { immediate: true }
   )
 )
 watch(installed, (value) => {
-  if (value) show('installed')
+  if (!value) return
+  tip.value = true
+  clearTimeout(tipTimer)
+  tipTimer = setTimeout(() => (tip.value = false), 10_000)
 })
 onBeforeUnmount(() => {
-  clearTimeout(timer)
-  clearTimeout(offerTimer)
+  stopWatching()
+  clearTimeout(tipTimer)
+  clearTimeout(inviteTimer)
+  inviting.value = false
 })
 </script>
 <template>
-  <div class="app-install">
+  <!-- The computer beside "processed locally", which installs the site where the browser offers it. -->
+  <span class="app-install">
     <AppHint v-if="available" :text="tx('安装 App')"
       ><button
         type="button"
         class="app-install-button"
+        :class="{ 'is-inviting': inviting }"
         :aria-label="tx('安装 App')"
         @click="install"
       >
-        <UIcon name="i-lucide-monitor-down" /></button
+        <UIcon name="i-lucide-monitor" class="app-install-rest" /><UIcon
+          name="i-lucide-monitor-down"
+          class="app-install-offer"
+        /></button
     ></AppHint>
+    <UIcon v-else name="i-lucide-monitor" />
     <ActionHint
-      :open="!!tip"
-      :message="
-        tx(
-          tip === 'installed'
-            ? '已安装，可以从桌面或主屏幕直接打开。'
-            : '安装成 App 后，可以从桌面或主屏幕直接打开，断网也能用。'
-        )
-      "
-      :icon="tip === 'installed' ? 'i-lucide-check' : 'i-lucide-monitor-down'"
-      @close="tip = null"
+      :open="tip"
+      :message="tx('已安装，可以从桌面或主屏幕直接打开。')"
+      icon="i-lucide-check"
+      @close="tip = false"
     />
-  </div>
+  </span>
 </template>
 <style scoped>
 .app-install {
-  display: flex;
-  align-items: center;
-}
-.app-install-button {
   display: inline-grid;
-  place-items: center;
-  width: 2.75rem;
-  height: 2.75rem;
+  flex-shrink: 0;
+}
+/* The same glyph as the plain icon, so nothing moves when the offer arrives. */
+.app-install-button {
+  position: relative;
+  display: grid;
   padding: 0;
   border: 0;
   background: transparent;
-  color: var(--ui-text-muted);
+  color: inherit;
   cursor: pointer;
 }
-.app-install-button .iconify {
-  width: 1.25rem;
-  height: 1.25rem;
+.app-install-button > .iconify {
+  grid-area: 1 / 1;
+}
+/* A usable target around the small glyph, as the info marks have. */
+.app-install-button::after {
+  content: '';
+  position: absolute;
+  inset: -0.5rem;
+}
+.app-install-button > .iconify,
+.app-install-button {
+  transition:
+    opacity 400ms ease,
+    color 400ms ease;
+}
+.app-install-offer {
+  opacity: 0;
 }
 .app-install-button:hover,
-.app-install-button:focus-visible {
-  color: var(--ui-text-highlighted);
+.app-install-button:focus-visible,
+.app-install-button.is-inviting {
+  color: var(--accent-ink);
 }
-.app-install:empty,
-.app-install:not(:has(.app-install-button)) {
-  display: none;
+.app-install-button:hover .app-install-rest,
+.app-install-button:focus-visible .app-install-rest,
+.is-inviting .app-install-rest {
+  opacity: 0;
+}
+.app-install-button:hover .app-install-offer,
+.app-install-button:focus-visible .app-install-offer,
+.is-inviting .app-install-offer {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .app-install-button > .iconify,
+  .app-install-button {
+    transition: none;
+  }
 }
 </style>

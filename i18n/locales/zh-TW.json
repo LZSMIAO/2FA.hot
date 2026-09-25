@@ -622,7 +622,7 @@
   "migrationNextStep": "在 Google Authenticator 點「下一步」顯示下一張 QR Code，繼續掃描或貼上截圖。",
   "migrationImportBlocked": "讀取全部 QR Code 後才能匯入。",
   "copyAllSecrets": "複製全部金鑰",
-  "orderSaved": "順序已儲存。",
+  "orderSaved": "順序已儲存",
   "linkPrivacyBatch": "多個金鑰之間再用 # 分隔（也可以用逗號），頁面會顯示批次驗證碼；刪到只剩一個時，會自動切換為單筆樣式。非預設參數寫在各自的金鑰後面，例如 /2fa#金鑰1#金鑰2?digits=8。",
   "safeLinkCopy": "安全連結",
   "safeLinkBroken": "安全連結不完整或已損壞，請重新複製完整連結。",
@@ -676,7 +676,7 @@
   "offlineTryTip": "已可離線使用。可以關掉 Wi-Fi 試試，驗證碼照常產生。",
   "offlinePraise": "太好了，已斷網！驗證碼照常產生。",
   "appInstall": "安裝 App",
-  "appInstallTip": "安裝成 App 後，可以從桌面或主畫面直接開啟，斷網也能用。",
+  "appInstallTip": "可以安裝成 App，斷網也能用",
   "appInstalled": "已安裝，可以從桌面或主畫面直接開啟。",
   "homeWelcomeTitle": "歡迎來到 2fa.hot",
   "homeWelcomeLead": "開始使用前，您或許想了解……"

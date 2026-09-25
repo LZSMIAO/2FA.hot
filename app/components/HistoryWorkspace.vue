@@ -282,8 +282,29 @@ async function releasePointer(event: PointerEvent) {
     (item) => drag.ids.has(item.id) && item.batchId && !drag.wholeBatches.has(item.batchId)
   )?.batchId
   if (joined) expandedBatches.value.add('batch:' + joined)
-  await run(() => vault.arrange(next), '顺序已保存。')
+  error.value = ''
+  note.value = ''
+  try {
+    await vault.arrange(next)
+  } catch (cause) {
+    error.value = (cause as Error).message
+    return
+  }
+  // Confirmed where it landed: on its first row, or on the heading of a batch moved whole.
+  const first = next.find((item) => drag.ids.has(item.id))!
+  showLanded(
+    first.batchId && drag.wholeBatches.has(first.batchId) ? 'batch:' + first.batchId : first.id
+  )
 }
+/** The row or batch heading that just took a drop, marked saved for a moment. */
+const landed = shallowRef('')
+let landedTimer: ReturnType<typeof setTimeout> | undefined
+function showLanded(id: string) {
+  landed.value = id
+  clearTimeout(landedTimer)
+  landedTimer = setTimeout(() => (landed.value = ''), 1800)
+}
+onBeforeUnmount(() => clearTimeout(landedTimer))
 function endDrag() {
   if (press) clearTimeout(press.timer)
   press = null
@@ -750,7 +771,13 @@ const date = (v: number) =>
             </span>
             <span class="record-meta">
               <span>{{ tx('记录：{count}', { count: group.rows.length }) }}</span>
-              <time>{{ date(Math.max(...group.rows.map((row) => row.usedAt))) }}</time>
+              <Transition name="history-landed" mode="out-in"
+                ><span v-if="landed === group.id" class="history-landed" role="status"
+                  ><UIcon name="i-mc-check" />{{ tx('顺序已保存') }}</span
+                ><time v-else>{{
+                  date(Math.max(...group.rows.map((row) => row.usedAt)))
+                }}</time></Transition
+              >
             </span>
           </span>
           <UIcon
@@ -855,7 +882,13 @@ const date = (v: number) =>
                       })
                     }}
                   </span>
-                  <time :datetime="new Date(row.usedAt).toISOString()">{{ date(row.usedAt) }}</time>
+                  <Transition name="history-landed" mode="out-in"
+                    ><span v-if="landed === row.id" class="history-landed" role="status"
+                      ><UIcon name="i-mc-check" />{{ tx('顺序已保存') }}</span
+                    ><time v-else :datetime="new Date(row.usedAt).toISOString()">{{
+                      date(row.usedAt)
+                    }}</time></Transition
+                  >
                 </div>
               </div>
               <HistoryCode :config="row" />
@@ -1463,6 +1496,38 @@ const date = (v: number) =>
 .history-row.is-dragged,
 .history-group.is-dragged {
   opacity: 0.45;
+}
+/*
+ * Saving a new order is confirmed on the row it moved: for a moment its date
+ * reads as saved, in the paste confirmation's colour. Shorter than the date,
+ * it never moves the row.
+ */
+.history-landed {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  /* The date's size, so the line and the row keep their height. */
+  font-size: var(--text-caption);
+  color: var(--accent-ink);
+  white-space: nowrap;
+}
+.history-landed .iconify {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+.history-landed-enter-active,
+.history-landed-leave-active {
+  transition: opacity 180ms ease;
+}
+.history-landed-enter-from,
+.history-landed-leave-to {
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .history-landed-enter-active,
+  .history-landed-leave-active {
+    transition: none;
+  }
 }
 .history-drag-ghost {
   position: fixed;

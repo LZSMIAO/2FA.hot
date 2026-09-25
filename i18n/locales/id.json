@@ -622,7 +622,7 @@
   "migrationNextStep": "Di Google Authenticator, ketuk Berikutnya untuk menampilkan kode QR berikutnya, lalu pindai atau tempel tangkapan layar.",
   "migrationImportBlocked": "Baca semua kode QR sebelum mengimpor.",
   "copyAllSecrets": "Salin semua kunci",
-  "orderSaved": "Urutan disimpan.",
+  "orderSaved": "Urutan disimpan",
   "linkPrivacyBatch": "Pisahkan beberapa kunci dengan # lagi (koma juga bisa) agar tampil sekaligus; jika kunci dihapus hingga tersisa satu, halaman beralih ke tampilan tunggal. Opsi selain bawaan ditulis setelah kuncinya, misalnya /2fa#KEY1#KEY2?digits=8.",
   "safeLinkCopy": "Tautan aman",
   "safeLinkBroken": "Tautan aman ini tidak lengkap atau rusak. Salin kembali tautan lengkapnya.",
@@ -676,7 +676,7 @@
   "offlineTryTip": "Siap dipakai secara offline. Coba matikan Wi-Fi; kode tetap berjalan.",
   "offlinePraise": "Mantap, Anda sedang offline! Kode tetap berjalan.",
   "appInstall": "Pasang aplikasi",
-  "appInstallTip": "Pasang sebagai aplikasi agar bisa dibuka dari desktop atau layar utama, bahkan saat offline.",
+  "appInstallTip": "Pasang sebagai aplikasi; tetap jalan saat offline",
   "appInstalled": "Terpasang. Buka dari desktop atau layar utama.",
   "homeWelcomeTitle": "Selamat datang di 2fa.hot",
   "homeWelcomeLead": "Sebelum mulai, mungkin Anda ingin tahu…"
