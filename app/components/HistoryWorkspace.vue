@@ -1589,8 +1589,13 @@ const date = (v: number) =>
 }
 .record-edit:hover,
 .record-edit:focus-visible {
-  color: var(--accent-ink);
   background: transparent;
+}
+/* Hover brightens; the keyboard's focus keeps its green ring (below). */
+@media (hover: hover) {
+  .record-edit:hover {
+    color: var(--ui-text-highlighted);
+  }
 }
 .record-edit:focus-visible {
   outline: 2px solid var(--accent-ink);

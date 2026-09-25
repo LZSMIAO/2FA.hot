@@ -66,9 +66,11 @@ button:active {
   transform: translateY(2px);
   box-shadow: var(--ore-bevel);
 }
-button:hover {
-  background: var(--ore-control-hover);
-  color: var(--accent-ink);
+@media (hover: hover) {
+  button:hover {
+    background: var(--ore-control-hover);
+    color: var(--ui-text-highlighted);
+  }
 }
 @media (max-width: 640px) {
   .action-hint {

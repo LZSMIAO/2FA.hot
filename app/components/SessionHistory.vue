@@ -459,8 +459,13 @@ function time(value: number) {
 .session-row:hover {
   background: transparent;
 }
-.session-label:hover {
-  color: var(--accent-ink);
+/* Hover brightens, as every icon and text button does; green is kept for
+   states, links and the keyboard's focus. Only where a pointer hovers, so a
+   tap on a phone does not leave it lit. */
+@media (hover: hover) {
+  .session-label:hover {
+    color: var(--ui-text-highlighted);
+  }
 }
 .session-row time {
   grid-column: 2;
@@ -541,8 +546,10 @@ function time(value: number) {
   flex-shrink: 0;
   color: var(--ui-text-muted);
 }
-.session-icon:hover {
-  color: var(--accent-ink);
+@media (hover: hover) {
+  .session-icon:hover {
+    color: var(--ui-text-highlighted);
+  }
 }
 .session-icon:focus-visible {
   outline: 2px solid var(--accent-ink);

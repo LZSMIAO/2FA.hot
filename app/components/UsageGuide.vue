@@ -837,9 +837,19 @@ onBeforeUnmount(() => {
   line-height: 1.8;
   margin-top: 0.5rem;
 }
-.tutorial-tip-toggle:hover,
-.tutorial-tip-toggle.is-open {
-  color: var(--accent-ink);
+/* With a pointer the tip opens as it is hovered, so the mark brightens as
+   other icons do; tapped open on a touch screen, it shows the open state in
+   green. */
+@media (hover: hover) {
+  .tutorial-tip-toggle:hover,
+  .tutorial-tip-toggle.is-open {
+    color: var(--ui-text-highlighted);
+  }
+}
+@media (hover: none) {
+  .tutorial-tip-toggle.is-open {
+    color: var(--accent-ink);
+  }
 }
 /* An info mark: hovering or tapping shows the tip; there is nothing to click through to. */
 .tutorial-tip-toggle {

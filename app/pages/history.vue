@@ -43,8 +43,10 @@ const { tx } = useMessages()
   /* This sits on the panorama, where muted grey washes out in light mode. */
   color: var(--ui-text);
 }
-.history-intro-help:hover,
-.history-intro-help:focus-visible {
-  color: var(--accent-ink);
+/* Hover brightens; the keyboard's focus shows the info mark's green ring. */
+@media (hover: hover) {
+  .history-intro-help:hover {
+    color: var(--ui-text-highlighted);
+  }
 }
 </style>

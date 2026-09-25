@@ -554,9 +554,12 @@ html[data-panorama-flat] .panorama-playback {
   background: var(--panel);
   white-space: nowrap;
 }
-.guide-trigger:hover {
-  border-color: var(--accent-ink);
-  color: var(--accent-ink);
+/* Hover draws the green frame alone; the label brightens as on the tabs beside
+   it (ore.css). Only where a pointer hovers, so a tap does not leave it framed. */
+@media (hover: hover) {
+  .guide-trigger:hover {
+    border-color: var(--accent-ink);
+  }
 }
 /* The icon at 1.125em of the label, as elsewhere, rather than a fixed 18px. */
 .guide-trigger > span {
@@ -1085,8 +1088,11 @@ html.size-transition .desert-art svg * {
 .workspace-foot a {
   min-height: 2.75rem;
 }
-.workspace-foot a:hover {
-  color: var(--accent-ink);
+/* The summary's links brighten on hover, as its other icons do. */
+@media (hover: hover) {
+  .workspace-foot a:hover {
+    color: var(--ui-text-highlighted);
+  }
 }
 #main-content:has(> .content-page) {
   padding-block: 2rem;
