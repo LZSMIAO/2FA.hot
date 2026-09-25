@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import type { VaultRecord } from '~/composables/useVault'
 import { downloadFile } from '~/utils/download'
-import { arrangeHistory, type HistoryDrag, type HistoryDrop } from '~/utils/history-order'
+import {
+  arrangeHistory,
+  draggedRecords,
+  type HistoryDrag,
+  type HistoryDrop
+} from '~/utils/history-order'
 
 const localePath = useLocalePath()
 const { tx, locale } = useMessages()
@@ -41,6 +46,7 @@ async function copySecret(id: string) {
   if (takeDragClick() || !vault.unlocked.value || copyingSecret.value) return
   const record = vault.records.value.find((item) => item.id === id)
   if (!record) return
+  offerDragTip()
   copyingSecret.value = true
   copiedSecretId.value = id
   error.value = ''
@@ -55,6 +61,7 @@ async function copySecret(id: string) {
 /** A batch's key copies every key in it, one per line, in the order shown. */
 async function copyBatch(group: { id: string; rows: VaultRecord[] }) {
   if (takeDragClick() || !vault.unlocked.value || copyingSecret.value) return
+  offerDragTip()
   copyingSecret.value = true
   copiedSecretId.value = group.id
   error.value = ''
@@ -127,9 +134,42 @@ const groups = computed(() => {
 const arranging = computed(
   () => !search.value && vault.unlocked.value && vault.records.value.length > 1
 )
-const dragging = shallowRef<{ source: HistoryDrag; label: string; x: number; y: number } | null>(
-  null
-)
+const dragging = shallowRef<{
+  source: HistoryDrag
+  label: string
+  x: number
+  y: number
+  /** Every record the drag carries, and the batches it carries whole. */
+  ids: Set<string>
+  wholeBatches: Set<string>
+} | null>(null)
+/** The list as shown, in the form the ordering helpers take. */
+const listed = () =>
+  groups.value.flatMap((group) =>
+    group.rows.map((row) => ({ id: row.id, batchId: row.batchId, batchLabel: row.batchLabel }))
+  )
+/**
+ * A key that is ticked while other rows are ticked too carries all of them;
+ * a batch ticked in full goes along whole.
+ */
+function dragSource(source: HistoryDrag, label: string): { source: HistoryDrag; label: string } {
+  const ticked = selectedSet.value
+  const pressed =
+    'id' in source
+      ? [source.id]
+      : 'batchId' in source
+        ? (groups.value.find((group) => group.batchId === source.batchId)?.rows ?? []).map(
+            (row) => row.id
+          )
+        : []
+  if (!pressed.length || !pressed.every((id) => ticked.has(id)) || ticked.size <= pressed.length)
+    return { source, label }
+  const ids = rows.value.filter((row) => ticked.has(row.id)).map((row) => row.id)
+  const batchIds = groups.value
+    .filter((group) => group.batch && group.rows.every((row) => ticked.has(row.id)))
+    .map((group) => group.batchId)
+  return { source: { ids, batchIds }, label: tx('记录：{count}', { count: ids.length }) }
+}
 const dropTarget = shallowRef<HistoryDrop | null>(null)
 let press: {
   source: HistoryDrag
@@ -166,8 +206,11 @@ function pressKey(event: PointerEvent, source: HistoryDrag, label: string) {
 function beginDrag() {
   if (!press) return
   clearTimeout(press.timer)
-  dragging.value = { source: press.source, label: press.label, x: press.x, y: press.y }
+  const { source, label } = dragSource(press.source, press.label)
+  dragging.value = { source, label, x: press.x, y: press.y, ...draggedRecords(listed(), source) }
   dragClick = true
+  // Someone already dragging needs no tip about it.
+  noteDragTip()
   document.documentElement.classList.add('history-arranging')
 }
 function movePointer(event: PointerEvent) {
@@ -184,27 +227,28 @@ function movePointer(event: PointerEvent) {
   scrollNearEdge(event.clientY)
 }
 function dropAt(x: number, y: number): HistoryDrop | null {
-  const source = dragging.value?.source
+  const drag = dragging.value
   const hit = document
     .elementFromPoint(x, y)
     ?.closest<HTMLElement>('.history-row, .history-batch-heading')
-  if (!source || !hit || !surface.value?.contains(hit)) return null
+  if (!drag || !hit || !surface.value?.contains(hit)) return null
   const rect = hit.getBoundingClientRect()
   const ratio = (y - rect.top) / rect.height
   const side = ratio < 0.5 ? 'before' : 'after'
+  // Carrying a whole batch, nothing lands inside another one.
+  const outsideOnly = drag.wholeBatches.size > 0
   if (hit.classList.contains('history-batch-heading')) {
     const batchId = hit.dataset.selectionId!.slice('batch:'.length)
-    if ('batchId' in source) return source.batchId === batchId ? null : { place: side, batchId }
+    if (outsideOnly) return drag.wholeBatches.has(batchId) ? null : { place: side, batchId }
     // The heading's top edge goes above the batch; the rest of it goes in.
     return ratio < 0.3 ? { place: 'before', batchId } : { place: 'into', batchId }
   }
   const id = hit.dataset.selectionId!
   const batchId = hit.dataset.batchId
-  if ('batchId' in source) {
-    if (!batchId) return { place: side, id }
-    return batchId === source.batchId ? null : { place: side, batchId }
-  }
-  return source.id === id ? null : { place: side, id }
+  if (drag.ids.has(id)) return null
+  if (outsideOnly && batchId)
+    return drag.wholeBatches.has(batchId) ? null : { place: side, batchId }
+  return { place: side, id }
 }
 let scrollFrame = 0,
   scrollSpeed = 0
@@ -227,20 +271,16 @@ function stepScroll() {
 }
 async function releasePointer(event: PointerEvent) {
   if (!press || event.pointerId !== press.pointerId) return
-  const source = dragging.value?.source,
+  const drag = dragging.value,
     target = dropTarget.value
   endDrag()
-  if (!source || !target) return
-  const next = arrangeHistory(
-    groups.value.flatMap((group) =>
-      group.rows.map((row) => ({ id: row.id, batchId: row.batchId, batchLabel: row.batchLabel }))
-    ),
-    source,
-    target
-  )
+  if (!drag || !target) return
+  const next = arrangeHistory(listed(), drag.source, target)
   if (!next) return
-  // Show the record where it landed, inside its batch.
-  const joined = 'id' in source ? next.find((item) => item.id === source.id)?.batchId : undefined
+  // Show the records where they landed, inside the batch they joined.
+  const joined = next.find(
+    (item) => drag.ids.has(item.id) && item.batchId && !drag.wholeBatches.has(item.batchId)
+  )?.batchId
   if (joined) expandedBatches.value.add('batch:' + joined)
   await run(() => vault.arrange(next), '顺序已保存。')
 }
@@ -263,13 +303,41 @@ const dropsOn = (match: Partial<Record<'id' | 'batchId' | 'place', string>>) =>
   Object.entries(match).every(
     ([key, value]) => (dropTarget.value as Record<string, string>)[key] === value
   )
-const isDragged = (item: HistoryDrag) =>
+const isDragged = (item: { id: string } | { batchId: string }) =>
   !!dragging.value &&
-  ('id' in item
-    ? 'id' in dragging.value.source && dragging.value.source.id === item.id
-    : 'batchId' in dragging.value.source && dragging.value.source.batchId === item.batchId)
-const keyHint = (action: string) =>
-  arranging.value ? `${tx(action)} · ${tx('按住可拖动排序')}` : tx(action)
+  ('id' in item ? dragging.value.ids.has(item.id) : dragging.value.wholeBatches.has(item.batchId))
+/*
+ * Dragging is taught once, as a tip, the first time someone copies a key
+ * rather than on every key's tooltip; starting a drag first counts as known.
+ */
+const dragTipKey = '2fa-history-drag-tip-seen-v1'
+const dragTipSeen = useState('history-drag-tip-seen-v1', () => false)
+const dragTipOpen = shallowRef(false)
+let dragTipTimer: ReturnType<typeof setTimeout> | undefined
+function noteDragTip() {
+  if (dragTipSeen.value) return
+  dragTipSeen.value = true
+  try {
+    localStorage.setItem(dragTipKey, '1')
+  } catch {}
+}
+function offerDragTip() {
+  if (dragTipSeen.value || !arranging.value) return
+  noteDragTip()
+  dragTipOpen.value = true
+  clearTimeout(dragTipTimer)
+  dragTipTimer = setTimeout(closeDragTip, 8000)
+}
+function closeDragTip() {
+  clearTimeout(dragTipTimer)
+  dragTipOpen.value = false
+}
+onMounted(() => {
+  try {
+    dragTipSeen.value ||= localStorage.getItem(dragTipKey) === '1'
+  } catch {}
+})
+onBeforeUnmount(() => clearTimeout(dragTipTimer))
 /*
  * Past this many rows the reveal fills the screen anyway, and sliding that
  * many live codes open costs more than the motion adds.
@@ -632,9 +700,7 @@ const date = (v: number) =>
           />
           <AppHint
             :text="
-              secretCopied && copiedSecretId === group.id
-                ? tx('密钥已复制')
-                : keyHint('复制全部密钥')
+              secretCopied && copiedSecretId === group.id ? tx('密钥已复制') : tx('复制全部密钥')
             "
           >
             <button
@@ -722,7 +788,7 @@ const date = (v: number) =>
               />
               <AppHint
                 :text="
-                  secretCopied && copiedSecretId === row.id ? tx('密钥已复制') : keyHint('复制密钥')
+                  secretCopied && copiedSecretId === row.id ? tx('密钥已复制') : tx('复制密钥')
                 "
               >
                 <button
@@ -1005,6 +1071,12 @@ const date = (v: number) =>
       <span>{{ dragging.label }}</span>
     </div>
   </Teleport>
+  <ActionHint
+    :open="dragTipOpen"
+    :message="tx('按住钥匙可以拖动排序，勾选多条后可一起拖动。')"
+    icon="i-lucide-move"
+    @close="closeDragTip"
+  />
 </template>
 <style scoped>
 .history-group {

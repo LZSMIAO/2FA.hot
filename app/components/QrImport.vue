@@ -373,6 +373,7 @@ onBeforeUnmount(() => {
             ]"
           >
             <div
+              :id="demo ? 'tutorial-qr-drop' : undefined"
               ref="dropZone"
               class="drop-zone ore-drop-zone"
               :class="{ 'is-dragging': dragging }"

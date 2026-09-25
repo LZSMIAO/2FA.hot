@@ -15,6 +15,7 @@ import {
 } from '~/utils/smart-paste'
 import { countdownState } from '~/utils/countdown-state'
 import {
+  accessPath,
   sealedAccessPath,
   generateOtp,
   groupCode,
@@ -30,6 +31,8 @@ const props = defineProps<{
   importVersion?: number
   replace?: boolean
   standalone?: boolean
+  /** The standalone page was opened from a safe link, /2fa#~… */
+  sealedLink?: boolean
   guideStep?: number
   demo?: { input: number; results: number; copied: string }
 }>()
@@ -431,6 +434,14 @@ const autoHistoryError = useAutoHistory(
 )
 const { copied, message, copy } = useCopy(),
   vault = useVault()
+const { copied: linkCopied, message: linkMessage, copy: copyLinkValue } = useCopy()
+/** Standalone, the link to the keys shown now: a safe one if the page was opened safe. */
+async function copyPageLink() {
+  const configs = valid.value.map((row) => row.config!)
+  if (!configs.length) return
+  const path = props.sealedLink ? sealedAccessPath(configs) : accessPath(configs)
+  await copyLinkValue(`${window.location.origin}${localePath(path)}`)
+}
 const copiedLine = shallowRef<number | 'all' | null>(null)
 const demoCopied = computed(() => (guiding.value ? props.demo?.copied : ''))
 watch(guiding, () => {
@@ -947,11 +958,23 @@ onBeforeUnmount(() => {
             @click="copyRows()"
             >{{ tx(copied && copiedLine === 'all' ? '已复制' : '复制全部有效验证码') }}</UButton
           >
+          <div v-if="standalone" class="result-links">
+            <UButton
+              class="result-link"
+              color="neutral"
+              variant="outline"
+              :disabled="!valid.length"
+              @click="copyPageLink"
+              ><UIcon :name="linkCopied ? 'i-mc-check' : 'i-lucide-link'" />{{
+                tx(linkCopied ? '已复制' : '复制链接')
+              }}</UButton
+            >
+          </div>
         </div>
       </div>
     </div>
-    <p v-if="issue || message" class="inline-error px-7 pb-4" role="alert">
-      {{ tx(issue || message) }}
+    <p v-if="issue || message || linkMessage" class="inline-error px-7 pb-4" role="alert">
+      {{ tx(issue || message || linkMessage) }}
     </p>
     <p v-if="note" class="inline-notice px-7 pb-4" role="status">{{ tx(note) }}</p>
   </div>

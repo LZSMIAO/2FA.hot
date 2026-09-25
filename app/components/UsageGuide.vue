@@ -2,6 +2,8 @@
 import { singleGuideTimeline } from '~/utils/guide-timeline'
 import { advanceGuideTime } from '~/utils/guide-timing'
 import { DEMO_SECRET } from '~/utils/otp'
+/** Shown in groups of four, as authenticator apps do, so lines break between groups. */
+const secretGroups = DEMO_SECRET.match(/.{1,4}/g)!
 
 const localePath = useLocalePath()
 const { tx } = useMessages()
@@ -162,7 +164,10 @@ function positionCursor() {
     shortcut.value = { ...shortcut.value, visible: false }
     return
   }
-  const target = document.getElementById(targetId.value)
+  // On the QR step the import window opens over its button: aim at its drop zone.
+  const qrDrop = document.getElementById('tutorial-qr-drop')
+  const target =
+    targetId.value === 'tutorial-qr' && qrDrop ? qrDrop : document.getElementById(targetId.value)
   if (!target) return
   if (lastTarget !== targetId.value) {
     lastTarget = targetId.value
@@ -199,8 +204,13 @@ function positionCursor() {
     shortcut.value = { ...shortcut.value, visible: false }
     return
   }
-  const box = field.getBoundingClientRect()
-  shortcut.value = { x: Math.max(16, box.right - 108), y: box.top - 48, visible: true }
+  // The QR blocks land in the open window's drop zone instead of on the button
+  // it now covers: at its top-left corner, which the guide panel never overlaps.
+  const box = (dropKind.value === 'qr' && qrDrop ? qrDrop : field).getBoundingClientRect()
+  shortcut.value =
+    dropKind.value === 'qr' && qrDrop
+      ? { x: box.left + 12, y: box.top + 12, visible: true }
+      : { x: Math.max(16, box.right - 108), y: box.top - 48, visible: true }
 }
 function start() {
   window.dispatchEvent(new CustomEvent('2fa-ui-sound', { detail: 'demo' }))
@@ -278,8 +288,10 @@ onBeforeUnmount(() => {
   >
     <div class="tutorial-title">
       <span
-        ><UIcon name="i-lucide-monitor-play" />{{ tx('演示：登录示例网站')
-        }}<GuideVoiceButton :enabled="narration.enabled.value" @toggle="toggleNarration" /></span
+        ><UIcon name="i-lucide-monitor-play" /><span class="tutorial-title-text">{{
+          tx('登录演示')
+        }}</span
+        ><GuideVoiceButton :enabled="narration.enabled.value" @toggle="toggleNarration" /></span
       ><UButton
         icon="i-lucide-x"
         color="neutral"
@@ -330,22 +342,20 @@ onBeforeUnmount(() => {
           tx('接下来，模拟鼠标会直接在首页演示。只使用公开示例数据，你原来的输入会在结束后恢复。')
         }}
       </p>
-      <UButton
-        class="primary-button w-full"
-        icon="i-lucide-play"
-        data-sound-custom
-        @click="start"
-        >{{ tx('开始演示') }}</UButton
-      >
-      <UButton
-        class="tutorial-tips-entry"
-        variant="ghost"
-        color="neutral"
-        block
-        icon="i-lucide-lightbulb"
-        @click="emit('tips')"
-        >{{ tx('网站小技巧') }}</UButton
-      >
+      <div class="tutorial-start">
+        <UButton class="primary-button" icon="i-lucide-play" data-sound-custom @click="start">{{
+          tx('开始演示')
+        }}</UButton>
+        <AppHint :text="tx('网站小技巧')"
+          ><UButton
+            class="tutorial-tips-entry"
+            variant="outline"
+            color="neutral"
+            icon="i-lucide-lightbulb"
+            :aria-label="tx('网站小技巧')"
+            @click="emit('tips')"
+        /></AppHint>
+      </div>
     </div>
     <template v-else>
       <div class="tutorial-stage" aria-hidden="true">
@@ -374,7 +384,9 @@ onBeforeUnmount(() => {
               </h2>
               <template v-if="elapsed < singleGuideTimeline.verificationAt">
                 <p>{{ tx('将这份密钥添加到验证器') }}</p>
-                <div class="tutorial-secret mono">{{ tx(DEMO_SECRET) }}</div>
+                <div class="tutorial-secret mono">
+                  <span v-for="(group, index) in secretGroups" :key="index">{{ group }}</span>
+                </div>
                 <div
                   id="tutorial-copy-secret"
                   class="simulated-button"
@@ -412,7 +424,13 @@ onBeforeUnmount(() => {
           <UPopover
             v-if="steps[activeStep]!.tip"
             v-model:open="tipVisible"
-            :content="{ side: 'top', align: 'center', collisionPadding: 12 }"
+            mode="hover"
+            :open-delay="0"
+            :close-delay="100"
+            enable-touch
+            arrow
+            :content="{ side: 'top', align: 'center', sideOffset: 2, collisionPadding: 12 }"
+            :ui="{ content: 'parameter-help-tooltip', arrow: 'parameter-help-arrow' }"
             :portal="false"
           >
             <button
@@ -424,12 +442,7 @@ onBeforeUnmount(() => {
               <UIcon name="i-lucide-info" />
             </button>
             <template #content>
-              <p class="tutorial-step-tip">
-                <UIcon name="i-lucide-lightbulb" aria-hidden="true" /><span
-                  ><strong>{{ tx('小提示') }}</strong
-                  >{{ tx(steps[activeStep]!.tip) }}</span
-                >
-              </p>
+              <p class="tutorial-step-tip">{{ tx(steps[activeStep]!.tip) }}</p>
             </template>
           </UPopover>
         </div>
@@ -546,6 +559,14 @@ onBeforeUnmount(() => {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  min-width: 0;
+}
+/* One line, however the title is translated. */
+.tutorial-title-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .tutorial-intro {
   padding: 1.5rem;
@@ -617,8 +638,20 @@ onBeforeUnmount(() => {
   font-size: var(--text-caption);
   margin: 1.25rem 0;
 }
+/* Starting and the tips share one line; the tips entry is a lightbulb with its name as a hint. */
+.tutorial-start {
+  display: flex;
+  gap: 0.5rem;
+}
+.tutorial-start > .primary-button {
+  flex: 1;
+  min-width: 0;
+  justify-content: center;
+}
 .tutorial-tips-entry {
-  margin-top: 0.5rem;
+  flex-shrink: 0;
+  align-self: stretch;
+  width: 3rem;
   justify-content: center;
 }
 /* A framed pane makes it obvious the demo is a stand-in for the original website. */
@@ -720,8 +753,15 @@ onBeforeUnmount(() => {
   border-radius: var(--ui-radius);
   background: var(--wash);
   font-size: var(--text-caption);
-  overflow-wrap: anywhere;
-  text-align: start;
+  letter-spacing: 0.04em;
+  text-align: center;
+  /* Wraps between groups, into even lines rather than leaving a few behind. */
+  text-wrap: balance;
+}
+/* Gaps only: nothing sits between the groups, so a copied key has no spaces. */
+.tutorial-secret > span {
+  display: inline-block;
+  margin-inline: 0.3em;
 }
 .simulated-button {
   display: flex;
@@ -808,27 +848,16 @@ onBeforeUnmount(() => {
 .tutorial-tip-toggle.is-open {
   color: var(--accent-ink);
 }
-.tutorial-step-tip {
-  max-width: min(17rem, calc(100vw - 2rem));
-  display: flex;
-  align-items: start;
-  gap: 0.5rem;
+/* An info mark: hovering or tapping shows the tip; there is nothing to click through to. */
+.tutorial-tip-toggle {
+  cursor: default;
+}
+/* Rendered in place, so it keeps the tooltip's type, not the caption's. */
+.tutorial-caption .tutorial-step-tip {
   margin: 0;
-  padding: 0.625rem 0.75rem;
-  color: var(--ui-text);
-  font-size: var(--text-caption);
-  line-height: 1.7;
-}
-.tutorial-step-tip > :deep(.iconify) {
-  flex-shrink: 0;
-  /* Centres the glyph on the first line box rather than its top edge. */
-  margin-top: 0.35em;
-  color: var(--accent-ink);
-}
-.tutorial-step-tip strong {
-  color: var(--ui-text);
-  font-weight: 600;
-  margin-inline-end: 0.375rem;
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
 }
 .tutorial-controls {
   flex-wrap: wrap;
@@ -1028,11 +1057,12 @@ onBeforeUnmount(() => {
     min-height: 9rem;
     padding: 0.75rem 1rem;
   }
+  /* The heading and its line share a row; the key or code boxes take the width. */
   .tutorial-form {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 0.75rem;
-    align-items: center;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 0.5rem;
+    align-items: baseline;
     text-align: start;
   }
   .social-avatar {
@@ -1042,16 +1072,16 @@ onBeforeUnmount(() => {
     font-size: var(--text-label);
   }
   .tutorial-form p {
-    grid-column: 1;
-    margin: 0.375rem 0;
+    grid-column: 2;
+    margin: 0;
   }
   .tutorial-secret,
   .tutorial-code-input {
-    grid-column: 2;
-    grid-row: 1 / 3;
+    grid-column: 1 / -1;
+    margin-top: 0.5rem;
   }
   .tutorial-secret {
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     padding: 0.5rem;
   }
   .simulated-button {

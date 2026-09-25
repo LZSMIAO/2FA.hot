@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import {
   customPanoramaFromFiles,
+  customPanoramaPreviews,
+  customPreviewKey,
   loadCustomPanorama,
   removeCustomPanorama,
   saveCustomPanorama,
+  takeEarlyCustomPanorama,
   type CustomPanorama
 } from '~/utils/custom-panorama'
 import {
@@ -85,9 +88,9 @@ async function changeScene(version: string) {
     if (!disposed) loading.value = false
   }
 }
-function showCustom(stored: CustomPanorama | null) {
+function showCustom(stored: CustomPanorama | null, urls?: string[]) {
   customUrls.value.forEach((url) => URL.revokeObjectURL(url))
-  customUrls.value = stored ? stored.images.map((image) => URL.createObjectURL(image)) : []
+  customUrls.value = stored ? urls || stored.images.map((image) => URL.createObjectURL(image)) : []
   custom.value = stored ? { layout: stored.layout, preview: customUrls.value[0]! } : null
   try {
     // Lets the head script lay out a still backdrop before the images are read.
@@ -95,15 +98,38 @@ function showCustom(stored: CustomPanorama | null) {
     else localStorage.removeItem('2fa-panorama-custom-layout')
   } catch {}
 }
+/** Keeps the head script's preview in step with the stored images. */
+async function rememberPreview(stored: CustomPanorama | null, refresh: boolean) {
+  try {
+    if (!stored) localStorage.removeItem(customPreviewKey)
+    else if (refresh || !localStorage.getItem(customPreviewKey))
+      localStorage.setItem(
+        customPreviewKey,
+        JSON.stringify(await customPanoramaPreviews(stored.images))
+      )
+  } catch {
+    // Without a preview the backdrop waits for the images, as before.
+  }
+}
 async function restoreCustom() {
   let stored: CustomPanorama | null = null
+  let urls: string[] | undefined
   try {
-    stored = await loadCustomPanorama()
+    // The head script started reading on load when the custom scene was chosen.
+    const early = await takeEarlyCustomPanorama()
+    if (early) {
+      stored = { layout: early.layout, images: early.images }
+      urls = early.urls
+    } else if (early === undefined) stored = await loadCustomPanorama()
   } catch {
     // Storage can be unavailable, e.g. in some private windows.
   }
-  if (disposed) return
-  showCustom(stored)
+  if (disposed) {
+    urls?.forEach((url) => URL.revokeObjectURL(url))
+    return
+  }
+  showCustom(stored, urls)
+  void rememberPreview(stored, false)
   if (!stored && selected.value === customPanoramaScene) selected.value = defaultPanoramaScene
 }
 const upload = useTemplateRef<HTMLInputElement>('upload')
@@ -130,6 +156,7 @@ async function receiveUpload() {
     await saveCustomPanorama(stored)
     if (disposed) return
     showCustom(stored)
+    void rememberPreview(stored, true)
     selected.value = customPanoramaScene
   } catch (cause) {
     const text = (cause as Error).message
@@ -143,6 +170,7 @@ async function removeCustom() {
   try {
     await removeCustomPanorama()
   } catch {}
+  void rememberPreview(null, true)
   if (!disposed) showCustom(null)
 }
 // The header menu offers the same actions on a phone, where these controls are off screen.

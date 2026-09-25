@@ -4,7 +4,12 @@ import { test } from 'node:test'
 import vm from 'node:vm'
 
 const bootstrap = readFileSync(new URL('../public/panorama-preference.js', import.meta.url), 'utf8')
-function visit(cookie: string, stored: Record<string, string>, cookiesWork = true) {
+function visit(
+  cookie: string,
+  stored: Record<string, string>,
+  cookiesWork = true,
+  globals: Record<string, unknown> = {}
+) {
   const styles = new Map<string, string>()
   const attributes = new Set<string>()
   const jar = new Map(
@@ -32,7 +37,8 @@ function visit(cookie: string, stored: Record<string, string>, cookiesWork = tru
     localStorage: {
       getItem: (key: string) => data.get(key) ?? null,
       setItem: (key: string, value: string) => void data.set(key, String(value))
-    }
+    },
+    ...globals
   })
   return { styles, attributes, jar, data }
 }
@@ -106,4 +112,35 @@ test('a still scene is laid out before first paint, cropped around its subject',
     visit('2fa-panorama=senren%2F..%2Fsecret', { '2fa-first-visit': '0' }).attributes.size,
     0
   )
+})
+
+test('a custom background paints its saved preview before the images are read', async () => {
+  const preview = 'data:image/jpeg;base64,/9j/4AAQ+Zk='
+  const returning = { '2fa-first-visit': '0' }
+  const page: { __2faCustomPanorama?: Promise<unknown> } = {}
+  const flat = visit(
+    '2fa-panorama=custom',
+    {
+      ...returning,
+      '2fa-panorama-custom-layout': 'flat',
+      '2fa-panorama-custom-preview': JSON.stringify([preview])
+    },
+    true,
+    { window: page }
+  )
+  assert.ok(flat.attributes.has('data-panorama-flat'))
+  assert.equal(flat.styles.get('--panorama-flat'), `url(${preview})`)
+  // Without IndexedDB, or with it blocked, the page is told to read for itself.
+  assert.equal(await page.__2faCustomPanorama, undefined)
+  const cube = visit(
+    '2fa-panorama=custom',
+    { ...returning, '2fa-panorama-custom-preview': JSON.stringify(Array(6).fill(preview)) },
+    true,
+    { window: {} }
+  )
+  assert.equal(cube.attributes.has('data-panorama-flat'), false)
+  assert.equal(cube.styles.get('--panorama-face-5'), `url(${preview})`)
+  // With no preview saved yet, the default faces still stay away.
+  const bare = visit('2fa-panorama=custom', returning, true, { window: {} })
+  assert.equal(bare.styles.get('--panorama-face-0'), 'none')
 })

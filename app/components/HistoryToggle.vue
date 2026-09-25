@@ -65,10 +65,12 @@ watch(open, (visible) => {
           @toggle="change(!vault.enabled.value)"
       /></AppHint>
       <AppHint :text="tx('查看历史')"
-        ><NuxtLink class="history-view-link" :to="localePath('/history')">
-          {{ tx('历史记录') }}
-        </NuxtLink></AppHint
-      >
+        ><NuxtLink
+          class="history-view-link"
+          :to="localePath('/history')"
+          :aria-label="tx('历史记录')"
+          ><UIcon name="i-lucide-history" /></NuxtLink
+      ></AppHint>
     </div>
     <span v-if="error && !open" class="inline-error" role="alert">{{ tx(error) }}</span>
     <UModal
@@ -153,9 +155,16 @@ watch(open, (visible) => {
   align-items: center;
   gap: 0.625rem;
 }
+.history-view-link {
+  color: var(--ui-text-muted);
+}
+.history-view-link .iconify {
+  width: 1.25rem;
+  height: 1.25rem;
+}
 .history-view-link:hover {
   text-decoration: none;
-  color: var(--accent-ink);
+  color: var(--ui-text-highlighted);
 }
 .history-enable-form {
   display: grid;

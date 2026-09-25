@@ -1,0 +1,66 @@
+{
+  "id": "/",
+  "name": "2fa.hot",
+  "short_name": "2fa.hot",
+  "description": "多機能 TOTP 認証コードジェネレーター",
+  "lang": "ja",
+  "dir": "ltr",
+  "start_url": "/ja",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#1e1e1f",
+  "theme_color": "#1e1e1f",
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  },
+  "icons": [
+    {
+      "src": "/app-icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/app-icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/app-icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/app-screenshots/wide-en.jpg",
+      "sizes": "1280x800",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "一括コード生成"
+    },
+    {
+      "src": "/app-screenshots/narrow-en.jpg",
+      "sizes": "780x1688",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "個別コード生成"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "個別コード生成",
+      "url": "/ja?shortcut=single"
+    },
+    {
+      "name": "一括コード生成",
+      "url": "/ja?shortcut=batch"
+    },
+    {
+      "name": "ローカル履歴",
+      "url": "/ja/history"
+    }
+  ]
+}

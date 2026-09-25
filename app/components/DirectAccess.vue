@@ -396,6 +396,7 @@ useHead({ meta: [{ name: 'referrer', content: 'no-referrer' }] })
         :import-version="batchVersion"
         replace
         standalone
+        :sealed-link="sealedLink"
         @rows="followBatch"
         @collapse="collapseBatch"
       />

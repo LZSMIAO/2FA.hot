@@ -1,0 +1,66 @@
+{
+  "id": "/",
+  "name": "2fa.hot",
+  "short_name": "2fa.hot",
+  "description": "تولیدکننده چندمنظوره کد TOTP",
+  "lang": "fa",
+  "dir": "rtl",
+  "start_url": "/fa",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#1e1e1f",
+  "theme_color": "#1e1e1f",
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  },
+  "icons": [
+    {
+      "src": "/app-icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/app-icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/app-icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/app-screenshots/wide-en.jpg",
+      "sizes": "1280x800",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "کدهای گروهی"
+    },
+    {
+      "src": "/app-screenshots/narrow-en.jpg",
+      "sizes": "780x1688",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "یک کد"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "یک کد",
+      "url": "/fa?shortcut=single"
+    },
+    {
+      "name": "کدهای گروهی",
+      "url": "/fa?shortcut=batch"
+    },
+    {
+      "name": "تاریخچه محلی",
+      "url": "/fa/history"
+    }
+  ]
+}

@@ -90,3 +90,54 @@ test('drops that change nothing are reported as such', () => {
   assert.equal(arrangeHistory(list, { id: 'b1' }, { place: 'into', batchId: 'B' }), null)
   assert.equal(arrangeHistory(list, { id: 'missing' }, { place: 'before', id: 'a' }), null)
 })
+
+// a, batch B (b1, b2), c, batch D (d1, d2): for dragging what is ticked.
+const ticked: HistoryItem[] = [
+  { id: 'a' },
+  { id: 'b1', batchId: 'B', batchLabel: 'Work' },
+  { id: 'b2', batchId: 'B', batchLabel: 'Work' },
+  { id: 'c' },
+  { id: 'd1', batchId: 'D' },
+  { id: 'd2', batchId: 'D' }
+]
+
+test('ticked records move together, in list order, and can join a batch', () => {
+  assert.deepEqual(
+    shape(arrangeHistory(ticked, { ids: ['c', 'a'], batchIds: [] }, { place: 'after', id: 'd2' })),
+    ['b1@B:Work', 'b2@B:Work', 'd1@D:', 'd2@D:', 'a@D:', 'c@D:']
+  )
+  assert.deepEqual(
+    shape(
+      arrangeHistory(ticked, { ids: ['a', 'c'], batchIds: [] }, { place: 'into', batchId: 'B' })
+    ),
+    ['a@B:Work', 'c@B:Work', 'b1@B:Work', 'b2@B:Work', 'd1@D:', 'd2@D:']
+  )
+})
+
+test('a ticked whole batch keeps its records and never lands inside another', () => {
+  const drag = { ids: ['a', 'b1', 'b2'], batchIds: ['B'] }
+  assert.deepEqual(shape(arrangeHistory(ticked, drag, { place: 'into', batchId: 'D' })), [
+    'c',
+    'a',
+    'b1@B:Work',
+    'b2@B:Work',
+    'd1@D:',
+    'd2@D:'
+  ])
+  // Beside a record inside D means beside D as a whole.
+  assert.deepEqual(shape(arrangeHistory(ticked, drag, { place: 'after', id: 'd1' })), [
+    'c',
+    'd1@D:',
+    'd2@D:',
+    'a',
+    'b1@B:Work',
+    'b2@B:Work'
+  ])
+})
+
+test('a record ticked on its own leaves its batch with the others', () => {
+  assert.deepEqual(
+    shape(arrangeHistory(ticked, { ids: ['b1', 'c'], batchIds: [] }, { place: 'before', id: 'a' })),
+    ['b1', 'c', 'a', 'b2@B:Work', 'd1@D:', 'd2@D:']
+  )
+})

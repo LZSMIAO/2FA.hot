@@ -763,7 +763,7 @@ export const sourceKeys = new Map<string, string>([
   ],
   ['语言、主题与朗读', 'tipLanguagesTitle'],
   ['界面和教学提供 30 种语言，教学可以朗读。深浅主题和按钮音效都在页首切换。', 'tipLanguagesBody'],
-  ['演示：登录示例网站', 'guideDemoTitle'],
+  ['登录演示', 'guideDemoTitle'],
   ['演示里会看到什么？', 'guideIntroWhat'],
   [
     '卡片里会出现一个虚构的“示例网站”，代表任何要求双重验证的服务：邮箱、游戏、交易所都一样。它先给出密钥，再要求你填验证码。',
@@ -789,27 +789,12 @@ export const sourceKeys = new Map<string, string>([
     '同一份密钥可以一直用。开启本地历史后，它会加密保存在这台设备，下次点记录就能取码。',
     'guideSingleTip4'
   ],
-  [
-    '右上角的展开图标可以把结果放到独立页面，一屏显示全部验证码，适合一边核对一边输入。',
-    'guideBatchTip0'
-  ],
-  [
-    '也可以跳过这一步：直接在页面任何位置粘贴整段表格，网站会自动分行，连同名称一起识别。',
-    'guideBatchTip1'
-  ],
-  [
-    '想给每行取名，就写成“名称 [Tab] 密钥”。从 Excel 整列复制过来时通常已经是这个格式。',
-    'guideBatchTip2'
-  ],
-  [
-    '粘贴内容里带邮箱时，可以点“关联账号”把邮箱和密钥一一对上，避免复制时认错账号。',
-    'guideBatchTip3'
-  ],
-  ['每行左侧有勾选框。勾选后可以只把这几条保存到本地历史，或只删除这几行。', 'guideBatchTip4'],
-  [
-    '最多 100 条，结果只留在当前页面。刷新或离开后不会自动保存，需要留存请先保存到本地历史。',
-    'guideBatchTip5'
-  ],
+  ['点右上角的展开图标，可在独立页面查看全部验证码。', 'guideBatchTip0'],
+  ['也可以在页面任意位置直接粘贴整段表格，自动分行并识别名称。', 'guideBatchTip1'],
+  ['写成“名称 [Tab] 密钥”即可给每行取名，从 Excel 复制的通常就是这样。', 'guideBatchTip2'],
+  ['内容带邮箱时，点“关联账号”可把邮箱和密钥一一对上。', 'guideBatchTip3'],
+  ['勾选左侧方框，可以只保存或只删除这几行。', 'guideBatchTip4'],
+  ['最多 100 条，刷新后不保留；需要时先保存到本地历史。', 'guideBatchTip5'],
   ['粘贴到 2fa.hot', 'guideStepPaste'],
   ['也可以导入二维码', 'guideStepQr'],
   ['查看验证码', 'guideStepCode'],
@@ -848,7 +833,6 @@ export const sourceKeys = new Map<string, string>([
   ],
   ['读取全部二维码后才能导入。', 'migrationImportBlocked'],
   ['复制全部密钥', 'copyAllSecrets'],
-  ['按住可拖动排序', 'holdToReorder'],
   ['顺序已保存。', 'orderSaved'],
   [
     '多个密钥之间再用 # 分隔（也可以用逗号），页面会显示批量验证码；删到只剩一个时，自动切换为单条样式。非默认参数写在各自的密钥后面，例如 /2fa#密钥1#密钥2?digits=8。',
@@ -930,6 +914,7 @@ export const sourceKeys = new Map<string, string>([
   ['需要注册或付费吗？', 'homeFaqFreeQ'],
   ['不需要。2fa.hot 免费使用，无需注册，源代码以 AGPL-3.0 协议在 GitHub 开源。', 'homeFaqFreeA'],
   ['阅读 2FA 与 TOTP 指南', 'homeGuidesLink'],
+  ['按住钥匙可以拖动排序，勾选多条后可一起拖动。', 'historyDragTip'],
   ['离线使用', 'm0a7ecabc2b9e'],
   ['离线使用说明', 'mc337dfe13669'],
   ['开启离线使用', 'm7aaebbb409dd'],
@@ -943,5 +928,11 @@ export const sourceKeys = new Map<string, string>([
   [
     '在首页工具下方开启“离线使用”后，这个浏览器会把网站的程序、样式、字体、翻译和当前背景保存在这台设备上，没有网络时也能打开和取码。保存的只有网站本身的公开文件，每位访客拿到的都一样；密钥、验证码和本地历史不会写入这些文件，也不会因此上传任何内容。关闭开关会移除离线程序并删除这些文件。',
     'm16c3059ac799'
-  ]
+  ],
+  ['已断网，验证码照常产生', 'offlineDisconnected'],
+  ['已可离线使用。可以关掉 Wi-Fi 试试，验证码照常产生。', 'offlineTryTip'],
+  ['太好了，已断网！验证码照常产生。', 'offlinePraise'],
+  ['安装 App', 'appInstall'],
+  ['安装成 App 后，可以从桌面或主屏幕直接打开，断网也能用。', 'appInstallTip'],
+  ['已安装，可以从桌面或主屏幕直接打开。', 'appInstalled']
 ])

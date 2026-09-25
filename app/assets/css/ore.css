@@ -466,7 +466,28 @@
   animation: none;
   transition: none;
 }
-.mode-tabs [data-slot='trigger'][data-state='active'] {
+/*
+ * workspace-mode.js marks a visit that last used batch codes before the page
+ * paints. Until the tabs follow (index.vue then clears the mark), the
+ * prerendered single tab steps back and the batch tab shows as chosen.
+ */
+html[data-workspace-mode='batch'] .mode-tabs > [id$='-content-single'] {
+  display: none !important;
+}
+/* The panel carries hidden, which Tailwind's base layer enforces with
+   !important; only an earlier layer's !important outranks that. */
+@layer theme {
+  html[data-workspace-mode='batch'] .mode-tabs > [id$='-content-batch'] {
+    display: block !important;
+  }
+}
+html[data-workspace-mode='batch'] .mode-tabs [id$='-trigger-single'] {
+  color: var(--ui-text-highlighted);
+  background: var(--ore-control);
+  box-shadow: var(--ore-button-shadow);
+}
+.mode-tabs [data-slot='trigger'][data-state='active'],
+html[data-workspace-mode='batch'] .mode-tabs [id$='-trigger-batch'] {
   color: white;
   background: var(--action);
   box-shadow:
@@ -1052,13 +1073,10 @@
   .workspace-summary-links {
     margin-inline-start: 0;
   }
-  .workspace-summary .workspace-summary-links .history-toggle-control {
+  /* Two icons with their switches share one row: offline left, history right. */
+  .workspace-summary-links {
+    width: 100%;
     justify-content: space-between;
-    width: 100%;
-  }
-  .workspace-summary-links,
-  .workspace-summary-links .history-toggle {
-    width: 100%;
   }
 }
 

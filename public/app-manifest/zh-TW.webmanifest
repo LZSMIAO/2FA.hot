@@ -1,0 +1,66 @@
+{
+  "id": "/",
+  "name": "2fa.hot",
+  "short_name": "2fa.hot",
+  "description": "多功能 TOTP 驗證碼產生器",
+  "lang": "zh-TW",
+  "dir": "ltr",
+  "start_url": "/zh-TW",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#1e1e1f",
+  "theme_color": "#1e1e1f",
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  },
+  "icons": [
+    {
+      "src": "/app-icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/app-icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/app-icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/app-screenshots/wide-zh-TW.jpg",
+      "sizes": "1280x800",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "批次取碼"
+    },
+    {
+      "src": "/app-screenshots/narrow-zh-TW.jpg",
+      "sizes": "780x1688",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "單筆取碼"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "單筆取碼",
+      "url": "/zh-TW?shortcut=single"
+    },
+    {
+      "name": "批次取碼",
+      "url": "/zh-TW?shortcut=batch"
+    },
+    {
+      "name": "本機紀錄",
+      "url": "/zh-TW/history"
+    }
+  ]
+}

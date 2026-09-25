@@ -38,12 +38,12 @@ const messages = [
   '需要所有结果时，再点击「复制全部有效验证码」。它会一起复制每条记录的名称和验证码。演示不会改动你的剪贴板。'
 ]
 const tips = [
-  '右上角的展开图标可以把结果放到独立页面，一屏显示全部验证码，适合一边核对一边输入。',
-  '也可以跳过这一步：直接在页面任何位置粘贴整段表格，网站会自动分行，连同名称一起识别。',
-  '想给每行取名，就写成“名称 [Tab] 密钥”。从 Excel 整列复制过来时通常已经是这个格式。',
-  '粘贴内容里带邮箱时，可以点“关联账号”把邮箱和密钥一一对上，避免复制时认错账号。',
-  '每行左侧有勾选框。勾选后可以只把这几条保存到本地历史，或只删除这几行。',
-  '最多 100 条，结果只留在当前页面。刷新或离开后不会自动保存，需要留存请先保存到本地历史。'
+  '点右上角的展开图标，可在独立页面查看全部验证码。',
+  '也可以在页面任意位置直接粘贴整段表格，自动分行并识别名称。',
+  '写成“名称 [Tab] 密钥”即可给每行取名，从 Excel 复制的通常就是这样。',
+  '内容带邮箱时，点“关联账号”可把邮箱和密钥一一对上。',
+  '勾选左侧方框，可以只保存或只删除这几行。',
+  '最多 100 条，刷新后不保留；需要时先保存到本地历史。'
 ]
 const narration = useGuideNarration(
   () => {
@@ -177,7 +177,13 @@ onBeforeUnmount(() => {
         <h2>{{ tx(titles[step]) }}</h2>
         <UPopover
           v-model:open="tipOpen"
-          :content="{ side: 'top', align: 'center', collisionPadding: 12 }"
+          mode="hover"
+          :open-delay="0"
+          :close-delay="100"
+          enable-touch
+          arrow
+          :content="{ side: 'top', align: 'center', sideOffset: 2, collisionPadding: 12 }"
+          :ui="{ content: 'parameter-help-tooltip', arrow: 'parameter-help-arrow' }"
           :portal="false"
         >
           <button
@@ -189,12 +195,7 @@ onBeforeUnmount(() => {
             <UIcon name="i-lucide-info" />
           </button>
           <template #content>
-            <p class="batch-guide-tip">
-              <UIcon name="i-lucide-lightbulb" aria-hidden="true" /><span
-                ><strong>{{ tx('小提示') }}</strong
-                >{{ tx(tips[step]) }}</span
-              >
-            </p>
+            <p class="batch-guide-tip">{{ tx(tips[step]) }}</p>
           </template>
         </UPopover>
       </div>
@@ -204,9 +205,15 @@ onBeforeUnmount(() => {
         <UButton class="primary-button" icon="i-lucide-play" data-sound-custom @click="start">{{
           tx('开始演示')
         }}</UButton>
-        <UButton variant="ghost" color="neutral" icon="i-lucide-lightbulb" @click="emit('tips')">{{
-          tx('网站小技巧')
-        }}</UButton>
+        <AppHint :text="tx('网站小技巧')"
+          ><UButton
+            class="batch-guide-tips-entry"
+            variant="outline"
+            color="neutral"
+            icon="i-lucide-lightbulb"
+            :aria-label="tx('网站小技巧')"
+            @click="emit('tips')"
+        /></AppHint>
       </div>
       <div v-else class="batch-guide-controls">
         <div class="batch-playback-controls">
@@ -306,6 +313,10 @@ onBeforeUnmount(() => {
 .tutorial-tip-toggle.is-open {
   color: var(--accent-ink);
 }
+/* An info mark: hovering or tapping shows the tip; there is nothing to click through to. */
+.tutorial-tip-toggle {
+  cursor: default;
+}
 .batch-guide-more {
   display: flex;
   gap: 0.5rem;
@@ -319,33 +330,26 @@ onBeforeUnmount(() => {
   font-size: var(--text-caption);
   white-space: nowrap;
 }
-.batch-guide-tip {
-  display: flex;
-  align-items: start;
-  gap: 0.5rem;
-  max-width: min(17rem, calc(100vw - 3rem));
+/* Rendered in place, so it keeps the tooltip's type, not the body's. */
+.batch-guide-body .batch-guide-tip {
   margin: 0;
-  padding: 0.75rem;
-  color: var(--ui-text-muted);
-  font-size: var(--text-caption);
-  line-height: 1.7;
+  line-height: inherit;
 }
-.batch-guide-tip > :deep(.iconify) {
-  flex-shrink: 0;
-  /* Centres the glyph on the first line box rather than its top edge. */
-  margin-top: 0.35em;
-  color: var(--accent-ink);
-}
-.batch-guide-tip strong {
-  color: var(--ui-text);
-  font-weight: 600;
-  margin-inline-end: 0.375rem;
-}
+/* Starting and the tips share one line; the tips entry is a lightbulb with its name as a hint. */
 .batch-guide-start {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
   gap: 0.5rem;
+}
+.batch-guide-start > .primary-button {
+  flex: 1;
+  min-width: 0;
+  justify-content: center;
+}
+.batch-guide-tips-entry {
+  flex-shrink: 0;
+  align-self: stretch;
+  width: 3rem;
+  justify-content: center;
 }
 .batch-guide-body h2 {
   font-size: var(--text-section);

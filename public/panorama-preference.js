@@ -43,12 +43,78 @@
       'senren/koharu-lean': '55% 30%',
       'senren/murasame-kiss': '47% 45%'
     }
-    // A custom background lives in IndexedDB, which only the page can read. Keep the
-    // default faces from loading meanwhile, and lay out a still image if it is one.
+    // A custom background lives in IndexedDB, which cannot be read before the first
+    // paint. Keep the default faces from loading, lay out a still image if it is one,
+    // and paint the few-kilobyte preview saved with the upload meanwhile (see
+    // customPreviewKey in app/utils/custom-panorama.ts).
     if (scene === 'custom') {
-      for (let face = 0; face < 6; face++) root.style.setProperty(`--panorama-face-${face}`, 'none')
-      if (localStorage.getItem('2fa-panorama-custom-layout') === 'flat')
-        root.setAttribute('data-panorama-flat', '')
+      const flatLayout = localStorage.getItem('2fa-panorama-custom-layout') === 'flat'
+      if (flatLayout) root.setAttribute('data-panorama-flat', '')
+      const paint = (urls) => {
+        if (flatLayout)
+          root.style.setProperty('--panorama-flat', urls[0] ? `url(${urls[0]})` : 'none')
+        else
+          for (let face = 0; face < 6; face++)
+            root.style.setProperty(
+              `--panorama-face-${face}`,
+              urls[face] ? `url(${urls[face]})` : 'none'
+            )
+      }
+      let previews = []
+      try {
+        previews = JSON.parse(localStorage.getItem('2fa-panorama-custom-preview') || '[]')
+      } catch {}
+      paint(Array.isArray(previews) ? previews : [])
+      // Read the images now rather than once the app has started; TitlePanorama
+      // takes this promise and keeps using the same object URLs. It settles on
+      // null when nothing is stored, and on undefined when it could not read, so
+      // the page tries again itself.
+      // Keep in sync with openDatabase in app/utils/custom-panorama.ts.
+      window.__2faCustomPanorama = new Promise((resolve) => {
+        let request
+        try {
+          request = indexedDB.open('2fa-custom-panorama', 1)
+        } catch {
+          return resolve(undefined)
+        }
+        request.onupgradeneeded = () => request.result.createObjectStore('backgrounds')
+        request.onerror = () => resolve(undefined)
+        request.onsuccess = () => {
+          const db = request.result
+          let read
+          try {
+            read = db.transaction('backgrounds').objectStore('backgrounds').get('current')
+          } catch {
+            db.close()
+            return resolve(undefined)
+          }
+          read.onerror = () => {
+            db.close()
+            resolve(undefined)
+          }
+          read.onsuccess = () => {
+            db.close()
+            const value = read.result
+            if (!value || (value.layout !== 'cube' && value.layout !== 'flat')) return resolve(null)
+            const urls = value.images.map((image) => URL.createObjectURL(image))
+            resolve({ layout: value.layout, images: value.images, urls })
+            // Swap in only once decoded, so the preview never gives way to a blank.
+            Promise.all(
+              urls.map((url) => {
+                const image = new Image()
+                image.src = url
+                return image.decode()
+              })
+            ).then(
+              () => {
+                // Unless the visitor picked another scene in the meantime.
+                if (savedScene() === 'custom') paint(urls)
+              },
+              () => {}
+            )
+          }
+        }
+      })
     } else if (Object.prototype.hasOwnProperty.call(flat, scene)) {
       // A still built-in scene: one image in place of the cube, cropped around its subject.
       for (let face = 0; face < 6; face++) root.style.setProperty(`--panorama-face-${face}`, 'none')

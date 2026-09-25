@@ -71,3 +71,39 @@ export function saveCustomPanorama(value: CustomPanorama) {
 export function removeCustomPanorama() {
   return transact('readwrite', (store) => store.delete(recordKey))
 }
+
+/**
+ * A few-kilobyte copy of each image, kept in localStorage under this key.
+ * public/panorama-preference.js paints it before the page can read IndexedDB,
+ * so a reload opens on a soft preview of the backdrop instead of an empty one.
+ */
+export const customPreviewKey = '2fa-panorama-custom-preview'
+export function customPanoramaPreviews(images: readonly Blob[]): Promise<string[]> {
+  return Promise.all(
+    images.map(async (image) => {
+      const bitmap = await createImageBitmap(image)
+      const scale = 64 / Math.max(bitmap.width, bitmap.height)
+      const canvas = document.createElement('canvas')
+      canvas.width = Math.max(1, Math.round(bitmap.width * scale))
+      canvas.height = Math.max(1, Math.round(bitmap.height * scale))
+      canvas.getContext('2d')!.drawImage(bitmap, 0, 0, canvas.width, canvas.height)
+      bitmap.close()
+      return canvas.toDataURL('image/jpeg', 0.7)
+    })
+  )
+}
+
+/**
+ * What the head script already read, so the page reuses its images and URLs:
+ * null when nothing is stored, undefined when it did not or could not read.
+ */
+export interface EarlyCustomPanorama extends CustomPanorama {
+  urls: string[]
+}
+type EarlyRead = Promise<EarlyCustomPanorama | null | undefined>
+export async function takeEarlyCustomPanorama(): Promise<EarlyCustomPanorama | null | undefined> {
+  const holder = window as { __2faCustomPanorama?: EarlyRead }
+  const early = holder.__2faCustomPanorama
+  delete holder.__2faCustomPanorama
+  return early?.catch(() => undefined)
+}

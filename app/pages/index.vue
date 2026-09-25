@@ -123,6 +123,39 @@ const tabItems = computed(() => [
   { label: tx('单条取码'), value: 'single', slot: 'single' },
   { label: tx('批量取码'), value: 'batch', slot: 'batch' }
 ])
+/*
+ * The tab last used comes back on the next visit. workspace-mode.js already
+ * showed it before the app started; once the tabs follow, its mark goes.
+ */
+const modeKey = '2fa-workspace-mode'
+watch(mode, (value) => {
+  try {
+    if (value === 'batch') localStorage.setItem(modeKey, value)
+    else localStorage.removeItem(modeKey)
+  } catch {}
+})
+/*
+ * The installed app's shortcuts open ?shortcut=single or batch: on a fresh
+ * load workspace-mode.js has already stored the choice; in a running app the
+ * query changes here. Either way it leaves the address once followed.
+ */
+const route = useRoute()
+const router = useRouter()
+function followShortcut() {
+  const shortcut = route.query.shortcut
+  if (shortcut === 'batch' || shortcut === 'single') mode.value = shortcut
+  if (shortcut !== undefined)
+    void router.replace({ query: { ...route.query, shortcut: undefined } })
+}
+watch(() => route.query.shortcut, followShortcut)
+onMounted(async () => {
+  try {
+    if (localStorage.getItem(modeKey) === 'batch') mode.value = 'batch'
+  } catch {}
+  followShortcut()
+  await nextTick()
+  document.documentElement.removeAttribute('data-workspace-mode')
+})
 watch(
   mode,
   () => {
@@ -276,6 +309,7 @@ watch(
             </span>
           </div>
           <div class="workspace-summary-links">
+            <AppInstallButton />
             <OfflineToggle />
             <HistoryToggle />
           </div>
