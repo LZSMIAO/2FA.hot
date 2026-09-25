@@ -3,6 +3,29 @@
 const labelTablist = (element: HTMLElement, binding: { value: string }) =>
   element.querySelector('[role="tablist"]')?.setAttribute('aria-label', binding.value)
 const vTablistLabel = { mounted: labelTablist, updated: labelTablist }
+/*
+ * The two modes are reached as buttons are: Tab stops at each. Reka's tabs keep
+ * only the current one in the Tab order (the arrow keys move between them) and
+ * rewrite tabindex as they render, so an observer puts it back. The tabs are
+ * set to activate on Enter, Space or a click, not on focus, so tabbing past
+ * "Batch" does not switch to it.
+ */
+const tabObservers = new WeakMap<HTMLElement, MutationObserver>()
+function tabbableTabs(element: HTMLElement) {
+  for (const tab of element.querySelectorAll<HTMLElement>('[role="tab"]'))
+    if (tab.tabIndex !== 0) tab.tabIndex = 0
+}
+const vTabbableTabs = {
+  mounted(element: HTMLElement) {
+    tabbableTabs(element)
+    const observer = new MutationObserver(() => tabbableTabs(element))
+    observer.observe(element, { subtree: true, attributes: true, attributeFilter: ['tabindex'] })
+    tabObservers.set(element, observer)
+  },
+  unmounted(element: HTMLElement) {
+    tabObservers.get(element)?.disconnect()
+  }
+}
 
 definePageMeta({ viewTransition: false })
 import BatchWorkspace from '~/components/BatchWorkspace.vue'
@@ -274,6 +297,8 @@ watch(
         <UTabs
           v-model="mode"
           v-tablist-label="tx('取码')"
+          v-tabbable-tabs
+          activation-mode="manual"
           :items="tabItems"
           :unmount-on-hide="false"
           variant="link"
