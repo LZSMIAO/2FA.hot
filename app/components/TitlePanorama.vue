@@ -294,11 +294,11 @@ function updatePreference() {
  * The controls are fixed to the window's corner, which at the page's end is
  * where the footer's own icons sit. They rise with the footer as it scrolls
  * into view, and settle back as it leaves. Browsers with scroll-driven
- * animations do this in CSS (see .panorama-controls), from the first paint;
- * set from here after the page starts, the controls were drawn at the bottom
- * on a reload and then jumped up. This covers the other browsers, and a page
- * too short to scroll, where that animation has no scroll to follow. It only
- * writes a style property after mounting, so hydration is untouched.
+ * animations do all of this in CSS (see .panorama-controls), from the first
+ * paint, a page too short to scroll included; set from here after the page
+ * starts, the controls were drawn over the footer on a reload and then jumped
+ * up. This covers the other browsers. It only writes a style property after
+ * mounting, so hydration is untouched.
  */
 const followsScroll = import.meta.client && CSS.supports('animation-timeline: scroll()')
 const controls = useTemplateRef<HTMLElement>('controls')
@@ -308,12 +308,8 @@ let liftObserver: ResizeObserver | undefined
 function liftControls() {
   liftFrame = 0
   const footer = document.querySelector('.site-footer')
-  if (!footer || !controls.value) return
-  const scrollable = document.documentElement.scrollHeight > window.innerHeight
-  const overlap =
-    followsScroll && scrollable
-      ? 0
-      : Math.max(0, window.innerHeight - footer.getBoundingClientRect().top)
+  if (followsScroll || !footer || !controls.value) return
+  const overlap = Math.max(0, window.innerHeight - footer.getBoundingClientRect().top)
   if (Math.round(overlap) === lift) return
   lift = Math.round(overlap)
   controls.value.style.setProperty('--panorama-lift', `${lift}px`)
@@ -665,15 +661,19 @@ onBeforeUnmount(() => {
   gap: 0.375rem;
 }
 /*
- * Over the page's last footer-height of scroll, the controls rise by that
- * much, staying 1rem above the footer as it comes into view. Driven by the
- * scroll position itself, they sit right from the first paint and move with
- * the scroll on the compositor. (CSS anchor positioning was tried: it pins an
- * element to its anchor as the page scrolls, so the controls drifted up the
- * window instead of holding its corner.)
+ * The controls rest 1rem above the footer, and until the page's last
+ * footer-height of scroll they are carried down to the window's corner,
+ * rising with the footer as it comes into view. Driven by the scroll position
+ * itself, they sit right from the first paint and move with the scroll on the
+ * compositor. A page too short to scroll has no scroll timeline, so the
+ * animation does nothing and they stay at rest above the footer, which is
+ * then in view. (CSS anchor positioning was tried: it pins an element to its
+ * anchor as the page scrolls, so the controls drifted up the window instead
+ * of holding its corner.)
  */
 @supports (animation-timeline: scroll()) {
   .panorama-controls {
+    bottom: calc(1rem + var(--site-footer-height));
     animation: panorama-clear-footer linear both;
     animation-timeline: scroll(root block);
     animation-range: calc(100% - var(--site-footer-height)) 100%;
@@ -681,10 +681,10 @@ onBeforeUnmount(() => {
 }
 @keyframes panorama-clear-footer {
   from {
-    translate: 0 0;
+    translate: 0 var(--site-footer-height);
   }
   to {
-    translate: 0 calc(-1 * var(--site-footer-height));
+    translate: 0 0;
   }
 }
 .panorama-control {

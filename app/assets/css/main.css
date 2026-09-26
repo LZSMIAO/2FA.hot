@@ -98,7 +98,9 @@ html {
   top: calc(var(--anchor-line-top, 0px) + 0.75em - 10px);
   width: 36px;
   height: 20px;
-  background: #fff;
+  /* The page's strongest text colour: white on the dark theme, near black on
+     the light one, where white vanished against the page. */
+  background: var(--ui-text-highlighted);
   clip-path: polygon(
     24px 0,
     27px 0,
@@ -1247,7 +1249,8 @@ html.size-transition .desert-art svg * {
   content: counter(content-step);
   position: absolute;
   inset-inline-start: 0;
-  top: calc(0.925em - 0.75rem);
+  /* In rem: em here is the tile's own caption size, not the line's. */
+  top: calc(0.925rem - 0.75rem);
   display: grid;
   place-items: center;
   width: 1.5rem;
