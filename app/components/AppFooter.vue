@@ -55,15 +55,13 @@ const { tx } = useMessages()
 <style scoped>
 .footer-inner nav {
   gap: 1.75rem;
-  /* Level with the notice's line, not centred on both: the description's line
-     and the gap under it are left above the links. */
-  margin-block-start: 1.375rem;
 }
-/* The description over the notice, both cut short rather than pushing the links. */
+/* The description and the notice on one line, level with the links; where the
+   window is too narrow for both, the notice moves under the description. */
 .footer-brand {
   display: flex;
-  flex-direction: column;
-  gap: 0.125rem;
+  flex-wrap: wrap;
+  gap: 0.125rem 1.25rem;
   min-width: 0;
   margin: 0;
   line-height: 1.25rem;

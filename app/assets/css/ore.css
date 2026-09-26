@@ -892,6 +892,7 @@ html[data-workspace-mode='batch'] .mode-tabs [id$='-trigger-batch'] {
   }
   html:root .site-footer .footer-brand {
     grid-row: 1;
+    flex-direction: column;
     /* The icons are absolute at the row's end, so the text has to stop short of
        them itself; it wraps rather than being cut off. */
     max-width: calc(100% - 8.25rem);
