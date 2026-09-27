@@ -17,9 +17,18 @@ import {
   isBuiltInScene,
   panoramaGroups
 } from '~/composables/usePanoramaPreference'
+import { unlocalizedPath } from '~~/shared/seo/routes'
 defineProps<{ bounded?: boolean }>()
 const { tx } = useMessages()
 const newBadge = useNewBadge('backdrop')
+const route = useRoute()
+// A phone sees the backdrop only on the home page; the articles cover it.
+const onHome = computed(() => unlocalizedPath(route.path) === '/')
+/** On a phone the corner button opens the backdrop sheet, which AppHeader.vue holds. */
+function openSheet() {
+  newBadge.seen()
+  window.dispatchEvent(new Event('2fa-backdrop-sheet'))
+}
 const { selected, playbackPaused, custom } = usePanoramaPreference()
 const hydrated = shallowRef(false)
 const scene = computed(() => {
@@ -300,11 +309,28 @@ function updatePreference() {
  * up. This covers the other browsers. It only writes a style property after
  * mounting, so hydration is untouched.
  */
-const followsScroll = import.meta.client && CSS.supports('animation-timeline: scroll()')
+// iOS Safari leaves room for its toolbar below the page's end, so there the
+// footer never reaches the window's foot and the scroll-driven rise falls short.
+const followsScroll =
+  import.meta.client &&
+  CSS.supports('animation-timeline: scroll()') &&
+  !document.documentElement.hasAttribute('data-ios')
 const controls = useTemplateRef<HTMLElement>('controls')
 let liftFrame = 0
 let lift = -1
 let liftObserver: ResizeObserver | undefined
+let footerObserver: ResizeObserver | undefined
+/*
+ * The footer's height varies (on a phone it wraps to more lines at 360px), and
+ * the controls rise by exactly that much at the page's end, so it is measured
+ * rather than assumed; until then the stylesheet's figure stands.
+ */
+function measureFooter(footer: Element) {
+  document.documentElement.style.setProperty(
+    '--site-footer-height',
+    `${Math.round(footer.getBoundingClientRect().height)}px`
+  )
+}
 function liftControls() {
   liftFrame = 0
   const footer = document.querySelector('.site-footer')
@@ -324,12 +350,19 @@ onMounted(() => {
   liftObserver = new ResizeObserver(scheduleLift)
   liftObserver.observe(document.body)
   scheduleLift()
+  const footer = document.querySelector('.site-footer')
+  if (footer) {
+    measureFooter(footer)
+    footerObserver = new ResizeObserver(() => measureFooter(footer))
+    footerObserver.observe(footer)
+  }
 })
 onBeforeUnmount(() => {
   cancelAnimationFrame(liftFrame)
   window.removeEventListener('scroll', scheduleLift)
   window.removeEventListener('resize', scheduleLift)
   liftObserver?.disconnect()
+  footerObserver?.disconnect()
 })
 onMounted(() => {
   initialAngle =
@@ -432,7 +465,11 @@ onBeforeUnmount(() => {
         }"
       >
         <AppHint :text="tx('切换背景')"
-          ><button class="panorama-control" :disabled="loading" :aria-label="tx('切换背景')">
+          ><button
+            class="panorama-control panorama-menu-button"
+            :disabled="loading"
+            :aria-label="tx('切换背景')"
+          >
             <UIcon :name="loading ? 'i-mc-spinner' : 'i-lucide-image'" /></button
         ></AppHint>
         <template #item-leading="{ item }">
@@ -449,6 +486,17 @@ onBeforeUnmount(() => {
           /></span>
         </template>
       </UDropdownMenu>
+      <!-- On a phone this opens the backdrop sheet instead of the menu above,
+           only on the home page, where a phone shows the backdrop. -->
+      <button
+        v-if="onHome"
+        class="panorama-control panorama-sheet-button"
+        :disabled="loading"
+        :aria-label="tx('切换背景')"
+        @click="openSheet"
+      >
+        <UIcon :name="loading ? 'i-mc-spinner' : 'i-lucide-image'" />
+      </button>
       <!-- Beside the button, not in it: the control is dimmed and would dim the mark too. -->
       <NewBadge v-if="newBadge.visible.value" class="panorama-new" />
     </span>
@@ -672,7 +720,7 @@ onBeforeUnmount(() => {
  * of holding its corner.)
  */
 @supports (animation-timeline: scroll()) {
-  .panorama-controls {
+  :global(html:not([data-ios]) .panorama-controls) {
     bottom: calc(1rem + var(--site-footer-height));
     animation: panorama-clear-footer linear both;
     animation-timeline: scroll(root block);
@@ -698,6 +746,9 @@ onBeforeUnmount(() => {
   background: var(--panel);
   color: var(--ui-text);
   font-size: 0.8125rem;
+}
+.panorama-sheet-button {
+  display: none;
 }
 /* On the corner, clear of the icon, so the button keeps its size. */
 .panorama-menu-anchor {
@@ -842,16 +893,31 @@ onBeforeUnmount(() => {
   .panorama-shade {
     transform: translateZ(0);
   }
-  .panorama-controls {
-    /* The header menu carries these at this width: the panorama's own strip
-       lands above the viewport, where nothing can reach it. */
+  /*
+   * On a phone one button floats in the corner and opens the backdrop sheet,
+   * which carries the scenes and play or pause; the menu and the play button
+   * stay on wider screens. Hidden on other pages, where the article covers
+   * the backdrop, and while typing, when the keyboard moves fixed layers on
+   * iOS.
+   */
+  .panorama-menu-button,
+  .panorama-playback {
+    display: none;
+  }
+  .panorama-sheet-button {
+    display: flex;
+  }
+  .panorama-controls:not(:has(.panorama-sheet-button)) {
+    display: none;
+  }
+  :global(html:has(:is(input, textarea, [contenteditable='true']):focus) .panorama-controls) {
     display: none;
   }
   .panorama-control {
     width: 2.75rem;
     min-height: 2.75rem;
-    border: 0;
-    background: transparent;
+    opacity: 0.9;
+    box-shadow: 0 2px 6px rgb(0 0 0 / 35%);
   }
 }
 </style>

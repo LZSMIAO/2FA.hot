@@ -54,52 +54,32 @@ const themes = computed(() => [
     onSelect: () => selectTheme('system')
   }
 ])
-/*
- * The backdrop's own controls sit above the viewport on a phone, so the menu
- * carries them there instead, as one entry that opens every scene in a sheet.
- * Only on the home page, which is the only place the backdrop is on screen.
- */
-const newBadge = useNewBadge('backdrop')
 const themeOpen = useHeaderPopover('theme')
 const menuOpen = useHeaderPopover('menu')
-const narrow = shallowRef(false)
-const onHome = computed(() => unlocalizedPath(route.path) === '/')
-onMounted(() => {
-  const query = window.matchMedia('(max-width: 700px), (pointer: coarse)')
-  const update = () => (narrow.value = query.matches)
-  update()
-  query.addEventListener('change', update)
-  onBeforeUnmount(() => query.removeEventListener('change', update))
-})
-// Loaded the first time it is asked for, not with every page.
+/*
+ * The backdrop sheet: on a phone the backdrop's corner button opens it
+ * (TitlePanorama.vue asks with a window event, so neither component knows the
+ * other). Loaded the first time it is asked for, not with every page.
+ */
 const sheetLoaded = shallowRef(false)
 const sheetOpen = shallowRef(false)
-const backdrop = computed(() =>
-  narrow.value && onHome.value
-    ? [
-        {
-          label: tx('切换背景'),
-          icon: 'i-lucide-image',
-          slot: 'backdrop' as const,
-          onSelect: () => {
-            sheetLoaded.value = true
-            sheetOpen.value = true
-          }
-        }
-      ]
-    : []
-)
+function openSheet() {
+  sheetLoaded.value = true
+  sheetOpen.value = true
+}
+onMounted(() => {
+  window.addEventListener('2fa-backdrop-sheet', openSheet)
+  onBeforeUnmount(() => window.removeEventListener('2fa-backdrop-sheet', openSheet))
+})
 /*
  * One list, with no rules between groups: the site's own pages first, then
- * the backdrop (on the home page), then the other edition, which opens in a
- * new window. A bare "Lite" said nothing about what it is.
+ * the other edition, which opens in a new window. A bare "Lite" said nothing
+ * about what it is. Feature requests are in the footer.
  */
 const menu = computed(() => [
   { label: tx('本地历史'), to: localePath('/history'), icon: 'i-lucide-history' },
   { label: tx('使用说明'), to: localePath('/help'), icon: 'i-lucide-book-open' },
-  { label: tx('功能建议'), to: localePath('/waitlist'), icon: 'i-lucide-plus' },
   { label: tx('隐私说明'), to: localePath('/privacy'), icon: 'i-lucide-shield-check' },
-  ...backdrop.value,
   {
     label: tx('Lite 轻量版'),
     to: liteHref.value,
@@ -152,13 +132,7 @@ const menu = computed(() => [
                 class="icon-button"
             /></UDropdownMenu>
           </AppHint>
-          <UDropdownMenu
-            v-if="!compact"
-            v-model:open="menuOpen"
-            :items="menu"
-            @update:open="(open: boolean) => !open && backdrop.length && newBadge.seen()"
-            ><template #backdrop-label="{ item }"
-              >{{ item.label }}<NewBadge v-if="newBadge.visible.value" class="menu-new" /></template
+          <UDropdownMenu v-if="!compact" v-model:open="menuOpen" :items="menu"
             ><UButton
               class="mobile-menu icon-button"
               color="neutral"
@@ -181,9 +155,5 @@ const menu = computed(() => [
 .lite-link .external-arrow {
   width: 0.875rem;
   height: 0.875rem;
-}
-.menu-new {
-  margin-inline-start: 0.5rem;
-  vertical-align: 0.1em;
 }
 </style>
