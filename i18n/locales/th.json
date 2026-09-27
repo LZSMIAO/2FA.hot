@@ -687,5 +687,9 @@
   "passkeyRename": "เปลี่ยนชื่อ",
   "passkeyRenameField": "ชื่อ",
   "passkeyRenameSave": "บันทึกชื่อ",
-  "passkeySameSiteCode": "ที่นี่มีรหัสยืนยันของเว็บไซต์นี้บันทึกไว้ด้วย"
+  "passkeySameSiteCode": "ที่นี่มีรหัสยืนยันของเว็บไซต์นี้บันทึกไว้ด้วย",
+  "hideInterface": "ซ่อนอินเทอร์เฟซ",
+  "showInterface": "แสดงอินเทอร์เฟซ",
+  "hideInterfaceClickNote": "คลิกที่ใดก็ได้หรือกด Esc เพื่อกลับ",
+  "hideInterfaceTapNote": "แตะที่ใดก็ได้เพื่อกลับ"
 }

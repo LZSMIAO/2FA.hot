@@ -687,5 +687,9 @@
   "passkeyRename": "Đổi tên",
   "passkeyRenameField": "Tên",
   "passkeyRenameSave": "Lưu tên",
-  "passkeySameSiteCode": "Ở đây cũng lưu mã xác thực của trang này"
+  "passkeySameSiteCode": "Ở đây cũng lưu mã xác thực của trang này",
+  "hideInterface": "Ẩn giao diện",
+  "showInterface": "Hiện giao diện",
+  "hideInterfaceClickNote": "Nhấp vào bất kỳ đâu hoặc nhấn Esc để quay lại",
+  "hideInterfaceTapNote": "Chạm vào bất kỳ đâu để quay lại"
 }

@@ -687,5 +687,9 @@
   "passkeyRename": "重命名",
   "passkeyRenameField": "名称",
   "passkeyRenameSave": "保存名称",
-  "passkeySameSiteCode": "这里也存有此网站的验证码"
+  "passkeySameSiteCode": "这里也存有此网站的验证码",
+  "hideInterface": "隐藏界面",
+  "showInterface": "显示界面",
+  "hideInterfaceClickNote": "点击任意处或按 Esc 返回",
+  "hideInterfaceTapNote": "轻触任意处返回"
 }

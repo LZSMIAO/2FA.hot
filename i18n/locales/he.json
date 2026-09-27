@@ -687,5 +687,9 @@
   "passkeyRename": "שינוי שם",
   "passkeyRenameField": "שם",
   "passkeyRenameSave": "שמירת השם",
-  "passkeySameSiteCode": "גם קוד אימות לאתר הזה שמור כאן"
+  "passkeySameSiteCode": "גם קוד אימות לאתר הזה שמור כאן",
+  "hideInterface": "הסתרת הממשק",
+  "showInterface": "הצגת הממשק",
+  "hideInterfaceClickNote": "לחצו בכל מקום או על Esc כדי לחזור",
+  "hideInterfaceTapNote": "הקישו בכל מקום כדי לחזור"
 }

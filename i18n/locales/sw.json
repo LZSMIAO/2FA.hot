@@ -687,5 +687,9 @@
   "passkeyRename": "Badilisha jina",
   "passkeyRenameField": "Jina",
   "passkeyRenameSave": "Hifadhi jina",
-  "passkeySameSiteCode": "Msimbo wa uthibitishaji wa tovuti hii pia umehifadhiwa hapa"
+  "passkeySameSiteCode": "Msimbo wa uthibitishaji wa tovuti hii pia umehifadhiwa hapa",
+  "hideInterface": "Ficha kiolesura",
+  "showInterface": "Onyesha kiolesura",
+  "hideInterfaceClickNote": "Bofya popote au bonyeza Esc ili kurudi",
+  "hideInterfaceTapNote": "Gusa popote ili kurudi"
 }

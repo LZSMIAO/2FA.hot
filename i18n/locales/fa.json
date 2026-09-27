@@ -687,5 +687,9 @@
   "passkeyRename": "تغییر نام",
   "passkeyRenameField": "نام",
   "passkeyRenameSave": "ذخیرهٔ نام",
-  "passkeySameSiteCode": "کد تأیید این سایت هم اینجا ذخیره شده است"
+  "passkeySameSiteCode": "کد تأیید این سایت هم اینجا ذخیره شده است",
+  "hideInterface": "پنهان کردن رابط",
+  "showInterface": "نمایش رابط",
+  "hideInterfaceClickNote": "برای بازگشت هر جا کلیک کنید یا Esc را بزنید",
+  "hideInterfaceTapNote": "برای بازگشت هر جا را لمس کنید"
 }

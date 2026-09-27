@@ -687,5 +687,9 @@
   "passkeyRename": "Namakan semula",
   "passkeyRenameField": "Nama",
   "passkeyRenameSave": "Simpan nama",
-  "passkeySameSiteCode": "Kod pengesahan untuk laman ini juga disimpan di sini"
+  "passkeySameSiteCode": "Kod pengesahan untuk laman ini juga disimpan di sini",
+  "hideInterface": "Sembunyikan antara muka",
+  "showInterface": "Tunjukkan antara muka",
+  "hideInterfaceClickNote": "Klik di mana-mana atau tekan Esc untuk kembali",
+  "hideInterfaceTapNote": "Ketik di mana-mana untuk kembali"
 }

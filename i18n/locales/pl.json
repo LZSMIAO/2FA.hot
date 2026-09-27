@@ -687,5 +687,9 @@
   "passkeyRename": "Zmień nazwę",
   "passkeyRenameField": "Nazwa",
   "passkeyRenameSave": "Zapisz nazwę",
-  "passkeySameSiteCode": "Zapisano tu też kod weryfikacyjny dla tej witryny"
+  "passkeySameSiteCode": "Zapisano tu też kod weryfikacyjny dla tej witryny",
+  "hideInterface": "Ukryj interfejs",
+  "showInterface": "Pokaż interfejs",
+  "hideInterfaceClickNote": "Kliknij w dowolnym miejscu lub naciśnij Esc, aby wrócić",
+  "hideInterfaceTapNote": "Dotknij w dowolnym miejscu, aby wrócić"
 }

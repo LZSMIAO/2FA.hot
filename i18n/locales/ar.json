@@ -687,5 +687,9 @@
   "passkeyRename": "إعادة التسمية",
   "passkeyRenameField": "الاسم",
   "passkeyRenameSave": "حفظ الاسم",
-  "passkeySameSiteCode": "رمز تحقق لهذا الموقع محفوظ هنا أيضًا"
+  "passkeySameSiteCode": "رمز تحقق لهذا الموقع محفوظ هنا أيضًا",
+  "hideInterface": "إخفاء الواجهة",
+  "showInterface": "إظهار الواجهة",
+  "hideInterfaceClickNote": "انقر في أي مكان أو اضغط Esc للعودة",
+  "hideInterfaceTapNote": "المس أي مكان للعودة"
 }

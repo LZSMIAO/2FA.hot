@@ -687,5 +687,9 @@
   "passkeyRename": "పేరు మార్చు",
   "passkeyRenameField": "పేరు",
   "passkeyRenameSave": "పేరు సేవ్ చేయి",
-  "passkeySameSiteCode": "ఈ సైట్ ధృవీకరణ కోడ్ కూడా ఇక్కడ సేవ్ అయి ఉంది"
+  "passkeySameSiteCode": "ఈ సైట్ ధృవీకరణ కోడ్ కూడా ఇక్కడ సేవ్ అయి ఉంది",
+  "hideInterface": "ఇంటర్‌ఫేస్‌ను దాచు",
+  "showInterface": "ఇంటర్‌ఫేస్‌ను చూపు",
+  "hideInterfaceClickNote": "తిరిగి వెళ్లడానికి ఎక్కడైనా క్లిక్ చేయండి లేదా Esc నొక్కండి",
+  "hideInterfaceTapNote": "తిరిగి వెళ్లడానికి ఎక్కడైనా నొక్కండి"
 }

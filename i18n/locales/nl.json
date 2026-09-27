@@ -687,5 +687,9 @@
   "passkeyRename": "Naam wijzigen",
   "passkeyRenameField": "Naam",
   "passkeyRenameSave": "Naam opslaan",
-  "passkeySameSiteCode": "Hier is ook een verificatiecode voor deze site opgeslagen"
+  "passkeySameSiteCode": "Hier is ook een verificatiecode voor deze site opgeslagen",
+  "hideInterface": "Interface verbergen",
+  "showInterface": "Interface tonen",
+  "hideInterfaceClickNote": "Klik ergens of druk op Esc om terug te gaan",
+  "hideInterfaceTapNote": "Tik ergens om terug te gaan"
 }

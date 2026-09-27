@@ -687,5 +687,9 @@
   "passkeyRename": "Yeniden adlandır",
   "passkeyRenameField": "Ad",
   "passkeyRenameSave": "Adı kaydet",
-  "passkeySameSiteCode": "Bu site için bir doğrulama kodu da burada kayıtlı"
+  "passkeySameSiteCode": "Bu site için bir doğrulama kodu da burada kayıtlı",
+  "hideInterface": "Arayüzü gizle",
+  "showInterface": "Arayüzü göster",
+  "hideInterfaceClickNote": "Geri dönmek için herhangi bir yere tıklayın veya Esc tuşuna basın",
+  "hideInterfaceTapNote": "Geri dönmek için herhangi bir yere dokunun"
 }

@@ -21,6 +21,7 @@ import { unlocalizedPath } from '~~/shared/seo/routes'
 defineProps<{ bounded?: boolean }>()
 const { tx } = useMessages()
 const newBadge = useNewBadge('backdrop')
+const interfaceHidden = useInterfaceHidden()
 const route = useRoute()
 // A phone sees the backdrop only on the home page; the articles cover it.
 const onHome = computed(() => unlocalizedPath(route.path) === '/')
@@ -189,6 +190,9 @@ function uploadRequested() {
 function removeRequested() {
   void removeCustom()
 }
+function hideInterface() {
+  interfaceHidden.value = true
+}
 const sceneItems = computed(() => [
   // One entry per collection; its scenes open beside it. The entry shows the
   // scene in use when it belongs to that collection, so the choice stays visible.
@@ -208,9 +212,9 @@ const sceneItems = computed(() => [
       }))
     }
   }),
-  [
-    ...(custom.value
-      ? [
+  ...(custom.value
+    ? [
+        [
           {
             label: tx('自定义背景'),
             preview: custom.value.preview,
@@ -218,18 +222,26 @@ const sceneItems = computed(() => [
             checked: scene.value === customPanoramaScene,
             disabled: loading.value,
             onSelect: () => changeScene(customPanoramaScene)
-          }
+          },
+          { label: tx('移除自定义背景'), icon: 'i-lucide-trash-2', onSelect: removeCustom }
         ]
-      : []),
+      ]
+    : []),
+  // Two actions rather than scenes, sharing one row so they do not read as more pictures.
+  [
     {
       label: tx('上传背景图片…'),
       icon: 'i-lucide-upload',
+      class: 'panorama-menu-half',
       disabled: loading.value,
       onSelect: chooseUpload
     },
-    ...(custom.value
-      ? [{ label: tx('移除自定义背景'), icon: 'i-lucide-trash-2', onSelect: removeCustom }]
-      : [])
+    {
+      label: tx('隐藏界面'),
+      icon: 'i-lucide-eye-off',
+      class: 'panorama-menu-half',
+      onSelect: hideInterface
+    }
   ]
 ])
 const paused = computed(() => !hydrated.value || playbackPaused.value !== false)
@@ -473,8 +485,9 @@ onBeforeUnmount(() => {
             <UIcon :name="loading ? 'i-mc-spinner' : 'i-lucide-image'" /></button
         ></AppHint>
         <template #item-leading="{ item }">
+          <!-- The two actions of the last row carry no picture at all. -->
           <img
-            v-if="item.preview"
+            v-if="'preview' in item && item.preview"
             :src="item.preview"
             class="panorama-preview"
             alt=""
@@ -522,6 +535,7 @@ onBeforeUnmount(() => {
     aria-hidden="true"
     @change="receiveUpload"
   />
+  <InterfaceReveal />
   <ActionHint
     :open="!!issue"
     :message="tx(issue)"
@@ -574,6 +588,42 @@ onBeforeUnmount(() => {
 }
 :global(.panorama-menu-item[data-state='checked']) {
   background: var(--wash);
+}
+/* Upload and hide share the last row, each half its dashed mark over its name. */
+:global(.panorama-menu-viewport [data-slot='group']:has(> .panorama-menu-half)) {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+:global(.panorama-menu-item.panorama-menu-half) {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 6px;
+  font-size: 12px;
+  line-height: 1.3;
+}
+:global(.panorama-menu-half + .panorama-menu-half::after) {
+  content: '';
+  position: absolute;
+  inset-block: 12px;
+  inset-inline-start: -2px;
+  width: 1px;
+  background: var(--ui-border);
+}
+:global(.panorama-menu-half [data-slot='itemWrapper']) {
+  flex: none;
+  max-width: 100%;
+  text-align: center;
+}
+/* Longer names wrap here rather than trail off, as in German or Tamil. */
+:global(.panorama-menu-half [data-slot='itemLabel']) {
+  overflow: visible;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+:global(.panorama-menu-half [data-slot='itemTrailing']) {
+  display: none;
 }
 .title-panorama {
   isolation: isolate;
@@ -680,6 +730,11 @@ onBeforeUnmount(() => {
   position: absolute;
   inset: 0;
   background: radial-gradient(ellipse at center, #10141033, #1014104d 65%, #080c1080);
+  transition: opacity 0.8s ease;
+}
+/* The shade is there to keep text readable; with the interface hidden the scene comes up clear. */
+:global(html[data-ui-hidden] .title-panorama .panorama-shade) {
+  opacity: 0.35;
 }
 :global(.dark .title-panorama .panorama-camera) {
   filter: saturate(0.9) contrast(1.08);

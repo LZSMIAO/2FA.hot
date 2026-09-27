@@ -687,5 +687,9 @@
   "passkeyRename": "Ganti nama",
   "passkeyRenameField": "Nama",
   "passkeyRenameSave": "Simpan nama",
-  "passkeySameSiteCode": "Kode verifikasi untuk situs ini juga tersimpan di sini"
+  "passkeySameSiteCode": "Kode verifikasi untuk situs ini juga tersimpan di sini",
+  "hideInterface": "Sembunyikan antarmuka",
+  "showInterface": "Tampilkan antarmuka",
+  "hideInterfaceClickNote": "Klik di mana saja atau tekan Esc untuk kembali",
+  "hideInterfaceTapNote": "Ketuk di mana saja untuk kembali"
 }

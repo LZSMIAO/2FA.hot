@@ -687,5 +687,9 @@
   "passkeyRename": "名前を変更",
   "passkeyRenameField": "名前",
   "passkeyRenameSave": "名前を保存",
-  "passkeySameSiteCode": "このサイトの認証コードもここに保存されています"
+  "passkeySameSiteCode": "このサイトの認証コードもここに保存されています",
+  "hideInterface": "インターフェースを隠す",
+  "showInterface": "インターフェースを表示",
+  "hideInterfaceClickNote": "どこかをクリックするか Esc キーで戻ります",
+  "hideInterfaceTapNote": "どこかをタップすると戻ります"
 }

@@ -687,5 +687,9 @@
   "passkeyRename": "Rinomina",
   "passkeyRenameField": "Nome",
   "passkeyRenameSave": "Salva nome",
-  "passkeySameSiteCode": "Qui è salvato anche un codice di verifica per questo sito"
+  "passkeySameSiteCode": "Qui è salvato anche un codice di verifica per questo sito",
+  "hideInterface": "Nascondi interfaccia",
+  "showInterface": "Mostra interfaccia",
+  "hideInterfaceClickNote": "Fai clic ovunque o premi Esc per tornare",
+  "hideInterfaceTapNote": "Tocca ovunque per tornare"
 }

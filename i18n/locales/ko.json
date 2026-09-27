@@ -687,5 +687,9 @@
   "passkeyRename": "이름 변경",
   "passkeyRenameField": "이름",
   "passkeyRenameSave": "이름 저장",
-  "passkeySameSiteCode": "이 사이트의 인증 코드도 여기에 저장되어 있습니다"
+  "passkeySameSiteCode": "이 사이트의 인증 코드도 여기에 저장되어 있습니다",
+  "hideInterface": "인터페이스 숨기기",
+  "showInterface": "인터페이스 표시",
+  "hideInterfaceClickNote": "아무 곳이나 클릭하거나 Esc 키를 누르면 돌아갑니다",
+  "hideInterfaceTapNote": "아무 곳이나 탭하면 돌아갑니다"
 }

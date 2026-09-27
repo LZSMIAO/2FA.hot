@@ -687,5 +687,9 @@
   "passkeyRename": "Palitan ang pangalan",
   "passkeyRenameField": "Pangalan",
   "passkeyRenameSave": "I-save ang pangalan",
-  "passkeySameSiteCode": "May naka-save ding verification code para sa site na ito dito"
+  "passkeySameSiteCode": "May naka-save ding verification code para sa site na ito dito",
+  "hideInterface": "Itago ang interface",
+  "showInterface": "Ipakita ang interface",
+  "hideInterfaceClickNote": "Mag-click kahit saan o pindutin ang Esc para bumalik",
+  "hideInterfaceTapNote": "Mag-tap kahit saan para bumalik"
 }

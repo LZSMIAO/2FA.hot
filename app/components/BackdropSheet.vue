@@ -23,6 +23,12 @@ const playable = computed(
     )
 )
 const playing = computed(() => playbackPaused.value === false)
+const interfaceHidden = useInterfaceHidden()
+// The sheet closes first, so the scene is clear as the page fades.
+function hideInterface() {
+  open.value = false
+  interfaceHidden.value = true
+}
 /*
  * All 27 scenes open at once made a long scroll. Each collection folds to one
  * row showing its scene in use, or its first, and every row starts folded
@@ -53,7 +59,8 @@ const remove = () => window.dispatchEvent(new Event('2fa-panorama-remove'))
     :ui="{
       overlay: 'backdrop-sheet-overlay',
       content: 'backdrop-sheet',
-      body: 'backdrop-sheet-body'
+      body: 'backdrop-sheet-body',
+      footer: 'backdrop-sheet-footer'
     }"
   >
     <template #actions>
@@ -107,9 +114,9 @@ const remove = () => window.dispatchEvent(new Event('2fa-panorama-remove'))
           </button>
         </div>
       </section>
-      <section class="backdrop-group">
+      <section v-if="custom" class="backdrop-group">
         <h3>{{ tx('自定义背景') }}</h3>
-        <div v-if="custom" class="backdrop-grid">
+        <div class="backdrop-grid">
           <button
             type="button"
             class="backdrop-tile"
@@ -120,21 +127,25 @@ const remove = () => window.dispatchEvent(new Event('2fa-panorama-remove'))
             <span>{{ tx('自定义背景') }}</span>
           </button>
         </div>
-        <!-- Buttons, not tiles: in a tile's width these labels broke mid-word. -->
         <div class="backdrop-actions">
-          <UButton color="neutral" variant="outline" icon="i-lucide-upload" @click="upload">{{
-            tx('上传背景图片…')
+          <UButton color="neutral" variant="ghost" icon="i-lucide-trash-2" @click="remove">{{
+            tx('移除自定义背景')
           }}</UButton>
-          <UButton
-            v-if="custom"
-            color="neutral"
-            variant="ghost"
-            icon="i-lucide-trash-2"
-            @click="remove"
-            >{{ tx('移除自定义背景') }}</UButton
-          >
         </div>
       </section>
+    </template>
+    <!-- As in the menu on a wider screen: two actions sharing the last row. -->
+    <template #footer>
+      <div class="backdrop-footer">
+        <button type="button" class="backdrop-footer-action" @click="upload">
+          <span class="backdrop-footer-mark"><UIcon name="i-lucide-upload" /></span
+          >{{ tx('上传背景图片…') }}
+        </button>
+        <button type="button" class="backdrop-footer-action" @click="hideInterface">
+          <span class="backdrop-footer-mark"><UIcon name="i-lucide-eye-off" /></span
+          >{{ tx('隐藏界面') }}
+        </button>
+      </div>
     </template>
   </UModal>
 </template>
@@ -148,6 +159,63 @@ const remove = () => window.dispatchEvent(new Event('2fa-panorama-remove'))
   align-content: start;
   gap: 0.75rem;
   overscroll-behavior: contain;
+}
+.backdrop-sheet-footer {
+  padding: 0;
+}
+.backdrop-footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+}
+.backdrop-footer-action {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  min-height: 3.5rem;
+  padding: 0.5rem 0.75rem;
+  color: var(--ui-text-highlighted);
+  font-size: var(--text-label);
+  line-height: 1.25;
+  text-align: start;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+/* The dashed mark the menu gives its actions on a wider screen. */
+.backdrop-footer-mark {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 48px;
+  height: 32px;
+  border: 1px dashed var(--ui-border);
+  color: var(--ui-text-muted);
+}
+.backdrop-footer-mark .iconify {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+.backdrop-footer-action + .backdrop-footer-action::before {
+  content: '';
+  position: absolute;
+  inset-block: 0.75rem;
+  inset-inline-start: 0;
+  width: 1px;
+  background: var(--ui-border);
+}
+.backdrop-footer-action:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: -2px;
+}
+.backdrop-footer-action:active {
+  background: var(--wash);
+}
+@media (hover: hover) {
+  .backdrop-footer-action:hover {
+    background: var(--wash);
+  }
 }
 .backdrop-group {
   display: grid;

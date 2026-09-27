@@ -248,6 +248,36 @@ code {
 #main-content {
   flex: 1;
 }
+/*
+ * Hiding the interface (useInterfaceHidden) fades everything but the backdrop
+ * away, a floating hint included, and InterfaceReveal.vue brings it back.
+ * Visibility follows the fade, so nothing hidden can be reached, and the page
+ * holds still meanwhile.
+ */
+.site-header,
+#main-content,
+.site-footer,
+.panorama-controls {
+  transition: opacity 0.5s ease;
+}
+/* Hidden only once faded; shown again at once, so focus can return as it fades in. */
+html[data-ui-hidden] :is(.site-header, #main-content, .site-footer, .panorama-controls),
+html[data-ui-hidden] .action-hint {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.5s ease,
+    visibility 0s 0.5s;
+}
+html[data-ui-hidden] {
+  overflow: hidden;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root :is(.site-header, #main-content, .site-footer, .panorama-controls),
+  html[data-ui-hidden] :is(.site-header, #main-content, .site-footer, .panorama-controls) {
+    transition: none;
+  }
+}
 .site-header {
   position: sticky;
   top: 0;

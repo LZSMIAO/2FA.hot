@@ -687,5 +687,9 @@
   "passkeyRename": "Rename",
   "passkeyRenameField": "Name",
   "passkeyRenameSave": "Save name",
-  "passkeySameSiteCode": "A verification code for this site is saved here too"
+  "passkeySameSiteCode": "A verification code for this site is saved here too",
+  "hideInterface": "Hide interface",
+  "showInterface": "Show interface",
+  "hideInterfaceClickNote": "Click anywhere or press Esc to return",
+  "hideInterfaceTapNote": "Tap anywhere to return"
 }

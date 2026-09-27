@@ -687,5 +687,9 @@
   "passkeyRename": "नाम बदलें",
   "passkeyRenameField": "नाम",
   "passkeyRenameSave": "नाम सहेजें",
-  "passkeySameSiteCode": "इस साइट का सत्यापन कोड भी यहाँ सहेजा है"
+  "passkeySameSiteCode": "इस साइट का सत्यापन कोड भी यहाँ सहेजा है",
+  "hideInterface": "इंटरफ़ेस छिपाएँ",
+  "showInterface": "इंटरफ़ेस दिखाएँ",
+  "hideInterfaceClickNote": "लौटने के लिए कहीं भी क्लिक करें या Esc दबाएँ",
+  "hideInterfaceTapNote": "लौटने के लिए कहीं भी टैप करें"
 }

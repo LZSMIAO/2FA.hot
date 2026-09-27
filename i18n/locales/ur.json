@@ -687,5 +687,9 @@
   "passkeyRename": "نام بدلیں",
   "passkeyRenameField": "نام",
   "passkeyRenameSave": "نام محفوظ کریں",
-  "passkeySameSiteCode": "اس سائٹ کا تصدیقی کوڈ بھی یہاں محفوظ ہے"
+  "passkeySameSiteCode": "اس سائٹ کا تصدیقی کوڈ بھی یہاں محفوظ ہے",
+  "hideInterface": "انٹرفیس چھپائیں",
+  "showInterface": "انٹرفیس دکھائیں",
+  "hideInterfaceClickNote": "واپس جانے کے لیے کہیں بھی کلک کریں یا Esc دبائیں",
+  "hideInterfaceTapNote": "واپس جانے کے لیے کہیں بھی ٹیپ کریں"
 }

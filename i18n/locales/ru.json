@@ -687,5 +687,9 @@
   "passkeyRename": "Переименовать",
   "passkeyRenameField": "Название",
   "passkeyRenameSave": "Сохранить название",
-  "passkeySameSiteCode": "Здесь также сохранён код подтверждения для этого сайта"
+  "passkeySameSiteCode": "Здесь также сохранён код подтверждения для этого сайта",
+  "hideInterface": "Скрыть интерфейс",
+  "showInterface": "Показать интерфейс",
+  "hideInterfaceClickNote": "Щёлкните в любом месте или нажмите Esc, чтобы вернуться",
+  "hideInterfaceTapNote": "Коснитесь любого места, чтобы вернуться"
 }

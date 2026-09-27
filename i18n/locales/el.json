@@ -687,5 +687,9 @@
   "passkeyRename": "Μετονομασία",
   "passkeyRenameField": "Όνομα",
   "passkeyRenameSave": "Αποθήκευση ονόματος",
-  "passkeySameSiteCode": "Εδώ είναι αποθηκευμένος και κωδικός επαλήθευσης για αυτόν τον ιστότοπο"
+  "passkeySameSiteCode": "Εδώ είναι αποθηκευμένος και κωδικός επαλήθευσης για αυτόν τον ιστότοπο",
+  "hideInterface": "Απόκρυψη διεπαφής",
+  "showInterface": "Εμφάνιση διεπαφής",
+  "hideInterfaceClickNote": "Κάντε κλικ οπουδήποτε ή πατήστε Esc για επιστροφή",
+  "hideInterfaceTapNote": "Πατήστε οπουδήποτε για επιστροφή"
 }

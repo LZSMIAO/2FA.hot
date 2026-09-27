@@ -687,5 +687,9 @@
   "passkeyRename": "பெயர் மாற்று",
   "passkeyRenameField": "பெயர்",
   "passkeyRenameSave": "பெயரைச் சேமி",
-  "passkeySameSiteCode": "இந்தத் தளத்துக்கான சரிபார்ப்புக் குறியீடும் இங்கு சேமிக்கப்பட்டுள்ளது"
+  "passkeySameSiteCode": "இந்தத் தளத்துக்கான சரிபார்ப்புக் குறியீடும் இங்கு சேமிக்கப்பட்டுள்ளது",
+  "hideInterface": "இடைமுகத்தை மறை",
+  "showInterface": "இடைமுகத்தைக் காட்டு",
+  "hideInterfaceClickNote": "திரும்ப எங்கும் கிளிக் செய்யவும் அல்லது Esc அழுத்தவும்",
+  "hideInterfaceTapNote": "திரும்ப எங்கும் தட்டவும்"
 }

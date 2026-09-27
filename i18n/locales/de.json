@@ -687,5 +687,9 @@
   "passkeyRename": "Umbenennen",
   "passkeyRenameField": "Name",
   "passkeyRenameSave": "Name speichern",
-  "passkeySameSiteCode": "Hier ist auch ein Bestätigungscode für diese Website gespeichert"
+  "passkeySameSiteCode": "Hier ist auch ein Bestätigungscode für diese Website gespeichert",
+  "hideInterface": "Oberfläche ausblenden",
+  "showInterface": "Oberfläche einblenden",
+  "hideInterfaceClickNote": "Irgendwo klicken oder Esc drücken, um zurückzukehren",
+  "hideInterfaceTapNote": "Irgendwo tippen, um zurückzukehren"
 }

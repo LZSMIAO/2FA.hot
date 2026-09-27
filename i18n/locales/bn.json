@@ -687,5 +687,9 @@
   "passkeyRename": "নাম বদলান",
   "passkeyRenameField": "নাম",
   "passkeyRenameSave": "নাম সংরক্ষণ",
-  "passkeySameSiteCode": "এই সাইটের একটি যাচাইকরণ কোডও এখানে সংরক্ষিত আছে"
+  "passkeySameSiteCode": "এই সাইটের একটি যাচাইকরণ কোডও এখানে সংরক্ষিত আছে",
+  "hideInterface": "ইন্টারফেস লুকান",
+  "showInterface": "ইন্টারফেস দেখান",
+  "hideInterfaceClickNote": "ফিরতে যেকোনো জায়গায় ক্লিক করুন বা Esc চাপুন",
+  "hideInterfaceTapNote": "ফিরতে যেকোনো জায়গায় ট্যাপ করুন"
 }

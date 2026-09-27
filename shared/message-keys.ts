@@ -946,5 +946,9 @@ export const sourceKeys = new Map<string, string>([
   ['重命名', 'passkeyRename'],
   ['名称', 'passkeyRenameField'],
   ['保存名称', 'passkeyRenameSave'],
-  ['这里也存有此网站的验证码', 'passkeySameSiteCode']
+  ['这里也存有此网站的验证码', 'passkeySameSiteCode'],
+  ['隐藏界面', 'hideInterface'],
+  ['显示界面', 'showInterface'],
+  ['点击任意处或按 Esc 返回', 'hideInterfaceClickNote'],
+  ['轻触任意处返回', 'hideInterfaceTapNote']
 ])
