@@ -919,6 +919,8 @@ export const sourceKeys = new Map<string, string>([
   ['离线使用说明', 'mc337dfe13669'],
   ['开启离线使用', 'm7aaebbb409dd'],
   ['关闭离线使用', 'm8e63bef38436'],
+  ['有新版本可用。', 'm5ea990884722'],
+  ['立即更新', 'm12487befb4ba'],
   ['此浏览器不支持离线使用', 'm2853dcdcbdd5'],
   ['正在保存离线文件… {percent}%', 'm19271ea9b4fb'],
   ['离线文件没有保存完成，请联网后再开一次。', 'm36f6a802ca31'],

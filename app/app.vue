@@ -79,6 +79,7 @@ onBeforeUnmount(() => {
         <NuxtPage :page-key="(route) => unlocalizedPath(route.path)" />
       </main>
       <AppFooter />
+      <UpdateNotice />
     </div>
   </UApp>
 </template>

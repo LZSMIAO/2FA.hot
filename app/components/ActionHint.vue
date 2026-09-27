@@ -1,6 +1,7 @@
 <script setup lang="ts">
-defineProps<{ open: boolean; message: string; icon: string }>()
-defineEmits<{ close: [] }>()
+/** action: a label for one thing to do about the message, beside the close button. */
+defineProps<{ open: boolean; message: string; icon: string; action?: string }>()
+defineEmits<{ close: []; action: [] }>()
 const { tx } = useMessages()
 function entranceSound() {
   window.dispatchEvent(new CustomEvent('2fa-ui-sound', { detail: 'toast' }))
@@ -12,6 +13,9 @@ function entranceSound() {
       <aside v-if="open" class="action-hint ore-theme" role="status" aria-live="polite">
         <UIcon :name="icon" class="hint-icon" />
         <span class="hint-message">{{ message }}</span>
+        <button v-if="action" type="button" class="hint-action" @click="$emit('action')">
+          {{ action }}
+        </button>
         <button type="button" class="touch-reach" :aria-label="tx('关闭')" @click="$emit('close')">
           <UIcon name="i-mc-close" />
         </button>
@@ -70,6 +74,22 @@ button:active {
   button:hover {
     background: var(--ore-control-hover);
     color: var(--ui-text-highlighted);
+  }
+}
+/* The action is the green primary button, at the close button's height. */
+.hint-action {
+  width: auto;
+  padding: 0 12px;
+  background: var(--action);
+  color: #fff;
+  font: inherit;
+  font-size: 14px;
+  white-space: nowrap;
+}
+@media (hover: hover) {
+  .hint-action:hover {
+    background: var(--action-hover);
+    color: #fff;
   }
 }
 @media (max-width: 640px) {
