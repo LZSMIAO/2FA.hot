@@ -817,18 +817,17 @@ html[data-workspace-mode='batch'] .mode-tabs [id$='-trigger-batch'] {
     width: 2.875rem;
     filter: drop-shadow(1px 1px 0 #3f3f00);
   }
+  /* A message sits as on a desktop, scaled with the letters: tilted and
+     pulsing, centred just past the letters' lower right, rather than flat
+     under them. Centred by translate, which the pulse's transform leaves be. */
   html[data-mobile] .header-pixel-wordmark .message-splash {
-    left: 0;
-    top: 2.1875rem;
-    width: 7.5rem;
-    font-size: 0.8125rem;
+    left: 6.25rem;
+    top: 1.375rem;
+    width: max-content;
+    translate: -50% 0;
+    font-size: 1rem;
     line-height: 1;
-    transform: none;
-    animation: none;
-  }
-  html[data-mobile][data-brand-splash='message'] .header-pixel-wordmark .game-title-letters {
-    width: 5rem;
-    margin-inline: auto;
+    filter: drop-shadow(1px 1px 0 #3f3f00);
   }
   html[data-mobile] .header-pixel-wordmark > .brand-beta {
     top: 0;
@@ -966,9 +965,9 @@ html[data-workspace-mode='batch'] .mode-tabs [id$='-trigger-batch'] {
     width: 2.375rem;
   }
   html[data-mobile] .header-pixel-wordmark .message-splash {
-    left: 0;
-    width: 6rem;
-    font-size: 0.6875rem;
+    left: 5.125rem;
+    top: 1.625rem;
+    font-size: 0.75rem;
   }
 }
 
