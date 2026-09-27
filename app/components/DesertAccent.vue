@@ -87,7 +87,16 @@ function onResize() {
     if (props.open) measureFit()
   })
 }
+/*
+ * The drawing is some 70KB of markup, most of the page before the result and
+ * the settings under the tool. Sent with the page, it held them back: on a
+ * slow connection the page drew the card and nothing under it until the rest
+ * arrived. It is drawn once the page has started instead; its box is sized by
+ * the styles alone, so nothing moves when it comes.
+ */
+const drawn = shallowRef(false)
 onMounted(() => {
+  drawn.value = true
   if (props.open) measureFit()
   window.addEventListener('resize', onResize, { passive: true })
 })
@@ -119,7 +128,13 @@ onBeforeUnmount(() => {
       @click="greet"
       @keydown.esc.stop="dismiss"
     >
-      <span class="desert-art" @pointerenter="hoverGreet" @pointerleave="leave" v-html="scene" />
+      <span
+        v-if="drawn"
+        class="desert-art"
+        @pointerenter="hoverGreet"
+        @pointerleave="leave"
+        v-html="scene"
+      />
       <span
         class="desert-tip"
         :class="{ 'is-visible': active }"
@@ -197,6 +212,12 @@ onBeforeUnmount(() => {
   position: absolute;
   inset: 0;
   pointer-events: none;
+  animation: desert-art-in 200ms ease;
+}
+@keyframes desert-art-in {
+  from {
+    opacity: 0;
+  }
 }
 .desert-art :deep(.desert-svg) {
   width: 100%;
@@ -295,6 +316,9 @@ onBeforeUnmount(() => {
   }
   .desert-tip {
     transform: none;
+  }
+  .desert-art {
+    animation: none;
   }
 }
 </style>

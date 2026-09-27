@@ -328,6 +328,12 @@ const followsScroll =
   CSS.supports('animation-timeline: scroll()') &&
   !document.documentElement.hasAttribute('data-ios')
 const controls = useTemplateRef<HTMLElement>('controls')
+/*
+ * Where the JS lift places the controls, they wait for its first reading: on
+ * iOS they were drawn in the window's corner, over the footer, and then
+ * jumped up once the page started.
+ */
+const placed = shallowRef(false)
 let liftFrame = 0
 let lift = -1
 let liftObserver: ResizeObserver | undefined
@@ -346,11 +352,16 @@ function measureFooter(footer: Element) {
 function liftControls() {
   liftFrame = 0
   const footer = document.querySelector('.site-footer')
-  if (followsScroll || !footer || !controls.value) return
+  if (followsScroll || !controls.value) return
+  if (!footer) {
+    placed.value = true
+    return
+  }
   const overlap = Math.max(0, window.innerHeight - footer.getBoundingClientRect().top)
   if (Math.round(overlap) === lift) return
   lift = Math.round(overlap)
   controls.value.style.setProperty('--panorama-lift', `${lift}px`)
+  placed.value = true
 }
 function scheduleLift() {
   if (!liftFrame) liftFrame = requestAnimationFrame(liftControls)
@@ -462,7 +473,7 @@ onBeforeUnmount(() => {
       </div>
     </div>
   </div>
-  <div ref="controls" class="panorama-controls">
+  <div ref="controls" class="panorama-controls" :class="{ 'is-placed': placed }">
     <span class="panorama-menu-anchor">
       <UDropdownMenu
         :items="sceneItems"
@@ -776,6 +787,10 @@ onBeforeUnmount(() => {
     animation-timeline: scroll(root block);
     animation-range: calc(100% - var(--site-footer-height)) 100%;
   }
+}
+:global(html[data-ios] .panorama-controls:not(.is-placed)) {
+  visibility: hidden;
+  opacity: 0;
 }
 @keyframes panorama-clear-footer {
   from {
