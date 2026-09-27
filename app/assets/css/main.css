@@ -11,6 +11,13 @@
 }
 :root {
   color-scheme: light;
+  /*
+   * Where pages begin under the header. The home page puts its title
+   * --home-top below the header and its tabs as far again below the title's
+   * letters, 5.25rem tall; every other page starts where those tabs do.
+   */
+  --home-top: 2.5rem;
+  --page-start: calc(var(--home-top) * 2 + 5.25rem);
   --layer-popover: 60;
   --layer-tooltip: 70;
   --ui-primary: oklch(0.5 0.17 290);
@@ -452,19 +459,23 @@ html[data-ui-hidden] {
 }
 .home {
   margin: 0 auto;
-  padding: 2rem 2.5rem 0;
+  padding: var(--home-top) 2.5rem 0;
 }
 /*
- * The tool's title sits as far below the header as the tabs sit below it,
- * and as far as the history page's records do, so switching pages keeps the
- * first thing in place. The drawing has 0.35rem of air above its letters and
- * 1.65rem below them, room for the splash; both are taken back here.
+ * The tool's title sits as far below the header as the tabs sit below it.
+ * The drawing has 0.35rem of air above its letters and 1.65rem below them,
+ * room for the splash; both are taken back here, so the gaps are measured to
+ * the letters.
  */
 .home > .page-intro .game-title {
   margin-top: -0.35rem;
 }
 .home > .page-intro:has(.game-title) {
-  margin-bottom: 0.35rem;
+  margin-bottom: calc(var(--home-top) - 1.65rem);
+}
+/* The records start where the home page's tabs do, so switching pages keeps them in place. */
+.home.history-page {
+  padding-top: var(--page-start);
 }
 .guided-workspace {
   min-width: 0;
@@ -1163,8 +1174,9 @@ html.size-transition .desert-art svg * {
     color: var(--ui-text-highlighted);
   }
 }
+/* An article's window starts where the home page's tabs do. */
 #main-content:has(> .content-page) {
-  padding-block: 2rem;
+  padding-block: var(--page-start) 2rem;
 }
 #main-content:has(> .content-page) + .site-footer {
   margin-top: 0;
@@ -1430,7 +1442,7 @@ html.size-transition .desert-art svg * {
     padding-inline: 1.5rem;
   }
   .home {
-    padding: 2rem 1.5rem 0;
+    padding: var(--home-top) 1.5rem 0;
   }
   .content-page {
     --page-gutter: 1.5rem;
@@ -1457,13 +1469,14 @@ html.size-transition .desert-art svg * {
   :root {
     --text-title: 1.75rem;
     --site-header-height: 4rem;
+    --home-top: 2rem;
   }
   .header-inner {
     padding-inline: 1.25rem;
     gap: 0.75rem;
   }
   .home {
-    padding: 2rem 1.25rem 0;
+    padding: var(--home-top) 1.25rem 0;
   }
   .content-page {
     --page-gutter: 1.25rem;

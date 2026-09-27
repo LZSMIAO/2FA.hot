@@ -97,7 +97,7 @@ const menu = computed(() => [
       <div class="header-inner">
         <NuxtLink :to="localePath('/')" class="wordmark" :aria-label="tx('2fa.hot 首页')"
           ><span class="header-wordmark"
-            >2fa<span class="brand-hot">.hot</span><span class="brand-beta">Beta</span></span
+            >2FA<span class="brand-hot">.hot</span><span class="brand-beta">Beta</span></span
           ><span class="header-pixel-wordmark"
             ><GameTitle /><span class="brand-beta">Beta</span></span
           ></NuxtLink
