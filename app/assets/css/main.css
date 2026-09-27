@@ -473,9 +473,16 @@ html[data-ui-hidden] {
 .home > .page-intro:has(.game-title) {
   margin-bottom: calc(var(--home-top) - 1.65rem);
 }
-/* The records start level with the foot of the home page's title. */
-.home.history-page {
-  padding-top: var(--page-start);
+/*
+ * The history page's block-lettered name stands where the home page's title
+ * does, and its records where the tabs do. The drawing keeps 0.35rem of air
+ * above its letters and 0.51rem below; both are taken back here.
+ */
+.home > .page-intro .page-wordmark {
+  margin-top: -0.35rem;
+}
+.home > .page-intro:has(.page-wordmark) {
+  margin-bottom: calc(var(--home-top) - 0.51rem);
 }
 .guided-workspace {
   min-width: 0;
@@ -1178,6 +1185,22 @@ html.size-transition .desert-art svg * {
 #main-content:has(> .content-page) {
   padding-block: var(--page-start) 2rem;
 }
+/*
+ * An article with its name in block letters (PageWordmark.vue) starts where
+ * the home page's tabs do, the name above it where the home page's title
+ * stands, in line with the window's outer edge.
+ */
+#main-content:has(> .content-page > .content-wordmark) {
+  padding-top: calc(var(--home-top) * 2 + 5.25rem);
+}
+.content-page:has(> .content-wordmark) {
+  position: relative;
+}
+.content-page > .content-wordmark {
+  position: absolute;
+  left: -2px;
+  bottom: calc(100% + 2px + var(--home-top) - 0.51rem);
+}
 #main-content:has(> .content-page) + .site-footer {
   margin-top: 0;
 }
@@ -1805,8 +1828,13 @@ html.size-transition .desert-art svg * {
 @media (max-width: 700px), (max-height: 500px) and (pointer: coarse) {
   /* An article starts right under the header, the way back and its title close
      over the text; the gaps above had pushed the first line well down. */
-  #main-content:has(> .content-page) {
+  #main-content:has(> .content-page),
+  #main-content:has(> .content-page > .content-wordmark) {
     padding-top: 0;
+  }
+  /* As the home page's title is on a phone, an article's block-lettered name is left out. */
+  .content-page > .content-wordmark {
+    display: none;
   }
   .content-page {
     padding-top: 0.5rem;

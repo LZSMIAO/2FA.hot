@@ -10,6 +10,7 @@ const sections = computed(() => content.value?.about.sections ?? [])
 
 <template>
   <article class="content-page">
+    <PageWordmark word="ABOUT" class="content-wordmark" />
     <ArticleLanguageNotice v-if="error" :busy="pending" @retry="refresh()" />
     <NuxtLink :to="localePath('/')" class="back-link"
       ><UIcon name="i-mc-arrow-left" />{{ tx('返回工具') }}</NuxtLink

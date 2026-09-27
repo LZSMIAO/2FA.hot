@@ -13,6 +13,7 @@ const related = computed(() => entries.value.filter((item) => item.slug !== guid
 
 <template>
   <article v-if="guide" class="content-page">
+    <PageWordmark word="GUIDES" class="content-wordmark" />
     <ArticleLanguageNotice v-if="error" :busy="pending" @retry="refresh()" />
     <NuxtLink :to="localePath('/guides')" class="back-link"
       ><UIcon name="i-mc-arrow-left" />{{ tx('全部指南') }}</NuxtLink

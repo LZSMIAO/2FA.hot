@@ -5,6 +5,7 @@ const { tx } = useMessages()
 </script>
 <template>
   <article class="content-page">
+    <PageWordmark word="PRIVACY" class="content-wordmark" />
     <NuxtLink :to="localePath('/')" class="back-link"
       ><UIcon name="i-mc-arrow-left" />{{ tx('返回工具') }}</NuxtLink
     >

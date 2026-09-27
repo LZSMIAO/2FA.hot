@@ -12,6 +12,7 @@ const sections = [
 </script>
 <template>
   <article class="content-page help-page">
+    <PageWordmark word="HELP" class="content-wordmark" />
     <NuxtLink :to="localePath('/')" class="back-link"
       ><UIcon name="i-mc-arrow-left" />{{ tx('返回工具') }}</NuxtLink
     >
