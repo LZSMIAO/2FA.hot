@@ -25,6 +25,28 @@ export function runningAsApp() {
   )
 }
 
+/*
+ * The same, kept up to date. Installed from a tab, the browser moves that very
+ * page into the app's window, where it becomes the app without reloading; read
+ * once at the start, it still took itself for a tab there.
+ */
+const asApp = shallowRef(false)
+let followingMode = false
+export function useRunningAsApp() {
+  if (import.meta.client && !followingMode) {
+    followingMode = true
+    const read = () => (asApp.value = runningAsApp())
+    read()
+    matchMedia('(display-mode: standalone)').addEventListener('change', read)
+    // The window can change after the install event; look again once it has.
+    window.addEventListener('appinstalled', () => {
+      read()
+      setTimeout(read, 1000)
+    })
+  }
+  return readonly(asApp)
+}
+
 /** Remembered for public/workspace-mode.js, which marks the page before its first paint. */
 export function rememberInstallable(offered: boolean) {
   document.documentElement.toggleAttribute('data-installable', offered)

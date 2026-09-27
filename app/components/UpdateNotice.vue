@@ -12,9 +12,10 @@ const open = shallowRef(false)
 let stop: (() => void) | undefined
 
 onMounted(() => {
-  if (!runningAsApp()) return
+  // Asked when the update comes, not at the start: a tab installed as the app
+  // becomes the app without reloading.
   stop = nuxtApp.hook('app:manifest:update', () => {
-    open.value = true
+    if (runningAsApp()) open.value = true
   })
 })
 onBeforeUnmount(() => stop?.())

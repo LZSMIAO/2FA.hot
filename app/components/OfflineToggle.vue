@@ -10,6 +10,7 @@ const known = computed(() => checked.value || offline.status.value !== 'off')
 const homeScreenHint = shallowRef(false)
 /** Opened as the installed app, which keeps offline mode on and has no switch for it. */
 const inApp = shallowRef(false)
+const asApp = useRunningAsApp()
 const dismissed = shallowRef(false)
 let timer: ReturnType<typeof setTimeout> | undefined
 const { online } = useNetworkStatus()
@@ -21,19 +22,31 @@ const remembered = (key: string) => {
   return false
 }
 
+/*
+ * The installed app is meant to open without a network, so offline mode is
+ * always on there: whenever its files are missing - never kept yet, or
+ * removed from a browser tab that shares its storage - it keeps them again.
+ * Removing the app is how its copy goes.
+ */
+async function keepOnInApp() {
+  if (inApp.value && offline.supported.value && offline.status.value === 'off' && navigator.onLine)
+    await offline.enable()
+}
 onMounted(async () => {
-  inApp.value = runningAsApp()
+  inApp.value = asApp.value
   homeScreenHint.value = document.documentElement.hasAttribute('data-ios') && !inApp.value
   await offline.check()
   checked.value = true
-  /*
-   * The installed app is meant to open without a network, so offline mode is
-   * always on there: whenever its files are missing - never kept yet, or
-   * removed from a browser tab that shares its storage - it keeps them again.
-   * Removing the app is how its copy goes.
-   */
-  if (inApp.value && offline.supported.value && offline.status.value === 'off' && navigator.onLine)
-    await offline.enable()
+  inApp.value = asApp.value
+  await keepOnInApp()
+})
+// Installed from this tab, the page is the app from then on: no switch, and offline use on.
+watch(asApp, async (value) => {
+  if (!checked.value) return
+  inApp.value = value
+  if (!value) return
+  homeScreenHint.value = false
+  await keepOnInApp()
 })
 onBeforeUnmount(() => clearTimeout(timer))
 
