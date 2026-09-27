@@ -110,7 +110,7 @@ function time(value: number) {
   <section class="session-history" :aria-label="tx('本次会话')">
     <div class="session-heading">
       <h2>
-        <span class="session-count">{{ vault.recent.value.length }}</span> {{ tx('本次会话') }}
+        {{ tx('本次会话') }} <span class="session-count">{{ vault.recent.value.length }}</span>
       </h2>
       <!-- The bin alone says it, at the row's end; the name is its label and hint. -->
       <AppHint :text="tx('清空')"
@@ -206,7 +206,7 @@ function time(value: number) {
                     :aria-label="tx(row.batch ? '转到批量取码' : '取码')"
                     @click="select(row)"
                   >
-                    <UIcon name="i-lucide-arrow-up-right" />
+                    <UIcon name="i-mc-arrow-up-right" />
                   </button>
                 </div>
                 <template v-if="row.batch && expanded.has(row.id)">
@@ -239,7 +239,7 @@ function time(value: number) {
                       :aria-label="tx('取码')"
                       @click="selectEntry(entry)"
                     >
-                      <UIcon name="i-lucide-arrow-up-right" />
+                      <UIcon name="i-mc-arrow-up-right" />
                     </button>
                   </div>
                 </template>
@@ -266,13 +266,14 @@ function time(value: number) {
   padding-top: 0.5rem;
   border-top: 1px solid var(--ui-border);
 }
-/* Count, heading and bin sit together at the row's end, the bin last. */
+/* The heading and its count open the list at its start, where the rows'
+   names begin; the bin keeps the row's end. */
 .session-heading {
   --session-heading-gap: 0.75rem;
   display: flex;
   align-items: center;
   gap: var(--session-heading-gap);
-  justify-content: flex-end;
+  justify-content: space-between;
   flex-wrap: wrap;
 }
 /* A quiet label at the size of the line above it, not a section heading. */
@@ -366,19 +367,37 @@ function time(value: number) {
   /* The scrollbar's room is kept from the first row, so when enough rows
      arrive to need it the times and arrows do not step left. */
   scrollbar-gutter: stable;
-  scrollbar-width: thin;
-  scrollbar-color: var(--control-line) transparent;
 }
+/*
+ * An Ore scrollbar: a raised square thumb in a sunken track. Chrome and
+ * Safari drop these pseudo-elements for their own rounded thumb whenever the
+ * standard scrollbar-color or scrollbar-width is set, so those are left to
+ * the browsers without them (Firefox).
+ */
 @supports selector(::-webkit-scrollbar) {
-  .session-rows {
-    scrollbar-width: auto;
-  }
   .session-rows::-webkit-scrollbar {
-    width: 6px;
+    width: 10px;
+  }
+  .session-rows::-webkit-scrollbar-track {
+    background: var(--wash);
+    box-shadow: inset 2px 0 0 var(--ore-shade);
   }
   .session-rows::-webkit-scrollbar-thumb {
-    background: var(--control-line);
+    border: 2px solid var(--ore-outline);
     border-radius: 0;
+    background: var(--ore-control);
+    box-shadow:
+      inset 1px 1px 0 var(--ore-highlight),
+      inset -1px -1px 0 var(--ore-shade);
+  }
+  .session-rows::-webkit-scrollbar-thumb:hover {
+    background: var(--ore-control-hover);
+  }
+}
+@supports not selector(::-webkit-scrollbar) {
+  .session-rows {
+    scrollbar-width: thin;
+    scrollbar-color: var(--ore-control) var(--wash);
   }
 }
 .session-row {
