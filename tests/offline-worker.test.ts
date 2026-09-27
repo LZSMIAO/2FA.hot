@@ -31,7 +31,11 @@ function worker() {
   const key = (input: Input) => new URL(typeof input === 'string' ? input : input.url, origin).href
   const files = new Map<string, string>()
   const requests: string[] = []
-  const network = { online: true }
+  // hold: requests wait until release(), as on a connection that answers late.
+  const network = { online: true, hold: false }
+  const held: (() => void)[] = []
+  const timers: { run: () => void; ms: number }[] = []
+  const background: Promise<unknown>[] = []
   async function open(name: string) {
     if (!stores.has(name)) stores.set(name, new Map())
     const store = stores.get(name)!
@@ -54,6 +58,7 @@ function worker() {
   async function fetch(input: Input) {
     const url = key(input)
     requests.push(url)
+    if (network.hold) await new Promise<void>((resolve) => held.push(resolve))
     if (!network.online) throw new TypeError('Failed to fetch')
     const body = files.get(url)
     const page = !new URL(url).pathname.includes('.')
@@ -71,7 +76,9 @@ function worker() {
     skipWaiting() {},
     clients: { claim: async () => {} }
   }
-  vm.runInNewContext(code, { self, caches, fetch, Response, URL, Headers })
+  // Timers run only when elapse() says the time has passed.
+  const setTimeout = (run: () => void, ms: number) => void timers.push({ run, ms })
+  vm.runInNewContext(code, { self, caches, fetch, Response, URL, Headers, setTimeout })
 
   async function dispatch(type: string, extra: Record<string, unknown> = {}) {
     const waits: Promise<unknown>[] = []
@@ -82,7 +89,8 @@ function worker() {
     let response: Promise<Response> | undefined
     handlers.fetch!({
       request: { url: origin + path, method: 'GET', mode, headers: new Headers() },
-      respondWith: (value: Promise<Response>) => (response = value)
+      respondWith: (value: Promise<Response>) => (response = value),
+      waitUntil: (promise: Promise<unknown>) => background.push(promise)
     })
     return response ? await response : undefined
   }
@@ -106,7 +114,20 @@ function worker() {
     install: () => dispatch('install'),
     navigate: (path: string) => request(path, 'navigate'),
     get: (path: string) => request(path),
-    keys: () => [...stores.values()].flatMap((store) => [...store.keys()])
+    keys: () => [...stores.values()].flatMap((store) => [...store.keys()]),
+    timers,
+    /** Lets the waiting timers run, once the worker has had a turn to set them. */
+    async elapse() {
+      await new Promise((resolve) => setImmediate(resolve))
+      for (const timer of timers.splice(0)) timer.run()
+    },
+    /** Lets held requests answer, and waits for work the worker left running. */
+    async release() {
+      network.hold = false
+      for (const resolve of held.splice(0)) resolve()
+      await new Promise((resolve) => setImmediate(resolve))
+      await Promise.all(background)
+    }
   }
 }
 
@@ -205,4 +226,57 @@ test('offline mode fails whole when a file the tool needs cannot be kept', async
   sw.files.delete(`${origin}/_nuxt/app.js`)
   const messages = await sw.prepare('zh-TW', '/zh-TW', [])
   assert.equal(messages.at(-1)?.type, 'error')
+})
+
+test('on a slow network the kept copy opens after three seconds, and the network still refreshes it', async () => {
+  const sw = worker()
+  site(sw)
+  await sw.prepare('zh-TW', '/zh-TW', [])
+  sw.serve({ '/zh-TW': 'zh-TW home, refreshed for b1' })
+  sw.network.hold = true
+  const opening = sw.navigate('/zh-TW')
+  await sw.elapse()
+  assert.equal(await (await opening)!.text(), 'zh-TW home')
+  assert.ok(sw.timers.length === 0)
+  await sw.release()
+  sw.network.online = false
+  assert.equal(await (await sw.navigate('/zh-TW'))!.text(), 'zh-TW home, refreshed for b1')
+})
+
+test('the wait for a slow network is three seconds', async () => {
+  const sw = worker()
+  site(sw)
+  await sw.prepare('zh-TW', '/zh-TW', [])
+  sw.network.hold = true
+  const opening = sw.navigate('/zh-TW')
+  await new Promise((resolve) => setImmediate(resolve))
+  assert.deepEqual(
+    sw.timers.map((timer) => timer.ms),
+    [3000]
+  )
+  await sw.release()
+  await opening
+})
+
+test('a page with no kept copy keeps waiting for a slow network rather than leaving it', async () => {
+  const sw = worker()
+  site(sw)
+  await sw.prepare('zh-TW', '/zh-TW', [])
+  sw.serve({ '/zh-TW/guides/what-is-2fa': 'guide' })
+  sw.network.hold = true
+  const opening = sw.navigate('/zh-TW/guides/what-is-2fa')
+  await sw.elapse()
+  await sw.release()
+  assert.equal(await (await opening)!.text(), 'guide')
+})
+
+test("a newer build's page never replaces the kept copy before that build is kept", async () => {
+  const sw = worker()
+  site(sw)
+  await sw.prepare('zh-TW', '/zh-TW', [])
+  sw.serve({ '/zh-TW': 'zh-TW home of build b2' })
+  assert.equal(await (await sw.navigate('/zh-TW'))!.text(), 'zh-TW home of build b2')
+  sw.network.online = false
+  // Its files are not kept yet, so offline the kept build's page still opens.
+  assert.equal(await (await sw.navigate('/zh-TW'))!.text(), 'zh-TW home')
 })

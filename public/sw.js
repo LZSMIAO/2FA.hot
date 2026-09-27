@@ -1,7 +1,8 @@
 /*
- * Offline mode. Registered only when a visitor turns it on, and removed with
- * every file it kept when they turn it off. It keeps this site's own public
- * files so the tool opens and generates codes with no network.
+ * Offline mode. Registered when a visitor turns it on in a browser tab, or by
+ * the installed app, which keeps it on; removed with every file it kept when a
+ * visitor turns it off. It keeps this site's own public files so the tool
+ * opens and generates codes with no network.
  *
  * It never sees or keeps a secret: in links a secret sits after #, which is
  * never requested, and a code page is kept only as its language's empty
@@ -119,45 +120,100 @@ async function precache(options, report = () => {}) {
       await caches.delete(name)
 }
 
-async function page(request, url) {
-  const current = await readConfig()
+/*
+ * With a copy kept, a slow network holds a page no longer than this. On a
+ * connection that answers late or never (one bar of signal, a hotel login
+ * page), the kept copy opens and the network's answer still refreshes it.
+ * With no network at all the fetch fails at once and the copy opens then.
+ */
+const NETWORK_WAIT = 3000
+
+/**
+ * Only a page of the kept build is stored: a newer build's page names files
+ * that build has not kept yet, and opened offline it would break. That build's
+ * pages are kept with the rest of it, when its worker installs.
+ */
+async function ofBuild(response, build) {
   try {
-    const response = await fetch(request)
+    return (await response.clone().text()).includes(build)
+  } catch {
+    return false
+  }
+}
+
+/**
+ * Only the saved language's code pages are kept, all one empty shell the app
+ * fills from what follows #: this is the address a code page answers at here.
+ */
+function keptCodePage(url, current) {
+  const rest = url.pathname.replace(/^\/(?:[a-z]{2,3}(?:-[A-Za-z]{2})?\/)?2fa/, '')
+  return pageKey(current.shell + rest)
+}
+
+/** The kept copy of this very page, if there is one. */
+async function keptPage(url, current) {
+  if (!isCodePage(url.pathname)) return caches.match(pageKey(url.pathname))
+  if (pageKey(url.pathname) !== keptCodePage(url, current)) return undefined
+  return caches.match(current.shell)
+}
+
+/** With no network: the kept page, or the nearest thing the kept copy has. */
+async function offlinePage(url, current) {
+  const origin = self.location.origin
+  if (isCodePage(url.pathname)) {
+    // As the server does online, a code page in another language moves to the
+    // saved one; # and its secret go along.
+    const target = keptCodePage(url, current)
+    if (pageKey(url.pathname) !== target)
+      return Response.redirect(new URL(target, origin).href + url.search, 302)
+    return caches.match(current.shell)
+  }
+  const key = pageKey(url.pathname)
+  const cached = await caches.match(key)
+  if (cached) return cached
+  // A page not kept offline opens the tool instead.
+  if (key !== pageKey(current.home))
+    return Response.redirect(new URL(current.home, origin).href, 302)
+  return undefined
+}
+
+async function page(event, url) {
+  const current = await readConfig()
+  const network = fetch(event.request).then(async (response) => {
     if (
       current &&
       response.ok &&
       response.type === 'basic' &&
       !response.redirected &&
       !isCodePage(url.pathname) &&
-      (response.headers.get('Content-Type') || '').includes('text/html')
+      (response.headers.get('Content-Type') || '').includes('text/html') &&
+      (await ofBuild(response, current.build))
     )
       await (
         await caches.open(BUILD_PREFIX + current.build)
       ).put(pageKey(url.pathname), response.clone())
     return response
-  } catch (error) {
-    if (!current) throw error
-    const origin = self.location.origin
-    if (isCodePage(url.pathname)) {
-      // Only the saved language is kept, so, as the server does online, a code
-      // page in another language moves to this one; # and its secret go along.
-      const rest = url.pathname.replace(/^\/(?:[a-z]{2,3}(?:-[A-Za-z]{2})?\/)?2fa/, '')
-      const target = pageKey(current.shell + rest)
-      if (pageKey(url.pathname) !== target)
-        return Response.redirect(new URL(target, origin).href + url.search, 302)
-      // Every code page is the same empty shell; the app reads the rest.
-      const shell = await caches.match(current.shell)
-      if (shell) return shell
-      throw error
+  })
+  if (!current) return network
+  let failure
+  try {
+    const late = new Promise((resolve) => setTimeout(resolve, NETWORK_WAIT))
+    const response = await Promise.race([network, late])
+    if (response) return response
+    // Late: open the copy of this page if there is one, and let the network
+    // finish in the background. With no copy, keep waiting for the network.
+    const kept = await keptPage(url, current)
+    if (kept) {
+      event.waitUntil(network.catch(() => {}))
+      return kept
     }
-    const key = pageKey(url.pathname)
-    const cached = await caches.match(key)
-    if (cached) return cached
-    // A page not kept offline opens the tool instead.
-    if (key !== pageKey(current.home))
-      return Response.redirect(new URL(current.home, origin).href, 302)
-    throw error
+    return await network
+  } catch (error) {
+    failure = error
   }
+  const fallback = await offlinePage(url, current)
+  if (fallback) return fallback
+  throw failure
 }
 
 async function asset(request, kind) {
@@ -200,7 +256,7 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url)
   if (url.origin !== self.location.origin) return
   if (request.mode === 'navigate') {
-    event.respondWith(page(request, url))
+    event.respondWith(page(event, url))
     return
   }
   const kind = kindOf(url)
