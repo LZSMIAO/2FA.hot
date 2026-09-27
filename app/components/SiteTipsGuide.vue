@@ -39,7 +39,7 @@ const tips = [
     detail: '电脑上按回车直接复制当前验证码；在密钥框按上下方向键，可以翻出本地历史里保存过的密钥。'
   },
   {
-    icon: 'i-lucide-maximize-2',
+    icon: 'i-mc-maximize',
     title: '批量独立页',
     detail: '批量结果右上角的展开图标，会把验证码放到独立页面，一屏显示全部，适合一边核对一边输入。'
   },

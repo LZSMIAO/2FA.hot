@@ -703,7 +703,7 @@ onBeforeUnmount(() => {
             variant="ghost"
             class="expand-button batch-expand"
             :disabled="guiding || !valid.length"
-            :icon="standalone ? 'i-lucide-minimize-2' : 'i-lucide-maximize-2'"
+            :icon="standalone ? 'i-mc-minimize' : 'i-mc-maximize'"
             :aria-label="tx(standalone ? '返回工具首页' : '查看独立取码页')"
             @click="expandBatch"
           />

@@ -310,6 +310,7 @@ onBeforeUnmount(() => {
       <details class="tutorial-question">
         <summary>
           <h3>{{ tx('为什么它能验证身份？') }}</h3>
+          <UIcon name="i-mc-chevron-down" class="tutorial-question-chevron" aria-hidden="true" />
         </summary>
         <p>
           {{
@@ -322,6 +323,7 @@ onBeforeUnmount(() => {
       <details class="tutorial-question">
         <summary>
           <h3>{{ tx('演示里会看到什么？') }}</h3>
+          <UIcon name="i-mc-chevron-down" class="tutorial-question-chevron" aria-hidden="true" />
         </summary>
         <p>
           {{
@@ -607,25 +609,14 @@ onBeforeUnmount(() => {
 .tutorial-question summary h3 {
   margin: 0;
 }
-.tutorial-question summary::after {
-  content: '';
+/* OreUI's pixel chevron, as on the home page's questions, not a drawn corner. */
+.tutorial-question-chevron {
   flex: none;
-  width: 0.5rem;
-  height: 0.5rem;
   margin-inline-start: auto;
-  border-inline-end: 2px solid currentColor;
-  border-block-end: 2px solid currentColor;
-  transform: rotate(45deg) translate(-2px, -2px);
   color: var(--ui-text-muted);
-  transition: transform 150ms var(--ease-out);
 }
-.tutorial-question[open] summary::after {
-  transform: rotate(-135deg) translate(-2px, -2px);
-}
-@media (prefers-reduced-motion: reduce) {
-  .tutorial-question summary::after {
-    transition: none;
-  }
+.tutorial-question[open] .tutorial-question-chevron {
+  transform: rotate(180deg);
 }
 .tutorial-intro .tutorial-muted {
   color: var(--ui-text-muted);

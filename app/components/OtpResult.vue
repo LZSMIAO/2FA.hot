@@ -312,7 +312,7 @@ async function expand() {
         ><UButton
           color="neutral"
           variant="ghost"
-          :icon="standalone ? 'i-lucide-minimize-2' : 'i-lucide-maximize-2'"
+          :icon="standalone ? 'i-mc-minimize' : 'i-mc-maximize'"
           class="expand-button"
           data-sound-custom
           :aria-label="tx(standalone ? '缩小验证码' : '放大验证码')"

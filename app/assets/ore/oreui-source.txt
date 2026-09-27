@@ -11,6 +11,10 @@ Files taken from OreUI by katorly, https://katorly.dev/OreUI
                                       chevron-up, chevron-left and chevron-right
   app/assets/icons/mc/close.svg       src/assets/icons/cross.svg, likewise
 
+Not from OreUI: app/assets/icons/mc/maximize.svg, minimize.svg and
+arrow-up-right.svg were drawn for this site on the same 8x8 grid, since OreUI
+has no expand or diagonal arrow icons.
+
 Source: https://github.com/katorlys/OreUI/tree/7c3ac389c265534390091373ad9cb504483060ca/src/assets/icons
 
 License: Mozilla Public License 2.0, https://mozilla.org/MPL/2.0/
