@@ -1120,6 +1120,12 @@ html[data-guide-learned~='batch'][data-workspace-mode='batch'] .guide-trigger-in
   border: 1px solid var(--ui-error);
 }
 
+/* A tip that stands aside for what it covers (AppHint's passing): clicks go
+   through it, and through the positioning box around it. */
+.tip-passing,
+[data-reka-popper-content-wrapper]:has(> .tip-passing) {
+  pointer-events: none;
+}
 /* Compact help bubbles, visually anchored to their triggers. */
 .parameter-help-tooltip {
   height: auto;

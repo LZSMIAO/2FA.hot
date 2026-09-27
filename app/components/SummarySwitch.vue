@@ -4,7 +4,7 @@
  * the icon stands alone, coloured when on. Where the icon is the switch
  * (offline use) a click switches it and the tip says what a click does. Where
  * the icon is a link (autosave's opens the history page, which has the same
- * switch), hovering it opens a box above it with the name and a switch, the
+ * switch), hovering it opens a box below it with the name and a switch, the
  * only way to switch it there. Touch has no hover (ore.css hides the tips
  * there), so the name is written out beside a switch and the icon is the link.
  * Both are in the page; the pointer decides which shows.
@@ -75,10 +75,13 @@ function pointerBack() {
       v-model:open="popoverOpen"
       mode="hover"
       :open-delay="80"
-      :close-delay="200"
+      :close-delay="checked && onTip ? 0 : 200"
       arrow
-      :content="{ side: 'top', align: 'center', sideOffset: 4 }"
-      :ui="{ content: 'parameter-help-tooltip', arrow: 'parameter-help-arrow' }"
+      :content="{ side: 'bottom', align: 'center', sideOffset: 4 }"
+      :ui="{
+        content: checked && onTip ? 'parameter-help-tooltip tip-passing' : 'parameter-help-tooltip',
+        arrow: 'parameter-help-arrow'
+      }"
     >
       <NuxtLink :to="to" class="setting-icon" :class="{ 'is-on': checked }" :aria-label="linkLabel"
         ><UIcon :name="icon"
@@ -96,7 +99,9 @@ function pointerBack() {
         </div>
       </template>
     </UPopover>
-    <AppHint v-else :text="status || action"
+    <!-- Below, as the box is: over the icons they covered the card's copy button.
+         Under them is the session list's bin, so the tip stands aside for it. -->
+    <AppHint v-else :text="status || action" side="bottom" passing
       ><button
         v-if="!status"
         type="button"

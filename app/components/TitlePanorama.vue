@@ -788,7 +788,8 @@ onBeforeUnmount(() => {
     animation-range: calc(100% - var(--site-footer-height)) 100%;
   }
 }
-:global(html[data-ios] .panorama-controls:not(.is-placed)) {
+/* public/backdrop-controls.js usually places them before the first paint. */
+:global(html[data-ios]:not([data-backdrop-placed]) .panorama-controls:not(.is-placed)) {
   visibility: hidden;
   opacity: 0;
 }

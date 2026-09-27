@@ -20,6 +20,8 @@ const prePaintScripts = [
   'workspace-mode.js',
   'theme-favicon.js'
 ]
+// Run at the end of the body, once the footer has been read.
+const bodyEndScripts = ['backdrop-controls.js']
 const versioned = (name: string) =>
   `/${name}?v=${createHash('sha1')
     .update(readFileSync(new URL(`./public/${name}`, import.meta.url)))
@@ -89,7 +91,13 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
-      script: prePaintScripts.map((name) => ({ src: versioned(name) })),
+      script: [
+        ...prePaintScripts.map((name) => ({ src: versioned(name) })),
+        ...bodyEndScripts.map((name) => ({
+          src: versioned(name),
+          tagPosition: 'bodyClose' as const
+        }))
+      ],
       title: toolTitle('en'),
       meta: [
         {
@@ -142,7 +150,7 @@ export default defineNuxtConfig({
       })
     ),
     ...Object.fromEntries(
-      prePaintScripts.map((name) => [
+      [...prePaintScripts, ...bodyEndScripts].map((name) => [
         `/${name}`,
         { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } }
       ])

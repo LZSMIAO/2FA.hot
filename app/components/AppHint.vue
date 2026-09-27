@@ -1,14 +1,23 @@
 <script setup lang="ts">
-defineProps<{ text: string }>()
+withDefaults(
+  defineProps<{
+    text: string
+    side?: 'top' | 'bottom'
+    /** Gone as the pointer leaves, and clicks pass through it to what it covers. */
+    passing?: boolean
+  }>(),
+  { side: 'top' }
+)
 </script>
 
 <template>
   <UTooltip
     :text="text"
     :delay-duration="0"
-    :content="{ side: 'top', align: 'center', sideOffset: 2 }"
+    :disable-hoverable-content="passing"
+    :content="{ side, align: 'center', sideOffset: 2 }"
     :ui="{
-      content: 'parameter-help-tooltip',
+      content: passing ? 'parameter-help-tooltip tip-passing' : 'parameter-help-tooltip',
       arrow: 'parameter-help-arrow',
       text: 'whitespace-normal'
     }"
