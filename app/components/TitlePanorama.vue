@@ -603,14 +603,6 @@ onBeforeUnmount(() => {
   font-size: 12px;
   line-height: 1.3;
 }
-:global(.panorama-menu-half + .panorama-menu-half::after) {
-  content: '';
-  position: absolute;
-  inset-block: 12px;
-  inset-inline-start: -2px;
-  width: 1px;
-  background: var(--ui-border);
-}
 :global(.panorama-menu-half [data-slot='itemWrapper']) {
   flex: none;
   max-width: 100%;

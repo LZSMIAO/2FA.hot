@@ -169,7 +169,6 @@ const remove = () => window.dispatchEvent(new Event('2fa-panorama-remove'))
   width: 100%;
 }
 .backdrop-footer-action {
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -196,14 +195,6 @@ const remove = () => window.dispatchEvent(new Event('2fa-panorama-remove'))
 .backdrop-footer-mark .iconify {
   width: 1.125rem;
   height: 1.125rem;
-}
-.backdrop-footer-action + .backdrop-footer-action::before {
-  content: '';
-  position: absolute;
-  inset-block: 0.75rem;
-  inset-inline-start: 0;
-  width: 1px;
-  background: var(--ui-border);
 }
 .backdrop-footer-action:focus-visible {
   outline: 2px solid var(--accent-ink);
