@@ -897,8 +897,7 @@ html[data-workspace-mode='batch'] .mode-tabs [id$='-trigger-batch'] {
     max-width: calc(100% - 8.25rem);
     white-space: normal;
   }
-  html:root .site-footer .footer-copyright,
-  html:root .site-footer .footer-tagline {
+  html:root .site-footer .footer-copyright {
     overflow: visible;
   }
   html:root .site-footer .footer-inner nav {

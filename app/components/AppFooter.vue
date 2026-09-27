@@ -5,10 +5,9 @@ const { tx } = useMessages()
 <template>
   <footer class="site-footer">
     <div class="footer-inner">
+      <!-- The notice alone. Not translated: it reads the same on every language's page. -->
       <p class="footer-brand">
-        <span class="footer-tagline">{{ tx('多功能 TOTP 验证码生成器') }}</span
-        ><!-- Not translated: the notice reads the same on every language's page.
-        --><span class="footer-copyright"
+        <span class="footer-copyright"
           ><span>© 2026 2fa.hot.</span> <span>All rights reserved.</span></span
         >
       </p>
@@ -56,19 +55,15 @@ const { tx } = useMessages()
 .footer-inner nav {
   gap: 1.75rem;
 }
-/* The description and the notice on one line, level with the links; where the
-   window is too narrow for both, the notice moves under the description. */
+/* The notice on one line, level with the links. */
 .footer-brand {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.125rem 1.25rem;
   min-width: 0;
   margin: 0;
   line-height: 1.25rem;
   white-space: nowrap;
 }
-.footer-copyright,
-.footer-tagline {
+.footer-copyright {
   overflow: hidden;
   text-overflow: ellipsis;
 }
