@@ -347,8 +347,11 @@ html[data-ui-hidden] {
   text-transform: uppercase;
   color: var(--ui-text-muted);
 }
+/* The page's frame, the backdrop's corner controls and sheet included, marks focus in white. */
 .site-header,
-.site-footer {
+.site-footer,
+.panorama-controls,
+.backdrop-sheet {
   --accent-ink: var(--ui-text-highlighted);
 }
 .footer-inner .footer-icon {
@@ -379,6 +382,19 @@ html[data-ui-hidden] {
 }
 .desktop-nav a.active {
   color: var(--ui-text-highlighted);
+}
+/*
+ * The links run the header's full height, so a ring on the link itself ran
+ * past the page's top and hung below the header. It closes round the words.
+ */
+.desktop-nav a:focus-visible {
+  outline: none;
+}
+.desktop-nav a:focus-visible::after {
+  content: '';
+  position: absolute;
+  inset: calc(50% - 1.125rem) -0.5rem;
+  border: 2px solid var(--accent-ink);
 }
 .desktop-nav a:hover,
 .text-action:hover,
