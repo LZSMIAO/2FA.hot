@@ -90,15 +90,16 @@ const backdrop = computed(() =>
     : []
 )
 /*
- * Grouped rather than listed: where you can go, what this page looks like,
- * the other edition, then the site's own pages. A bare "Lite" said nothing
- * about what it is.
+ * One list, with no rules between groups: the site's own pages first, then
+ * the backdrop (on the home page), then the other edition, which opens in a
+ * new window. A bare "Lite" said nothing about what it is.
  */
 const menu = computed(() => [
   { label: tx('本地历史'), to: localePath('/history'), icon: 'i-lucide-history' },
   { label: tx('使用说明'), to: localePath('/help'), icon: 'i-lucide-book-open' },
-  ...(backdrop.value.length ? [{ type: 'separator' as const }, ...backdrop.value] : []),
-  { type: 'separator' as const },
+  { label: tx('功能建议'), to: localePath('/waitlist'), icon: 'i-lucide-plus' },
+  { label: tx('隐私说明'), to: localePath('/privacy'), icon: 'i-lucide-shield-check' },
+  ...backdrop.value,
   {
     label: tx('Lite 轻量版'),
     to: liteHref.value,
@@ -106,10 +107,7 @@ const menu = computed(() => [
     target: '_blank',
     icon: 'i-lucide-feather',
     trailingIcon: 'i-lucide-arrow-up-right'
-  },
-  { type: 'separator' as const },
-  { label: tx('功能建议'), to: localePath('/waitlist'), icon: 'i-lucide-plus' },
-  { label: tx('隐私说明'), to: localePath('/privacy'), icon: 'i-lucide-shield-check' }
+  }
 ])
 </script>
 <template>
