@@ -12,12 +12,12 @@
 :root {
   color-scheme: light;
   /*
-   * Where pages begin under the header. The home page puts its title
-   * --home-top below the header and its tabs as far again below the title's
-   * letters, 5.25rem tall; every other page starts where those tabs do.
+   * Where pages begin under the header. The home page puts its title's
+   * letters, 5.25rem tall, --home-top below the header and its tabs as far
+   * again below them; every other page starts level with the letters' foot.
    */
   --home-top: 2.5rem;
-  --page-start: calc(var(--home-top) * 2 + 5.25rem);
+  --page-start: calc(var(--home-top) + 5.25rem);
   --layer-popover: 60;
   --layer-tooltip: 70;
   --ui-primary: oklch(0.5 0.17 290);
@@ -473,7 +473,7 @@ html[data-ui-hidden] {
 .home > .page-intro:has(.game-title) {
   margin-bottom: calc(var(--home-top) - 1.65rem);
 }
-/* The records start where the home page's tabs do, so switching pages keeps them in place. */
+/* The records start level with the foot of the home page's title. */
 .home.history-page {
   padding-top: var(--page-start);
 }
@@ -1174,7 +1174,7 @@ html.size-transition .desert-art svg * {
     color: var(--ui-text-highlighted);
   }
 }
-/* An article's window starts where the home page's tabs do. */
+/* An article's window starts level with the foot of the home page's title. */
 #main-content:has(> .content-page) {
   padding-block: var(--page-start) 2rem;
 }
