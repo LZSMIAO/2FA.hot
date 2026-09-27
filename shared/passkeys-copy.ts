@@ -43,7 +43,11 @@ const en = {
       'Update the extension to manage passkeys here. Replace files in the original folder, reload the extension, then refresh this page. Do not uninstall your vault.',
     updateButton: 'Download extension update',
     lastUsed: 'Last used',
-    neverUsed: 'Not used yet'
+    neverUsed: 'Not used yet',
+    rename: 'Rename',
+    renameField: 'Name',
+    renameSave: 'Save name',
+    sameSiteCode: 'A verification code for this site is saved here too'
   },
   open: 'Manage passkeys',
   recheck: 'Check again',
@@ -79,7 +83,7 @@ const en = {
     },
     {
       title: 'Sign in with a saved passkey',
-      text: 'Choose passkey sign-in on the website. Unlock the extension, select your account, and confirm. Use “System or another authenticator” if the passkey is stored elsewhere.'
+      text: 'Choose passkey sign-in on the website, or click the 2fa.hot button below its sign-in field. The confirmation opens inside the page; unlock it with your master password or Touch ID / Windows Hello, and it stays unlocked until it locks itself. If no passkey for that site is saved here, the request goes straight to the browser.'
     },
     {
       title: 'Move your existing passkeys',
@@ -87,7 +91,7 @@ const en = {
     },
     {
       title: 'Take your passkeys with you',
-      text: 'Select entries in the extension and export an encrypted backup with a separate password. Restore it on another copy of the extension. Bitwarden-format export contains plaintext private keys; compatibility with actual Bitwarden clients still needs verification.'
+      text: 'Another computer: export an encrypted backup and restore it in the extension there. Bitwarden: export Bitwarden JSON (it contains plaintext private keys) and import it in Bitwarden’s web vault. 1Password and Apple Passwords currently accept passkeys only through the system’s Credential Exchange on phones: move them into Bitwarden first, then hand them over from the Bitwarden app on iOS 26 or Android 14 and later.'
     }
   ],
   storage: 'Where your passkeys live',
@@ -95,7 +99,7 @@ const en = {
     'The extension encrypts private keys and account metadata locally. After approval in the extension, this page displays account metadata in memory for up to 5 minutes. Passwords, private keys and backup files are never sent to this page. There is no cloud sync or password recovery. Keep an encrypted backup before uninstalling.',
   limits: 'Preview limitations',
   limitation:
-    'The extension UI is currently in Chinese. This version supports common ES256 passkeys; features such as PRF and conditional autofill use the browser’s other authenticators. Broad website compatibility and independent security review are still pending.',
+    'The extension UI is currently in Chinese. It supports common ES256 passkeys, PRF and sign-in autofill; a few capabilities such as largeBlob still go to the browser’s other authenticators. Import into a real Bitwarden client, broad website compatibility and an independent security review are still pending.',
   migrationNote:
     'A cross-device sign-in QR code is not a passkey export. Deleting a local copy does not revoke the credential on the website.',
   protocol: 'Installation requires your confirmation',
@@ -148,7 +152,11 @@ export const passkeyCopy: Record<'en' | 'zh-CN' | 'zh-TW', PasskeyCopy> = {
         '更新扩展后即可在这里管理。请覆盖原文件夹中的扩展文件，重新加载扩展并刷新网页；不要卸载密钥库。',
       updateButton: '下载扩展更新',
       lastUsed: '最近使用',
-      neverUsed: '尚未使用'
+      neverUsed: '尚未使用',
+      rename: '重命名',
+      renameField: '名称',
+      renameSave: '保存名称',
+      sameSiteCode: '这里也存有此网站的验证码'
     },
     open: '管理通行密钥',
     recheck: '重新检测',
@@ -180,7 +188,7 @@ export const passkeyCopy: Record<'en' | 'zh-CN' | 'zh-TW', PasskeyCopy> = {
       },
       {
         title: '使用已保存的通行密钥登录',
-        text: '在目标网站选择通行密钥登录，解锁扩展、选择账号并确认。如果凭据保存在其他地方，选择“使用系统或其他验证器”。'
+        text: '在目标网站选择通行密钥登录，或点击登录框下方的 2fa.hot 按钮。确认框会在网页内弹出，可用主口令或 Touch ID / Windows Hello 解锁，解锁后在自动锁定前无需重复输入。这里没有该网站的密钥时，请求会直接交给浏览器。'
       },
       {
         title: '把现有通行密钥迁入',
@@ -188,7 +196,7 @@ export const passkeyCopy: Record<'en' | 'zh-CN' | 'zh-TW', PasskeyCopy> = {
       },
       {
         title: '把通行密钥迁出',
-        text: '在扩展中选中账号，用独立备份口令导出加密文件，在另一份扩展中恢复。也可导出 Bitwarden 格式，但文件含明文私钥，与真实 Bitwarden 客户端的兼容性仍待验证。'
+        text: '另一台电脑：在扩展中导出加密备份，在那里的扩展中恢复。Bitwarden：导出 Bitwarden JSON（含明文私钥），在其网页版“导入数据”中导入。1Password 和 Apple 密码目前只在手机上通过系统的“凭据交换”接收通行密钥：先迁入 Bitwarden，再在 iOS 26 或 Android 14 以上的 Bitwarden App 中转交给它们。'
       }
     ],
     storage: '通行密钥保存在哪里',
@@ -196,7 +204,7 @@ export const passkeyCopy: Record<'en' | 'zh-CN' | 'zh-TW', PasskeyCopy> = {
       '扩展在本机加密保存私钥和账号信息。在扩展中确认后，此页面可临时显示账号信息，最多保留 5 分钟；主口令、私钥和备份文件不会传给网页。没有云同步或口令找回，卸载扩展前请先保留加密备份。',
     limits: '预览版范围',
     limitation:
-      '扩展界面目前为简体中文。当前支持常见的 ES256 通行密钥；PRF、条件式自动填充等能力交给浏览器的其他验证器处理。广泛网站兼容验证和独立安全审查尚未完成。',
+      '扩展界面目前为简体中文。支持常见的 ES256 通行密钥、PRF 和登录框自动填充；largeBlob 等少数能力仍交给浏览器的其他验证器。尚未在真实 Bitwarden 客户端中完成导入测试，也尚未完成广泛网站兼容验证和独立安全审查。',
     migrationNote: '跨设备登录的二维码不是通行密钥导出码。删除本地副本，也不会撤销网站上的凭据。',
     protocol: '安装需要你确认',
     protocolText: '网页无法静默添加此扩展。商店上架后，安装按钮会带你前往官方商店，由你确认安装。'
@@ -243,7 +251,11 @@ export const passkeyCopy: Record<'en' | 'zh-CN' | 'zh-TW', PasskeyCopy> = {
         '更新擴充功能後即可在這裡管理。請覆蓋原資料夾中的檔案，重新載入擴充功能並重新整理網頁；不要解除安裝密鑰庫。',
       updateButton: '下載擴充功能更新',
       lastUsed: '最近使用',
-      neverUsed: '尚未使用'
+      neverUsed: '尚未使用',
+      rename: '重新命名',
+      renameField: '名稱',
+      renameSave: '儲存名稱',
+      sameSiteCode: '這裡也存有此網站的驗證碼'
     },
     open: '管理通行密鑰',
     recheck: '重新偵測',
@@ -275,7 +287,7 @@ export const passkeyCopy: Record<'en' | 'zh-CN' | 'zh-TW', PasskeyCopy> = {
       },
       {
         title: '使用已保存的通行密鑰登入',
-        text: '在目標網站選擇通行密鑰登入，解鎖擴充功能、選擇帳號並確認。如果憑證保存在其他地方，選擇「使用系統或其他驗證器」。'
+        text: '在目標網站選擇通行密鑰登入，或點選登入框下方的 2fa.hot 按鈕。確認框會在網頁內彈出，可用主密碼或 Touch ID / Windows Hello 解鎖，解鎖後在自動鎖定前不必重複輸入。這裡沒有該網站的密鑰時，請求會直接交給瀏覽器。'
       },
       {
         title: '把現有通行密鑰匯入',
@@ -283,7 +295,7 @@ export const passkeyCopy: Record<'en' | 'zh-CN' | 'zh-TW', PasskeyCopy> = {
       },
       {
         title: '把通行密鑰匯出',
-        text: '在擴充功能中選取帳號，用獨立備份密碼匯出加密檔案，在另一份擴充功能中還原。也可匯出 Bitwarden 格式，但檔案含明文私鑰，與實際 Bitwarden 用戶端的相容性仍待驗證。'
+        text: '另一台電腦：在擴充功能中匯出加密備份，在那裡的擴充功能中還原。Bitwarden：匯出 Bitwarden JSON（含明文私鑰），在其網頁版「匯入資料」中匯入。1Password 和 Apple 密碼目前只在手機上透過系統的「憑證交換」接收通行密鑰：先移入 Bitwarden，再在 iOS 26 或 Android 14 以上的 Bitwarden App 中轉交給它們。'
       }
     ],
     storage: '通行密鑰保存在哪裡',
@@ -291,7 +303,7 @@ export const passkeyCopy: Record<'en' | 'zh-CN' | 'zh-TW', PasskeyCopy> = {
       '擴充功能在本機加密保存私鑰和帳號資訊。在擴充功能中確認後，此頁面可暫時顯示帳號資訊，最多保留 5 分鐘；主密碼、私鑰和備份檔案不會傳給網頁。沒有雲端同步或密碼復原，解除安裝前請先保留加密備份。',
     limits: '預覽版範圍',
     limitation:
-      '擴充功能介面目前為簡體中文。目前支援常見的 ES256 通行密鑰；PRF、條件式自動填入等功能交給瀏覽器的其他驗證器處理。廣泛網站相容性驗證和獨立安全審查尚未完成。',
+      '擴充功能介面目前為簡體中文。支援常見的 ES256 通行密鑰、PRF 和登入框自動填入；largeBlob 等少數功能仍交給瀏覽器的其他驗證器。尚未在實際 Bitwarden 用戶端中完成匯入測試，也尚未完成廣泛網站相容性驗證和獨立安全審查。',
     migrationNote: '跨裝置登入的 QR 碼不是通行密鑰匯出碼。刪除本機副本，也不會撤銷網站上的憑證。',
     protocol: '安裝需要你確認',
     protocolText:

@@ -662,7 +662,7 @@ export const sourceKeys = new Map<string, string>([
   ],
   ['使用已保存的通行密钥登录', 'm5fcccd777ce4'],
   [
-    '在目标网站选择通行密钥登录，解锁扩展、选择账号并确认。如果凭据保存在其他地方，选择“使用系统或其他验证器”。',
+    '在目标网站选择通行密钥登录，或点击登录框下方的 2fa.hot 按钮。确认框会在网页内弹出，可用主口令或 Touch ID / Windows Hello 解锁，解锁后在自动锁定前无需重复输入。这里没有该网站的密钥时，请求会直接交给浏览器。',
     'm04ceed9a4816'
   ],
   ['把现有通行密钥迁入', 'mc7f535c2665c'],
@@ -672,7 +672,7 @@ export const sourceKeys = new Map<string, string>([
   ],
   ['把通行密钥迁出', 'm9127d5f59d60'],
   [
-    '在扩展中选中账号，用独立备份口令导出加密文件，在另一份扩展中恢复。也可导出 Bitwarden 格式，但文件含明文私钥，与真实 Bitwarden 客户端的兼容性仍待验证。',
+    '另一台电脑：在扩展中导出加密备份，在那里的扩展中恢复。Bitwarden：导出 Bitwarden JSON（含明文私钥），在其网页版“导入数据”中导入。1Password 和 Apple 密码目前只在手机上通过系统的“凭据交换”接收通行密钥：先迁入 Bitwarden，再在 iOS 26 或 Android 14 以上的 Bitwarden App 中转交给它们。',
     'm6db62b4de160'
   ],
   ['通行密钥保存在哪里', 'm73feb78485a1'],
@@ -682,7 +682,7 @@ export const sourceKeys = new Map<string, string>([
   ],
   ['预览版范围', 'm5c6039fa997d'],
   [
-    '扩展界面目前为简体中文。当前支持常见的 ES256 通行密钥；PRF、条件式自动填充等能力交给浏览器的其他验证器处理。广泛网站兼容验证和独立安全审查尚未完成。',
+    '扩展界面目前为简体中文。支持常见的 ES256 通行密钥、PRF 和登录框自动填充；largeBlob 等少数能力仍交给浏览器的其他验证器。尚未在真实 Bitwarden 客户端中完成导入测试，也尚未完成广泛网站兼容验证和独立安全审查。',
     'm0487a4fe51fd'
   ],
   ['跨设备登录的二维码不是通行密钥导出码。删除本地副本，也不会撤销网站上的凭据。', 'mf677cb52853e'],
@@ -942,5 +942,9 @@ export const sourceKeys = new Map<string, string>([
     '安装成 App 后，第一次打开时会自动开启离线使用；之后在 App 里关掉，就会一直保持关闭。',
     'privacyOfflineApp'
   ],
-  ['（新窗口）', 'newWindow']
+  ['（新窗口）', 'newWindow'],
+  ['重命名', 'passkeyRename'],
+  ['名称', 'passkeyRenameField'],
+  ['保存名称', 'passkeyRenameSave'],
+  ['这里也存有此网站的验证码', 'passkeySameSiteCode']
 ])

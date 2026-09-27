@@ -19,6 +19,8 @@ export function usePasskeyExtension() {
   const status = shallowRef<'checking' | 'installed' | 'missing' | 'unsupported'>('checking')
   const version = shallowRef('')
   const supportedManager = shallowRef(false)
+  /** Protocol 2 (extension 0.4.0) adds renaming; protocol 1 still lists, imports, exports and deletes. */
+  const canRename = shallowRef(false)
   const browser = shallowRef<'chrome' | 'edge' | 'other'>('other')
   const records = shallowRef<PasskeySummary[] | null>(null)
   const managing = shallowRef(false)
@@ -91,7 +93,8 @@ export function usePasskeyExtension() {
     const response = await send('status')
     if (disposed) return
     version.value = typeof response.version === 'string' ? response.version.slice(0, 32) : ''
-    supportedManager.value = response.managerProtocol === 1
+    supportedManager.value = response.managerProtocol === 1 || response.managerProtocol === 2
+    canRename.value = response.managerProtocol === 2
     status.value = response.ok ? 'installed' : browser.value === 'other' ? 'unsupported' : 'missing'
     if (!response.ok) clearList()
   }
@@ -124,12 +127,17 @@ export function usePasskeyExtension() {
     expiry = setTimeout(clearList, 5 * 60000)
     outcome.value = 'completed'
   }
-  async function manage(operation: PasskeyOperation, ids: string[] = []) {
+  async function manage(operation: PasskeyOperation, ids: string[] = [], label?: string) {
     if (managing.value || !supportedManager.value) return
+    if (operation === 'rename' && (!canRename.value || ids.length !== 1)) return
     const epoch = ++requestEpoch
     managing.value = true
     outcome.value = ''
-    const response = await send('manage', { operation, ids: [...ids] })
+    const response = await send('manage', {
+      operation,
+      ids: [...ids],
+      ...(operation === 'rename' ? { label: (label ?? '').slice(0, 256) } : {})
+    })
     if (disposed || epoch !== requestEpoch) {
       if (response.token) void send('cancel', { token: response.token })
       return
@@ -170,6 +178,7 @@ export function usePasskeyExtension() {
     version,
     browser,
     supportedManager,
+    canRename,
     records,
     managing,
     outcome,

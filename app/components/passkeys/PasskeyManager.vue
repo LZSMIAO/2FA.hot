@@ -1,25 +1,30 @@
 <script setup lang="ts">
 import type { PasskeyCopy } from '~~/shared/passkeys-copy'
-import type { PasskeyOperation, PasskeySummary } from '~~/shared/passkey-manager'
+import { sameSite, type PasskeyOperation, type PasskeySummary } from '~~/shared/passkey-manager'
 const props = defineProps<{
   copy: PasskeyCopy['manager']
   records: PasskeySummary[] | null
+  canRename?: boolean
   busy: boolean
   outcome: 'failed' | 'cancelled' | 'completed' | ''
 }>()
 const emit = defineEmits<{
-  manage: [operation: PasskeyOperation, ids?: string[]]
+  manage: [operation: PasskeyOperation, ids?: string[], label?: string]
   lock: []
   cancel: []
 }>()
 const { locale } = useMessages()
+const localePath = useLocalePath()
+const vault = useVault()
 const query = shallowRef('')
 const selected = ref<string[]>([])
 const identity = (r: PasskeySummary) => `${r.rpId}:${r.credentialId}`
 const visible = computed(() => {
   const term = query.value.trim().toLocaleLowerCase(locale.value)
   return (props.records ?? []).filter((r) =>
-    `${r.rpId} ${r.userName} ${r.userDisplayName}`.toLocaleLowerCase(locale.value).includes(term)
+    `${r.rpId} ${r.userName} ${r.userDisplayName} ${r.label ?? ''}`
+      .toLocaleLowerCase(locale.value)
+      .includes(term)
   )
 })
 const allSelected = computed(
@@ -38,6 +43,25 @@ const {
   click: clickSelection,
   cancelSelection
 } = useHistorySelection(selectionIds, selected)
+/*
+ * A passkey and a 2FA code for the same website, side by side: the history
+ * below this tool may already hold GitHub's code when a github.com passkey
+ * is listed here. Only an open history is consulted; a locked one stays shut.
+ */
+function sameSiteCode(record: PasskeySummary) {
+  if (!vault.unlocked.value) return ''
+  return vault.records.value.find((code) => sameSite(record.rpId, code.issuer))?.issuer ?? ''
+}
+const renaming = shallowRef(''),
+  draft = shallowRef('')
+function startRename(record: PasskeySummary) {
+  renaming.value = identity(record)
+  draft.value = record.label ?? ''
+}
+function saveRename(record: PasskeySummary) {
+  emit('manage', 'rename', [identity(record)], draft.value.trim())
+  renaming.value = ''
+}
 function lastUsed(value: number | null) {
   return value
     ? `${props.copy.lastUsed} ${new Date(value).toLocaleDateString(locale.value)}`
@@ -47,6 +71,7 @@ watch(
   () => props.records,
   () => {
     selected.value = []
+    renaming.value = ''
     if (!props.records) query.value = ''
   }
 )
@@ -137,14 +162,50 @@ watch(
               @click="!busy && clickSelection($event, identity(record))"
             />
             <div class="record-details">
-              <strong dir="auto">{{ record.rpId }}</strong>
+              <strong dir="auto">{{ record.label || record.rpId }}</strong>
               <span
                 dir="auto"
                 :class="{ 'record-placeholder': !record.userName && !record.userDisplayName }"
+                ><template v-if="record.label">{{ record.rpId }} · </template
                 >{{ record.userName || record.userDisplayName || copy.unnamed }}</span
               >
               <small>{{ lastUsed(record.lastUsedAt) }}</small>
+              <NuxtLink
+                v-if="sameSiteCode(record)"
+                class="record-code"
+                :to="localePath({ path: '/history', query: { q: sameSiteCode(record) } })"
+                ><UIcon name="i-lucide-shield-check" aria-hidden="true" />{{
+                  copy.sameSiteCode
+                }}</NuxtLink
+              >
+              <form
+                v-if="renaming === identity(record)"
+                class="record-rename"
+                @submit.prevent="saveRename(record)"
+              >
+                <UInput
+                  v-model="draft"
+                  :aria-label="copy.renameField"
+                  :placeholder="record.rpId"
+                  maxlength="256"
+                  autofocus
+                />
+                <UButton type="submit" :disabled="busy">{{ copy.renameSave }}</UButton>
+                <UButton color="neutral" variant="ghost" @click="renaming = ''">{{
+                  copy.cancel
+                }}</UButton>
+              </form>
             </div>
+            <UButton
+              v-if="canRename && renaming !== identity(record)"
+              class="record-rename-button"
+              color="neutral"
+              variant="ghost"
+              icon="i-lucide-pencil"
+              :aria-label="`${copy.rename} · ${record.label || record.rpId}`"
+              :disabled="busy"
+              @click="startRename(record)"
+            />
           </li>
         </ul>
         <p v-if="!visible.length">{{ copy.noMatches }}</p>
@@ -229,8 +290,37 @@ h3 {
   min-width: 0;
   overflow-wrap: anywhere;
 }
+.record-details {
+  flex: 1;
+}
 .record-details strong {
   color: var(--ui-text-highlighted);
+}
+.record-code {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  width: fit-content;
+  margin-top: 0.25rem;
+  font-size: var(--text-caption);
+  color: var(--ui-text-highlighted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.record-rename {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+.record-rename > :first-child {
+  flex: 1 1 10rem;
+}
+.record-rename-button {
+  flex: none;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  justify-content: center;
 }
 .record-details small,
 .manager-privacy {

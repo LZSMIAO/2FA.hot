@@ -11,8 +11,10 @@ import {
 const localePath = useLocalePath()
 const { tx, locale } = useMessages()
 const protect = shallowRef(true)
+// A link can open history already filtered, as the passkey list does for a site's code.
+const initialSearch = useRoute().query.q
 const vault = useVault(),
-  search = shallowRef(''),
+  search = shallowRef(typeof initialSearch === 'string' ? initialSearch.slice(0, 100) : ''),
   password = shallowRef(''),
   confirmation = shallowRef(''),
   error = shallowRef(''),

@@ -16,6 +16,7 @@ const {
   version,
   browser,
   supportedManager,
+  canRename,
   records,
   managing,
   outcome,
@@ -24,6 +25,15 @@ const {
   lock,
   cancel
 } = usePasskeyExtension()
+/** An installed extension older than the one on offer; it still works, and the update is offered. */
+const outdated = computed(() => {
+  if (status.value !== 'installed' || !version.value) return false
+  const parts = (value: string) => value.split('.').map((part) => Number.parseInt(part, 10) || 0)
+  const [have, want] = [parts(version.value), parts(release.version)]
+  for (let i = 0; i < 3; i++)
+    if ((have[i] ?? 0) !== (want[i] ?? 0)) return (have[i] ?? 0) < (want[i] ?? 0)
+  return false
+})
 const addresses = computed(() =>
   browser.value === 'edge'
     ? ['edge://extensions']
@@ -87,7 +97,7 @@ const hint = computed(
           !published &&
           status !== 'checking' &&
           status !== 'unsupported' &&
-          (status !== 'installed' || !supportedManager)
+          (status !== 'installed' || !supportedManager || outdated)
         "
         :href="downloadUrl"
         external
@@ -111,6 +121,7 @@ const hint = computed(
       v-if="status === 'installed' && supportedManager"
       :copy="copy.manager"
       :records="records"
+      :can-rename="canRename"
       :busy="managing"
       :outcome="outcome"
       @manage="manage"
