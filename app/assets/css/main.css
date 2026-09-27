@@ -452,7 +452,19 @@ html[data-ui-hidden] {
 }
 .home {
   margin: 0 auto;
-  padding: 2.75rem 2.5rem 0;
+  padding: 2rem 2.5rem 0;
+}
+/*
+ * The tool's title sits as far below the header as the tabs sit below it,
+ * and as far as the history page's records do, so switching pages keeps the
+ * first thing in place. The drawing has 0.35rem of air above its letters and
+ * 1.65rem below them, room for the splash; both are taken back here.
+ */
+.home > .page-intro .game-title {
+  margin-top: -0.35rem;
+}
+.home > .page-intro:has(.game-title) {
+  margin-bottom: 0.35rem;
 }
 .guided-workspace {
   min-width: 0;
@@ -1418,7 +1430,7 @@ html.size-transition .desert-art svg * {
     padding-inline: 1.5rem;
   }
   .home {
-    padding: 2.5rem 1.5rem 0;
+    padding: 2rem 1.5rem 0;
   }
   .content-page {
     --page-gutter: 1.5rem;
