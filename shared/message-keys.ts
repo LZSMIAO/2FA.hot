@@ -6,7 +6,6 @@ export const sourceKeys = new Map<string, string>([
   ['吾辈可是丛雨丸的管理者，才不是小孩子！', 'desertSwordKeeper'],
   ['等验证码的工夫，陪吾辈坐一会儿吧。', 'desertCodeBreak'],
   ['将文字拖到此处', 'textDropHere'],
-  ['打开 Lite 轻量版', 'liteOpenHint'],
   ['松开鼠标，识别二维码', 'qrDropRelease'],
   ['已粘贴内容', 'm6241a0307045'],
   ['页脚导航', 'ma512b3fc5b4b'],

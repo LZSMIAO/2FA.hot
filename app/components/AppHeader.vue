@@ -109,14 +109,12 @@ const menu = computed(() => [
           }}</NuxtLink
           ><NuxtLink :to="localePath('/help')" active-class="active">{{ tx('使用说明') }}</NuxtLink>
           <!-- The other edition opens beside this one, marked as leaving the page. -->
-          <AppHint :text="tx('打开 Lite 轻量版')"
-            ><a :href="liteHref" target="_blank" rel="noopener" class="lite-link"
-              >Lite<UIcon
-                name="i-lucide-arrow-up-right"
-                class="external-arrow"
-                aria-hidden="true"
-              /><span class="sr-only"> {{ tx('（新窗口）') }}</span></a
-            ></AppHint
+          <a :href="liteHref" target="_blank" rel="noopener" class="lite-link"
+            >Lite<UIcon
+              name="i-lucide-arrow-up-right"
+              class="external-arrow"
+              aria-hidden="true"
+            /><span class="sr-only"> {{ tx('（新窗口）') }}</span></a
           >
         </nav>
         <div class="header-actions">
