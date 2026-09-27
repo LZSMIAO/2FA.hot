@@ -654,7 +654,7 @@ onBeforeUnmount(() => {
                   color="neutral"
                   variant="ghost"
                   size="sm"
-                  class="secret-action"
+                  class="secret-action secret-eye"
                   :icon="revealed ? 'i-lucide-eye-off' : 'i-lucide-eye'"
                   :aria-label="tx(revealed ? '隐藏密钥' : '显示密钥')"
                   :aria-pressed="revealed"
@@ -1373,31 +1373,31 @@ onBeforeUnmount(() => {
   outline: 2px solid var(--accent-ink);
   outline-offset: -4px;
 }
-.secret-actions .secret-clear {
+/*
+ * With a key in the field the clear button stays at the end; the eye beside
+ * it comes with hover or focus, keeping its place meanwhile so the clear
+ * button never moves. A touch device has no hover, so there both stay.
+ */
+.secret-actions .secret-eye {
   visibility: hidden;
   opacity: 0;
   pointer-events: none;
   transition: opacity 120ms ease;
 }
-.secret-field:focus-within .has-content .secret-clear {
+.secret-field:focus-within .has-content .secret-eye {
   visibility: visible;
   opacity: 1;
   pointer-events: auto;
 }
-/*
- * Hover reveals this on a desktop and focus reveals it everywhere, but a touch
- * device has no hover, so the clear button vanished the moment the field lost
- * focus - with a secret still in it and no way to get rid of it.
- */
 @media (pointer: coarse) {
-  .secret-actions.has-content .secret-clear {
+  .secret-actions.has-content .secret-eye {
     visibility: visible;
     opacity: 1;
     pointer-events: auto;
   }
 }
 @media (hover: hover) and (pointer: fine) {
-  .secret-field:hover .has-content .secret-clear {
+  .secret-field:hover .has-content .secret-eye {
     visibility: visible;
     opacity: 1;
     pointer-events: auto;
@@ -1420,7 +1420,7 @@ onBeforeUnmount(() => {
 }
 @media (prefers-reduced-motion: reduce) {
   .secret-actions,
-  .secret-actions .secret-clear {
+  .secret-actions .secret-eye {
     transition: none;
   }
 }
