@@ -573,8 +573,10 @@ onBeforeUnmount(() => {
   min-width: 0;
   max-width: calc(100vw - 24px);
 }
+/* Tall enough for every entry with a custom background, which scrolled at 232px
+   and, the scrollbar taking width, wrapped the last row's names. */
 :global(.panorama-menu-viewport) {
-  max-height: min(232px, var(--reka-dropdown-menu-content-available-height, 60vh));
+  max-height: min(320px, var(--reka-dropdown-menu-content-available-height, 60vh));
   overflow-y: auto;
   overscroll-behavior-y: contain;
   scrollbar-width: thin;
@@ -594,10 +596,11 @@ onBeforeUnmount(() => {
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
+/* From the top, so the two marks stay level when one name takes two lines. */
 :global(.panorama-menu-item.panorama-menu-half) {
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 6px;
   padding: 8px 6px;
   font-size: 12px;
