@@ -682,5 +682,6 @@
   "appInstalled": "Installiert. Öffne die App direkt vom Desktop oder Home-Bildschirm.",
   "homeWelcomeTitle": "Willkommen bei 2fa.hot",
   "homeWelcomeLead": "Bevor du loslegst, möchtest du vielleicht wissen …",
-  "privacyOfflineApp": "Als App installiert, schaltet sie beim ersten Öffnen die Offline-Nutzung selbst ein; schaltest du sie in der App aus, bleibt sie aus."
+  "privacyOfflineApp": "Als App installiert, schaltet sie beim ersten Öffnen die Offline-Nutzung selbst ein; schaltest du sie in der App aus, bleibt sie aus.",
+  "newWindow": "(neues Fenster)"
 }

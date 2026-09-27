@@ -682,5 +682,6 @@
   "appInstalled": "Zainstalowano. Otwieraj z pulpitu lub ekranu początkowego.",
   "homeWelcomeTitle": "Witamy w 2fa.hot",
   "homeWelcomeLead": "Zanim zaczniesz, być może zechcesz wiedzieć…",
-  "privacyOfflineApp": "Po zainstalowaniu jako aplikacja tryb offline włącza się sam przy pierwszym otwarciu; jeśli wyłączysz go w aplikacji, pozostanie wyłączony."
+  "privacyOfflineApp": "Po zainstalowaniu jako aplikacja tryb offline włącza się sam przy pierwszym otwarciu; jeśli wyłączysz go w aplikacji, pozostanie wyłączony.",
+  "newWindow": "(nowe okno)"
 }

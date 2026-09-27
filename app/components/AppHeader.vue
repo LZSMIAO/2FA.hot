@@ -99,7 +99,14 @@ const menu = computed(() => [
   { label: tx('使用说明'), to: localePath('/help'), icon: 'i-lucide-book-open' },
   ...(backdrop.value.length ? [{ type: 'separator' as const }, ...backdrop.value] : []),
   { type: 'separator' as const },
-  { label: tx('Lite 轻量版'), to: liteHref.value, external: true, icon: 'i-lucide-feather' },
+  {
+    label: tx('Lite 轻量版'),
+    to: liteHref.value,
+    external: true,
+    target: '_blank',
+    icon: 'i-lucide-feather',
+    trailingIcon: 'i-lucide-arrow-up-right'
+  },
   { type: 'separator' as const },
   { label: tx('功能建议'), to: localePath('/waitlist'), icon: 'i-lucide-plus' },
   { label: tx('隐私说明'), to: localePath('/privacy'), icon: 'i-lucide-shield-check' }
@@ -123,7 +130,16 @@ const menu = computed(() => [
             tx('本地历史')
           }}</NuxtLink
           ><NuxtLink :to="localePath('/help')" active-class="active">{{ tx('使用说明') }}</NuxtLink>
-          <AppHint :text="tx('打开 Lite 轻量版')"><a :href="liteHref">Lite</a></AppHint>
+          <!-- The other edition opens beside this one, marked as leaving the page. -->
+          <AppHint :text="tx('打开 Lite 轻量版')"
+            ><a :href="liteHref" target="_blank" rel="noopener" class="lite-link"
+              >Lite<UIcon
+                name="i-lucide-arrow-up-right"
+                class="external-arrow"
+                aria-hidden="true"
+              /><span class="sr-only"> {{ tx('（新窗口）') }}</span></a
+            ></AppHint
+          >
         </nav>
         <div class="header-actions">
           <LanguagePicker />
@@ -161,6 +177,13 @@ const menu = computed(() => [
 </template>
 
 <style scoped>
+.lite-link {
+  gap: 0.125rem;
+}
+.lite-link .external-arrow {
+  width: 0.875rem;
+  height: 0.875rem;
+}
 .menu-new {
   margin-inline-start: 0.5rem;
   vertical-align: 0.1em;

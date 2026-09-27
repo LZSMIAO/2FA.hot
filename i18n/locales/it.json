@@ -682,5 +682,6 @@
   "appInstalled": "Installato. Aprilo dal desktop o dalla schermata Home.",
   "homeWelcomeTitle": "Ti diamo il benvenuto su 2fa.hot",
   "homeWelcomeLead": "Prima di iniziare, forse vuoi sapere…",
-  "privacyOfflineApp": "Installata come app, attiva da sola l'uso offline la prima volta che la apri; se lo disattivi nell'app, resta disattivato."
+  "privacyOfflineApp": "Installata come app, attiva da sola l'uso offline la prima volta che la apri; se lo disattivi nell'app, resta disattivato.",
+  "newWindow": "(nuova finestra)"
 }
