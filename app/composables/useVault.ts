@@ -5,6 +5,7 @@ import {
   onMounted,
   onBeforeUnmount,
   inject,
+  watch,
   type InjectionKey
 } from 'vue'
 import type { OtpConfig } from '../utils/otp.ts'
@@ -452,6 +453,14 @@ export function createVault() {
     if (Date.now() - lastActive >= 30 * 60_000) lock()
     lastActive = Date.now()
   }
+  // Noted for public/workspace-mode.js, which draws the setting from the next load's first paint.
+  watch([ready, enabled], ([known, on]) => {
+    if (!known) return
+    try {
+      if (on) localStorage.setItem('2fa-autosave-on', '1')
+      else localStorage.removeItem('2fa-autosave-on')
+    } catch {}
+  })
   onMounted(() => {
     refresh()
     if ('BroadcastChannel' in window) {

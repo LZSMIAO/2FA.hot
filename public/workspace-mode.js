@@ -30,4 +30,19 @@
   } catch {
     // Without storage the plain computer shows until the offer arrives.
   }
+  /*
+   * Offline use and autosave are known only once the page has asked the
+   * browser, after the first paint; drawn off until then, they turned on
+   * visibly at each load. These marks draw them as last known meanwhile
+   * (app/assets/css/ore.css): offline use is on when its worker serves this
+   * page, and autosave as app/composables/useVault.ts last noted it.
+   */
+  try {
+    if (navigator.serviceWorker?.controller)
+      document.documentElement.setAttribute('data-offline-on', '')
+    if (localStorage.getItem('2fa-autosave-on') === '1')
+      document.documentElement.setAttribute('data-autosave-on', '')
+  } catch {
+    // Without storage autosave shows off until it is read.
+  }
 })()

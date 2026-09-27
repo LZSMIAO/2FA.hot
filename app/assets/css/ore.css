@@ -1408,3 +1408,21 @@ html[data-guide-learned~='batch'][data-workspace-mode='batch'] .guide-trigger-in
     grid-template-columns: minmax(0, 1fr) 44px;
   }
 }
+
+/*
+ * Offline use and autosave as last known, until the page has asked the
+ * browser (SummarySwitch.vue's pending): public/workspace-mode.js marks the
+ * page before its first paint, so they no longer turn on visibly at a load.
+ */
+html[data-offline-on] .offline-toggle .is-pending .setting-icon,
+html[data-autosave-on] .history-toggle .is-pending .setting-icon {
+  color: var(--accent-ink);
+}
+html[data-offline-on] .offline-toggle .is-pending .history-switch,
+html[data-autosave-on] .history-toggle .is-pending .history-switch {
+  background: #3c8527;
+}
+html[data-offline-on] .offline-toggle .is-pending .history-switch-thumb,
+html[data-autosave-on] .history-toggle .is-pending .history-switch-thumb {
+  left: calc(100% - 1.125rem - 2px);
+}

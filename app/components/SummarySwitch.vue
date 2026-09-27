@@ -30,6 +30,11 @@ defineProps<{
   fixedInApp?: boolean
   /** The touch icon in the accent colour, as offline use does with no network. */
   lit?: boolean
+  /**
+   * Not yet known: the page mark from the last visit draws it meanwhile
+   * (app/assets/css/ore.css), and the switch is not dimmed while it waits.
+   */
+  pending?: boolean
 }>()
 const emit = defineEmits<{ toggle: [] }>()
 
@@ -62,7 +67,7 @@ function pointerBack() {
   <!-- On the wrapper: the hover trigger replaces the icon's own pointer listeners. -->
   <div
     class="summary-setting"
-    :class="{ 'is-fixed-in-app': fixedInApp }"
+    :class="{ 'is-fixed-in-app': fixedInApp, 'is-pending': pending }"
     @pointerenter="pointerBack"
   >
     <UPopover
@@ -174,6 +179,9 @@ function pointerBack() {
 .setting-icon:disabled {
   cursor: not-allowed;
   opacity: var(--ore-disabled-opacity);
+}
+.is-pending .setting-switch:disabled {
+  opacity: 1;
 }
 .setting-icon:focus-visible,
 .setting-link:focus-visible {

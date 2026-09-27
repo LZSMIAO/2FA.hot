@@ -62,6 +62,7 @@ watch(open, (visible) => {
       :action="tx(vault.enabled.value ? '关闭自动保存' : '开启自动保存')"
       :checked="vault.enabled.value"
       :disabled="!vault.ready.value || vault.busy.value"
+      :pending="!vault.ready.value"
       :to="localePath('/history')"
       :link-label="tx('历史记录')"
       icon-links

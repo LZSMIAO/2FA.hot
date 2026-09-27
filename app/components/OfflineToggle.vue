@@ -3,6 +3,9 @@ const localePath = useLocalePath()
 const { tx } = useMessages()
 const offline = useOfflineMode()
 const on = computed(() => offline.status.value === 'saving' || offline.status.value === 'ready')
+/** Whether this page has asked the browser yet; until then the setting shows as last known. */
+const checked = shallowRef(false)
+const known = computed(() => checked.value || offline.status.value !== 'off')
 /** Safari on iPhone or iPad, not already opened from the home screen. */
 const homeScreenHint = shallowRef(false)
 /** Opened as the installed app, which keeps offline mode on and has no switch for it. */
@@ -22,6 +25,7 @@ onMounted(async () => {
   inApp.value = runningAsApp()
   homeScreenHint.value = document.documentElement.hasAttribute('data-ios') && !inApp.value
   await offline.check()
+  checked.value = true
   /*
    * The installed app is meant to open without a network, so offline mode is
    * always on there: whenever its files are missing - never kept yet, or
@@ -124,6 +128,7 @@ const iconHint = computed(() => (online.value ? '离线使用说明' : '已断�
       "
       :checked="on"
       :disabled="!offline.supported.value || offline.status.value === 'saving'"
+      :pending="!known"
       :to="localePath('/privacy') + '#offline'"
       :link-label="tx(iconHint)"
       :status="
