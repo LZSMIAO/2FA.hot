@@ -1,16 +1,21 @@
+import { deviceSecret, deviceSupported, enrollDevice } from './device.js'
+
 const $ = (id) => document.getElementById(id)
-const token = new URLSearchParams(location.search).get('request')
 const companion = new URLSearchParams(location.search).get('companion')
 let state,
-  password = '',
   records = [],
   importedText = '',
   importPassword = '',
   selected = new Set(),
+  renaming = null,
   busy = false
 async function send(action, values = {}) {
-  const result = await chrome.runtime.sendMessage({ action, token, companion, password, ...values })
-  if (!result.ok) throw new Error(result.error)
+  const result = await chrome.runtime.sendMessage({ action, companion, ...values })
+  if (!result.ok) {
+    const error = new Error(result.error)
+    error.code = result.code
+    throw error
+  }
   return result
 }
 function feedback(id, text = '') {
@@ -27,6 +32,8 @@ async function run(action) {
   try {
     await action()
   } catch (e) {
+    // The session ran out while the page was open: back to the gate, nothing lost but the view.
+    if (e.code === 'Locked') showGate()
     feedback('error', e.message || '无法完成操作。')
   } finally {
     busy = false
@@ -39,7 +46,7 @@ function identity(r) {
 function visibleRecords() {
   const query = $('search').value.toLowerCase()
   return records.filter((r) =>
-    `${r.rpId} ${r.userName} ${r.userDisplayName}`.toLowerCase().includes(query)
+    `${r.rpId} ${r.userName} ${r.userDisplayName} ${r.label ?? ''}`.toLowerCase().includes(query)
   )
 }
 function selection() {
@@ -49,18 +56,50 @@ function selection() {
   $('select-all').indeterminate =
     visible.some((r) => selected.has(identity(r))) && !$('select-all').checked
 }
+function renameField(r) {
+  const form = document.createElement('form')
+  form.className = 'rename'
+  const input = document.createElement('input')
+  input.value = r.label ?? ''
+  input.maxLength = 256
+  input.placeholder = r.rpId
+  input.setAttribute('aria-label', `${r.rpId} 的名称`)
+  const save = document.createElement('button')
+  save.className = 'secondary'
+  save.textContent = '保存'
+  const cancel = document.createElement('button')
+  cancel.type = 'button'
+  cancel.className = 'text-button'
+  cancel.textContent = '取消'
+  cancel.addEventListener('click', () => {
+    renaming = null
+    render()
+  })
+  form.addEventListener('submit', (event) => {
+    event.preventDefault()
+    run(async () => {
+      records = (await send('rename', { id: identity(r), label: input.value })).records
+      renaming = null
+      render()
+      feedback('notice', input.value.trim() ? '已更新名称。' : '已恢复为网站域名。')
+    })
+  })
+  form.append(input, save, cancel)
+  setTimeout(() => input.focus())
+  return form
+}
 function render() {
   $('records').replaceChildren()
   const visible = visibleRecords()
   $('count').textContent = `${records.length} 条通行密钥`
   $('empty').hidden = records.length > 0
   for (const r of visible) {
-    const row = document.createElement('label')
+    const row = document.createElement('div')
     row.className = 'record'
     const box = document.createElement('input')
     box.type = 'checkbox'
     box.checked = selected.has(identity(r))
-    box.setAttribute('aria-label', `选择 ${r.rpId} ${r.userName}`)
+    box.setAttribute('aria-label', `选择 ${r.label || r.rpId} ${r.userName}`)
     box.addEventListener('change', () => {
       box.checked ? selected.add(identity(r)) : selected.delete(identity(r))
       selection()
@@ -68,16 +107,29 @@ function render() {
     const info = document.createElement('div')
     info.className = 'record-info'
     const site = document.createElement('strong')
-    site.textContent = r.rpId
+    site.textContent = r.label || r.rpId
     const user = document.createElement('span')
-    user.textContent = r.userName || r.userDisplayName || '未命名账号'
+    user.textContent = [r.label ? r.rpId : '', r.userName || r.userDisplayName || '未命名账号']
+      .filter(Boolean)
+      .join(' · ')
     info.append(site, user)
     const time = document.createElement('time')
     time.textContent = r.lastUsedAt
       ? `最近使用 ${new Date(r.lastUsedAt).toLocaleDateString()}`
       : '尚未使用'
+    const rename = document.createElement('button')
+    rename.type = 'button'
+    rename.className = 'text-button'
+    rename.textContent = '重命名'
+    rename.setAttribute('aria-label', `重命名 ${r.label || r.rpId}`)
+    rename.addEventListener('click', () => {
+      renaming = identity(r)
+      render()
+    })
     row.append(box, info, time)
+    if (!companion) row.append(rename)
     $('records').append(row)
+    if (renaming === identity(r)) $('records').append(renameField(r))
   }
   if (!visible.length && records.length) {
     const p = document.createElement('p')
@@ -91,30 +143,36 @@ async function refresh() {
   selected = new Set([...selected].filter((id) => records.some((r) => identity(r) === id)))
   render()
 }
-function lock() {
-  password = ''
+function forgetView() {
   importedText = ''
   importPassword = ''
   records = []
   selected.clear()
-  location.reload()
 }
 async function finishCompanion() {
   if (!companion) return
   await send('companion-finish')
-  password = ''
-  records = []
-  selected.clear()
+  forgetView()
   window.close()
 }
 function showCompanion() {
-  const operation = state.companion.operation
-  $('manager').hidden = operation === 'list'
+  const { operation, label } = state.companion
+  $('manager').hidden = ['list', 'rename'].includes(operation)
   $('share-list').hidden = operation !== 'list'
   if (operation === 'list') {
     $('share-summary').textContent =
-      `共 ${records.length} 条通行密钥。确认后在请求页面显示网站、账号和使用时间。`
+      `共 ${records.length} 条通行密钥。确认后在请求页面显示网站、账号、名称和使用时间。`
     $('share-confirm').focus()
+    return
+  }
+  if (operation === 'rename') {
+    const target = records.find((r) => identity(r) === state.companion.ids[0])
+    if (!target) throw new Error('找不到这把通行密钥。')
+    $('rename-request').hidden = false
+    $('rename-summary').textContent = label?.trim()
+      ? `${target.label || target.rpId} · ${target.userName} → “${label.trim()}”`
+      : `${target.label || target.rpId} · ${target.userName} → 恢复为网站域名`
+    $('rename-confirm').focus()
     return
   }
   selected = new Set(state.companion.ids)
@@ -123,7 +181,7 @@ function showCompanion() {
   document.querySelector('.toolbar').hidden = true
   document.querySelector('.list-heading').hidden = true
   document.querySelector('.selection-bar').hidden = operation !== 'remove'
-  document.querySelector('#manager > details:last-child').hidden = true
+  $('settings-section').hidden = true
   $('records').hidden = operation === 'import'
   $('empty').hidden = true
   for (const name of ['import', 'export']) {
@@ -134,7 +192,45 @@ function showCompanion() {
   for (const box of document.querySelectorAll('#records input')) box.disabled = true
   if (operation === 'remove') $('remove').focus()
 }
+function showGate() {
+  $('manager').hidden = true
+  $('gate').hidden = false
+  const device = state.exists && state.device && deviceSupported()
+  $('device-unlock').hidden = !device
+  ;(device ? $('device-unlock') : $('password')).focus()
+}
+function showSettings() {
+  $('lock-after').value = String(state.settings.lockAfter)
+  $('prompt-mode').value = state.settings.prompt
+  $('paused').checked = state.paused
+  const enabled = !!state.device
+  $('device-state').textContent = !deviceSupported()
+    ? '当前浏览器无法调用系统验证器。'
+    : enabled
+      ? '已启用：可用这台设备的 Touch ID、Windows Hello 或系统 PIN 解锁。更换主口令后仍然有效。'
+      : '启用后，可用这台设备的 Touch ID、Windows Hello 或系统 PIN 代替主口令解锁。需要设备验证器支持 PRF。'
+  $('device-toggle').textContent = enabled ? '停用设备解锁' : '启用 Touch ID / Windows Hello 解锁'
+  $('device-toggle').disabled = !deviceSupported()
+  $('device-password-field').hidden = enabled
+}
+async function opened() {
+  $('gate').hidden = true
+  $('password').value = ''
+  $('confirmation').value = ''
+  $('manager').hidden = false
+  records = (await send('list')).records
+  render()
+  showSettings()
+  if (companion) showCompanion()
+  else $('search').focus()
+}
 $('share-confirm').addEventListener('click', () => run(finishCompanion))
+$('rename-confirm').addEventListener('click', () =>
+  run(async () => {
+    await send('rename')
+    await finishCompanion()
+  })
+)
 $('companion-cancel').addEventListener('click', () => window.close())
 async function start() {
   state = await send('status')
@@ -147,13 +243,13 @@ async function start() {
     $('password').autocomplete = 'new-password'
     $('confirmation').required = true
   }
-  $('paused').checked = state.paused
   if (companion) {
     const names = {
       list: '在网站中查看通行密钥',
       import: '导入通行密钥',
       export: '导出所选通行密钥',
-      remove: '删除所选通行密钥'
+      remove: '删除所选通行密钥',
+      rename: '重命名通行密钥'
     }
     $('title').textContent = names[state.companion.operation]
     $('subtitle').textContent = '核对请求来源，在此窗口解锁并确认，完成后自动返回原页面。'
@@ -161,95 +257,37 @@ async function start() {
     $('companion-origin').textContent = state.companion.origin
     $('companion-cancel').hidden = false
   }
-  if (token) {
-    $('title').textContent =
-      state.request.kind === 'create' ? '保存新的通行密钥' : '使用通行密钥登录'
-    $('subtitle').textContent = '请核对来源网站，再解锁并确认。'
-    $('request-info').hidden = false
-    $('request-actions').hidden = false
-    $('origin').textContent = state.request.origin
-    $('request-account').textContent = state.request.userName
-      ? `账号：${state.request.userName}`
-      : `凭据域名：${state.request.rpId}`
-  }
+  if (state.unlocked) await opened()
+  else showGate()
 }
 $('unlock-form').addEventListener('submit', (event) => {
   event.preventDefault()
   run(async () => {
     const entered = $('password').value
-    if (!state.exists && entered !== $('confirmation').value) throw new Error('两次主口令不一致。')
     if (!state.exists) {
+      if (entered !== $('confirmation').value) throw new Error('两次主口令不一致。')
       await send('setup', { password: entered })
-      state.exists = true
-    }
-    const result = await send('list', { password: entered })
-    password = entered
-    $('password').value = ''
-    $('confirmation').value = ''
-    $('gate').hidden = true
-    if (token) {
-      $('approval').hidden = false
-      const create = state.request.kind === 'create'
-      $('approval-title').textContent = create ? '确认保存' : '选择登录账号'
-      $('approve').textContent = create ? '创建并保存通行密钥' : '确认登录'
-      $('choices').replaceChildren()
-      if (create) {
-        const p = document.createElement('p')
-        p.textContent = `${state.request.rpId} · ${state.request.userName}`
-        $('choices').append(p)
-      } else
-        for (const [index, r] of result.records.entries()) {
-          const label = document.createElement('label')
-          label.className = 'choice check'
-          const input = document.createElement('input')
-          input.type = 'radio'
-          input.name = 'credential'
-          input.value = r.credentialId
-          input.checked = index === 0
-          const text = document.createElement('span')
-          text.textContent = r.userName || r.userDisplayName
-          label.append(input, text)
-          $('choices').append(label)
-        }
-      if (!create && !result.records.length) {
-        feedback('notice', '没有匹配的通行密钥，请使用系统或其他验证器。')
-        $('approve').hidden = true
-      }
-      $('approve').focus()
-    } else {
-      $('manager').hidden = false
-      records = result.records
-      render()
-      if (companion) showCompanion()
-      else $('search').focus()
-    }
+      state = await send('status')
+    } else await send('unlock', { password: entered })
+    await opened()
   })
 })
-$('approve-form').addEventListener('submit', (event) => {
-  event.preventDefault()
+$('device-unlock').addEventListener('click', () =>
   run(async () => {
-    const result = await send('approve', {
-      credentialId: document.querySelector('input[name=credential]:checked')?.value
+    const secret = await deviceSecret(state.device).catch((e) => {
+      throw new Error(e?.name === 'NotAllowedError' ? '设备验证已取消，可改用主口令。' : e.message)
     })
-    password = ''
-    $('approval').hidden = true
-    $('request-actions').hidden = true
-    feedback(
-      'notice',
-      result.kind === 'create' ? '已保存。请返回网站完成注册确认。' : '已完成验证，请返回网站。'
-    )
-    setTimeout(() => window.close(), 1000)
+    await send('device-unlock', { credentialId: state.device.credentialId, secret })
+    await opened()
   })
-})
-for (const action of ['fallback', 'deny'])
-  $(action).addEventListener('click', () =>
-    run(async () => {
-      await send(action)
-      password = ''
-      window.close()
-    })
-  )
-$('lock').addEventListener('click', lock)
+)
+$('lock').addEventListener('click', () =>
+  run(async () => {
+    await send('lock')
+    forgetView()
+    location.reload()
+  })
+)
 $('search').addEventListener('input', render)
 $('select-all').addEventListener('change', () => {
   for (const r of visibleRecords())
@@ -287,6 +325,7 @@ $('export-form').addEventListener('submit', (event) => {
     )
       throw new Error('两次备份口令不一致。')
     const result = await send('export', {
+      password: $('export-master').value,
       ids: [...selected],
       format: $('export-format').value,
       backupPassword: $('export-password').value,
@@ -298,8 +337,7 @@ $('export-form').addEventListener('submit', (event) => {
     a.download = result.filename
     a.click()
     setTimeout(() => URL.revokeObjectURL(url), 1000)
-    $('export-password').value = ''
-    $('export-confirmation').value = ''
+    for (const id of ['export-password', 'export-confirmation', 'export-master']) $(id).value = ''
     $('confirm-plaintext').checked = false
     feedback('notice', '已生成导出文件。请在目标设备或管理器中导入并验证登录。')
     await finishCompanion()
@@ -328,7 +366,7 @@ $('import-form').addEventListener('submit', (event) => {
       `${result.source}：新增 ${result.added} 条，重复 ${result.duplicates} 条，不支持 ${result.skipped} 条。`
     for (const r of result.records) {
       const li = document.createElement('li')
-      li.textContent = `${r.rpId} · ${r.userName}`
+      li.textContent = `${r.label || r.rpId} · ${r.userName}`
       $('import-list').append(li)
     }
     $('import-preview').hidden = false
@@ -350,30 +388,66 @@ $('change-password-form').addEventListener('submit', (event) => {
   run(async () => {
     if ($('next-password').value !== $('next-confirmation').value)
       throw new Error('两次主口令不一致。')
-    const nextPassword = $('next-password').value
-    await send('password', { nextPassword })
-    password = nextPassword
-    $('next-password').value = ''
-    $('next-confirmation').value = ''
-    feedback('notice', '主口令已更新。已有备份仍使用导出时的备份口令。')
+    await send('password', {
+      password: $('current-password').value,
+      nextPassword: $('next-password').value
+    })
+    for (const id of ['current-password', 'next-password', 'next-confirmation']) $(id).value = ''
+    feedback('notice', '主口令已更新。设备解锁仍然有效；已有备份仍使用导出时的备份口令。')
   })
 })
+$('device-form').addEventListener('submit', (event) => {
+  event.preventDefault()
+  run(async () => {
+    if (state.device) {
+      await send('device-disable')
+      feedback('notice', '已停用设备解锁。之后请用主口令解锁。')
+    } else {
+      const password = $('device-password').value
+      if (!password) throw new Error('请输入主口令确认此操作。')
+      // Check the password before asking the authenticator, so a typo costs no fingerprint.
+      await send('unlock', { password })
+      const device = await enrollDevice().catch((e) => {
+        throw new Error(e?.name === 'NotAllowedError' ? '设备验证已取消。' : e.message)
+      })
+      await send('device-enable', { password, ...device })
+      $('device-password').value = ''
+      feedback('notice', '已启用设备解锁。下次可直接用 Touch ID / Windows Hello 解锁。')
+    }
+    state = await send('status')
+    showSettings()
+  })
+})
+$('lock-after').addEventListener('change', () =>
+  run(async () => {
+    state.settings = (await send('settings', { lockAfter: Number($('lock-after').value) })).settings
+    feedback('notice', '已更新自动锁定时间。')
+  })
+)
+$('prompt-mode').addEventListener('change', () =>
+  run(async () => {
+    state.settings = (await send('settings', { prompt: $('prompt-mode').value })).settings
+    feedback('notice', '已更新确认框位置。')
+  })
+)
 $('paused').addEventListener('change', () =>
   run(async () => {
     await send('pause', { paused: $('paused').checked })
     feedback('notice', $('paused').checked ? '已暂停处理网站请求。' : '已恢复处理网站请求。')
   })
 )
-let lastActive = Date.now()
-for (const event of ['pointerdown', 'keydown'])
-  window.addEventListener(event, () => (lastActive = Date.now()))
-setInterval(() => {
-  if (password && Date.now() - lastActive > 5 * 60000) lock()
-}, 1000)
-window.addEventListener('pagehide', () => {
-  password = ''
-  importedText = ''
-  importPassword = ''
-  records = []
-})
+// Coming back to an open manager after the session timed out shows the gate, not stale data.
+window.addEventListener('focus', () =>
+  run(async () => {
+    if (!state?.exists || $('manager').hidden) return
+    const now = await send('status')
+    if (!now.unlocked) {
+      state = now
+      forgetView()
+      render()
+      showGate()
+    }
+  })
+)
+window.addEventListener('pagehide', forgetView)
 run(start)

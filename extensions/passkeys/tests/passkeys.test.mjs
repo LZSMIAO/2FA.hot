@@ -92,7 +92,16 @@ test('reject unrelated origins, public/private suffixes, IPs, unsafe requests an
   assert.equal(validateRp('http://localhost:3001', 'localhost'), 'localhost')
   assert.equal(validateRp('https://login.example.co.uk', 'example.co.uk'), 'example.co.uk')
   assert.throws(() => validateRequest('create', { ...options(), challenge: 'AA' }, origin))
-  assert.throws(() => validateRequest('create', { ...options(), extensions: { prf: {} } }, origin))
+  assert.throws(() =>
+    validateRequest(
+      'create',
+      { ...options(), extensions: { largeBlob: { support: 'required' } } },
+      origin
+    )
+  )
+  assert.throws(() =>
+    validateRequest('create', { ...options(), attestation: 'enterprise' }, origin)
+  )
   assert.throws(() =>
     validateRequest(
       'create',

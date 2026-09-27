@@ -10,8 +10,9 @@ dist = root / 'dist-store'
 manifest = json.loads((dist / 'manifest.json').read_text())
 assert manifest['manifest_version'] == 3
 assert all('localhost' not in match for script in manifest['content_scripts'] for match in script['matches'])
+assert all('localhost' not in match for entry in manifest.get('web_accessible_resources', []) for match in entry['matches'])
 for icon in manifest['icons'].values(): assert (dist / icon).is_file()
-for file in ('background.js', 'content.js', 'page.js', 'site-bridge.js', 'ui.js', 'ui.html', 'privacy.html'):
+for file in ('background.js', 'content.js', 'page.js', 'site-bridge.js', 'ui.js', 'ui.html', 'prompt.js', 'prompt.html', 'prompt.css', 'privacy.html'):
     assert (dist / file).is_file(), file
 
 output = root / 'output'

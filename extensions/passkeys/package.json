@@ -1,6 +1,6 @@
 {
   "name": "2fa-hot-passkeys",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "type": "module",
   "license": "AGPL-3.0-only",
@@ -10,7 +10,8 @@
     "build:store": "node build.mjs --store",
     "build:preview": "node build.mjs --preview",
     "package:store": "pnpm build:store && pnpm build:preview && python3 scripts/package-store.py",
-    "test": "node --test tests/*.test.mjs"
+    "test": "node --test tests/*.test.mjs",
+    "build:firefox": "node build.mjs --firefox"
   },
   "dependencies": {
     "tldts": "^7.0.0"

@@ -48,6 +48,11 @@ export async function parseImport(text, password = '') {
         userHandle: normalize(r.userHandle),
         userName: r.userName ?? item.login.username ?? '',
         userDisplayName: r.userDisplayName ?? '',
+        // The item's own name, when it says more than the domain does.
+        label:
+          typeof item.name === 'string' && item.name.trim() && item.name.trim() !== r.rpId
+            ? item.name.trim().slice(0, 256)
+            : null,
         privateKey: normalize(r.keyValue),
         counter: Number(r.counter),
         discoverable: r.discoverable === 'true' || r.discoverable === true,
@@ -73,7 +78,7 @@ export function exportBitwarden(records) {
         folderId: null,
         type: 1,
         reprompt: 0,
-        name: r.rpId,
+        name: r.label || r.rpId,
         notes: null,
         favorite: false,
         fields: [],

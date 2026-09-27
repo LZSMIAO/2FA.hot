@@ -1,0 +1,55 @@
+/* The confirmation, whether it sits inside a website or in its own small window. */
+body.prompt {
+  background: var(--bg);
+}
+.prompt main {
+  width: 100%;
+  padding: 16px 18px 18px;
+}
+.prompt header {
+  padding-bottom: 12px;
+}
+.prompt .brand {
+  font-size: 20px;
+}
+.prompt .close {
+  margin-inline-start: auto;
+  min-height: 36px;
+  padding: 4px 10px;
+}
+.prompt h1 {
+  font-size: 20px;
+  margin: 14px 0 10px;
+}
+.prompt .panel {
+  padding: 16px;
+  margin: 12px 0;
+}
+.prompt .request-info p {
+  margin: 6px 0 0;
+}
+.prompt #gate {
+  display: grid;
+  gap: 12px;
+}
+.prompt #gate h2,
+.prompt #approval h2,
+.prompt #duplicate h2 {
+  margin-bottom: 4px;
+}
+.prompt .confirm-slot {
+  display: grid;
+}
+.prompt .request-actions {
+  margin-top: 12px;
+}
+/* Inside a website the prompt fills its frame exactly: one rounded, bordered card, nothing below it. */
+html.framed {
+  height: 100%;
+  background: transparent;
+}
+html.framed body.prompt {
+  min-height: 100%;
+  border: 2px solid var(--line);
+  border-radius: 12px;
+}

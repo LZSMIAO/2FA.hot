@@ -6,6 +6,7 @@ node_modules
 extensions/passkeys/dist/
 extensions/passkeys/dist-store/
 extensions/passkeys/dist-preview/
+extensions/passkeys/dist-firefox/
 extensions/passkeys/output/
 public/lite-assets/sha.js
 # Hand-edited on GitHub; tests/announcements.test.ts checks that it parses.

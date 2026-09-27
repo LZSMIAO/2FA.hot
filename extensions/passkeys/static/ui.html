@@ -17,16 +17,12 @@
         <h1 id="title">你的通行密钥</h1>
         <p id="subtitle">在网站上创建，在这里管理。密钥加密保存在当前浏览器扩展中。</p>
       </section>
-      <div id="request-info" class="request-info" hidden>
-        <span>请求来源</span><strong id="origin"></strong>
-        <p id="request-account"></p>
-      </div>
       <p id="error" class="message error" role="alert" hidden></p>
       <p id="notice" class="message notice" role="status" hidden></p>
       <div id="companion-info" class="request-info" hidden>
         <span>请求来源</span><strong id="companion-origin"></strong>
         <p>
-          确认后，网站可在当前弹窗显示网站域名、账号名称和使用时间。主口令、私钥和备份文件留在扩展中，不会传给网页。
+          确认后，网站可在当前弹窗显示网站域名、账号名称、自定义名称和使用时间。主口令、私钥和备份文件留在扩展中，不会传给网页。
         </p>
       </div>
       <button id="companion-cancel" class="secondary" hidden>取消并返回网站</button>
@@ -35,8 +31,16 @@
         <p id="share-summary"></p>
         <button id="share-confirm" class="primary">确认显示列表</button>
       </section>
-      <section id="gate" class="panel">
+      <section id="rename-request" class="panel" hidden>
+        <h2>重命名这把通行密钥？</h2>
+        <p id="rename-summary"></p>
+        <button id="rename-confirm" class="primary">确认重命名</button>
+      </section>
+      <section id="gate" class="panel" hidden>
         <h2 id="gate-title">解锁密钥库</h2>
+        <button id="device-unlock" class="primary" type="button" hidden>
+          使用 Touch ID / Windows Hello 解锁
+        </button>
         <form id="unlock-form">
           <label
             >主口令<input
@@ -62,23 +66,11 @@
           <button id="unlock" type="submit" class="primary">解锁</button>
         </form>
       </section>
-      <section id="approval" class="panel" hidden>
-        <h2 id="approval-title">选择登录账号</h2>
-        <form id="approve-form">
-          <div id="choices"></div>
-          <p class="hint">确认后，扩展仅向上方网站返回注册或登录结果。</p>
-          <button id="approve" class="primary" type="submit">确认登录</button>
-        </form>
-      </section>
-      <div id="request-actions" class="request-actions" hidden>
-        <button id="fallback" class="secondary">使用系统或其他验证器</button
-        ><button id="deny" class="text-button">取消</button>
-      </div>
       <section id="manager" hidden>
         <div class="toolbar">
           <label class="search"
             ><span class="sr-only">搜索网站或账号</span
-            ><input id="search" type="search" placeholder="搜索网站或账号" /></label
+            ><input id="search" type="search" placeholder="搜索网站、账号或名称" /></label
           ><button id="lock" class="secondary">锁定</button>
         </div>
         <div class="list-heading">
@@ -88,7 +80,7 @@
         <div id="records"></div>
         <div id="empty" class="empty" hidden>
           <h2>从网站添加第一把通行密钥</h2>
-          <p>打开目标网站的账号安全设置，点击“创建通行密钥”，然后在扩展窗口中确认保存。</p>
+          <p>打开目标网站的账号安全设置，点击“创建通行密钥”，然后在弹出的确认框中保存。</p>
           <p>已有通行密钥？展开下方“导入”，选择兼容的导出文件。</p>
         </div>
         <div class="selection-bar">
@@ -101,8 +93,10 @@
             <p class="hint">先在列表中选择账号。迁移后到目标网站确认能登录，再删除旧副本。</p>
             <label
               >导出格式<select id="export-format">
-                <option value="encrypted">加密备份 · 转移到另一台设备</option>
-                <option value="bitwarden">Bitwarden JSON · 格式兼容导出</option>
+                <option value="encrypted">加密备份 · 转移到另一台装了此扩展的设备</option>
+                <option value="bitwarden">
+                  Bitwarden JSON · 迁入 Bitwarden，再由它转到 1Password 或 Apple 密码
+                </option>
               </select></label
             >
             <div id="export-encrypted">
@@ -126,10 +120,25 @@
               ><input id="confirm-plaintext" type="checkbox" />我知道此 JSON
               包含未加密的私钥，仅用于迁入支持此格式的管理器。完成后删除文件。</label
             >
-            <p id="format-note" class="hint" hidden>
-              格式按 Bitwarden
-              的通行密钥字段适配。目标客户端的导入能力需验证；此文件不是系统凭据交换。
-            </p>
+            <div id="format-note" class="hint" hidden>
+              <p>
+                在 Bitwarden 网页版“工具 → 导入数据”中选择“Bitwarden (json)”导入。1Password 和 Apple
+                密码只能在手机上通过系统的“凭据交换”迁入：导入 Bitwarden 后，在 iOS 26 或 Android 14
+                以上的 Bitwarden App 中导出到它们。
+              </p>
+              <p>
+                使用过 PRF 的网站（多为端到端加密服务）在新位置会得到不同的 PRF
+                结果，迁移前请先确认。
+              </p>
+            </div>
+            <label
+              >主口令（确认导出）<input
+                id="export-master"
+                type="password"
+                autocomplete="current-password"
+                maxlength="1024"
+                required
+            /></label>
             <button class="primary" type="submit">导出所选</button>
           </form>
         </details>
@@ -162,10 +171,55 @@
             <button id="import-confirm" class="primary">确认合并</button>
           </div>
         </details>
-        <details class="panel">
+        <details id="settings-section" class="panel">
           <summary>密钥库设置</summary>
-          <form id="change-password-form">
+          <div class="settings">
             <label
+              >自动锁定<select id="lock-after">
+                <option value="0">每次都要验证</option>
+                <option value="5">闲置 5 分钟后</option>
+                <option value="15">闲置 15 分钟后</option>
+                <option value="60">闲置 1 小时后</option>
+                <option value="-1">关闭浏览器时</option>
+              </select></label
+            >
+            <p class="hint">
+              解锁后，密钥库的解密密钥只留在浏览器内存中，到时自动清除；锁定电脑也会立即锁定。
+            </p>
+            <label
+              >确认框位置<select id="prompt-mode">
+                <option value="page">在网页内弹出</option>
+                <option value="window">单独的小窗口</option>
+              </select></label
+            >
+            <p class="hint">
+              网页内确认框由扩展绘制，网页读不到其中内容；被遮挡时会暂停确认。更看重隔离可选单独窗口。
+            </p>
+          </div>
+          <form id="device-form">
+            <h3>设备解锁</h3>
+            <p id="device-state" class="hint"></p>
+            <label id="device-password-field"
+              >主口令（确认更改）<input
+                id="device-password"
+                type="password"
+                autocomplete="current-password"
+                maxlength="1024"
+            /></label>
+            <button id="device-toggle" class="secondary" type="submit">
+              启用 Touch ID / Windows Hello 解锁
+            </button>
+          </form>
+          <form id="change-password-form">
+            <h3>修改主口令</h3>
+            <label
+              >当前主口令<input
+                id="current-password"
+                type="password"
+                autocomplete="current-password"
+                maxlength="1024"
+                required /></label
+            ><label
               >新主口令<input
                 id="next-password"
                 type="password"
@@ -195,12 +249,18 @@
           >在目标网站的安全设置中创建，由扩展生成私钥并保存；网站保存公钥。不能在这里随意填写网站名称就创建有效的登录凭据。
         </p>
         <p>
+          <strong>登录：</strong
+          >网站请求通行密钥时，扩展只在这里存有此网站的密钥时才弹出确认；否则直接交给浏览器。登录框旁出现“使用保存在这里的通行密钥登录”时，点它即可。
+        </p>
+        <p>
           <strong>迁入：</strong
           >在原管理器导出，再选择文件导入。若原管理器不允许导出，请回到目标网站添加一把新的通行密钥。登录时出现的跨设备二维码通常用于验证，不是私钥导出。
         </p>
         <p>
-          <strong>迁出：</strong
-          >同一扩展之间使用加密备份；其他管理器需要支持对应格式。硬件内不可导出的私钥无法读取。删除这里的副本不会撤销网站上的凭据。
+          <strong>迁出：</strong>另一台电脑：用加密备份。Bitwarden：导出 Bitwarden
+          JSON。1Password、Apple 密码：目前只接受手机上系统的“凭据交换”，需先迁入
+          Bitwarden，再在手机上的 Bitwarden
+          中导出给它们。硬件内不可导出的私钥无法读取。删除这里的副本不会撤销网站上的凭据。
         </p>
         <p>
           <strong>保存位置：</strong
@@ -208,7 +268,7 @@
         </p>
       </details>
       <footer>
-        本地加密 · 关闭窗口后自动锁定 · 开发预览版<br /><a
+        本地加密 · 闲置自动锁定 · 开发预览版<br /><a
           href="privacy.html"
           target="_blank"
           rel="noopener"

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>确认通行密钥 · 2fa.hot</title>
+    <link rel="stylesheet" href="ui.css" />
+    <link rel="stylesheet" href="prompt.css" />
+    <script src="prompt.js" defer></script>
+  </head>
+  <body class="prompt" hidden>
+    <main>
+      <header>
+        <span class="brand">2fa<span>.hot</span></span
+        ><span class="badge">PASSKEYS</span
+        ><button id="close" class="text-button close" type="button" aria-label="取消">✕</button>
+      </header>
+      <h1 id="title">使用通行密钥登录</h1>
+      <div class="request-info">
+        <span>请求来源</span><strong id="origin"></strong>
+        <p id="embedded" class="hint" hidden></p>
+        <p id="account"></p>
+      </div>
+      <p id="error" class="message error" role="alert" hidden></p>
+      <p id="notice" class="message notice" role="status" hidden></p>
+      <p id="covered" class="message error" role="alert" hidden>
+        确认框被网页遮挡，已暂停确认。移开遮挡物，或在设置中改为独立窗口确认。
+      </p>
+      <section id="missing" class="panel" hidden>
+        <h2>还没有本地密钥库</h2>
+        <p>先在扩展管理页创建密钥库，再回到网站操作。现在可以改用系统或其他验证器。</p>
+      </section>
+      <section id="gate" class="panel" hidden>
+        <h2>解锁密钥库</h2>
+        <button id="device" class="primary" type="button" hidden>
+          使用 Touch ID / Windows Hello 解锁
+        </button>
+        <form id="unlock-form">
+          <label
+            >主口令<input
+              id="password"
+              type="password"
+              autocomplete="current-password"
+              required
+              maxlength="1024"
+          /></label>
+          <button id="unlock" type="submit" class="secondary">用主口令解锁</button>
+        </form>
+        <p class="hint">主口令只在这个扩展确认框中输入，网站读不到它。</p>
+      </section>
+      <section id="approval" class="panel" hidden>
+        <h2 id="approval-title">选择登录账号</h2>
+        <form id="approve-form">
+          <div id="choices"></div>
+          <div id="approve-slot" class="confirm-slot">
+            <button id="approve" class="primary" type="submit">确认登录</button>
+          </div>
+        </form>
+      </section>
+      <section id="duplicate" class="panel" hidden>
+        <h2>这个账号已有通行密钥</h2>
+        <p>这里已经保存了此网站这个账号的通行密钥，不必再创建。确认后会告知网站它已存在。</p>
+        <div id="exists-slot" class="confirm-slot">
+          <button id="exists" class="primary" type="button">告知网站并返回</button>
+        </div>
+      </section>
+      <div id="request-actions" class="request-actions">
+        <button id="fallback" class="secondary" type="button">使用系统或其他验证器</button
+        ><button id="deny" class="text-button" type="button">取消</button>
+      </div>
+    </main>
+  </body>
+</html>

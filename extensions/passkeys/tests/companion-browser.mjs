@@ -2,6 +2,9 @@ import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
 
 export async function verifyWebsiteManagement(context, url, password, account) {
+  // Start locked, so the first approval has to ask for the password.
+  const worker = context.serviceWorkers()[0]
+  await worker.evaluate(() => chrome.storage.session.remove('unlocked'))
   const page = await context.newPage()
   await page.goto(url.href)
   await page.getByRole('dialog').waitFor({ state: 'visible' })
@@ -33,9 +36,16 @@ export async function verifyWebsiteManagement(context, url, password, account) {
     assert.equal(await popup.locator('#companion-origin').innerText(), url.origin)
     return popup
   }
+  // After the first unlock the vault stays open for a while, and later approvals skip the gate.
   async function unlock(popup) {
-    await popup.locator('#password').fill(password)
-    await popup.locator('#unlock').click()
+    await popup
+      .locator('#gate:visible, #manager:visible, #share-list:visible, #rename-request:visible')
+      .first()
+      .waitFor()
+    if (await popup.locator('#gate').isVisible()) {
+      await popup.locator('#password').fill(password)
+      await popup.locator('#unlock').click()
+    }
     await popup.locator('#gate').waitFor({ state: 'hidden' })
   }
   // Closing the approval leaves the website locked and allows a new request.
@@ -44,6 +54,7 @@ export async function verifyWebsiteManagement(context, url, password, account) {
   await page.getByText('已取消操作。', { exact: true }).waitFor()
   assert.equal(await page.locator('.manager-record').count(), 0)
   const approval = await popupFor(page.locator('[data-passkey-unlock]'))
+  await approval.locator('#gate').waitFor({ state: 'visible' })
   await approval.locator('#password').fill('wrong-password')
   await approval.locator('#unlock').click()
   await approval.locator('#error').waitFor({ state: 'visible' })
@@ -70,11 +81,23 @@ export async function verifyWebsiteManagement(context, url, password, account) {
   await page.screenshot({ path: 'output/passkeys-website-manager-narrow.png', fullPage: true })
   await page.setViewportSize({ width: 1280, height: 900 })
 
+  // Rename from the website: the extension shows old and new name and asks before saving.
+  await page.getByRole('button', { name: /^重命名/ }).click()
+  await page.getByRole('textbox', { name: '名称', exact: true }).fill('Website name')
+  const renaming = await popupFor(page.getByRole('button', { name: '保存名称', exact: true }))
+  await unlock(renaming)
+  await renaming.locator('#rename-request').waitFor({ state: 'visible' })
+  assert.match(await renaming.locator('#rename-summary').innerText(), /Website name/)
+  await renaming.locator('#rename-confirm').click()
+  await page.locator('.manager-record strong', { hasText: 'Website name' }).waitFor()
+  await page.getByRole('checkbox', { name: '选择当前列表', exact: true }).check()
+
   const exporting = await popupFor(page.getByRole('button', { name: '导出所选', exact: true }))
   await unlock(exporting)
   assert.equal(await exporting.locator('#import-section').isVisible(), false)
   await exporting.locator('#export-password').fill('website-backup-password')
   await exporting.locator('#export-confirmation').fill('website-backup-password')
+  await exporting.locator('#export-master').fill(password)
   const downloadPromise = exporting.waitForEvent('download')
   await exporting.locator('#export-form button[type=submit]').click()
   const download = await downloadPromise
@@ -120,6 +143,6 @@ export async function verifyWebsiteManagement(context, url, password, account) {
   assert.equal(await page.locator('.manager-record').count(), 0)
   await page.close()
   console.log(
-    'Website management: approval, search, export, delete, import, cancel, clearing and metadata-only bridge verified'
+    'Website management: approval, search, rename, export, delete, import, cancel, clearing and metadata-only bridge verified'
   )
 }

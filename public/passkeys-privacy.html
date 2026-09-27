@@ -60,31 +60,42 @@
     <section id="zh">
       <h1>2fa.hot Passkeys 隐私政策</h1>
       <p>
-        更新日期：2026 年 9 月 20 日。适用于 2fa.hot Passkeys 浏览器扩展 0.3.x。本扩展由 LONGMIAO
+        更新日期：2026 年 9 月 27 日。适用于 2fa.hot Passkeys 浏览器扩展 0.4.x。本扩展由 LONGMIAO
         LTD （英国公司编号 16596876）提供。本政策仅涵盖通行密钥扩展及其网站连接功能；本站 TOTP
         工具另有隐私说明。
       </p>
       <h2>处理哪些信息，为什么需要</h2>
       <p>
-        为创建、保存和使用通行密钥，扩展处理网站提供的账号名（可能是姓名或邮箱）、显示名称、用户标识、凭据标识、网站域名、注册与登录挑战，以及生成的公私钥。保存的凭据还包含创建时间、最近使用时间、签名计数器和备份属性。
+        为创建、保存和使用通行密钥，扩展处理网站提供的账号名（可能是姓名或邮箱）、显示名称、用户标识、凭据标识、网站域名、注册与登录挑战，以及生成的公私钥。保存的凭据还包含创建时间、最近使用时间、签名计数器、备份属性、你设置的自定义名称，以及网站使用
+        PRF 时所需的每凭据随机种子。
       </p>
       <p>
         你输入的主口令用于本机密钥库加解密，备份口令用于导入和导出。导入时，扩展在本机读取你主动选择的文件；Bitwarden
         JSON 中可能同时含有密码、TOTP 等数据，扩展只导入受支持的通行密钥，不保存或使用其他条目。
       </p>
       <p>
-        扩展从浏览器核对发起验证的页面地址、来源、标签页和文档标识，防止其他网站冒用凭据。它只在处理验证或本站连接请求时查询当前文档，不监听所有导航来构建浏览历史，不抓取普通网页内容，也不采集广告或行为分析数据。
+        扩展从浏览器核对发起验证的页面地址、来源、标签页和文档标识，防止其他网站冒用凭据。它只在处理验证或本站连接请求时查询当前文档，不监听所有导航来构建浏览历史，不抓取普通网页内容，也不采集广告或行为分析数据。网站请求条件式自动填充登录时，扩展只读取获得焦点的输入框是否标有
+        webauthn
+        及其在屏幕上的位置，以便在旁边显示登录按钮。这个按钮只在扩展可能保存了该网站的通行密钥时出现，因此该网站能推知本浏览器是否保存了它自己的通行密钥，但无法得知其他网站的情况。
       </p>
       <h2>保存位置、加密与保留时间</h2>
       <p>
-        私钥及持久保存的账号信息使用 AES-256-GCM
-        加密后存入当前浏览器配置的扩展本地存储。加密密钥通过 PBKDF2-SHA256
-        从主口令派生，使用随机盐；主口令不会持久保存。扩展不使用浏览器同步存储，没有云端账户、云同步或口令找回功能。
+        私钥及持久保存的账号信息使用一把随机密钥以 AES-256-GCM
+        加密后存入当前浏览器配置的扩展本地存储。这把随机密钥由主口令经
+        PBKDF2-SHA256（随机盐）派生的密钥包裹；若你启用设备解锁，还会另外由本机验证器（如 Touch
+        ID、Windows Hello）返回的 PRF 值包裹，同时保存该验证器凭据的标识与盐值。主口令和 PRF
+        值不会持久保存。扩展不使用浏览器同步存储，没有云端账户、云同步或口令找回功能。
       </p>
       <p>
-        在解锁的扩展窗口中，主口令和展示所需的数据暂存于内存；锁定、关闭或连续 5
-        分钟无操作后清除应用持有的引用。JavaScript
-        无法保证物理擦除内存。后台仅在执行操作时解密，不保持长期解锁状态。
+        解锁后，上述随机密钥保存在浏览器会话存储（内存中，仅扩展自身页面可读，关闭浏览器即清除），在你设置的闲置时间（默认
+        15 分钟，可设为每次验证、5 分钟、1
+        小时或关闭浏览器时）后清除；锁定电脑时立即清除。解锁期间，网站发起的注册或登录只需你在确认框中确认。JavaScript
+        无法保证物理擦除内存。
+      </p>
+      <p>
+        为了在密钥库锁定时不打扰与你无关的网站，扩展在本地存储保存一份站点索引：每个网站域名和凭据标识的
+        HMAC-SHA256
+        值（截断）及一把随机索引密钥，不保存明文域名。能读取你浏览器配置文件的人仍可逐一猜测某个域名是否在其中。自动锁定时间、确认框位置等设置也以明文保存在本地。
       </p>
       <p>
         待确认请求的域名、账号标识、挑战和标签页信息会临时保存在浏览器会话存储中，供扩展确认窗口使用；结果被取回后删除，过期请求由定时清理，通常不超过约
@@ -102,11 +113,14 @@
       </p>
       <p>
         只有本站 https://2fa.hot 能通过商店版连接检测扩展并发起管理请求。
-        在扩展窗口解锁并明确确认后，网站可获得域名、账号名称、凭据标识、创建及使用时间，在当前弹窗显示列表。
+        在扩展窗口解锁并明确确认后，网站可获得域名、账号名称、自定义名称、凭据标识、创建及使用时间，在当前弹窗显示列表。
         列表仅保存在网页内存中，关闭弹窗或 5
         分钟后清除，不上传服务端。主口令、私钥、备份内容不会通过此连接传给网页。
-        导入、导出和删除需要在扩展窗口确认；请求绑定来源、标签页和文档，导航后失效。
+        导入、导出、删除和重命名需要在扩展窗口确认；请求绑定来源、标签页和文档，导航后失效。
         本地测试版还允许 localhost。安装检测只是界面提示，不是身份认证。
+      </p>
+      <p>
+        确认框默认由扩展绘制在网页内部，网站无法读取其中内容；也可在设置中改为独立小窗口。由于确认框页面对网站开放加载，任意网站都可以探测到本扩展已安装。
       </p>
       <h2>备份、迁移与删除</h2>
       <p>
@@ -118,12 +132,15 @@
       </p>
       <h2>浏览器权限</h2>
       <ul>
-        <li>storage：保存加密密钥库、暂停设置和临时请求状态。</li>
+        <li>
+          storage：保存加密密钥库、站点索引、设置和临时请求状态；解锁后的密钥库密钥只在会话存储中。
+        </li>
+        <li>idle：仅用于在锁定电脑时锁定密钥库，不记录使用时间。</li>
         <li>alarms：清理过期验证请求。</li>
-        <li>webNavigation：批准前核对请求仍来自同一个顶层文档。</li>
+        <li>webNavigation：批准前核对请求仍来自同一个文档（包括网页中的 iframe）。</li>
         <li>
           HTTPS 网站访问：在支持通行密钥的网站中连接 WebAuthn
-          请求，提供保存和登录功能。处理前需要你在扩展窗口中解锁并确认。扩展不要求读取剪贴板、摄像头或浏览器账户密码的权限。
+          请求，提供保存和登录功能。处理前需要你解锁并在确认框中确认。扩展不要求读取剪贴板、摄像头或浏览器账户密码的权限。
         </li>
       </ul>
       <h2>网站访问与联系</h2>
@@ -144,7 +161,7 @@
     <section id="en" lang="en">
       <h1>2fa.hot Passkeys privacy policy</h1>
       <p>
-        Updated September 20, 2026. Applies to version 0.3.x of the 2fa.hot Passkeys browser
+        Updated September 27, 2026. Applies to version 0.4.x of the 2fa.hot Passkeys browser
         extension. Provided by LONGMIAO LTD (UK company number 16596876). This policy covers the
         extension and its companion website connection; the website's TOTP tool has a separate
         privacy notice.
@@ -154,8 +171,9 @@
         To create, store and use passkeys, the extension processes usernames (which may be names or
         email addresses), display names, user handles, credential identifiers, relying-party
         domains, registration and authentication challenges, and generated public and private keys.
-        Stored credentials also include creation and last-use timestamps, signature counters and
-        backup attributes.
+        Stored credentials also include creation and last-use timestamps, signature counters, backup
+        attributes, any custom name you give them, and a random per-credential seed used when a
+        website asks for PRF.
       </p>
       <p>
         Your master password encrypts and decrypts the local vault; a backup password protects
@@ -168,21 +186,37 @@
         the browser to prevent credentials being used for another site. It queries the current
         document when handling an authentication or companion request; it does not monitor all
         navigation to build browsing histories, scrape ordinary page content or collect advertising
-        analytics.
+        analytics. When a website asks for autofill (conditional) sign-in, the extension reads only
+        whether the focused field is marked webauthn and where it is on screen, to place its sign-in
+        button beside it. The button appears only when the extension may hold a passkey for that
+        website, so the website can infer whether this browser holds one of its own passkeys; it
+        learns nothing about other websites.
       </p>
       <h2>Storage, protection and retention</h2>
       <p>
-        Private keys and persistent account metadata are encrypted with AES-256-GCM and stored in
-        the extension's local storage in the current browser profile. PBKDF2-SHA256 derives
-        encryption keys from the master password using a random salt. The master password is not
+        Private keys and persistent account metadata are encrypted with AES-256-GCM under a random
+        vault key and stored in the extension's local storage in the current browser profile. That
+        key is wrapped by a key derived from the master password with PBKDF2-SHA256 and a random
+        salt; if you turn on device unlock, it is also wrapped by a PRF value returned by this
+        device's authenticator (such as Touch ID or Windows Hello), and that authenticator
+        credential's identifier and salt are stored. The master password and PRF values are not
         persistently stored. There is no browser sync storage, cloud account, cloud sync or password
         recovery.
       </p>
       <p>
-        An unlocked extension window temporarily holds its password and display data in memory.
-        Locking, closing or five minutes of inactivity clears application references. JavaScript
-        cannot guarantee physical memory erasure. The background decrypts only while performing
-        operations and does not maintain an unlocked vault.
+        Once unlocked, the vault key is kept in browser session storage (in memory, readable only by
+        the extension's own pages, and cleared when the browser closes) until your idle timeout
+        passes (15 minutes by default; alternatively every time, 5 minutes, 1 hour or until the
+        browser closes), and immediately when the computer locks. While unlocked, a website's
+        registration or sign-in needs only your confirmation in the prompt. JavaScript cannot
+        guarantee physical memory erasure.
+      </p>
+      <p>
+        So that a locked vault does not interrupt websites it holds nothing for, the extension keeps
+        a site index in local storage: a truncated HMAC-SHA256 of each website domain and credential
+        identifier, with a random index key, and no domains in plain text. Someone who can read your
+        browser profile could still test whether a guessed domain is in it. Settings such as the
+        lock timeout and prompt placement are stored in plain text locally.
       </p>
       <p>
         Pending requests temporarily retain their domains, account identifiers, challenges and tab
@@ -208,13 +242,18 @@
       <p>
         Only https://2fa.hot can check the store extension and initiate management requests. After
         unlocking and explicitly approving in the extension window, the requesting page receives
-        domains, account names, credential identifiers and creation/use times for its account list.
-        This list is held in page memory for up to five minutes or until the dialog closes, and is
-        not uploaded. Passwords, private keys and backup contents are never sent over this
-        connection. Import, export and deletion require confirmation in the extension. Requests are
-        bound to the requesting origin, tab and document and become invalid after navigation. Local
-        preview builds also allow localhost. Installation detection is a UI hint, not
-        authentication.
+        domains, account names, custom names, credential identifiers and creation/use times for its
+        account list. This list is held in page memory for up to five minutes or until the dialog
+        closes, and is not uploaded. Passwords, private keys and backup contents are never sent over
+        this connection. Import, export, deletion and renaming require confirmation in the
+        extension. Requests are bound to the requesting origin, tab and document and become invalid
+        after navigation. Local preview builds also allow localhost. Installation detection is a UI
+        hint, not authentication.
+      </p>
+      <p>
+        By default the confirmation prompt is drawn by the extension inside the web page, where the
+        website cannot read it; a separate window can be chosen in settings. Because the prompt page
+        can be loaded by websites, any website can detect that the extension is installed.
       </p>
       <h2>Exports and deletion</h2>
       <p>
@@ -231,15 +270,19 @@
       </p>
       <h2>Permissions</h2>
       <ul>
-        <li>storage: encrypted vault, pause preference and temporary request state.</li>
+        <li>
+          storage: encrypted vault, site index, settings and temporary request state; the unlocked
+          vault key is held only in session storage.
+        </li>
+        <li>idle: only to lock the vault when the computer locks; no usage times are recorded.</li>
         <li>alarms: expiry cleanup for authentication requests.</li>
         <li>
-          webNavigation: verify that an approved request still belongs to the same top-level
-          document.
+          webNavigation: verify that an approved request still belongs to the same document,
+          including iframes in a page.
         </li>
         <li>
           HTTPS site access: connect WebAuthn requests on passkey-enabled websites to the extension.
-          You unlock and confirm in its window before credentials are created or used. Clipboard,
+          You unlock and confirm in its prompt before credentials are created or used. Clipboard,
           camera and browser password-store permissions are not requested.
         </li>
       </ul>

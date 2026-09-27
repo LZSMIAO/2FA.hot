@@ -238,6 +238,41 @@ footer {
   height: 18px;
   accent-color: var(--button);
 }
+.record .text-button {
+  min-height: 36px;
+  padding: 4px 10px;
+  font-size: 13px;
+}
+.rename {
+  display: flex;
+  gap: 8px;
+  padding: 0 0 16px 32px;
+}
+.rename input {
+  flex: 1;
+  min-width: 0;
+}
+#gate {
+  display: grid;
+  gap: 16px;
+}
+#gate h2 {
+  margin: 0;
+}
+.settings {
+  display: grid;
+  gap: 8px;
+}
+.settings,
+#device-form {
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+}
+h3 {
+  font-size: 15px;
+  margin: 0;
+}
 .empty {
   padding: 32px 6px;
   border-block: 1px solid var(--line);

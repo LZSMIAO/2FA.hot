@@ -22,6 +22,7 @@ if (window.top === window && isCompanionOrigin(location.origin)) {
         action: `site-${data.action}`,
         operation: data.operation,
         ids: data.ids,
+        label: data.label,
         token: data.token
       })
       window.postMessage(

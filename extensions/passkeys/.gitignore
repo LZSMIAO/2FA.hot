@@ -1,6 +1,7 @@
 dist/
 dist-store/
 dist-preview/
+dist-firefox/
 node_modules/
 output/
 *.2fapasskeys

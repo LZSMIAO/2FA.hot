@@ -1,14 +1,17 @@
 import { isCompanionOrigin } from './site-access.js'
 
-export const companionOperations = ['list', 'import', 'export', 'remove']
+export const companionOperations = ['list', 'import', 'export', 'remove', 'rename']
+/** 2 adds renaming and custom names; a site that knows only 1 keeps working. */
+export const managerProtocol = 2
 // Only the metadata needed by the website is allowed across this boundary.
 export function companionRecords(records) {
   return records.map(
-    ({ rpId, credentialId, userName, userDisplayName, createdAt, lastUsedAt }) => ({
+    ({ rpId, credentialId, userName, userDisplayName, label, createdAt, lastUsedAt }) => ({
       rpId,
       credentialId,
       userName,
       userDisplayName,
+      label: label ?? null,
       createdAt,
       lastUsedAt
     })
@@ -52,7 +55,7 @@ export function createCompanion(chrome, uiUrl) {
     await current({ tabId: sender.tab.id, documentId: sender.documentId, origin: sender.origin })
     const { action } = message
     if (action === 'site-status')
-      return { version: chrome.runtime.getManifest().version, managerProtocol: 1 }
+      return { version: chrome.runtime.getManifest().version, managerProtocol }
     // Compatibility for older companion pages; never returns vault data.
     if (action === 'site-open') {
       await chrome.runtime.openOptionsPage()
@@ -68,14 +71,19 @@ export function createCompanion(chrome, uiUrl) {
         !Array.isArray(ids) ||
         ids.length > 1000 ||
         ids.some((id) => typeof id !== 'string' || id.length > 1800) ||
-        (['export', 'remove'].includes(message.operation) && !ids.length)
+        (['export', 'remove'].includes(message.operation) && !ids.length) ||
+        (message.operation === 'rename' && ids.length !== 1)
       )
         throw new Error('请选择要操作的通行密钥。')
+      const label = message.operation === 'rename' ? message.label : undefined
+      if (label !== undefined && (typeof label !== 'string' || label.length > 256))
+        throw new Error('名称最多 256 个字符。')
       await close(old)
       const r = {
         token: crypto.randomUUID(),
         operation: message.operation,
         ids: [...new Set(ids)],
+        label,
         tabId: sender.tab.id,
         documentId: sender.documentId,
         origin: sender.origin,
