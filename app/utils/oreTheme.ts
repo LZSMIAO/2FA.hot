@@ -65,8 +65,13 @@ export const oreTheme = {
   modal: {
     slots: {
       content: 'ore-window ore-theme rounded-none',
-      header: 'ore-window-title',
-      close: 'ore-close'
+      /*
+       * The close button is absolute, so the title and description ran on
+       * under it. The header keeps its width clear, and the button sits
+       * centred on the header at the body's own side margin.
+       */
+      header: 'ore-window-title relative pe-17 sm:pe-20',
+      close: 'ore-close top-1/2 -translate-y-1/2 end-4 sm:end-6'
     },
     variants: {
       transition: {
