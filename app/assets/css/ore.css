@@ -1154,30 +1154,6 @@ html[data-guide-learned~='batch'][data-workspace-mode='batch'] .guide-trigger-in
   vector-effect: non-scaling-stroke;
 }
 
-.workspace-summary .workspace-summary-links .history-toggle-control {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  min-height: 2.75rem;
-}
-.workspace-summary .workspace-summary-links .history-toggle-control .history-view-link {
-  order: -1;
-  /* Match the switch's anchor height so both hints share the same top edge. */
-  height: 1.625rem;
-  min-height: 1.625rem;
-  padding-block: 0;
-  margin-block: 0;
-  /* The glyph 6px from its switch, like the offline icon's. */
-  margin-inline-end: -1.125rem;
-}
-.workspace-summary .workspace-summary-links .history-view-link .iconify {
-  width: 1.5rem;
-  height: 1.5rem;
-}
-/* Each icon's target reaches a little under its switch; the switch keeps it. */
-.workspace-summary .workspace-summary-links .history-switch {
-  z-index: 1;
-}
 @media (max-width: 700px) {
   .workspace-summary {
     grid-template-columns: minmax(0, 1fr);
@@ -1185,10 +1161,12 @@ html[data-guide-learned~='batch'][data-workspace-mode='batch'] .guide-trigger-in
   .workspace-summary-links {
     margin-inline-start: 0;
   }
-  /* The icons and their switches share one row: offline on the left,
-     history on the right. */
+  /* The settings share one row: offline on the left, autosave on the right.
+     Named on touch, both fit on a 375px phone with this gap; a longer
+     language puts the second under the first. */
   .workspace-summary-links {
     width: 100%;
+    column-gap: 0.75rem;
   }
   .workspace-summary-links > .history-toggle {
     margin-inline-start: auto;
@@ -1407,11 +1385,6 @@ html[data-guide-learned~='batch'][data-workspace-mode='batch'] .guide-trigger-in
   /* A short label like "About" leaves this under the target size. */
   .site-footer nav a {
     min-width: 44px;
-    min-height: 44px;
-  }
-  /* This sets an explicit height, so a minimum alone would not lift it. */
-  .ore-theme .workspace-summary-links .history-toggle-control .history-view-link {
-    height: 44px;
     min-height: 44px;
   }
   /*

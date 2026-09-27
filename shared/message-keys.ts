@@ -924,7 +924,9 @@ export const sourceKeys = new Map<string, string>([
   ['此浏览器不支持离线使用', 'm2853dcdcbdd5'],
   ['正在保存离线文件… {percent}%', 'm19271ea9b4fb'],
   ['离线文件没有保存完成，请联网后再开一次。', 'm36f6a802ca31'],
+  ['离线文件没有保存完成，下次联网打开时会自动补齐。', 'mb150fcf2d12b'],
   ['已可离线使用。', 'm34e2493078fa'],
+  ['已可离线使用', 'm9a34859b5c77'],
   ['已可离线使用。在 Safari 分享菜单选“添加到主屏幕”，就能像 App 一样打开。', 'm97f96cb5d18f'],
   ['离线使用：保存网站文件', 'm04c231282e5b'],
   [
@@ -940,7 +942,7 @@ export const sourceKeys = new Map<string, string>([
   ['欢迎来到 2fa.hot', 'homeWelcomeTitle'],
   ['开始使用前，您或许想了解……', 'homeWelcomeLead'],
   [
-    '安装成 App 后，第一次打开时会自动开启离线使用；之后在 App 里关掉，就会一直保持关闭。',
+    '安装成 App 后，离线使用会一直保持开启，App 里不显示开关；移除 App 时可以一并删除这些文件。',
     'privacyOfflineApp'
   ],
   ['（新窗口）', 'newWindow'],

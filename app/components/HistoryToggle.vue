@@ -56,22 +56,18 @@ watch(open, (visible) => {
 </script>
 <template>
   <div class="history-toggle">
-    <div class="history-toggle-control">
-      <AppHint :text="tx(vault.enabled.value ? '关闭自动保存' : '开启自动保存')"
-        ><PixelSwitch
-          :checked="vault.enabled.value"
-          :label="tx(vault.enabled.value ? '关闭自动保存' : '开启自动保存')"
-          :disabled="!vault.ready.value || vault.busy.value"
-          @toggle="change(!vault.enabled.value)"
-      /></AppHint>
-      <AppHint :text="tx('查看历史')"
-        ><NuxtLink
-          class="history-view-link"
-          :to="localePath('/history')"
-          :aria-label="tx('历史记录')"
-          ><UIcon name="i-lucide-history" /></NuxtLink
-      ></AppHint>
-    </div>
+    <SummarySwitch
+      icon="i-lucide-history"
+      :name="tx('自动保存')"
+      :action="tx(vault.enabled.value ? '关闭自动保存' : '开启自动保存')"
+      :checked="vault.enabled.value"
+      :disabled="!vault.ready.value || vault.busy.value"
+      :to="localePath('/history')"
+      :link-label="tx('历史记录')"
+      icon-links
+      :on-tip="tx('查看历史')"
+      @toggle="change(!vault.enabled.value)"
+    />
     <span v-if="error && !open" class="inline-error" role="alert">{{ tx(error) }}</span>
     <UModal
       v-model:open="open"
@@ -128,43 +124,6 @@ watch(open, (visible) => {
   align-items: center;
   flex-wrap: wrap;
   gap: 1rem;
-}
-.history-view-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  white-space: nowrap;
-  min-height: 2.75rem;
-}
-.history-toggle-control {
-  display: grid;
-  justify-items: center;
-  gap: 0.375rem;
-}
-.history-toggle-control .history-view-link {
-  /* Stacked under the switch this label is only ~21px tall, so grow the hit
-     area with padding the negative margin takes back out of the layout. */
-  min-height: 0;
-  padding: 0.75rem;
-  margin: -0.75rem;
-  font-size: var(--text-label);
-  line-height: 1.5;
-}
-.history-controls {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.625rem;
-}
-.history-view-link {
-  color: var(--ui-text-muted);
-}
-.history-view-link .iconify {
-  width: 1.25rem;
-  height: 1.25rem;
-}
-.history-view-link:hover {
-  text-decoration: none;
-  color: var(--ui-text-highlighted);
 }
 .history-enable-form {
   display: grid;

@@ -5,6 +5,8 @@ const offline = useOfflineMode()
 const on = computed(() => offline.status.value === 'saving' || offline.status.value === 'ready')
 /** Safari on iPhone or iPad, not already opened from the home screen. */
 const homeScreenHint = shallowRef(false)
+/** Opened as the installed app, which keeps offline mode on and has no switch for it. */
+const inApp = shallowRef(false)
 const dismissed = shallowRef(false)
 let timer: ReturnType<typeof setTimeout> | undefined
 const { online } = useNetworkStatus()
@@ -17,17 +19,16 @@ const remembered = (key: string) => {
 }
 
 onMounted(async () => {
-  homeScreenHint.value = document.documentElement.hasAttribute('data-ios') && !runningAsApp()
+  inApp.value = runningAsApp()
+  homeScreenHint.value = document.documentElement.hasAttribute('data-ios') && !inApp.value
   await offline.check()
-  // The installed app is meant to open without a network, so it turns offline
-  // mode on by itself, once: switched off there later, it stays off.
-  if (
-    runningAsApp() &&
-    offline.supported.value &&
-    offline.status.value === 'off' &&
-    navigator.onLine &&
-    !remembered('2fa-offline-auto-v1')
-  )
+  /*
+   * The installed app is meant to open without a network, so offline mode is
+   * always on there: whenever its files are missing - never kept yet, or
+   * removed from a browser tab that shares its storage - it keeps them again.
+   * Removing the app is how its copy goes.
+   */
+  if (inApp.value && offline.supported.value && offline.status.value === 'off' && navigator.onLine)
     await offline.enable()
 })
 onBeforeUnmount(() => clearTimeout(timer))
@@ -42,13 +43,16 @@ async function toggle() {
  * come with no network; it stays long enough to read, the longer tips longer.
  */
 const inviteTry = shallowRef(false)
+/** The first time the files are kept, the notice also offers what offline use is. */
+const firstTry = shallowRef(false)
 watch(offline.justSaved, (saved) => {
   clearTimeout(timer)
   if (!saved) return
   inviteTry.value = !homeScreenHint.value && !remembered('2fa-offline-try-tip-v1')
+  firstTry.value = !remembered('2fa-offline-help-v1')
   timer = setTimeout(
     () => (offline.justSaved.value = false),
-    homeScreenHint.value || inviteTry.value ? 12_000 : 5_000
+    homeScreenHint.value || inviteTry.value || firstTry.value ? 12_000 : 5_000
   )
 })
 /** Going offline with everything kept earns a word of praise, once. */
@@ -72,7 +76,12 @@ const notice = computed(() => {
   if (offline.status.value === 'error')
     return {
       icon: 'i-lucide-wifi-off',
-      message: tx('离线文件没有保存完成，请联网后再开一次。')
+      // The app has no switch to turn it on again; it finishes on its next online open.
+      message: tx(
+        inApp.value
+          ? '离线文件没有保存完成，下次联网打开时会自动补齐。'
+          : '离线文件没有保存完成，请联网后再开一次。'
+      )
     }
   if (praising.value)
     return { icon: 'i-lucide-thumbs-up', message: tx('太好了，已断网！验证码照常产生。') }
@@ -85,45 +94,51 @@ const notice = computed(() => {
           : inviteTry.value
             ? '已可离线使用。断网也能照常获取验证码。'
             : '已可离线使用。'
-      )
+      ),
+      action: firstTry.value ? tx('离线使用说明') : undefined
     }
   return null
 })
+function openHelp() {
+  close()
+  navigateTo(localePath('/privacy') + '#offline')
+}
 function close() {
   dismissed.value = true
   praising.value = false
   offline.justSaved.value = false
 }
-/** The icon also tells whether the device is offline right now. */
+/** On touch, the icon's name also tells whether the device is offline right now. */
 const iconHint = computed(() => (online.value ? '离线使用说明' : '已断网，验证码照常产生'))
 </script>
 <template>
   <div class="offline-toggle">
-    <!-- An icon in place of the name; it opens what offline mode keeps and why. -->
-    <AppHint :text="tx(iconHint)"
-      ><NuxtLink
-        :to="localePath('/privacy') + '#offline'"
-        class="offline-help"
-        :class="{ 'is-disconnected': !online }"
-        :aria-label="tx(iconHint)"
-        ><UIcon name="i-lucide-wifi-off" /></NuxtLink
-    ></AppHint>
-    <AppHint
-      :text="
+    <!-- The installed app keeps offline mode on: no switch, only how it stands. -->
+    <SummarySwitch
+      icon="i-lucide-wifi-off"
+      :name="tx('离线使用')"
+      :action="
         tx(
           !offline.supported.value ? '此浏览器不支持离线使用' : on ? '关闭离线使用' : '开启离线使用'
         )
       "
-      ><PixelSwitch
-        :checked="on"
-        :label="tx(on ? '关闭离线使用' : '开启离线使用')"
-        :disabled="!offline.supported.value || offline.status.value === 'saving'"
-        @toggle="toggle"
-    /></AppHint>
+      :checked="on"
+      :disabled="!offline.supported.value || offline.status.value === 'saving'"
+      :to="localePath('/privacy') + '#offline'"
+      :link-label="tx(iconHint)"
+      :status="
+        inApp ? tx(offline.status.value === 'ready' ? '已可离线使用' : '离线使用') : undefined
+      "
+      fixed-in-app
+      :lit="!online"
+      @toggle="toggle"
+    />
     <ActionHint
       :open="!!notice"
       :message="notice?.message || ''"
       :icon="notice?.icon || 'i-lucide-download'"
+      :action="notice?.action"
+      @action="openHelp"
       @close="close"
     />
   </div>
@@ -132,30 +147,5 @@ const iconHint = computed(() => (online.value ? '离线使用说明' : '已断�
 .offline-toggle {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  min-height: 2.75rem;
-}
-.offline-help {
-  display: inline-grid;
-  place-items: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  /* The target is wider than the glyph: the glyph starts in line with the text
-     above and sits close beside its switch, 6px off, as the history icon does. */
-  margin-inline: -0.625rem -1rem;
-  color: var(--ui-text-muted);
-}
-/* As tall as the switch's track, so the pair reads as one control. */
-.offline-help .iconify {
-  width: 1.5rem;
-  height: 1.5rem;
-}
-.offline-help:hover,
-.offline-help:focus-visible {
-  color: var(--ui-text-highlighted);
-}
-/* The device has no network: the tool still works, and the icon says so. */
-.offline-help.is-disconnected {
-  color: var(--accent-ink);
 }
 </style>
