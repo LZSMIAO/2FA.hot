@@ -226,6 +226,14 @@ button {
   outline: 2px solid var(--accent-ink);
   outline-offset: 4px;
 }
+/*
+ * A menu's items show focus with their own highlight, which the pointer moves
+ * too. The ring came on with it after any key press, and the menu's scroll
+ * box cut it to two sides.
+ */
+[role^='menuitem']:focus-visible {
+  outline: none;
+}
 h1,
 h2,
 h3 {
