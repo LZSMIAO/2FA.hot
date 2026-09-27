@@ -126,7 +126,8 @@ function worker() {
       network.hold = false
       for (const resolve of held.splice(0)) resolve()
       await new Promise((resolve) => setImmediate(resolve))
-      await Promise.all(background)
+      // Work left running can leave more behind it.
+      while (background.length) await Promise.all(background.splice(0))
     }
   }
 }
@@ -279,4 +280,43 @@ test("a newer build's page never replaces the kept copy before that build is kep
   sw.network.online = false
   // Its files are not kept yet, so offline the kept build's page still opens.
   assert.equal(await (await sw.navigate('/zh-TW'))!.text(), 'zh-TW home')
+})
+
+test('a newer build that answers late is kept in the background, so the next visit opens it', async () => {
+  const sw = worker()
+  site(sw)
+  await sw.prepare('zh-TW', '/zh-TW', [])
+  // A new deploy, reached only over a slow connection.
+  sw.serve({
+    '/offline-manifest.json': manifest('b2', ['/_nuxt/app2.js']),
+    '/_nuxt/app2.js': 'app of b2',
+    '/zh-TW': 'zh-TW home of b2',
+    '/zh-TW/history': 'zh-TW history of b2',
+    '/zh-TW/_payload.json?_b=b2': 'payload of b2'
+  })
+  sw.network.hold = true
+  const opening = sw.navigate('/zh-TW')
+  await sw.elapse()
+  assert.equal(await (await opening)!.text(), 'zh-TW home')
+  await sw.release()
+  sw.network.online = false
+  assert.equal(await (await sw.navigate('/zh-TW'))!.text(), 'zh-TW home of b2')
+  assert.equal(await (await sw.get('/_nuxt/app2.js'))!.text(), 'app of b2')
+})
+
+test('a late page of the kept build does not keep that build again', async () => {
+  const sw = worker()
+  site(sw)
+  await sw.prepare('zh-TW', '/zh-TW', [])
+  const before = sw.requests.length
+  sw.network.hold = true
+  const opening = sw.navigate('/zh-TW')
+  await sw.elapse()
+  await opening
+  await sw.release()
+  // The page, and the manifest that says the build is the same; nothing more.
+  assert.deepEqual(
+    sw.requests.slice(before).map((url) => new URL(url).pathname),
+    ['/zh-TW', '/offline-manifest.json']
+  )
 })

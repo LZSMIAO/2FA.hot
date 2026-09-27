@@ -65,10 +65,11 @@ async function writeConfig(value) {
  * language's pages and translations, the empty code page, and the media the
  * visitor's page had loaded (their backdrop, among others).
  */
-async function precache(options, report = () => {}) {
+async function precache(options, report = () => {}, unlessBuild) {
   const manifestResponse = await fetch('/offline-manifest.json', { cache: 'no-store' })
   if (!manifestResponse.ok) throw new Error('manifest ' + manifestResponse.status)
   const manifest = await manifestResponse.json()
+  if (manifest.build === unlessBuild) return
   const language = manifest.locales[options.locale] || manifest.locales.en
   const pages = new Set([...language.pages, language.shell])
   const required = [...manifest.shared, ...language.data, ...pages]
@@ -177,8 +178,24 @@ async function offlinePage(url, current) {
   return undefined
 }
 
+/*
+ * A newer build is normally kept when its own page runs and moves the worker
+ * to it (app/plugins/offline.client.ts). A page that answered too late never
+ * runs, so on a slow connection the app would open the old copy every time,
+ * never reaching a newer build. When such an answer turns out to be one, the
+ * worker keeps that build itself, once, so the next visit opens it.
+ */
+let updating
+function keepNewerBuild(current) {
+  updating ??= precache(current, undefined, current.build)
+    .catch(() => {})
+    .finally(() => (updating = undefined))
+  return updating
+}
+
 async function page(event, url) {
   const current = await readConfig()
+  let late = false
   const network = fetch(event.request).then(async (response) => {
     if (
       current &&
@@ -186,20 +203,23 @@ async function page(event, url) {
       response.type === 'basic' &&
       !response.redirected &&
       !isCodePage(url.pathname) &&
-      (response.headers.get('Content-Type') || '').includes('text/html') &&
-      (await ofBuild(response, current.build))
-    )
-      await (
-        await caches.open(BUILD_PREFIX + current.build)
-      ).put(pageKey(url.pathname), response.clone())
+      (response.headers.get('Content-Type') || '').includes('text/html')
+    ) {
+      if (await ofBuild(response, current.build))
+        await (
+          await caches.open(BUILD_PREFIX + current.build)
+        ).put(pageKey(url.pathname), response.clone())
+      else if (late) event.waitUntil(keepNewerBuild(current))
+    }
     return response
   })
   if (!current) return network
   let failure
   try {
-    const late = new Promise((resolve) => setTimeout(resolve, NETWORK_WAIT))
-    const response = await Promise.race([network, late])
+    const wait = new Promise((resolve) => setTimeout(resolve, NETWORK_WAIT))
+    const response = await Promise.race([network, wait])
     if (response) return response
+    late = true
     // Late: open the copy of this page if there is one, and let the network
     // finish in the background. With no copy, keep waiting for the network.
     const kept = await keptPage(url, current)
